@@ -56,6 +56,7 @@
         const Coins = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="8" r="7"></circle><path d="M8.2 5.3C7.6 5.1 7.1 5.3 6.8 5.6C6.5 6 6.5 6.4 6.8 6.8C7.1 7.1 7.7 7.3 8 7.6C8.3 7.9 8.3 8.4 8 8.7C7.7 9 7.2 9.2 6.6 9"></path><line x1="8" y1="4" x2="8" y2="12"></line><path d="M16 16m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M16.2 13.3C15.6 13.1 15.1 13.3 14.8 13.6C14.5 14 14.5 14.4 14.8 14.8C15.1 15.1 15.7 15.3 16 15.6C16.3 15.9 16.3 16.4 16 16.7C15.7 17 15.2 17.2 14.6 17"></path><line x1="16" y1="12" x2="16" y2="20"></line></svg>;
         const Lock = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>;
         const Unlock = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>;
+        const LogOut = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>;
 
         // --- FIREBASE CONFIGURATION ---
         // INSERISCI QUI LE TUE CHIAVI FIREBASE PER L'ONLINE SU GITHUB PAGES
@@ -593,6 +594,12 @@
           'Errore 404': { name: 'Errore 404', type: 'Oscuro', power: 30, priority: 3, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 1, desc: 'Un glitch istantaneo. Colpisce per primo (priorità alta) e fa tentennare il bersaglio (stordisce al 100%). Usabile solo 1 volta.' },
           'Teletrasporto instabile': { name: 'Teletrasporto instabile', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, desc: 'Scompare nel vuoto per schivare ogni attacco del turno. Fallisce se usato di fila.' },
           'Gaster Blaster': { name: 'Gaster Blaster', type: 'Robot', power: 50, targetCount: 2, desc: 'Evoca dei teschi fluttuanti che sparano raggi laser. Colpisce 2 bersagli.' },
+
+          // NUOVE MOSSE JAKE (DC)
+          'Battuta Fuori Luogo': { name: 'Battuta Fuori Luogo', type: 'Normale', power: 0, targetStatDebuff: { atk: 0.6 }, desc: 'Una battuta inopportuna che irrita il nemico, riducendone drasticamente (40%) l\'Attacco.' },
+          'Sguardo Omosessuale': { name: 'Sguardo Omosessuale', type: 'Magico', power: 0, statusEffect: { type: 'Infatuato', chance: 1.0 }, desc: 'Lancia un\'occhiata profonda che infatua infallibilmente il nemico (50% probabilità di non attaccare).' },
+          'Tom difendimi!': { name: 'Tom difendimi!', type: 'Lotta', power: 85, targetCount: 2, desc: 'Chiama Tom in soccorso! Un potente attacco fisico che colpisce fino a 2 bersagli a scelta.' },
+          'Lanciafiamme Rubato': { name: "\'Ho preso un lanciafiamme!\'", type: 'Fuoco', power: 50, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Usa un lanciafiamme trovato per caso! Infligge 50 danni e scotta sicuramente il nemico.' },
         };
 
         const CHARACTERS = [
@@ -682,6 +689,8 @@
           
           { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']] },
           { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']] },
+          
+          { id: 'jakedc', name: 'Jake (DC)', types: ['Normale', 'Fuoco'], hp: 90, maxHp: 90, atk: 90, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/28/3b/2d/283b2d85ccb4762668e7d6138c6684f9.jpg', moves: [MOVES_DB['Battuta Fuori Luogo'], MOVES_DB['Sguardo Omosessuale'], MOVES_DB['Tom difendimi!'], MOVES_DB['Lanciafiamme Rubato']] },
 
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 35, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
@@ -695,7 +704,7 @@
             'goku': 200, 'kratos': 200, 'godzilla': 200, 'cell': 200, 'nito': 200, 'ryuk': 200, 'rias': 200, 'utopia': 200,
             'laxus': 150, 'zabuza': 150, 'pyra': 150, 'natsu': 150, 'aang': 150, 'yugo': 150, 'garnet': 150,
             'bowser': 100, 'sdentato': 100, 'corvina': 100, 'zatchbell': 100, 'lapis': 100, 'sage': 100, 'ariana': 100, 'groot': 100, 'dannyphantom': 100, 'reboo': 100, 'metalsonic': 100, 'astral': 100, 'yusei': 100, 'stellarubia': 100, 'shego': 100, 'hannibal': 100, 'po': 100, 'strega': 100, 'yukionna': 100,
-            'zazan': 50, 'charmcaster': 50, 'patrick': 50, 'plankton': 50, 'wario': 50, 'zuko': 50, 'barry': 50, 'bloom': 50, 'juvia': 50, 'sanemi': 50, 'cuoredipietra': 50, 'poisonivy': 50, 'zergling': 50, 'gaston': 50, 'leslie': 50, 'dolli': 50, 'reghiaccio': 50, 'cosmo': 50, 'mantide': 50, 'renarouge': 50, 'rainbowdash': 50, 'spike': 50, 'jackfrost': 50, 'polterpup': 50, 'whisper': 50, 'juri': 50, 'iris': 50, 'bumblebee': 50, 'marceline': 50
+            'zazan': 50, 'charmcaster': 50, 'patrick': 50, 'plankton': 50, 'wario': 50, 'zuko': 50, 'barry': 50, 'bloom': 50, 'juvia': 50, 'sanemi': 50, 'cuoredipietra': 50, 'poisonivy': 50, 'zergling': 50, 'gaston': 50, 'leslie': 50, 'dolli': 50, 'reghiaccio': 50, 'cosmo': 50, 'mantide': 50, 'renarouge': 50, 'rainbowdash': 50, 'spike': 50, 'jackfrost': 50, 'polterpup': 50, 'whisper': 50, 'juri': 50, 'iris': 50, 'bumblebee': 50, 'marceline': 50, 'jakedc': 50
         };
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
@@ -1486,30 +1495,54 @@
           playerScores: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
         });
 
+        const getSavedSession = () => {
+            try {
+                const s = localStorage.getItem('multiverse_rpg_session');
+                if (s) return JSON.parse(s);
+            } catch(e){}
+            return null;
+        };
+
         function App() {
           const [user, setUser] = useState(null);
-          const [playerName, setPlayerName] = useState('');
-          const [playerAvatarUrl, setPlayerAvatarUrl] = useState(''); 
+          const [playerName, setPlayerName] = useState(() => localStorage.getItem('multiverse_rpg_saved_name') || '');
+          const [playerAvatarUrl, setPlayerAvatarUrl] = useState(() => localStorage.getItem('multiverse_rpg_saved_avatar') || ''); 
           const [roomIdInput, setRoomIdInput] = useState('');
-          
-          const [appMode, setAppMode] = useState('menu'); // menu, local_room, online_room, vs_cpu, catalog, type_chart, shop
-          const [roomId, setRoomId] = useState(null);
-          const [playerRole, setPlayerRole] = useState(null); 
-          
-          const [gameState, setGameState] = useState(initialGameState());
-          
-          const [displayTeams, setDisplayTeams] = useState({ p1: [], p2: [], p3: [], p4: [] }); 
-          const [displayField, setDisplayField] = useState({ p1: [], p2: [], p3: [], p4: [] }); 
-          const [eventPlaybackText, setEventPlaybackText] = useState('');
-        const [isPlayingEvents, setIsPlayingEvents] = useState(false);
-        const [commandingIdx, setCommandingIdx] = useState(0); 
-        const [targetingMoveIdx, setTargetingMoveIdx] = useState(null);
 
-        const [catalogSort, setCatalogSort] = useState('alpha');
+          const sessionRef = useRef(getSavedSession());
+          
+          const [appMode, setAppMode] = useState(sessionRef.current?.appMode || 'menu');
+          const [roomId, setRoomId] = useState(sessionRef.current?.roomId || null);
+          const [playerRole, setPlayerRole] = useState(sessionRef.current?.playerRole || null); 
+          const [gameState, setGameState] = useState(sessionRef.current?.gameState || initialGameState());
+          
+          const [displayTeams, setDisplayTeams] = useState({ p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }); 
+          const [displayField, setDisplayField] = useState({ p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] });
+          const [isPlayingEvents, setIsPlayingEvents] = useState(false);
+          const [eventPlaybackText, setEventPlaybackText] = useState('');
+
+          const [commandingIdx, setCommandingIdx] = useState(-1);
+          const [targetingMoveIdx, setTargetingMoveIdx] = useState(null);
+          
+          const [catalogSort, setCatalogSort] = useState('alpha');
           const [catalogFilter, setCatalogFilter] = useState('Tutti');
           const [catalogSearch, setCatalogSearch] = useState('');
 
           const [introCharIdx, setIntroCharIdx] = useState(0);
+
+          // Variabili di stato e reference mancanti
+          const [systemAlert, setSystemAlert] = useState(null);
+          const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+          const [shopTab, setShopTab] = useState('items');
+          const [draftHoverInfo, setDraftHoverInfo] = useState(null);
+          const [actionMenuMode, setActionMenuMode] = useState('moves');
+          const [hoveredMove, setHoveredMove] = useState(null);
+          
+          const matchStartTimeRef = useRef(null);
+          const draftLongPressRef = useRef(false);
+          const draftPressTimerRef = useRef(null);
+          const isLongPressRef = useRef(false);
+          const pressTimerRef = useRef(null);
           
           // --- STATO CAMPAGNA ---
           const [campaignState, setCampaignState] = useState(() => {
@@ -1530,30 +1563,26 @@
           const [campaignDialogueIdx, setCampaignDialogueIdx] = useState(0);
           const [campaignSelectedTeam, setCampaignSelectedTeam] = useState([]);
           
-          // Autosave Campagna
+          // Autosave Profilo
           useEffect(() => {
-              if (appMode.startsWith('campaign_') && appMode !== 'campaign_intro') {
-                  localStorage.setItem('multiverse_rpg_campaign_save', JSON.stringify(campaignState));
+              localStorage.setItem('multiverse_rpg_saved_avatar', playerAvatarUrl);
+              localStorage.setItem('multiverse_rpg_saved_name', playerName);
+          }, [playerAvatarUrl, playerName]);
+
+          useEffect(() => {
+              const saveableModes = ['local_room', 'online_room'];
+              if (saveableModes.includes(appMode)) {
+                  localStorage.setItem('multiverse_rpg_session', JSON.stringify({
+                      appMode,
+                      roomId,
+                      playerRole,
+                      gameState: appMode === 'local_room' ? gameState : null
+                  }));
+              } else if (appMode === 'menu') {
+                  localStorage.removeItem('multiverse_rpg_session');
               }
-          }, [campaignState, appMode]);
-          // ----------------------
+          }, [appMode, roomId, playerRole, gameState]);
           
-          const [hoveredMove, setHoveredMove] = useState(null);
-          const [actionMenuMode, setActionMenuMode] = useState('moves'); // 'moves', 'items', 'switch'
-          const [shopTab, setShopTab] = useState('items'); // 'items', 'chars'
-          const isLongPressRef = useRef(false);
-          const pressTimerRef = useRef(null);
-
-          const [systemAlert, setSystemAlert] = useState(null);
-
-          // State e Ref per l'Hover/Long Press nella fase di Draft
-          const [draftHoverInfo, setDraftHoverInfo] = useState(null);
-          const draftLongPressRef = useRef(false);
-          const draftPressTimerRef = useRef(null);
-          
-          // Ref per il timer partita
-          const matchStartTimeRef = useRef(null);
-
           // --- FIX: INIZIALIZZAZIONE AUTENTICAZIONE FIREBASE ---
           useEffect(() => {
               const initAuth = async () => {
@@ -1577,25 +1606,38 @@
               return () => unsubscribe();
           }, []);
 
-          const getPlayerData = (nameOverride = null) => {
-              const nameToUse = nameOverride || playerName;
-              if (!nameToUse.trim()) return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 100, inventory: { cura_totale: 1 }, unlockedChars: [] };
-              const key = `multiverse_rpg_stats_${nameToUse.trim().toLowerCase()}`;
+          const getPlayerData = () => {
+              const key = `multiverse_rpg_global_profile`;
               const raw = localStorage.getItem(key);
               if (raw) {
                   let data = JSON.parse(raw);
-                  // Compatibilità con salvataggi vecchi
                   if (data.coins === undefined) data.coins = 100;
                   if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                   if (data.unlockedChars === undefined) data.unlockedChars = [];
                   return data;
               }
+
+              // Migrazione dal vecchio salvataggio (basato sul nome) se esiste
+              for (let i = 0; i < localStorage.length; i++) {
+                  const k = localStorage.key(i);
+                  if (k && k.startsWith('multiverse_rpg_stats_')) {
+                      const oldRaw = localStorage.getItem(k);
+                      if (oldRaw) {
+                          localStorage.setItem(key, oldRaw);
+                          let data = JSON.parse(oldRaw);
+                          if (data.coins === undefined) data.coins = 100;
+                          if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
+                          if (data.unlockedChars === undefined) data.unlockedChars = [];
+                          return data;
+                      }
+                  }
+              }
+
               return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 100, inventory: { cura_totale: 1 }, unlockedChars: [] };
           };
 
           const updateLocalStats = (updates) => {
-              if (!playerName.trim()) return;
-              const key = `multiverse_rpg_stats_${playerName.trim().toLowerCase()}`;
+              const key = `multiverse_rpg_global_profile`;
               let current = getPlayerData();
 
               if (updates.match) current.matches++;
@@ -1626,10 +1668,48 @@
           };
 
           const leaveRoom = () => {
+            localStorage.removeItem('multiverse_rpg_session');
             setAppMode('menu');
             setRoomId(null);
             setPlayerRole(null);
             setGameState(initialGameState());
+          };
+
+          const handleConfirmLeave = async () => {
+              setShowLeaveConfirm(false);
+              const inBattleStates = ['battling', 'executing', 'switching_phase', 'pre_battle', 'intermission'];
+
+              if (gameState.isCampaignBattle) {
+                  // Ritiro in campagna: Fallimento automatico, cura minima
+                  const newRosterStats = { ...campaignState.rosterStats };
+                  campaignState.roster.forEach(id => {
+                      if (newRosterStats[id] <= 0) newRosterStats[id] = 1; 
+                  });
+                  setCampaignState(p => ({...p, rosterStats: newRosterStats}));
+                  leaveRoom();
+                  setAppMode('campaign_map');
+                  return;
+              }
+
+              if (inBattleStates.includes(gameState.status) && appMode === 'online_room') {
+                  // FORFAIT ONLINE: Uccide l'intero team per concedere la vittoria agli altri
+                  let newTeams = JSON.parse(JSON.stringify(gameState.teams));
+                  if (newTeams[playerRole]) {
+                      newTeams[playerRole].forEach(c => c.hp = 0);
+                  }
+                  
+                  // Manda un'azione fittizia per assicurarsi che il server registri il turno se bloccato
+                  let newActions = JSON.parse(JSON.stringify(gameState.actions));
+                  newActions[playerRole] = { forfeit: true };
+                  
+                  await updateState({ 
+                      teams: newTeams, 
+                      actions: newActions,
+                      [`players.${playerRole}`]: `${gameState.players[playerRole]} (Arreso)`
+                  });
+              }
+              
+              leaveRoom();
           };
 
           const renderHealthBar = (hp, maxHp) => {
@@ -3069,7 +3149,10 @@
                 status: 'pre_battle', 
                 currentMatchIdx: nextIdx,
                 teams: healedTeams,
-                field: newField
+                field: newField,
+                actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+                switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+                pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
             });
 
             if (appMode === 'local_room') {
@@ -3103,7 +3186,10 @@
             status: 'pre_battle', 
             tournamentMatch: nextMatch,
             teams: healedTeams,
-            field: newField
+            field: newField,
+            actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+            switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+            pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
         });
 
         if (appMode === 'local_room') {
@@ -3935,9 +4021,7 @@
     }
 
     if (appMode === 'stats') {
-        const key = `multiverse_rpg_stats_${playerName.trim().toLowerCase()}`;
-        const rawStats = localStorage.getItem(key);
-        const stats = rawStats ? JSON.parse(rawStats) : { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {} };
+        const stats = getPlayerData();
 
         const getMostUsed = (obj) => {
             if (!obj || Object.keys(obj).length === 0) return { name: "Nessuno", count: 0 };
@@ -3967,7 +4051,7 @@
                         <button onClick={() => setAppMode('menu')} className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors font-bold bg-slate-950/50 px-4 py-2 rounded-xl border border-slate-700/50">
                             <ArrowLeft size={20} /> Menu
                         </button>
-                        <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-center flex-1">Statistiche di {playerName}</h2>
+                        <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-center flex-1">Statistiche di {playerName || 'Giocatore'}</h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -4003,9 +4087,9 @@
                                 <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center shrink-0 border border-slate-600">
                                     <Users size={24} className="text-cyan-400"/>
                                 </div>
-                                <div>
+                                <div className="overflow-hidden w-full">
                                     <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Personaggio Più Usato</div>
-                                    <div className="text-lg font-black text-white truncate">{favChar.name}</div>
+                                    <div className="text-lg font-black text-white truncate w-full">{favChar.name}</div>
                                     <div className="text-xs text-slate-500">Schierato {favChar.count} volte</div>
                                 </div>
                             </div>
@@ -4014,9 +4098,9 @@
                                 <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center shrink-0 border border-slate-600">
                                     <Swords size={24} className="text-rose-400"/>
                                 </div>
-                                <div className="overflow-hidden">
+                                <div className="overflow-hidden w-full">
                                     <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Mossa Più Usata</div>
-                                    <div className="text-lg font-black text-white truncate">{favMove.name}</div>
+                                    <div className="text-lg font-black text-white truncate w-full">{favMove.name}</div>
                                     <div className="text-xs text-slate-500">Eseguita {favMove.count} volte</div>
                                 </div>
                             </div>
@@ -4024,7 +4108,7 @@
                     </div>
 
                     <p className="text-center text-slate-500 text-xs mt-4">
-                        I dati vengono salvati localmente su questo dispositivo associandoli al nome che hai inserito.
+                        I dati vengono salvati localmente su questo browser associandoli al profilo globale.
                     </p>
                 </div>
             </div>
@@ -4282,7 +4366,7 @@
                                                          [`players.${slot}`]: `Gioc. ${num}`,
                                                          [`playerAvatars.${slot}`]: getDefaultAvatar(`Gioc. ${num}`),
                                                          [`isBot.${slot}`]: false,
-                                                         [`inventory.${slot}`]: getPlayerData(`Gioc. ${num}`).inventory
+                                                         [`inventory.${slot}`]: getPlayerData().inventory
                                                      });
                                                  }} className="text-[10px] flex-1 bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 border border-blue-500/50 px-2 py-1.5 rounded-lg transition-colors">+ Umano</button>
                                                  <button onClick={() => handleAddBot(slot)} className="text-[10px] flex-1 bg-rose-600/30 hover:bg-rose-600/50 text-rose-300 border border-rose-500/50 px-2 py-1.5 rounded-lg transition-colors">+ CPU</button>
@@ -4367,7 +4451,7 @@
         });
 
         const currentPlayerName = gameState.players[playerRole] || "Player";
-        const myUnlocked = getPlayerData(currentPlayerName).unlockedChars || [];
+        const myUnlocked = getPlayerData().unlockedChars || [];
         const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && (!c.price || myUnlocked.includes(c.id)));
 
         return (
@@ -4493,153 +4577,59 @@
         );
     }
 
-    if (gameState.status === 'pre_battle') {
-        let team1 = [];
-        let team2 = [];
-        if (gameState.gameMode === 'multipla') {
-                team1 = ['p1', 'p2'].filter(p => gameState.players[p]);
-                team2 = ['p3', 'p4'].filter(p => gameState.players[p]);
-        } else {
-                const active = getActivePlayers();
-                team1 = [active[0]];
-                team2 = [active[1]];
-        }
-
-        const renderPreBattleTeam = (teamArr, isTop) => {
-                return (
-                        <div className={`flex flex-col items-center justify-center w-full h-full relative z-10 ${isTop ? 'bg-gradient-to-b from-rose-950 via-red-900/40 to-slate-950' : 'bg-gradient-to-t from-blue-950 via-cyan-900/40 to-slate-950'}`}>
-                                <div className="flex justify-center gap-12 mb-6">
-                                        {teamArr.map(p => (
-                                                <div key={p} className="flex flex-col items-center transform transition-all duration-500 ease-out animate-[scale-in_0.5s_ease-out]">
-                                                        <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} className={`w-32 h-32 rounded-full border-4 object-cover shadow-[0_0_40px_rgba(0,0,0,0.8)] ${isTop ? 'border-rose-400' : 'border-cyan-400'}`} alt="Avatar" />
-                                                        <h2 className="text-4xl font-black mt-4 text-white drop-shadow-lg tracking-widest">{gameState.players[p]}</h2>
-                                                </div>
-                                        ))}
-                                </div>
-                                
-                                <div className="flex gap-4 items-center justify-center flex-wrap max-w-4xl min-h-[100px]">
-                                        {teamArr.map(p => gameState.teams[p].slice(0, introCharIdx).map((char, i) => (
-                                                <div key={`${p}-${i}`} className="animate-[bounce-in_0.3s_ease-out] flex flex-col items-center">
-                                                        <img src={char.img} className={`w-20 h-20 rounded-full border-2 shadow-xl object-cover ${isTop ? 'border-rose-300/80' : 'border-cyan-300/80'}`} alt={char.name} />
-                                                </div>
-                                        )))}
-                                </div>
-                        </div>
-                );
-        };
-
-        return (
-                <div className="min-h-screen bg-slate-950 flex flex-col overflow-hidden relative">
-                        <div className="h-1/2 w-full">{renderPreBattleTeam(team2, true)}</div>
-                        
-                        <div className="absolute top-1/2 left-1/2 z-30 animate-[pulse-vs_1s_ease-in-out_infinite]" style={{ transform: 'translate(-50%, -50%)' }}>
-                                <div className="bg-slate-950 w-24 h-24 rounded-full flex items-center justify-center border-4 border-yellow-500 shadow-[0_0_50px_rgba(234,179,8,0.8)]">
-                                        <span className="text-4xl font-black italic text-transparent bg-clip-text bg-gradient-to-br from-yellow-300 to-yellow-600">VS</span>
-                                </div>
-                        </div>
-                        
-                        <div className="absolute top-1/2 inset-x-0 h-2 bg-gradient-to-r from-transparent via-yellow-500 to-transparent shadow-[0_0_20px_rgba(234,179,8,0.5)] z-20" style={{ transform: 'translateY(-50%)' }}></div>
-                        
-                        <div className="h-1/2 w-full">{renderPreBattleTeam(team1, false)}</div>
-                </div>
-        );
-    }
-
-    if (gameState.status === 'intermission') {
-        const isHost = playerRole === 'p1';
-        
-        if (gameState.gameMode === 'torneo_punti') {
-            const sortedPlayers = Object.keys(gameState.playerScores)
-                .filter(p => gameState.players[p])
-                .sort((a, b) => gameState.playerScores[b] - gameState.playerScores[a]);
-            const nextMatch = gameState.roundRobinMatches[gameState.currentMatchIdx + 1];
-
-            return (
-                <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
-                    <div className="bg-slate-800/80 backdrop-blur-xl p-10 rounded-3xl w-full max-w-2xl border border-slate-700/50 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                        <Trophy className="mx-auto text-yellow-400 mb-4" size={64} />
-                        <h2 className="text-5xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Classifica Torneo</h2>
-                        
-                        <div className="flex flex-col gap-3 mb-8">
-                            {sortedPlayers.map((p, idx) => (
-                                <div key={p} className={`flex justify-between items-center p-4 rounded-xl border ${idx === 0 ? 'bg-yellow-500/20 border-yellow-500/50' : 'bg-slate-950/50 border-slate-700/50'}`}>
-                                    <div className="flex items-center gap-3">
-                                        <span className={`font-black text-xl ${idx === 0 ? 'text-yellow-400' : 'text-slate-400'}`}>#{idx + 1}</span>
-                                        <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} className="w-10 h-10 rounded-full object-cover border-2 border-slate-600" />
-                                        <span className="font-bold text-lg">{gameState.players[p]}</span>
-                                    </div>
-                                    <div className="font-black text-2xl text-emerald-400">{gameState.playerScores[p]} pt</div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="bg-slate-950/80 border border-cyan-500/50 p-4 rounded-2xl mb-8">
-                            <h4 className="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-2">Prossimo Scontro</h4>
-                            <div className="text-2xl font-black flex items-center justify-center gap-4">
-                                <span>{gameState.players[nextMatch.pA]}</span>
-                                <span className="text-rose-500 italic text-xl">VS</span>
-                                <span>{gameState.players[nextMatch.pB]}</span>
-                            </div>
-                        </div>
-
-                        {isHost ? (
-                            <button onClick={handleNextTournamentMatch} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xl py-4 px-8 rounded-full shadow-[0_10px_30px_rgba(59,130,246,0.3)] transition-all">
-                                Avvia Prossimo Match
-                            </button>
-                        ) : (
-                            <div className="text-slate-400 animate-pulse font-bold text-xl"><Loader2 className="animate-spin inline mr-2"/> In attesa dell'Host...</div>
-                        )}
-                    </div>
-                </div>
-            );
-        }
-
-        const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
-        return (
-            <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
-                <div className="bg-slate-800/80 backdrop-blur-xl p-10 rounded-3xl w-full max-w-2xl border border-slate-700/50 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                    <Trophy className="mx-auto text-yellow-400 mb-4" size={64} />
-                    <h2 className="text-5xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Risultati Torneo</h2>
-                    
-                    <div className="grid grid-cols-2 gap-8 mb-8 text-left">
-                        <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-700/50">
-                            <h4 className="text-slate-400 font-bold mb-2">Semifinale 1</h4>
-                            <p className="text-xs text-slate-500 mb-2 font-mono bg-slate-900 px-2 py-1 rounded">{gameState.players[bracket[0]]} vs {gameState.players[bracket[1]]}</p>
-                            <div className="font-bold text-lg text-emerald-400">Vincitore: {gameState.tournamentResults.semi1 ? gameState.players[gameState.tournamentResults.semi1.winner] : 'In attesa...'}</div>
-                        </div>
-                        <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-700/50">
-                            <h4 className="text-slate-400 font-bold mb-2">Semifinale 2</h4>
-                            <p className="text-xs text-slate-500 mb-2 font-mono bg-slate-900 px-2 py-1 rounded">{gameState.players[bracket[2]]} vs {gameState.players[bracket[3]]}</p>
-                            <div className="font-bold text-lg text-emerald-400">Vincitore: {gameState.tournamentResults.semi2 ? gameState.players[gameState.tournamentResults.semi2.winner] : 'In attesa...'}</div>
-                        </div>
-                    </div>
-
-                    <p className="text-xl text-slate-300 mb-8">Preparati per il prossimo scontro!</p>
-
-                    {isHost ? (
-                        <button onClick={handleNextTournamentMatch} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xl py-4 px-8 rounded-full shadow-[0_10px_30px_rgba(59,130,246,0.3)] transition-all">
-                            Avvia Prossimo Match
-                        </button>
-                    ) : (
-                        <div className="text-slate-400 animate-pulse font-bold text-xl"><Loader2 className="animate-spin inline mr-2"/> In attesa dell'Host...</div>
-                    )}
-                </div>
-            </div>
-        );
-    }
-
     if (gameState.status === 'switching_phase') {
         const isMyTurnToSwitch = !gameState.isBot[playerRole] && (gameState.pendingSwitches[playerRole] || 0) > (gameState.switchActions[playerRole]?.length || 0);
+
+        // Identifica gli avversari per mostrare chi hanno in campo
+        const activeMatchPlayers = getActivePlayers();
+        let enemyPlayers = [];
+        if (gameState.gameMode === 'multipla') {
+            enemyPlayers = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
+        } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+            enemyPlayers = [activeMatchPlayers.find(p => p !== playerRole)];
+        } else {
+            enemyPlayers = [playerRole === 'p1' ? 'p2' : 'p1'];
+        }
+        
+        let enemyActiveChars = [];
+        enemyPlayers.forEach(ep => {
+            if (ep && gameState.field[ep]) {
+                gameState.field[ep].forEach(idx => {
+                    const c = gameState.teams[ep][idx];
+                    if (c && c.hp > 0) enemyActiveChars.push({ char: c, owner: gameState.players[ep] });
+                });
+            }
+        });
 
         return (
             <div className="min-h-screen bg-slate-900 flex flex-col font-sans text-white p-6 relative overflow-hidden items-center justify-center">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                
+                <button onClick={() => setShowLeaveConfirm(true)} className="absolute top-6 left-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-slate-900/80 px-4 py-2 rounded-xl border border-rose-500/50 z-20 shadow-lg">
+                     <LogOut size={20} /> Resa
+                </button>
                 <div className="bg-slate-800/90 backdrop-blur-xl p-8 rounded-3xl w-full max-w-3xl border border-slate-700/50 shadow-2xl text-center z-10">
                     <h2 className="text-4xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Sostituzione Personaggio</h2>
                     
                     {isMyTurnToSwitch ? (
                         <>
+                            {enemyActiveChars.length > 0 && (
+                                <div className="mb-6 bg-slate-950/60 border border-rose-500/30 rounded-2xl p-4 shadow-inner">
+                                    <h3 className="text-xs font-bold text-rose-400 mb-3 uppercase tracking-widest">Avversari in Campo</h3>
+                                    <div className="flex justify-center gap-3 flex-wrap">
+                                        {enemyActiveChars.map((enemyObj, eIdx) => (
+                                            <div key={eIdx} className="flex flex-col items-center bg-slate-900 p-2 rounded-xl border border-rose-900/50 shadow-md w-24">
+                                                <img src={enemyObj.char.img} className="w-10 h-10 rounded-full object-cover border border-rose-500/50 mb-1" />
+                                                <span className="text-[9px] font-bold text-slate-400 truncate w-full text-center">{enemyObj.owner}</span>
+                                                <span className="text-[11px] font-bold text-white truncate w-full text-center mb-1">{enemyObj.char.name}</span>
+                                                <div className="flex flex-wrap justify-center gap-0.5 w-full">
+                                                    {enemyObj.char.types.map(t => <span key={t} className={`text-[7px] font-black px-1 rounded uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t.substring(0,3)}</span>)}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             <p className="text-lg text-slate-300 mb-6">Un tuo personaggio è esausto! Scegli chi mandare in campo.</p>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 {gameState.teams[playerRole].map((char, i) => {
@@ -4661,7 +4651,12 @@
                                             });
                                         }} className="bg-slate-900/80 hover:bg-slate-700/80 border-2 border-emerald-500/50 hover:border-emerald-400 p-4 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer shadow-lg hover:-translate-y-1">
                                             <img src={char.img} className="w-16 h-16 rounded-full object-cover border-2 border-emerald-400" />
-                                            <span className="font-bold text-sm truncate w-full text-center">{char.name}</span>
+                                            <span className="font-bold text-sm truncate w-full text-center mb-1">{char.name}</span>
+                                            <div className="flex flex-wrap justify-center gap-1 w-full mb-1">
+                                                {char.types.map(t => (
+                                                    <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                                ))}
+                                            </div>
                                             {renderHealthBar(char.hp, char.maxHp)}
                                         </button>
                                     );
@@ -4688,7 +4683,7 @@
         if (gameState.gameMode === 'multipla') {
                 if (playerRole === 'p1' || playerRole === 'p2') { bottomPlayers = ['p1', 'p2']; topPlayers = ['p3', 'p4']; }
                 else { bottomPlayers = ['p3', 'p4']; topPlayers = ['p1', 'p2']; }
-        } else if (gameState.gameMode === 'torneo') {
+        } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
                 if (playerRole === activeMatchPlayers[0] || playerRole === activeMatchPlayers[1]) {
                         bottomPlayers = [playerRole];
                         topPlayers = [playerRole === activeMatchPlayers[0] ? activeMatchPlayers[1] : activeMatchPlayers[0]];
@@ -4706,7 +4701,7 @@
         const activeCommandCharIdx = isMyTurn ? gameState.field[playerRole][commandingIdx] : null;
         const activeCommandChar = activeCommandCharIdx !== null ? gameState.teams[playerRole][activeCommandCharIdx] : null;
 
-        const currentField = (displayField.p1 && displayField.p1.length > 0) ? displayField : gameState.field;
+        const currentField = isPlayingEvents ? displayField : gameState.field;
 
         const renderStatuses = (statuses) => {
             if (!statuses || statuses.length === 0) return null;
@@ -4721,7 +4716,7 @@
         };
 
         const renderFieldCharacter = (teamPlayer, fieldIdx, charTeamIdx, isEnemySide) => {
-            const char = displayTeams[teamPlayer]?.[charTeamIdx] || gameState.teams[teamPlayer]?.[charTeamIdx];
+            const char = isPlayingEvents ? displayTeams[teamPlayer]?.[charTeamIdx] : gameState.teams[teamPlayer]?.[charTeamIdx];
             if (!char) return null; 
             
             const isDead = char.hp <= 0;
@@ -4791,8 +4786,8 @@
                 return (
                         <div className={`flex gap-6 ${isTop ? 'mb-4' : 'mt-4'} drop-shadow-md z-20 w-full justify-center relative`}>
                                 {players.map(p => {
-                                        const team = (displayTeams[p] && displayTeams.p1 && displayTeams.p1.length > 0) ? displayTeams[p] : (gameState.teams[p] || []);
-                                        const currentFieldForPlayer = (displayField[p] && displayField.p1 && displayField.p1.length > 0) ? displayField[p] : (gameState.field[p] || []);
+                                        const team = isPlayingEvents ? (displayTeams[p] || []) : (gameState.teams[p] || []);
+                                        const currentFieldForPlayer = isPlayingEvents ? (displayField[p] || []) : (gameState.field[p] || []);
                                         
                                         // LOGICA SCUDO TEAM VISIVO GLOBALE
                                         const hasScudoTeam = currentFieldForPlayer.some(fIdx => {
@@ -4840,6 +4835,10 @@
                 {/* BATTLE ARENA */}
                 <div className="flex-1 p-4 flex flex-col relative overflow-hidden bg-slate-950">
                     
+                    <button onClick={() => setShowLeaveConfirm(true)} className="absolute top-4 left-4 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-rose-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
+                         <LogOut size={16} /> Resa
+                    </button>
+
                     {/* Top Info Bar per Torneo */}
                     {gameState.gameMode === 'torneo' && (
                          <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full border border-yellow-500/50 shadow-lg text-yellow-400 font-black tracking-widest uppercase">
@@ -5038,10 +5037,13 @@
                                                     {benchedChars.map(char => (
                                                         <button key={char.originalIdx} onClick={() => {
                                                             commitAction({ type: 'switch', fromIdx: activeCommandCharIdx, toIdx: char.originalIdx });
-                                                        }} className="bg-slate-800/80 p-3 rounded-xl border border-emerald-500/50 flex items-center gap-4 hover:bg-slate-700 hover:border-emerald-400 transition-all shadow-md group">
-                                                            <img src={char.img} className="w-14 h-14 rounded-full object-cover border-2 border-emerald-500/30 group-hover:border-emerald-400" />
-                                                            <div className="text-left flex-1 overflow-hidden">
-                                                                <div className="font-bold text-sm truncate text-white">{char.name}</div>
+                                                        }} className="bg-slate-800/80 p-3 rounded-xl border border-emerald-500/50 flex items-center gap-3 hover:bg-slate-700 hover:border-emerald-400 transition-all shadow-md group">
+                                                            <img src={char.img} className="w-14 h-14 rounded-full object-cover border-2 border-emerald-500/30 group-hover:border-emerald-400 shrink-0" />
+                                                            <div className="text-left flex-1 min-w-0">
+                                                                <div className="font-bold text-sm truncate text-white mb-1">{char.name}</div>
+                                                                <div className="flex gap-1 mb-1.5 flex-wrap">
+                                                                     {char.types.map(t => <span key={t} className={`text-[8px] font-black px-1 py-0.5 rounded uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t.substring(0,3)}</span>)}
+                                                                </div>
                                                                 {renderHealthBar(char.hp, char.maxHp)}
                                                             </div>
                                                         </button>
@@ -5173,7 +5175,10 @@
                 <h2 className="text-4xl mb-2 font-bold">{gameState.winner === 'Pareggio' ? 'Pareggio Totale!' : `VITTORIA PER ${(gameState.winner || '').toUpperCase()}!`}</h2>
                 {rankText && <h3 className="text-2xl font-bold text-emerald-400 mb-4">{rankText}</h3>}
                 {rewardText && <p className="text-xl font-bold text-yellow-400 mb-12 flex items-center justify-center gap-2"><Coins size={24}/> {rewardText}</p>}
-                <button onClick={() => window.location.reload()} className="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-full font-bold text-xl flex items-center gap-2 shadow-[0_10px_30px_rgba(59,130,246,0.3)]">
+                <button onClick={() => {
+                    localStorage.removeItem('multiverse_rpg_session');
+                    window.location.reload();
+                }} className="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-full font-bold text-xl flex items-center gap-2 shadow-[0_10px_30px_rgba(59,130,246,0.3)]">
                     <RotateCcw /> Torna al Menu Principale
                 </button>
             </div>
@@ -5185,6 +5190,19 @@
 
     return (
         <>
+            {showLeaveConfirm && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-slate-900 border border-rose-500/50 p-6 rounded-3xl max-w-sm w-full text-center shadow-[0_0_50px_rgba(244,63,94,0.2)] relative overflow-hidden">
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-red-600"></div>
+                        <h3 className="text-2xl font-black text-rose-500 mb-2 flex items-center justify-center gap-2">Vuoi Abbandonare?</h3>
+                        <p className="text-slate-300 mb-6 font-medium text-sm">Sei sicuro di voler uscire? Se la partita è in corso online, equivarrà a una resa istantanea per il tuo team.</p>
+                        <div className="flex gap-3">
+                            <button onClick={() => setShowLeaveConfirm(false)} className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-600">Annulla</button>
+                            <button onClick={handleConfirmLeave} className="flex-1 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg">Conferma</button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {systemAlert && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
                     <div className="bg-slate-900 border border-amber-500/50 p-6 rounded-3xl max-w-sm w-full text-center shadow-[0_0_50px_rgba(245,158,11,0.2)] relative overflow-hidden">
