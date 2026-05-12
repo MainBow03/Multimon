@@ -38,6 +38,7 @@
         const { useState, useEffect, useCallback, useRef } = React;
 
         // --- ICONE SVG PERSONALIZZATE ---
+        const Heart = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>;
         const Swords = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"></path><path d="M13 19l6-6"></path><path d="M16 16l4 4"></path><path d="M19 21l2-2"></path><path d="M14.5 6.5L18 3h3v3l-3.5 3.5"></path><path d="M19 13l-6-6"></path><path d="M16 8l-4-4"></path><path d="M9 5l-2-2"></path><path d="M4.5 17.5L8 21h-3v-3l-3.5-3.5"></path><path d="M5 13l6 6"></path><path d="M8 16l4 4"></path></svg>;
         const Shield = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
         const RotateCcw = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>;
@@ -575,6 +576,23 @@
           'Piano Z': { name: 'Piano Z', type: 'Oscuro', power: 0, target: 'self', statBuff: { atk: 2.0, spd: 1.5 }, maxUses: 2, desc: 'Il piano malvagio definitivo! Raddoppia l\'Attacco e aumenta la Velocità del 50%. (2 utilizzi)' },
           'Karen, Aiuto!': { name: 'Karen, Aiuto!', type: 'Robot', power: 0, targetMode: 'ally', targetStatBuff: { def: 2.0 }, heal: 0.3, desc: 'Sfrutta l\'aiuto di sua moglie Karen per curare un alleato del 30% e raddoppiarne la Difesa.' },
           'Furto della Ricetta': { name: 'Furto della Ricetta', type: 'Oscuro', power: 60, drain: 0.5, targetStatDebuff: { atk: 0.7 }, desc: 'Ruba l\'energia (e la ricetta!) al nemico. Drena il 50% del danno e ne riduce l\'Attacco.' },
+
+          // NUOVE MOSSE MARCELINE
+          'Assolo demoniaco': { name: 'Assolo demoniaco', type: 'Spettro', power: 70, ignoreDefBuffs: true, desc: 'Suona un accordo brutale con il suo basso-ascia ignorando i potenziamenti difensivi del bersaglio.' },
+          'Melodia spettrale': { name: 'Melodia spettrale', type: 'Spettro', power: 0, targetStatDebuff: { atk: 0.5 }, desc: 'Una ninnananna inquietante e sovrannaturale che dimezza permanentemente l\'Attacco del nemico.' },
+          'Morso vampirico': { name: 'Morso vampirico', type: 'Oscuro', power: 75, drain: 0.5, desc: 'Morde il bersaglio per nutrirsi del colore rosso (o del sangue). Recupera il 50% dei danni inflitti.' },
+          'Nebbia cremisi': { name: 'Nebbia cremisi', type: 'Veleno', power: 10, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Emana una coltre di nebbia tossica. Infligge danni lievi ma avvelena sicuramente il nemico.' },
+
+          // NUOVE MOSSE TRIGON E GASTER
+          'Inferno demoniaco': { name: 'Inferno demoniaco', type: 'Fuoco', power: 100, targetCount: 4, statusEffect: { type: 'Scottato', chance: 0.5 }, desc: 'Fiamme infernali che colpiscono tutti i bersagli. 50% di probabilità di scottare i nemici.' },
+          'Sguardo dell\'abisso': { name: 'Sguardo dell\'abisso', type: 'Oscuro', power: 0, targetStatDebuff: { atk: 0.5 }, desc: 'Uno sguardo terrificante che terrorizza il nemico, dimezzandone permanentemente l\'Attacco (diminuisce di 2 stage).' },
+          'Artigli dell\'apocalisse': { name: 'Artigli dell\'apocalisse', type: 'Oscuro', power: 90, drain: 0.6, desc: 'Fendente apocalittico. Ha una probabilità di recuperare gran parte dell\'energia (drena 60% danni inflitti).' },
+          'Corvina unisciti a me!': { name: 'Corvina unisciti a me!', type: 'Oscuro', power: 0, isSummon: 'clone_corvina', maxUses: 1, desc: 'Costringe un frammento dell\'anima di sua figlia a combattere. Evoca Clone Corvina. 1 Uso.' },
+
+          'Frattura della realtà': { name: 'Frattura della realtà', type: 'Spettro', power: 110, statusEffect: { type: 'Confuso', chance: 0.3 }, recharge: true, desc: 'Distorce il tessuto spaziotemporale. 30% di confondere. Richiede ricarica nel turno successivo.' },
+          'Errore 404': { name: 'Errore 404', type: 'Oscuro', power: 30, priority: 3, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 1, desc: 'Un glitch istantaneo. Colpisce per primo (priorità alta) e fa tentennare il bersaglio (stordisce al 100%). Usabile solo 1 volta.' },
+          'Teletrasporto instabile': { name: 'Teletrasporto instabile', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, desc: 'Scompare nel vuoto per schivare ogni attacco del turno. Fallisce se usato di fila.' },
+          'Gaster Blaster': { name: 'Gaster Blaster', type: 'Robot', power: 50, targetCount: 2, desc: 'Evoca dei teschi fluttuanti che sparano raggi laser. Colpisce 2 bersagli.' },
         };
 
         const CHARACTERS = [
@@ -660,8 +678,13 @@
           { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso']] },
           { id: 'patrick', name: 'Patrick Stella', types: ['Acqua', 'Roccia'], hp: 140, maxHp: 140, atk: 115, def: 110, spd: 40, img: 'https://i.pinimg.com/736x/60/80/69/60806924c9fa74a24fbeb4c4a81c344e.jpg', moves: [MOVES_DB['Schianto Stella'], MOVES_DB['Non sono Rick!'], MOVES_DB['Riposino sotto la Roccia'], MOVES_DB['Lancio del Sasso']] },
           { id: 'plankton', name: 'Plankton', types: ['Insetto', 'Robot'], hp: 60, maxHp: 60, atk: 125, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/af/f1/8b/aff18ba41f798ebe95ae1809410cbec9.jpg', moves: [MOVES_DB['Laser Mentale'], MOVES_DB['Piano Z'], MOVES_DB['Karen, Aiuto!'], MOVES_DB['Furto della Ricetta']] },
+          { id: 'marceline', name: 'Marceline', types: ['Spettro', 'Oscuro'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/8e/3c/65/8e3c65c26b9cc82215c00e129deee136.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']] },
           
+          { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']] },
+          { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']] },
+
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
+          { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 35, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
           { id: 'golem_pietra', name: 'Golem di Pietra', types: ['Roccia'], hp: 60, maxHp: 60, atk: 50, def: 90, spd: 20, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Golem&backgroundColor=4b5563', moves: [MOVES_DB['Sassata'], MOVES_DB['Protezione']], isSummonOnly: true },
           { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Guardia&backgroundColor=dc2626', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
@@ -672,11 +695,720 @@
             'goku': 200, 'kratos': 200, 'godzilla': 200, 'cell': 200, 'nito': 200, 'ryuk': 200, 'rias': 200, 'utopia': 200,
             'laxus': 150, 'zabuza': 150, 'pyra': 150, 'natsu': 150, 'aang': 150, 'yugo': 150, 'garnet': 150,
             'bowser': 100, 'sdentato': 100, 'corvina': 100, 'zatchbell': 100, 'lapis': 100, 'sage': 100, 'ariana': 100, 'groot': 100, 'dannyphantom': 100, 'reboo': 100, 'metalsonic': 100, 'astral': 100, 'yusei': 100, 'stellarubia': 100, 'shego': 100, 'hannibal': 100, 'po': 100, 'strega': 100, 'yukionna': 100,
-            'zazan': 50, 'charmcaster': 50, 'patrick': 50, 'plankton': 50, 'wario': 50, 'zuko': 50, 'barry': 50, 'bloom': 50, 'juvia': 50, 'sanemi': 50, 'cuoredipietra': 50, 'poisonivy': 50, 'zergling': 50, 'gaston': 50, 'leslie': 50, 'dolli': 50, 'reghiaccio': 50, 'cosmo': 50, 'mantide': 50, 'renarouge': 50, 'rainbowdash': 50, 'spike': 50, 'jackfrost': 50, 'polterpup': 50, 'whisper': 50, 'juri': 50, 'iris': 50, 'bumblebee': 50
+            'zazan': 50, 'charmcaster': 50, 'patrick': 50, 'plankton': 50, 'wario': 50, 'zuko': 50, 'barry': 50, 'bloom': 50, 'juvia': 50, 'sanemi': 50, 'cuoredipietra': 50, 'poisonivy': 50, 'zergling': 50, 'gaston': 50, 'leslie': 50, 'dolli': 50, 'reghiaccio': 50, 'cosmo': 50, 'mantide': 50, 'renarouge': 50, 'rainbowdash': 50, 'spike': 50, 'jackfrost': 50, 'polterpup': 50, 'whisper': 50, 'juri': 50, 'iris': 50, 'bumblebee': 50, 'marceline': 50
         };
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
         });
+
+        const CAMPAIGN_DATA = {
+          sectors: [
+            {
+              name: "Settore 1: L'Atollo Post-Apocalittico",
+              description: "Una fusione tra Bikini Bottom e le Terre di Ooo. Oceano viola radioattivo.",
+              bg: "bg-purple-950",
+              missions: [
+                {
+                  id: 'm1', title: 'Amici o Nemici?',
+                  dialogue: [
+                    { s: "Finn l'Umano", t: "Patrick! Spongebob! Siete qui? È tutto così... viola." },
+                    { s: "Patrick Stella (Corrotto)", t: "Il Grande Occhio dice che non siete pronti per la Perfezione! Vi schiaccerò con la mia stella!" },
+                    { s: "Finn l'Umano", t: "Patrick, amico mio, quello non è un occhio, è solo Cell con un filtro Instagram cattivo! Svegliati!" },
+                    { s: "Topolino", t: "È sotto controllo mentale, Finn. Dobbiamo combattere per liberarlo!" }
+                  ],
+                  postDialogue: [
+                    { s: "Patrick Stella", t: "Ugh... la mia testa. C'era un tizio insetto gigante che mi diceva di schiacciare tutto..." },
+                    { s: "Finn l'Umano", t: "Bentornato tra noi, Patrick! L'incantesimo della Frequenza è svanito." },
+                    { s: "Patrick Stella", t: "Nessuno comanda a bacchetta la mia mente... soprattutto perché dentro c'è un sacco di spazio vuoto! Sono dei vostri!" }
+                  ],
+                  boss: ['patrick'],
+                  unlock: ['patrick']
+                },
+                {
+                  id: 'm1_5', title: 'Canzoni nell\'Ombra',
+                  dialogue: [
+                    { s: "Marceline (Corrotta)", t: "Tutto questo... rosso. Non è abbastanza. Il Maestro desidera che io prosciughi ogni sfumatura di colore da questo mondo." },
+                    { s: "Topolino", t: "Oh mamma! Una vampira con un basso-ascia? Questo multiverso diventa sempre più spaventoso!" }
+                  ],
+                  postDialogue: [
+                    { s: "Marceline", t: "Bleah... che saporaccio aveva quella Frequenza oscura. Mi sento come se avessi bevuto colore rosso finto." },
+                    { s: "Finn l'Umano", t: "Marceline! Stai bene! Abbiamo bisogno del tuo basso per spaccare i timpani a Cell!" },
+                    { s: "Marceline", t: "Ci sto, eroe. Ma guido io." }
+                  ],
+                  boss: ['marceline'],
+                  unlock: ['marceline']
+                },
+                {
+                  id: 'm1_8', title: 'Il Migliore Amico',
+                  dialogue: [
+                    { s: "Jake il Cane (Corrotto)", t: "Amico... la Frequenza dice che devo stritolarvi diventando un labirinto gigante... sigh, scusa Finn." },
+                    { s: "Topolino", t: "Attento Finn, il tuo amico può trasformarsi in qualsiasi cosa! Dobbiamo fare attenzione ai pugni elastici!" }
+                  ],
+                  postDialogue: [
+                    { s: "Jake il Cane", t: "Ohi, la mia testa! Mi sento come un pancake bruciato... amico, menomale che mi hai suonato di santa ragione!" },
+                    { s: "Finn l'Umano", t: "Non ti avrei mai lasciato indietro, fratello! Ora andiamo a prendere a calci nel sedere chi ti ha fatto questo." },
+                    { s: "Jake il Cane", t: "Oh yeah! È l'ora dell'avventura!" }
+                  ],
+                  boss: ['jake'],
+                  unlock: ['jake']
+                },
+                {
+                  id: 'm2', title: 'Rompere la Bolla',
+                  dialogue: [
+                    { s: "Spongebob (Corrotto)", t: "Siete qui per scoppiare le mie bolle perfette? Non ve lo permetterò!" },
+                    { s: "Topolino", t: "Spongebob, la tua risata è scomparsa... ma la ritroveremo!" }
+                  ],
+                  postDialogue: [
+                    { s: "Spongebob", t: "Ragazzi! Ho fatto un incubo orribile dove il Krusty Krab serviva panini grigi e insipidi!" },
+                    { s: "Topolino", t: "È tutto finito, Spongebob. Abbiamo bisogno della tua spugnosità per salvare il multiverso!" }
+                  ],
+                  boss: ['spongebob'],
+                  unlock: ['spongebob']
+                }
+              ]
+            },
+            {
+              name: "Settore 2: Le Ombre di Gotham City",
+              description: "Gotham infestata da piante giganti e magia oscura.",
+              bg: "bg-emerald-950",
+              missions: [
+                {
+                  id: 'm3', title: 'Radici del Male',
+                  dialogue: [
+                    { s: "Poison Ivy", t: "Il verde di questo mondo ora appartiene alla Perfezione." },
+                    { s: "Finn l'Umano", t: "Le tue piante hanno un pessimo aspetto, Ivy!" }
+                  ],
+                  postDialogue: [
+                    { s: "Poison Ivy", t: "Le mie povere piante... quella Frequenza oscura le faceva marcire dall'interno." },
+                    { s: "Finn l'Umano", t: "Ora sei libera. Ci aiuterai a fermare questa pazzia?" },
+                    { s: "Poison Ivy", t: "Solo per proteggere il Verde. Non fateci l'abitudine." }
+                  ],
+                  boss: ['poisonivy'],
+                  unlock: ['poisonivy']
+                },
+                {
+                  id: 'm4', title: 'Il Canto della Notte',
+                  dialogue: [
+                    { s: "Corvina (Corrotta)", t: "Azarath Metrion... Zinthos... Tutto è oscurità." },
+                    { s: "Patrick Stella", t: "Ehi, mi piace quel trucchetto del mantello!" }
+                  ],
+                  postDialogue: [
+                    { s: "Corvina", t: "L'oscurità di Cell... era disgustosa. Perfino peggio di mio padre." },
+                    { s: "Topolino", t: "Siamo felici di riaverti con noi, Corvina. Insieme siamo imbattibili!" }
+                  ],
+                  boss: ['corvina'],
+                  unlock: ['corvina']
+                }
+              ]
+            },
+            {
+              name: "Settore 3: Il Cyber-Laboratorio",
+              description: "Una metropoli iper-tecnologica dove Cell amplifica il suo segnale.",
+              bg: "bg-cyan-950",
+              missions: [
+                {
+                  id: 'm5', title: 'Cuore d\'Acciaio',
+                  dialogue: [
+                    { s: "Cyborg (Corrotto)", t: "Sistemi riavviati. Direttiva: Eliminare la Resistenza. Booyah... letale." },
+                    { s: "Corvina", t: "Hanno hackerato i suoi sistemi cibernetici. Dobbiamo mandarlo in cortocircuito!" }
+                  ],
+                  postDialogue: [
+                    { s: "Cyborg", t: "Whoa, ragazzi! Ho un mal di testa pazzesco nei miei circuiti." },
+                    { s: "Topolino", t: "Tutto a posto, amico. Il virus mentale di Cell è stato debellato!" },
+                    { s: "Cyborg", t: "Ottimo. È ora di restituirgli il favore a suon di Cannoni Sonici. Booyah!" }
+                  ],
+                  boss: ['cyborg'],
+                  unlock: ['cyborg']
+                },
+                {
+                  id: 'm6', title: 'Menti Geniali, Piani Malvagi',
+                  dialogue: [
+                    { s: "Stewie (Corrotto)", t: "Maledetti insolenti! I miei laser sono calibrati sulla Perfezione assoluta!" },
+                    { s: "Plankton (Corrotto)", t: "E finalmente avrò la ricetta segreta! Ah no aspetta, la direttiva dice di distruggervi." },
+                    { s: "Spongebob", t: "Plankton! Lascia stare la ricetta e affrontaci da vero mollusco!" }
+                  ],
+                  postDialogue: [
+                    { s: "Stewie", t: "Cosa diavolo... mi sono fatto comandare da uno scarafaggio gigante? Che umiliazione." },
+                    { s: "Cyborg", t: "Benvenuto nel club dei liberati, tappo. Ci aiuti o torni a giocare con i pupazzi?" },
+                    { s: "Stewie", t: "Preparo la Macchina del Tempo e i laser. Questo Cell me la pagherà cara." }
+                  ],
+                  boss: ['stewie', 'plankton'],
+                  unlock: ['stewie']
+                }
+              ]
+            },
+            {
+              name: "Settore 4: Gli Inferi Fusi",
+              description: "Il regno dei morti e la terra degli Dei della Guerra uniti in un paesaggio di fuoco e spiriti.",
+              bg: "bg-red-950",
+              missions: [
+                {
+                  id: 'm7', title: 'Spiriti Inquieti',
+                  dialogue: [
+                    { s: "Danny Phantom (Corrotto)", t: "Io diventerò il fantasma più forte al servizio di Cell..." },
+                    { s: "Re Boo (Corrotto)", t: "Mwa ha ha! I vostri ritratti staranno benissimo nella mia galleria perfetta!" },
+                    { s: "Finn l'Umano", t: "Fantasmi... odio i fantasmi! Ma non mi tirerò indietro." }
+                  ],
+                  postDialogue: [
+                    { s: "Danny Phantom", t: "Ahhh! Quella presenza nella mia testa... era agghiacciante." },
+                    { s: "Topolino", t: "Il tuo lato fantasma è libero ora, Danny. Unisciti a noi." }
+                  ],
+                  boss: ['dannyphantom', 'reboo'],
+                  unlock: ['dannyphantom']
+                },
+                {
+                  id: 'm8', title: 'La Furia di Sparta',
+                  dialogue: [
+                    { s: "Kratos (Corrotto)", t: "NESSUNO PUÒ SFIDARE IL NUOVO ORDINE. Crollerete sotto il peso della Perfezione." },
+                    { s: "Finn l'Umano", t: "Gulp... quello sembra parecchio arrabbiato." },
+                    { s: "Stewie", t: "Ragazzi, ho calcolato le probabilità di sopravvivenza contro di lui. Sono dello 0.0001%." }
+                  ],
+                  postDialogue: [
+                    { s: "Kratos", t: "La mia mente... obnubilata da un insetto. Questa vergogna sarà lavata con il suo sangue." },
+                    { s: "Topolino", t: "Ehm... ciao signore! Se vuoi unirti a noi per picchiarlo, sei il benvenuto!" },
+                    { s: "Kratos", t: "Il mio obiettivo è la vendetta. Se le nostre strade coincidono, vi seguirò. Per ora." }
+                  ],
+                  boss: ['kratos'],
+                  unlock: ['kratos']
+                }
+              ]
+            },
+            {
+              name: "Settore 5: Il Cratere dell'Impatto",
+              description: "Una landa desolata scossa da crateri di aura cosmica e fiamme di drago.",
+              bg: "bg-orange-950",
+              missions: [
+                {
+                  id: 'm9', title: 'Squame e Fuoco',
+                  dialogue: [
+                    { s: "Bowser (Corrotto)", t: "BWAHAHAH! Rapirò la Perfezione e dominerò questa dimensione!" },
+                    { s: "Sdentato (Corrotto)", t: "*Ruggito gutturale e innaturale, occhi iniettati di viola*" },
+                    { s: "Kratos", t: "Bestie prive di volontà. Fatemi strada, li abbatterò." }
+                  ],
+                  postDialogue: [
+                    { s: "Bowser", t: "Grrr! Nessuno controlla il Re dei Koopa! Me la pagherà cara!" },
+                    { s: "Finn l'Umano", t: "Bravo tartarugone! Ora siamo dalla stessa parte." }
+                  ],
+                  boss: ['bowser', 'sdentato'],
+                  unlock: ['bowser']
+                },
+                {
+                  id: 'm10', title: 'Un Eroe Caduto',
+                  dialogue: [
+                    { s: "Goku (Corrotto)", t: "Non riesco... a fermarmi! Il mio corpo... vuole solo lottare per LUI!" },
+                    { s: "Topolino", t: "Sta resistendo al controllo mentale! Dobbiamo indebolirlo per spezzare il legame!" },
+                    { s: "Cyborg", t: "Indebolire quel tizio?! Sembra che possa far esplodere un pianeta con uno starnuto!" }
+                  ],
+                  postDialogue: [
+                    { s: "Goku", t: "Uff, grazie ragazzi! Stavo rischiando di fare davvero un bel disastro." },
+                    { s: "Finn l'Umano", t: "Sei fortissimo! Avremo bisogno del tuo potere per abbattere l'Arena." },
+                    { s: "Goku", t: "Quel Cell colpisce forte! Non vedo l'ora di combatterlo di nuovo, ma stavolta insieme a voi!" }
+                  ],
+                  boss: ['goku'],
+                  unlock: ['goku']
+                }
+              ]
+            },
+            {
+              name: "Settore 6: Parigi Fratturata",
+              description: "Le strade di Parigi si fondono con i regni magici. Illusioni e cristalli spuntano dall'asfalto.",
+              bg: "bg-pink-950",
+              missions: [
+                {
+                  id: 'm11', title: 'Illusioni Miracolose',
+                  dialogue: [
+                    { s: "Ladybug (Corrotta)", t: "Il mio Lucky Charm ha calcolato la probabilità della vostra vittoria: zero spaccato." },
+                    { s: "Rena Rouge (Corrotta)", t: "Sarete intrappolati in un'illusione di dolore per sempre! Miraggio!" },
+                    { s: "Topolino", t: "Due eroine di Parigi! Dobbiamo fare molta attenzione alle loro combo magiche in doppio!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Cosa ho fatto... la mia mente era avvolta da un'ombra opprimente. Grazie." },
+                    { s: "Rena Rouge", t: "Ahi... che mal di testa. Prometto di usare le mie illusioni solo per aiutarvi da ora in poi." },
+                    { s: "Finn l'Umano", t: "Fantastico! Più siamo e più il testone di Cell prenderà botte!" }
+                  ],
+                  boss: ['ladybug', 'renarouge'],
+                  unlock: ['ladybug', 'renarouge']
+                },
+                {
+                  id: 'm12', title: 'Cataclisma Inevitabile',
+                  dialogue: [
+                    { s: "Chat Noir (Corrotto)", t: "Plagg, trasformami! Cataclisma! Ridurrò in cenere ogni imperfezione per il Maestro Cell!" },
+                    { s: "Ladybug", t: "Chat, fermati! Non sei in te! Devi ascoltarmi!" },
+                    { s: "Chat Noir (Corrotto)", t: "Mi dispiace, m'lady... ma il tempo per le chiacchiere è scaduto." }
+                  ],
+                  postDialogue: [
+                    { s: "Chat Noir", t: "M'lady? Ragazzi? Accidenti, mi sento come se fossi stato stirato da un camion delle pulizie." },
+                    { s: "Ladybug", t: "Chat! Sono così felice che tu stia bene. Ora siamo di nuovo la squadra imbattibile." },
+                    { s: "Finn l'Umano", t: "Benvenuto nella resistenza, gattino. Sfoderiamo gli artigli!" }
+                  ],
+                  boss: ['chatnoir'],
+                  unlock: ['chatnoir']
+                }
+              ]
+            },
+            {
+              name: "Settore 7: Il Vortice Cosmico",
+              description: "Fate, streghe e principesse aliene intrappolate in un vortice di energia stellare e magia oscura.",
+              bg: "bg-fuchsia-950",
+              missions: [
+                {
+                  id: 'm13', title: 'Incantesimi di Fuoco e Cristallo',
+                  dialogue: [
+                    { s: "Bloom (Corrotta)", t: "La Fiamma del Drago obbedisce a un solo dominatore ora: la Perfezione!" },
+                    { s: "Iris (Corrotta)", t: "I miei cristalli taglieranno via la vostra fragile Resistenza in un istante!" },
+                    { s: "Finn l'Umano", t: "Fate e principesse malvagie? Mi ricorda molto Ooo in una giornata storta." }
+                  ],
+                  postDialogue: [
+                    { s: "Bloom", t: "La Fiamma... è tornata a scaldarmi il cuore. Ero intrappolata in un gelo mentale terribile." },
+                    { s: "Iris", t: "Ephedia vi ringrazia. Con le nostre magie unite, Cell non avrà scampo!" }
+                  ],
+                  boss: ['bloom', 'iris'],
+                  unlock: ['bloom', 'iris']
+                },
+                {
+                  id: 'm14', title: 'Magia Oscura e Stelle',
+                  dialogue: [
+                    { s: "Charmcaster (Corrotta)", t: "La mia borsa magica ha un nuovo incantesimo: annientare tutti voi in un secondo!" },
+                    { s: "Stellarubia (Corrotta)", t: "Gli amici sono una debolezza! I miei Starbolts inceneriranno i nemici di Cell!" },
+                    { s: "Corvina", t: "Stella! Resisti all'influsso... non lasciare che la frequenza oscura soffochi la tua luce!" }
+                  ],
+                  postDialogue: [
+                    { s: "Stellarubia", t: "Amici miei! Che gioia immensa! Mi sentivo così... grigia e fredda senza di voi!" },
+                    { s: "Charmcaster", t: "E va bene, vi aiuterò. Ma solo perché quel mostro insetto ha osato darmi ordini." }
+                  ],
+                  boss: ['charmcaster', 'stellarubia'],
+                  unlock: ['charmcaster', 'stellarubia']
+                }
+              ]
+            },
+            {
+              name: "Settore 8: La Dimensione dei Duellanti",
+              description: "Campi di battaglia olografici si mescolano a piste di velocità cibernetiche.",
+              bg: "bg-indigo-950",
+              missions: [
+                {
+                  id: 'm15', title: 'Sincronia Cosmica',
+                  dialogue: [
+                    { s: "Astral (Corrotto)", t: "Osservazione: La Resistenza ha una probabilità di vittoria dello 0%. Mi dispiace, Yuma." },
+                    { s: "Yusei Fudo (Corrotto)", t: "Il mio Drago Polvere di Stelle spazzerà via le vostre speranze in nome della Perfezione." },
+                    { s: "Topolino", t: "Usano le carte e l'energia cosmica per evocare mostri! Dobbiamo distruggere i loro deck!" }
+                  ],
+                  postDialogue: [
+                    { s: "Astral", t: "Errore di calcolo... la vostra forza di volontà ha superato ogni statistica. L'influsso è spezzato." },
+                    { s: "Yusei Fudo", t: "Grazie per avermi fermato. Accelererò insieme a voi verso il varco di Cell!" }
+                  ],
+                  boss: ['astral', 'yusei'],
+                  unlock: ['astral', 'yusei']
+                },
+                {
+                  id: 'm16', title: 'Combattenti Brutali',
+                  dialogue: [
+                    { s: "Juri (Corrotta)", t: "Ahahaha! Vi schiaccerò sotto il mio tacco per il mio nuovo Maestro!" },
+                    { s: "Sanemi (Corrotto)", t: "Taglierò la vostra imperfezione in mille pezzi a favore del vento!" },
+                    { s: "Finn l'Umano", t: "Questi due sembrano dei veri psicopatici... state in guardia!" }
+                  ],
+                  postDialogue: [
+                    { s: "Juri", t: "Tsk... mi sono fatta controllare come una marionetta. Che seccatura." },
+                    { s: "Sanemi", t: "I miei demoni interiori sono nulla in confronto a quel mostro. Vi aiuterò a sventrarlo." }
+                  ],
+                  boss: ['juri', 'sanemi'],
+                  unlock: ['juri', 'sanemi']
+                }
+              ]
+            },
+            {
+              name: "Settore 9: Il Torneo Marziale",
+              description: "Un'antica arena asiatica circondata da fiamme di drago e montagne di ravioli.",
+              bg: "bg-amber-950",
+              missions: [
+                {
+                  id: 'm17', title: 'Fuoco e Ravioli',
+                  dialogue: [
+                    { s: "Natsu (Corrotto)", t: "Sono tutto un fuoco! Un fuoco di pura sottomissione perfetta!" },
+                    { s: "Po (Corrotto)", t: "Non c'è spazio per l'imperfezione... e nemmeno per i ravioli! Solo per Cell!" },
+                    { s: "Goku", t: "Questi guerrieri hanno un'aura incredibile! Lasciateli a me!" }
+                  ],
+                  postDialogue: [
+                    { s: "Natsu", t: "Ugh... ho come la nausea... e non sono nemmeno su un mezzo di trasporto!" },
+                    { s: "Po", t: "Ragazzi, vi giuro che ero posseduto! Non avrei mai rinunciato ai ravioli di mia spontanea volontà!" }
+                  ],
+                  boss: ['natsu', 'po'],
+                  unlock: ['natsu', 'po']
+                },
+                {
+                  id: 'm18', title: 'Velocità e Fiamme',
+                  dialogue: [
+                    { s: "Mantide (Corrotto)", t: "La mia velocità è l'apice dell'evoluzione. Non mi vedrete nemmeno arrivare!" },
+                    { s: "Zuko (Corrotto)", t: "Il mio onore ora dipende dalla vittoria del Maestro Cell!" },
+                    { s: "Cyborg", t: "Velocità e dominio del fuoco. Calibrate bene i vostri attacchi, squadra!" }
+                  ],
+                  postDialogue: [
+                    { s: "Zuko", t: "Ancora una volta ho perso la mia strada... ma ora combatterò per rimediare." },
+                    { s: "Mantide", t: "Ehi, mi avete quasi schiacciato! Ma grazie per la svegliata, ne avevo bisogno." }
+                  ],
+                  boss: ['mantide', 'zuko'],
+                  unlock: ['mantide', 'zuko']
+                }
+              ]
+            },
+            {
+              name: "Settore 10: Il Castello dei Malvagi",
+              description: "Una fortezza di pietra nera costellata da trofei di caccia e nidi mostruosi.",
+              bg: "bg-stone-900",
+              missions: [
+                {
+                  id: 'm19', title: 'Muscoli e Roccia',
+                  dialogue: [
+                    { s: "Gaston (Corrotto)", t: "Nessuno serve la Perfezione Assoluta come Gaston! Guardate che bicipiti sottomessi!" },
+                    { s: "Cuore di Pietra (Corrotto)", t: "Schiaccerò l'imperfezione fino a ridurla in polvere!" },
+                    { s: "Kratos", t: "Sbruffoni vanitosi e sassi ambulanti. Non meritano pietà." }
+                  ],
+                  postDialogue: [
+                    { s: "Gaston", t: "Io... sconfitto? Deve esserci stato un errore di calcolo nei miei bicipiti!" },
+                    { s: "Cuore di Pietra", t: "La mia roccia si sgretola... ma l'incantesimo è rotto. Avete la mia forza, per ora." }
+                  ],
+                  boss: ['gaston', 'cuoredipietra'],
+                  unlock: ['gaston', 'cuoredipietra']
+                },
+                {
+                  id: 'm20', title: 'Mostri Letali',
+                  dialogue: [
+                    { s: "Zazan (Corrotta)", t: "Le mie metamorfosi sono nulla in confronto alla forma finale del Maestro Cell!" },
+                    { s: "Barry (Corrotto)", t: "AHAHAH! Vi taglierò a fettine magiche per abbellire questo castello!" },
+                    { s: "Finn l'Umano", t: "Ok, questa è roba da incubo. Nessun passo falso!" }
+                  ],
+                  postDialogue: [
+                    { s: "Zazan", t: "Hiss... essere comandata a bacchetta è un insulto per una Regina!" },
+                    { s: "Barry", t: "Mmm, forse fare i bravi ragazzi è più divertente... per oggi." }
+                  ],
+                  boss: ['zazan', 'barry'],
+                  unlock: ['zazan', 'barry']
+                }
+              ]
+            },
+            {
+              name: "Settore 11: Il Ghiacciaio Sospeso",
+              description: "Una landa di ghiaccio perenne dove le bufere nascondono antiche magie.",
+              bg: "bg-cyan-900",
+              missions: [
+                {
+                  id: 'm21', title: 'Cuori di Ghiaccio',
+                  dialogue: [
+                    { s: "Elsa (Corrotta)", t: "Il freddo non mi ha mai disturbata... ma questa Frequenza gela perfino la mia anima." },
+                    { s: "Re Ghiaccio (Corrotto)", t: "Zitto Gunter! Il Maestro Cell mi ha promesso tutte le principesse del Multiverso se vi congelo!" },
+                    { s: "Topolino", t: "Attenti, le loro magie combinate potrebbero trasformarci in statue di ghiaccio!" }
+                  ],
+                  postDialogue: [
+                    { s: "Elsa", t: "La mia mente... era avvolta da un inverno oscuro e innaturale. Vi ringrazio per avermi liberata." },
+                    { s: "Re Ghiaccio", t: "Ahi, la mia schiena! Ma dove sono le mie principesse?! Vabbè, mi unisco a voi se promettete di presentarmi qualcuna." }
+                  ],
+                  boss: ['elsa', 'reghiaccio'],
+                  unlock: ['elsa', 'reghiaccio']
+                },
+                {
+                  id: 'm22', title: 'Neve Assassina',
+                  dialogue: [
+                    { s: "Jack Frost (Corrotto)", t: "Il divertimento è finito. L'inverno della Perfezione durerà in eterno!" },
+                    { s: "Yuki-Onna (Corrotta)", t: "I vostri respiri caldi... li soffocherò sotto una coltre di neve e oscurità." },
+                    { s: "Marceline", t: "Odio il freddo. Mi secca i canini. Facciamola finita in fretta." }
+                  ],
+                  postDialogue: [
+                    { s: "Jack Frost", t: "Ugh, mi sentivo come se il Babau mi avesse rubato i pensieri! Tornerò a fare scherzi gelati per aiutarvi." },
+                    { s: "Yuki-Onna", t: "Il mio spirito è di nuovo in pace. Soffierò venti gelidi sui vostri nemici." }
+                  ],
+                  boss: ['jackfrost', 'yukionna'],
+                  unlock: ['jackfrost', 'yukionna']
+                }
+              ]
+            },
+            {
+              name: "Settore 12: La Giungla d'Acciaio",
+              description: "La natura selvaggia ha invaso le rovine di una metropoli, creando mutazioni letali.",
+              bg: "bg-emerald-900",
+              missions: [
+                {
+                  id: 'm23', title: 'Flora Velenosa',
+                  dialogue: [
+                    { s: "Roserade (Corrotto)", t: "*Sibilo elegante ma velenoso, sprigionando spore viola*" },
+                    { s: "Leslie (Corrotto)", t: "Io non volevo combattere! Ma la voce nella mia testa dice che devo farvi concime!" },
+                    { s: "Poison Ivy", t: "Queste piante stanno soffrendo... Cell le sta forzando oltre i loro limiti!" }
+                  ],
+                  postDialogue: [
+                    { s: "Leslie", t: "Mio fiorellino! Ero diventato un mostro cattivone! Grazie per avermi sfoltito le foglie." },
+                    { s: "Roserade", t: "*Inchino regale di ringraziamento*" },
+                    { s: "Poison Ivy", t: "La natura ringrazia. Ora venite con noi, abbiamo un insetto da schiacciare." }
+                  ],
+                  boss: ['roserade', 'leslie'],
+                  unlock: ['roserade', 'leslie']
+                },
+                {
+                  id: 'm24', title: 'Giganti Addormentati',
+                  dialogue: [
+                    { s: "Groot (Corrotto)", t: "Io. Sono. CELL." },
+                    { s: "Snorlax (Corrotto)", t: "*Ronf... Zzz... la Perfezione è... Zzz...*" },
+                    { s: "Finn l'Umano", t: "Un albero gigante che parla e un orso che dorme anche se è posseduto? Dobbiamo svegliarli a suon di botte!" }
+                  ],
+                  postDialogue: [
+                    { s: "Groot", t: "Io sono Groot." },
+                    { s: "Snorlax", t: "*Sbadiglio*... Ho una fame da lupi! C'è niente da mangiare da queste parti?" },
+                    { s: "Cyborg", t: "Perfetto. Un albero monosillabico e un pozzo senza fondo. Ma almeno sono dalla nostra parte!" }
+                  ],
+                  boss: ['groot', 'snorlax'],
+                  unlock: ['groot', 'snorlax']
+                }
+              ]
+            },
+            {
+              name: "Settore 13: Le Rovine Galattiche",
+              description: "Astronavi distrutte e anomalie spaziali circondano i margini del dominio di Cell.",
+              bg: "bg-fuchsia-900",
+              missions: [
+                {
+                  id: 'm25', title: 'Follia Cosmica',
+                  dialogue: [
+                    { s: "N°39 Utopia (Corrotto)", t: "L'Aspirazione Imperiale è stata sovrascritta. Modalità: Sottomissione." },
+                    { s: "Cosmo (Corrotto)", t: "Wanda! Timmy! Aiuto! Il signor insetto cattivo ha rubato la mia bacchetta mentale! Vi devo vaporizzare!" },
+                    { s: "Goku", t: "Un guerriero d'oro e una fatina volante... questo multiverso è davvero strano!" }
+                  ],
+                  postDialogue: [
+                    { s: "N°39 Utopia", t: "Sistemi ripristinati. Luce della Speranza online. Attendo ordini dalla Resistenza." },
+                    { s: "Cosmo", t: "Evviva! Sono tornato me stesso! Speriamo che Wanda non scopra che mi sono fatto fare il lavaggio del cervello!" }
+                  ],
+                  boss: ['utopia', 'cosmo'],
+                  unlock: ['utopia', 'cosmo']
+                },
+                {
+                  id: 'm26', title: 'Sciame e Fantasmi',
+                  dialogue: [
+                    { s: "Zergling (Corrotto)", t: "*Stridio agghiacciante di sottomissione all'Alveare Perfetto*" },
+                    { s: "Whisper (Corrotto)", t: "Secondo il mio Yo-kai Pad, la probabilità che voi sopravviviate al Maestro Cell è... inesistente!" },
+                    { s: "Topolino", t: "Siamo un passo dall'Arena. Non fermiamoci adesso!" }
+                  ],
+                  postDialogue: [
+                    { s: "Whisper", t: "Phew! Il mio Yo-kai Pad stava impazzendo! Grazie per l'esorcismo... ehm, salvataggio!" },
+                    { s: "Zergling", t: "*Si accuccia come un cagnolino alieno, libero dal controllo*" },
+                    { s: "Finn l'Umano", t: "Bravi mostriciattoli. Ora andiamo a finire il lavoro." }
+                  ],
+                  boss: ['zergling', 'whisper'],
+                  unlock: ['zergling', 'whisper']
+                }
+              ]
+            },
+            {
+              name: "Settore 14: Il Regno dei Funghi Corrotto",
+              description: "Tubi warp distorti, mattoni fluttuanti e un cielo viola. Il regno è caduto.",
+              bg: "bg-red-950",
+              missions: [
+                {
+                  id: 'm27', title: 'Verde d\'Invidia',
+                  dialogue: [
+                    { s: "Luigi (Corrotto)", t: "Sempre il numero due... ma per il Maestro Cell, io sarò il flagello perfetto! Tremate!" },
+                    { s: "Topolino", t: "Luigi! Non è da te! Resisti a questa energia oscura!" }
+                  ],
+                  postDialogue: [
+                    { s: "Luigi", t: "M-mamma mia... che incubo spaventoso! Grazie per avermi svegliato, ragazzi!" },
+                    { s: "Finn l'Umano", t: "Non c'è di che, baffone verde! Ma c'è ancora tuo fratello da salvare." }
+                  ],
+                  boss: ['luigi'],
+                  unlock: ['luigi']
+                },
+                {
+                  id: 'm28', title: 'L\'Eroe Corrotto',
+                  dialogue: [
+                    { s: "Mario (Corrotto)", t: "It's-a-me... la Perfezione! Nessun fungo vi salverà dalla mia potenza!" },
+                    { s: "Finn l'Umano", t: "Oh cavolo, se Mario è diventato cattivo, la situazione è davvero disperata!" }
+                  ],
+                  postDialogue: [
+                    { s: "Mario", t: "Mamma mia... che mal di testa! Mi sentivo come se fossi caduto nella lava!" },
+                    { s: "Topolino", t: "Sei tornato in te, Mario! Ora abbiamo il salto più potente del multiverso dalla nostra parte!" }
+                  ],
+                  boss: ['mario'],
+                  unlock: ['mario']
+                }
+              ]
+            },
+            {
+              name: "Settore 15: Il Tempio degli Elementi",
+              description: "Rovine dei Nomadi dell'Aria avvolte da vortici d'acqua e magia distorta.",
+              bg: "bg-cyan-950",
+              missions: [
+                {
+                  id: 'm29', title: 'Onde Implacabili',
+                  dialogue: [
+                    { s: "Katara (Corrotta)", t: "Il dominio dell'acqua non serve per curare... serve per affogare l'imperfezione!" },
+                    { s: "Corvina", t: "La sua magia è purissima, ma è stata corrotta alla radice. Non sottovalutatela!" }
+                  ],
+                  postDialogue: [
+                    { s: "Katara", t: "Cos'ho fatto... l'acqua dovrebbe portare vita, non distruzione. Mi dispiace tanto." },
+                    { s: "Topolino", t: "È colpa di Cell, Katara! Ti aiuteremo a riportare l'equilibrio!" }
+                  ],
+                  boss: ['katara'],
+                  unlock: ['katara']
+                },
+                {
+                  id: 'm30', title: 'L\'Avatar Oscuro',
+                  dialogue: [
+                    { s: "Aang (Corrotto)", t: "Non c'è più equilibrio. Non ci sono più quattro nazioni. C'è solo la Perfezione Assoluta di Cell!" },
+                    { s: "Finn l'Umano", t: "L'Avatar! Controlla tutti gli elementi! Dobbiamo schivare come pazzi!" }
+                  ],
+                  postDialogue: [
+                    { s: "Aang", t: "Le vite passate... non riuscivo a sentirle. C'era solo un ronzio terribile e oscuro." },
+                    { s: "Finn l'Umano", t: "Tranquillo amico, l'incubo è finito. Benvenuto nella squadra!" },
+                    { s: "Aang", t: "Grazie! Insieme soffieremo via quest'oscurità!" }
+                  ],
+                  boss: ['aang'],
+                  unlock: ['aang']
+                }
+              ]
+            },
+            {
+              name: "Settore 16: L'Arcipelago dei Campioni",
+              description: "Isole tropicali galleggianti su un mare di lava viola. Vecchie glorie dei videogames ti attendono.",
+              bg: "bg-teal-950",
+              missions: [
+                {
+                  id: 'm31', title: 'Follia Rotante e Fiammeggiante',
+                  dialogue: [
+                    { s: "Spyro (Corrotto)", t: "Ridurremo queste isole in cenere... il Maestro Cell non vuole imperfezioni!" },
+                    { s: "Crash Bandicoot (Corrotto)", t: "*Versi aggressivi e distorti, pronto a ruotare*" },
+                    { s: "Topolino", t: "Due leggende sotto controllo mentale! Non fatevi colpire da quella trottola pelosa!" }
+                  ],
+                  postDialogue: [
+                    { s: "Spyro", t: "Che mal di testa... perché stavo cercando di arrostire le mie stesse isole?" },
+                    { s: "Crash Bandicoot", t: "Woah!" },
+                    { s: "Finn l'Umano", t: "Ahah! Siete liberi ragazzi, unitevi al nostro gruppo!" }
+                  ],
+                  boss: ['spyro', 'crash'],
+                  unlock: ['spyro', 'crash']
+                },
+                {
+                  id: 'm32', title: 'Lame Scarlatte e Tattiche',
+                  dialogue: [
+                    { s: "Pyra (Corrotta)", t: "Il fuoco dell'Egida incenerirà ogni ostacolo sul cammino della Perfezione." },
+                    { s: "Carlos Oliveira (Corrotto)", t: "Nessuna via di fuga. Ordini ricevuti, bersagli acquisiti." },
+                    { s: "Cyborg", t: "Una spada divina di fuoco e un soldato armato fino ai denti. Riparatevi!" }
+                  ],
+                  postDialogue: [
+                    { s: "Pyra", t: "La mia fiamma... è tornata calda. Era diventata così gelida e distruttiva." },
+                    { s: "Carlos Oliveira", t: "Ho visto orrori indicibili nella mia vita, ma quel controllo mentale è stato il peggiore. Contate su di me." }
+                  ],
+                  boss: ['pyra', 'carlos'],
+                  unlock: ['pyra', 'carlos']
+                }
+              ]
+            },
+            {
+              name: "Settore 17: Le Grotte dell'Agonia",
+              description: "Caverne oscure colme di miasmi mortali e fiumi di nebbia velenosa.",
+              bg: "bg-zinc-950",
+              missions: [
+                {
+                  id: 'm33', title: 'Nebbia Sanguinaria',
+                  dialogue: [
+                    { s: "Juvia (Corrotta)", t: "Juvia affogherà i nemici del Maestro Cell in un mare di disperazione e lacrime..." },
+                    { s: "Zabuza (Corrotto)", t: "La nebbia della morte vi avvolgerà, e non saprete da dove arriverà il colpo." },
+                    { s: "Goku", t: "Non riesco a percepire la loro aura nella nebbia! Dobbiamo stare attenti!" }
+                  ],
+                  postDialogue: [
+                    { s: "Juvia", t: "Juvia è così dispiaciuta! Juvia non voleva farvi del male, la sua mente era intrappolata!" },
+                    { s: "Zabuza", t: "Un guerriero come me sottomesso a un insetto. È un disonore che laverò col sangue di quel Cell." }
+                  ],
+                  boss: ['juvia', 'zabuza'],
+                  unlock: ['juvia', 'zabuza']
+                },
+                {
+                  id: 'm34', title: 'L\'Abisso Oscuro',
+                  dialogue: [
+                    { s: "Gravelord Nito (Corrotto)", t: "*Suono agghiacciante di innumerevoli ossa scricchiolanti e miasma opprimente*" },
+                    { s: "Hannibal (Corrotto)", t: "La vostra carne nutrirà la Perfezione Assoluta in un banchetto sublime..." },
+                    { s: "Marceline", t: "Ugh, questi due mi fanno venire i brividi perfino a me. Facciamola finita." }
+                  ],
+                  postDialogue: [
+                    { s: "Hannibal", t: "Che scortesia immensa, farsi controllare la mente. Credo che mi servirà un buon Chianti per riprendermi." },
+                    { s: "Topolino", t: "L'importante è che ora siate liberi! La via per il castello è aperta!" }
+                  ],
+                  boss: ['nito', 'hannibal'],
+                  unlock: ['nito', 'hannibal']
+                }
+              ]
+            },
+            {
+              name: "Settore 18: L'Arena della Perfezione",
+              description: "Un immenso castello fluttuante nel vuoto tra le dimensioni. È l'ora della verità.",
+              bg: "bg-slate-900",
+              missions: [
+                {
+                  id: 'm35', title: 'I Guardiani del Varco',
+                  dialogue: [
+                    { s: "Cell", t: "Siete arrivati fin qui... superando ben diciassette dimensioni. Wario, Metal Sonic, mostrate loro l'abisso." },
+                    { s: "Goku", t: "Non ti nascondere dietro i tuoi scagnozzi, Cell! Fatti avanti!" }
+                  ],
+                  postDialogue: [
+                    { s: "Wario", t: "Wahh! La mia testa! Dove sono finite tutte le mie monete d'oro?!" },
+                    { s: "Metal Sonic", t: "*Bip*... Errore di sistema. Direttiva primaria di sottomissione annullata." },
+                    { s: "Kratos", t: "La feccia è stata eliminata. Andiamo avanti." }
+                  ],
+                  boss: ['wario', 'metalsonic'],
+                  unlock: []
+                },
+                {
+                  id: 'm36', title: 'I Mietitori',
+                  dialogue: [
+                    { s: "Ryuk (Corrotto)", t: "Le mele di questo mondo facevano schifo comunque... scriverò i vostri nomi in nome della Perfezione." },
+                    { s: "Rias Gremory (Corrotta)", t: "Il mio Potere della Distruzione ora serve un solo, vero Re." },
+                    { s: "Corvina", t: "Un Dio della Morte e un Demone Purosangue. Attenti, il loro potere oscuro è immenso." }
+                  ],
+                  postDialogue: [
+                    { s: "Rias Gremory", t: "Io... una Gremory, sottomessa in quel modo. Inaccettabile." },
+                    { s: "Ryuk", t: "Hehehe... mi sono divertito. Credo che mi siederò qui a mangiare una mela mentre voi finite il lavoro." },
+                    { s: "Topolino", t: "Siamo al centro dell'Arena. Manca solo lui." }
+                  ],
+                  boss: ['ryuk', 'rias'],
+                  unlock: []
+                },
+                {
+                  id: 'm37', title: 'La Perfezione Assoluta',
+                  dialogue: [
+                    { s: "Cell", t: "Io sono l'evoluzione finale. Voi siete solo... spazzatura multiversale." },
+                    { s: "Goku", t: "Non hai capito nulla della vera forza, Cell!" },
+                    { s: "Topolino", t: "Esatto! La nostra forza non viene dalla perfezione, ma dall'unione di tutti i nostri universi!" }
+                  ],
+                  postDialogue: [
+                    { s: "Cell", t: "Imp... impossibile! Ma... ahahah! Stolti! Pensate davvero che fossi io la mente dietro tutto questo?" },
+                    { s: "Topolino", t: "Cosa?! Non eri tu a voler dominare le dimensioni?" },
+                    { s: "Cell", t: "Ho fuso i mondi per nascondermi da LORO. Volevo un esercito per difendermi! Ma ora che l'avete distrutto... mi hanno trovato. Addio, feccia imperfetta! Arrangiatevi!" },
+                    { s: "Finn l'Umano", t: "È scappato in un portale spaziotemporale! Ma... se lui era terrorizzato, cos'è quell'enorme voragine nera che si sta aprendo nel cielo?!" }
+                  ],
+                  boss: ['cell'],
+                  unlock: []
+                }
+              ]
+            },
+            {
+              name: "Settore 19: La Fine del Multiverso",
+              description: "L'oscurità assoluta. Il vuoto dove risiedono i veri padroni del caos dimensionale.",
+              bg: "bg-black",
+              missions: [
+                {
+                  id: 'm38', title: 'I Veri Padroni (RAID)',
+                  dialogue: [
+                    { s: "Trigon", t: "Così, questo è l'esercito di insetti che ha distrutto il nostro umile scudo verde." },
+                    { s: "Gaster", t: "I... n... t... e... r... e... s... s... a... n... t... e... La loro linea temporale finirà qui." },
+                    { s: "Topolino", t: "Un demone gigante e... una strana ombra! Questa è davvero la battaglia finale! Ragazzi, schieriamo tutti!" }
+                  ],
+                  postDialogue: [
+                    { s: "Trigon", t: "NOOO! I miei poteri oscuri... sconfitti da dei patetici mortali?! Maledizione a voi!" },
+                    { s: "Gaster", t: "E... r... r... o... r... e... S... i... s... t... e... m... a... C... r... i... t... i... c... o..." },
+                    { s: "Finn l'Umano", t: "L'abbiamo fatto! Il multiverso è davvero salvo stavolta!" },
+                    { s: "Topolino", t: "Sì! E guardate, i mondi stanno tornando al loro posto. Abbiamo vinto!" }
+                  ],
+                  boss: ['trigon', 'gaster'],
+                  unlock: ['trigon', 'gaster']
+                }
+              ]
+            }
+          ]
+        };
 
         const TYPE_STYLES = {
           'Normale': 'bg-gradient-to-r from-gray-400 to-gray-500 text-white',
@@ -731,23 +1463,27 @@
         const initialGameState = () => ({
           status: 'lobby', 
           gameMode: 'classica', 
-          players: { p1: null, p2: null, p3: null, p4: null },
-          playerAvatars: { p1: '', p2: '', p3: '', p4: '' },
-          isBot: { p1: false, p2: false, p3: false, p4: false },
-          settings: { teamSize: 4, fieldSize: 1 }, 
-          draft: { p1: [], p2: [], p3: [], p4: [] },
-          teams: { p1: [], p2: [], p3: [], p4: [] },
-          field: { p1: [], p2: [], p3: [], p4: [] }, 
-          actions: { p1: {}, p2: {}, p3: {}, p4: {} }, 
-          inventory: { p1: {}, p2: {}, p3: {}, p4: {} },
+          isCampaignBattle: false,
+          players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
+          playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
+          isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4 }, 
+          draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+          teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+          field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
+          actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} }, 
+          inventory: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
           events: [], 
           winner: null,
           postExecStatus: 'battling', 
-          pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0 },
-          switchActions: { p1: [], p2: [], p3: [], p4: [] },
+          pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
+          switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           tournamentMatch: null, 
           tournamentBracket: ['p1', 'p2', 'p3', 'p4'],
-          tournamentResults: { semi1: null, semi2: null, bronze: null, final: null } 
+          tournamentResults: { semi1: null, semi2: null, bronze: null, final: null },
+          roundRobinMatches: [],
+          currentMatchIdx: 0,
+          playerScores: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
         });
 
         function App() {
@@ -775,6 +1511,33 @@
 
           const [introCharIdx, setIntroCharIdx] = useState(0);
           
+          // --- STATO CAMPAGNA ---
+          const [campaignState, setCampaignState] = useState(() => {
+              const finn = CHARACTERS.find(c=>c.id==='finn');
+              const topo = CHARACTERS.find(c=>c.id==='topolino');
+              return {
+                  sectorIdx: 0,
+                  missionIdx: 0,
+                  roster: ['finn', 'topolino'],
+                  rosterStats: {
+                      'finn': finn ? finn.maxHp : 100,
+                      'topolino': topo ? topo.maxHp : 100
+                  },
+                  coins: 50,
+                  difficulty: 'Normal'
+              };
+          });
+          const [campaignDialogueIdx, setCampaignDialogueIdx] = useState(0);
+          const [campaignSelectedTeam, setCampaignSelectedTeam] = useState([]);
+          
+          // Autosave Campagna
+          useEffect(() => {
+              if (appMode.startsWith('campaign_') && appMode !== 'campaign_intro') {
+                  localStorage.setItem('multiverse_rpg_campaign_save', JSON.stringify(campaignState));
+              }
+          }, [campaignState, appMode]);
+          // ----------------------
+          
           const [hoveredMove, setHoveredMove] = useState(null);
           const [actionMenuMode, setActionMenuMode] = useState('moves'); // 'moves', 'items', 'switch'
           const [shopTab, setShopTab] = useState('items'); // 'items', 'chars'
@@ -790,6 +1553,29 @@
           
           // Ref per il timer partita
           const matchStartTimeRef = useRef(null);
+
+          // --- FIX: INIZIALIZZAZIONE AUTENTICAZIONE FIREBASE ---
+          useEffect(() => {
+              const initAuth = async () => {
+                  try {
+                      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                          await signInWithCustomToken(auth, __initial_auth_token);
+                      } else {
+                          // Su GitHub Pages userà questo accesso anonimo
+                          await signInAnonymously(auth);
+                      }
+                  } catch (error) {
+                      console.error("Errore Auth Firebase:", error);
+                  }
+              };
+              initAuth();
+
+              const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+                  setUser(currentUser);
+              });
+              
+              return () => unsubscribe();
+          }, []);
 
           const getPlayerData = (nameOverride = null) => {
               const nameToUse = nameOverride || playerName;
@@ -964,7 +1750,11 @@
             }
           };
 
-          const getRequiredPlayers = (mode) => (mode === 'classica' ? 2 : 4);
+          const getRequiredPlayers = (mode, currentSettings) => {
+              if (mode === 'classica') return 2;
+              if (mode === 'torneo_punti') return currentSettings ? currentSettings.maxPlayers : 4;
+              return 4;
+          };
           
           const getActivePlayers = () => {
               if (gameState.gameMode === 'classica') return ['p1', 'p2'];
@@ -979,16 +1769,25 @@
                       return [gameState.tournamentResults.semi1.winner, gameState.tournamentResults.semi2.winner];
                   return [bracket[0], bracket[1]]; 
               }
+              if (gameState.gameMode === 'torneo_punti') {
+                  if (gameState.roundRobinMatches && gameState.roundRobinMatches.length > 0) {
+                      const match = gameState.roundRobinMatches[gameState.currentMatchIdx];
+                      return [match.pA, match.pB];
+                  }
+                  return ['p1', 'p2'];
+              }
               return ['p1', 'p2'];
           };
 
           const isAllPlayersJoined = () => {
-              const req = getRequiredPlayers(gameState.gameMode);
+              const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
               let joined = 0;
-              const slots = ['p1', 'p2', 'p3', 'p4'].slice(0, req);
+              const slots = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req);
               slots.forEach(slot => {
                   if (gameState.players[slot]) joined++;
               });
+              
+              if (gameState.gameMode === 'torneo_punti') return joined >= 2;
               return joined === req;
           };
 
@@ -1018,10 +1817,10 @@
             
             const data = snap.data();
             let assignedRole = null;
-            const req = getRequiredPlayers(data.gameMode);
+            const req = getRequiredPlayers(data.gameMode, data.settings);
             
             // Trova primo slot libero o occupato da un Bot
-            ['p2', 'p3', 'p4'].slice(0, req - 1).forEach(slot => {
+            ['p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req - 1).forEach(slot => {
                  if (!assignedRole && (!data.players[slot] || data.isBot[slot])) {
                       assignedRole = slot;
                  }
@@ -1106,31 +1905,58 @@
             let fieldSize = gameState.settings.fieldSize;
             if (gameState.gameMode === 'multipla') fieldSize = 1; 
             
-            let field = { p1: [], p2: [], p3: [], p4: [] };
-            ['p1', 'p2', 'p3', 'p4'].forEach(p => {
-                if (teams[p] && teams[p].length > 0) {
-                    field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
-                }
-            });
-
+            let field = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
+            
             // GESTIONE SHUFFLE GIOCATORI NEL TORNEO
             let bracket = ['p1', 'p2', 'p3', 'p4'];
+            let rrMatches = [];
+            let scores = { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 };
+
             if (gameState.gameMode === 'torneo') {
                 for (let i = bracket.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [bracket[i], bracket[j]] = [bracket[j], bracket[i]];
                 }
+                ['p1', 'p2', 'p3', 'p4'].forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
+            } else if (gameState.gameMode === 'torneo_punti') {
+                const joinedPlayers = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+                for (let i = 0; i < joinedPlayers.length; i++) {
+                    for (let j = i + 1; j < joinedPlayers.length; j++) {
+                        rrMatches.push({ pA: joinedPlayers[i], pB: joinedPlayers[j] });
+                    }
+                }
+                rrMatches.sort(() => Math.random() - 0.5); // Mescola le partite
+                
+                // Manda in campo solo i due giocatori della prima partita
+                [rrMatches[0].pA, rrMatches[0].pB].forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
+            } else {
+                ['p1', 'p2', 'p3', 'p4'].forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
             }
 
             let nextState = {
               status: 'pre_battle', 
               teams: teams,
               field: field,
-              actions: { p1: {}, p2: {}, p3: {}, p4: {} },
-              pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0 },
-              switchActions: { p1: [], p2: [], p3: [], p4: [] },
+              actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+              pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
+              switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
               tournamentMatch: gameState.gameMode === 'torneo' ? 'semi1' : null,
-              tournamentBracket: bracket
+              tournamentBracket: bracket,
+              roundRobinMatches: rrMatches,
+              currentMatchIdx: 0,
+              playerScores: scores
             };
 
             updateState(nextState);
@@ -1146,7 +1972,11 @@
             matchStartTimeRef.current = Date.now();
 
             if (appMode === 'local_room' || appMode === 'vs_cpu') {
-                const active = gameState.gameMode === 'torneo' ? [bracket[0], bracket[1]] : ['p1', 'p2', 'p3', 'p4'].slice(0, getRequiredPlayers(gameState.gameMode));
+                let active = [];
+                if (gameState.gameMode === 'torneo') active = [bracket[0], bracket[1]];
+                else if (gameState.gameMode === 'torneo_punti') active = [rrMatches[0].pA, rrMatches[0].pB];
+                else active = ['p1', 'p2', 'p3', 'p4'].slice(0, getRequiredPlayers(gameState.gameMode, gameState.settings));
+                
                 const humans = active.filter(p => !gameState.isBot[p]);
                 if (humans.length > 0) {
                     setPlayerRole(humans[0]);
@@ -2058,6 +2888,7 @@
         let nextStatus = 'battling';
         let winner = null;
         let tResults = { ...gameState.tournamentResults };
+        let newScores = { ...gameState.playerScores };
 
         if (gameState.gameMode === 'multipla') {
             const team1Alive = workingTeams.p1.some(c=>c.hp>0) || workingTeams.p2.some(c=>c.hp>0);
@@ -2093,8 +2924,34 @@
                 }
             }
         }
+        else if (gameState.gameMode === 'torneo_punti') {
+            const pA = activeMatchPlayers[0];
+            const pB = activeMatchPlayers[1];
+            const pA_Alive = workingTeams[pA].some(c=>c.hp>0);
+            const pB_Alive = workingTeams[pB].some(c=>c.hp>0);
+            
+            if (!pA_Alive || !pB_Alive) {
+                if (pA_Alive) newScores[pA] += 1;
+                else if (pB_Alive) newScores[pB] += 1;
+                
+                if (gameState.currentMatchIdx >= gameState.roundRobinMatches.length - 1) {
+                    nextStatus = 'gameover';
+                    let maxScore = -1;
+                    let bestP = null;
+                    Object.keys(newScores).forEach(p => {
+                        if (gameState.players[p] && newScores[p] > maxScore) {
+                            maxScore = newScores[p];
+                            bestP = p;
+                        }
+                    });
+                    winner = gameState.players[bestP];
+                } else {
+                    nextStatus = 'intermission';
+                }
+            }
+        }
 
-        let pendingSwitches = { p1: 0, p2: 0, p3: 0, p4: 0 };
+        let pendingSwitches = { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 };
         let hasPendingSwitches = false;
 
         if (nextStatus !== 'gameover' && nextStatus !== 'intermission') {
@@ -2172,36 +3029,65 @@
           startOfTurnTeams: startOfTurnTeams, // Mantiene i dati intatti per la suspense!
           startOfTurnField: startOfTurnField,
           events: events,
-          actions: { p1: {}, p2: {}, p3: {}, p4: {} },
+          actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
           inventory: workingInventory,
           pendingSwitches: pendingSwitches,
-          switchActions: { p1: [], p2: [], p3: [], p4: [] },
-          tournamentResults: tResults
+          switchActions: { p1: [], p2: [], p3: [], p4: {}, p5: [], p6: [], p7: [], p8: [] },
+          tournamentResults: tResults,
+          playerScores: newScores
         });
     };
 
     const handleNextTournamentMatch = () => {
+        let healedTeams = JSON.parse(JSON.stringify(gameState.teams));
+        ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].forEach(p => {
+            if (healedTeams[p]) {
+                healedTeams[p].forEach(char => {
+                    char.hp = char.maxHp;
+                    char.statuses = [];
+                    char.consecutiveProtect = 0;
+                    char.atk = char.baseAtk;
+                    char.def = char.baseDef;
+                    char.spd = char.baseSpd;
+                    char.moves.forEach(m => {
+                        if (m.maxUses !== undefined) m.remainingUses = m.maxUses;
+                    });
+                });
+            }
+        });
+
+        if (gameState.gameMode === 'torneo_punti') {
+            const nextIdx = gameState.currentMatchIdx + 1;
+            const nextMatch = gameState.roundRobinMatches[nextIdx];
+            
+            let newField = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
+            [nextMatch.pA, nextMatch.pB].forEach(p => {
+                newField[p] = healedTeams[p].slice(0, gameState.settings.fieldSize).map((_, i) => i);
+            });
+
+            updateState({
+                status: 'pre_battle', 
+                currentMatchIdx: nextIdx,
+                teams: healedTeams,
+                field: newField
+            });
+
+            if (appMode === 'local_room') {
+                const activeNext = [nextMatch.pA, nextMatch.pB];
+                const humans = activeNext.filter(p => !gameState.isBot[p]);
+                if (humans.length > 0) setPlayerRole(humans[0]);
+                else setPlayerRole(activeNext[0]);
+                setCommandingIdx(0);
+            }
+            return;
+        }
+
         let nextMatch = null;
         if (gameState.tournamentMatch === 'semi1') nextMatch = 'semi2';
         else if (gameState.tournamentMatch === 'semi2') nextMatch = 'bronze';
         else if (gameState.tournamentMatch === 'bronze') nextMatch = 'final';
 
-        let healedTeams = JSON.parse(JSON.stringify(gameState.teams));
-        ['p1', 'p2', 'p3', 'p4'].forEach(p => {
-            healedTeams[p].forEach(char => {
-                char.hp = char.maxHp;
-                char.statuses = [];
-                char.consecutiveProtect = 0;
-                char.atk = char.baseAtk;
-                char.def = char.baseDef;
-                char.spd = char.baseSpd;
-                char.moves.forEach(m => {
-                    if (m.maxUses !== undefined) m.remainingUses = m.maxUses;
-                });
-            });
-        });
-
-        let newField = { p1: [], p2: [], p3: [], p4: [] };
+        let newField = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
         let activeNext = [];
         const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
         
@@ -2424,6 +3310,27 @@
                     </div>
 
                     <div className="pt-4 border-t border-slate-800">
+                         <button onClick={() => {
+                             const saved = localStorage.getItem('multiverse_rpg_campaign_save');
+                             if (saved) {
+                                 setCampaignState(JSON.parse(saved));
+                                 setAppMode('campaign_map');
+                             } else {
+                                 const finn = CHARACTERS.find(c=>c.id==='finn');
+                                 const topo = CHARACTERS.find(c=>c.id==='topolino');
+                                 setCampaignState({
+                                     sectorIdx: 0,
+                                     missionIdx: 0,
+                                     roster: ['finn', 'topolino'],
+                                     rosterStats: { 'finn': finn ? finn.maxHp : 100, 'topolino': topo ? topo.maxHp : 100 },
+                                     coins: 50,
+                                     difficulty: 'Normal'
+                                 });
+                                 setAppMode('campaign_intro');
+                             }
+                         }} className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 mb-3">
+                             <BookOpen size={20}/> Campagna: Crisi del Varco
+                         </button>
                          <button onClick={handleVsCpuStart} className="w-full mb-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
                              <Target size={20}/> Gioca vs CPU (Bot IA)
                         </button>
@@ -2452,6 +3359,466 @@
         );
     }
     
+    if (appMode === 'campaign_intro') {
+        return (
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
+                 <div className="bg-slate-900/80 p-8 rounded-3xl max-w-2xl text-center border border-emerald-500/30 z-10 shadow-2xl">
+                      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4">La Crisi del Varco Corrotto</h1>
+                      <h2 className="text-xl text-emerald-400 font-bold mb-6">Prologo: L'Eclissi di Cell</h2>
+                      <p className="text-slate-300 mb-4 text-left leading-relaxed">
+                          Un'entità proveniente da un futuro distorto, Cell Perfetto (Corrotto), ha utilizzato una tecnologia rubata per fondere le dimensioni.
+                      </p>
+                      <p className="text-slate-300 mb-8 text-left leading-relaxed">
+                          Ha emesso una "Frequenza di Sottomissione" che ha lavato il cervello al 90% degli eroi, trasformandoli nei suoi Burattini Perfetti. Solo Finn l'Umano e Topolino sono sfuggiti. Ora devono formare la Resistenza Finale!
+                      </p>
+                      
+                      <div className="flex justify-center gap-4 mb-8">
+                          <button onClick={() => setCampaignState(p => ({...p, difficulty: 'Normal'}))} className={`px-6 py-3 rounded-xl font-bold border-2 transition-all ${campaignState.difficulty === 'Normal' ? 'border-blue-500 bg-blue-500/20 text-blue-400' : 'border-slate-700 text-slate-500'}`}>Normale</button>
+                          <button onClick={() => setCampaignState(p => ({...p, difficulty: 'Insane'}))} className={`px-6 py-3 rounded-xl font-bold border-2 transition-all ${campaignState.difficulty === 'Insane' ? 'border-rose-500 bg-rose-500/20 text-rose-400' : 'border-slate-700 text-slate-500'}`}>Multiverso Folle</button>
+                      </div>
+                      
+                      <button onClick={() => setAppMode('campaign_map')} className="bg-gradient-to-r from-emerald-500 to-teal-600 px-10 py-4 rounded-full font-black text-xl hover:scale-105 transition-transform">Inizia Avventura</button>
+                 </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_map') {
+        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx];
+        const mission = sector.missions[campaignState.missionIdx];
+        
+        return (
+            <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
+                <button onClick={() => setAppMode('menu')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
+                     <ArrowLeft size={20} /> Abbandona Campagna
+                </button>
+                <button onClick={() => { localStorage.removeItem('multiverse_rpg_campaign_save'); setAppMode('menu'); }} className="absolute top-6 right-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 text-sm font-bold shadow-lg">
+                     Resetta Progressi
+                </button>
+                <div className="flex justify-center items-center bg-black/50 p-4 rounded-2xl mb-8 backdrop-blur-md border border-white/10 mt-14 max-w-4xl mx-auto w-full">
+                    <div className="flex-1 text-center">
+                        <h2 className="text-3xl font-black text-emerald-400">{sector.name}</h2>
+                        <p className="text-slate-300 text-sm">{sector.description}</p>
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-xl border border-yellow-500/50 absolute right-8">
+                        <Coins className="text-yellow-400" size={24} />
+                        <span className="font-bold text-yellow-400 text-xl">{campaignState.coins}</span>
+                    </div>
+                </div>
+                
+                <div className="flex-1 flex flex-col md:flex-row gap-8 max-w-6xl w-full mx-auto">
+                    <div className="flex-1 bg-black/40 rounded-3xl p-8 border border-white/10 flex flex-col justify-center items-center text-center">
+                        <h3 className="text-sm text-slate-400 font-bold uppercase tracking-widest mb-2">Prossima Missione</h3>
+                        <h1 className="text-5xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">{mission.title}</h1>
+                        <div className="flex items-center justify-center gap-4 mb-8 bg-black/30 p-4 rounded-2xl w-full">
+                            <span className="text-slate-400 font-bold uppercase tracking-widest text-sm mr-4">Boss:</span>
+                            {mission.boss.map(bId => {
+                                const b = CHARACTERS.find(c=>c.id===bId);
+                                return b ? <img key={bId} src={b.img} className="w-16 h-16 rounded-full border-2 border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)] object-cover" title={b.name} alt={b.name} /> : null;
+                            })}
+                        </div>
+                        <button onClick={() => { setCampaignDialogueIdx(0); setAppMode('campaign_dialogue'); }} className="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-xl font-bold text-xl flex items-center gap-2 shadow-lg hover:-translate-y-1 transition-all">Avvia Missione <ArrowLeft className="rotate-180"/></button>
+                    </div>
+                    
+                    <div className="w-full md:w-1/3 bg-black/40 rounded-3xl p-6 border border-white/10 flex flex-col">
+                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-emerald-400"><Users size={20}/> La Tua Resistenza</h3>
+                        <div className="space-y-3 overflow-y-auto max-h-[400px] custom-scrollbar pr-2 flex-1">
+                            {campaignState.roster.map(id => {
+                                const char = CHARACTERS.find(c=>c.id===id);
+                                const hp = campaignState.rosterStats[id];
+                                if(!char) return null;
+                                return (
+                                    <div key={id} className={`bg-slate-900/80 p-3 rounded-xl border ${hp <= 0 ? 'border-rose-900 grayscale opacity-75' : 'border-slate-700/50'} flex items-center gap-3`}>
+                                        <img src={char.img} className="w-12 h-12 rounded-full border border-slate-600 object-cover" />
+                                        <div className="flex-1">
+                                            <div className="font-bold text-sm truncate">{char.name} {hp <= 0 && <span className="text-rose-500 text-[10px] ml-1">(Esausto)</span>}</div>
+                                            {renderHealthBar(hp, char.maxHp)}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_dialogue') {
+        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx];
+        const mission = sector.missions[campaignState.missionIdx];
+        
+        // --- LOGICA LORE DINAMICO ---
+        let fullDialogue = [...mission.dialogue];
+        
+        const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+        const bossIds = mission.boss;
+
+        // Se siamo all'inizio della conversazione, verifichiamo se ci sono legami speciali
+        if (campaignDialogueIdx === 0 && !fullDialogue.some(d => d.isDynamicLore)) {
+            const lorePool = [
+                { h: 'finn', b: 'jake', t: "Jake! Ricordati di noi! Di BMO, della Casa sull'Albero! Non lasciare che quel testone verde ti porti via!" },
+                { h: 'marceline', b: 'jake', t: "Ehi cagnolone, svegliati o ti prosciugo tutto il sangue! Sto scherzando... forse." },
+                { h: 'finn', b: 'marceline', t: "Marceline, ti prego! Non sei tu! Rompi il controllo, ricordati di Ooo e delle nostre canzoni!" },
+                { h: 'spongebob', b: 'patrick', t: "Patrick, migliore amico mio! Non farti controllare! Ricordati di quando cacciavamo le meduse!" },
+                { h: 'patrick', b: 'spongebob', t: "Spongebob! Ti salverò io! Anzi, ti prenderò a testate finché non torni normale!" },
+                { h: 'ladybug', b: 'chatnoir', t: "Chat, gattino sciocco, resisti! Il tuo Miraculous è più forte di questo trucco mentale!" },
+                { h: 'chatnoir', b: 'renarouge', t: "Rena, smettila con queste illusioni! Siamo una squadra, svegliati!" },
+                { h: 'cyborg', b: 'corvina', t: "Corvina! Usa il tuo mantra! Azzarath Metrion... dai, blocca la sua frequenza!" },
+                { h: 'robin', b: 'cyborg', t: "Cyborg, riavvia i sistemi! Scavalca il firewall di Cell, ora!" },
+                { h: 'goku', b: 'cell', t: "Ancora tu, Cell?! Questa volta non avrai bisogno di esplodere per perdere contro di noi!" },
+                { h: 'kratos', b: 'goku', t: "Un guerriero che si fa dominare la mente è debole. Ti libererò io a suon di pugni." },
+                { h: 'stewie', b: 'plankton', t: "Un microbo con un occhio solo? Amico, i miei laser sono perfetti per disinfestare l'arena." },
+                { h: 'finn', b: 'reghiaccio', t: "Simon! Smettila di fare il cattivo o ti prendo a calci il sedere ghiacciato un'altra volta!" },
+                { h: 'astral', b: 'utopia', t: "Numero 39: Utopia... la mia carta più fedele. Ti libererò da questa oscurità con la luce della speranza!" },
+                { h: 'goku', b: 'snorlax', t: "Ehi bestione! Se ti liberi da quell'insetto ti offro io la cena, promesso!" },
+                { h: 'poisonivy', b: 'roserade', t: "La tua tossina è potente, piccola Roserade. Smettila di servire lui e combatti per il Verde!" },
+                { h: 'luigi', b: 'mario', t: "M-Mario! Fratellone! Svegliati, mi fai troppa paura quando hai quegli occhi viola!" },
+                { h: 'bowser', b: 'mario', t: "Bwahahah! Mario, farti comandare a bacchetta da un insetto gigante è patetico! Ti schiaccio io prima che lo faccia lui!" },
+                { h: 'bowser', b: 'luigi', t: "Lo spilungone verde! Fatti da parte, non ho tempo da perdere con un fifone come te!" },
+                { h: 'zuko', b: 'katara', t: "Katara, reagisci! Non puoi piegarti a questo Cell! Abbiamo ancora una pace da costruire!" },
+                { h: 'zuko', b: 'aang', t: "Aang, tu sei l'Avatar! Sei tu che devi portare l'equilibrio, non la sottomissione!" },
+                { h: 'katara', b: 'aang', t: "Aang, ti prego! Guarda i miei occhi, ricordati di noi! Rompi questa frequenza oscura!" },
+                { h: 'bowser', b: 'spyro', t: "Un draghetto lilla? Bwahaha! Ti faccio vedere io come sputa fuoco un VERO drago!" },
+                { h: 'aang', b: 'zabuza', t: "Usare il dominio dell'acqua per creare una nebbia assassina?! Io ti fermerò!" },
+                { h: 'natsu', b: 'juvia', t: "Juvia! Smettila di fare fiumi di lacrime e datti una mossa, dobbiamo rompere questo incantesimo!" },
+                { h: 'kratos', b: 'nito', t: "Un altro signore dei morti che brama anime. Le mie lame conoscono bene il tuo tipo." },
+                { h: 'carlos', b: 'hannibal', t: "Hai l'aria del mostro psicopatico... Ho affrontato gli zombie, non ho paura di te!" },
+                { h: 'corvina', b: 'trigon', t: "Padre... pensavi di potermi manipolare di nuovo nascondendoti dietro quel burattino di Cell? Questa volta la tua fine sarà definitiva!" }
+            ];
+
+            let injected = false;
+            lorePool.forEach(lore => {
+                if (!injected && aliveHeroes.includes(lore.h) && bossIds.includes(lore.b)) {
+                    const heroName = CHARACTERS.find(c => c.id === lore.h).name;
+                    // Inserisci la battuta di legame speciale subito dopo la prima battuta del boss (indice 1)
+                    fullDialogue.splice(1, 0, { s: heroName, t: lore.t, isDynamicLore: true });
+                    injected = true;
+                }
+            });
+        }
+
+        const dialogue = fullDialogue[campaignDialogueIdx];
+        
+        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
+        const speakerChar = CHARACTERS.find(c => c.name === speakerName || c.name.includes(speakerName));
+        const isCorrupted = dialogue.s.includes('Corrott');
+        
+        const nextDialogue = () => {
+            if (campaignDialogueIdx < fullDialogue.length - 1) {
+                setCampaignDialogueIdx(p => p + 1);
+            } else {
+                setCampaignSelectedTeam([...campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).slice(0, 4)]);
+                setAppMode('campaign_team_select');
+            }
+        };
+        
+        return (
+            <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
+                 {speakerChar && (
+                     <div className={`absolute bottom-0 left-4 md:left-24 transition-all duration-500 pointer-events-none ${isCorrupted ? 'scale-105 drop-shadow-[0_0_30px_rgba(220,38,38,0.6)] filter sepia-[0.5] hue-rotate-[-30deg]' : 'drop-shadow-2xl'}`}>
+                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-slate-800 opacity-90" />
+                     </div>
+                 )}
+                 <div className={`bg-slate-900/90 border-2 ${dialogue.isDynamicLore ? 'border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.3)]' : 'border-emerald-500 shadow-2xl'} p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer relative mb-12`}>
+                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md ${dialogue.isDynamicLore ? 'bg-yellow-500 text-black' : isCorrupted ? 'bg-rose-600 text-white' : 'bg-emerald-600 text-white'}`}>
+                          {dialogue.s} {dialogue.isDynamicLore && "⭐"}
+                      </div>
+                      <p className={`text-xl md:text-2xl mt-4 leading-relaxed font-medium ${dialogue.isDynamicLore ? 'text-yellow-100 italic' : 'text-white'}`}>"{dialogue.t}"</p>
+                      <p className="text-right text-xs text-slate-500 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
+                 </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_post_dialogue') {
+        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx];
+        const mission = sector.missions[campaignState.missionIdx];
+        
+        // COSTRUZIONE DINAMICA DEL DIALOGO (INCLUSA LA PREOCCUPAZIONE PER GLI ESAUSTI)
+        let fullDialogue = [...(mission.postDialogue || [])];
+        
+        if (campaignState.faintedInLastBattle && campaignState.faintedInLastBattle.length > 0) {
+            const faintedName = campaignState.faintedInLastBattle[0]; 
+            
+            // Trova un personaggio ancora in piedi per dire la battuta
+            const aliveCharacters = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+            let speakerId = aliveCharacters.length > 0 ? aliveCharacters[Math.floor(Math.random() * aliveCharacters.length)] : 'finn';
+            const speakerNameObj = CHARACTERS.find(c => c.id === speakerId);
+            const speakerName = speakerNameObj ? speakerNameObj.name : "Finn l'Umano";
+
+            // Se il personaggio scelto per parlare è se stesso (bug), forza Finn o Topolino
+            const finalSpeaker = speakerName === faintedName ? "Topolino" : speakerName;
+
+            const randomPhrases = [
+                `Oh no! ${faintedName} è a terra! Dobbiamo rimetterlo in sesto!`,
+                `${faintedName} ha preso una bella batosta... forza, resisti! Ti cureremo!`,
+                `Accidenti, ${faintedName} è esausto! Qualcuno prenda una Pozione!`,
+                `Abbiamo vinto, ma a che prezzo? ${faintedName} ha perso i sensi...`
+            ];
+            const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+            
+            // Inserisci questo dialogo dinamico SOLO al primo indice, generato al volo
+            if (campaignDialogueIdx === 0 && !fullDialogue[0]?.isDynamic) {
+                fullDialogue.unshift({ s: finalSpeaker, t: phrase, isDynamic: true });
+            } else if (fullDialogue[0] && fullDialogue[0].isDynamic) {
+                // Per mantenere lo stato se il componente si re-renderizza
+            } else {
+                 fullDialogue.unshift({ s: finalSpeaker, t: phrase, isDynamic: true });
+            }
+        }
+
+        const dialogue = fullDialogue[campaignDialogueIdx];
+        
+        const nextDialogue = () => {
+            if (dialogue && campaignDialogueIdx < fullDialogue.length - 1) {
+                setCampaignDialogueIdx(p => p + 1);
+            } else {
+                const newCoins = campaignState.coins + 150;
+                let nextMissionIdx = campaignState.missionIdx + 1;
+                let nextSectorIdx = campaignState.sectorIdx;
+                let nextAppMode = 'campaign_map';
+
+                if (nextMissionIdx >= CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions.length) {
+                    nextMissionIdx = 0;
+                    nextSectorIdx++;
+                    nextAppMode = 'campaign_shop';
+                }
+
+                if (nextSectorIdx >= CAMPAIGN_DATA.sectors.length) {
+                    nextAppMode = 'campaign_ending';
+                }
+
+                setCampaignState(prev => ({
+                    ...prev,
+                    coins: newCoins,
+                    missionIdx: nextMissionIdx,
+                    sectorIdx: nextSectorIdx,
+                    faintedInLastBattle: null // Resetta la memoria degli svenuti per la prossima lotta
+                }));
+                setAppMode(nextAppMode);
+            }
+        };
+
+        if (!dialogue) {
+             setTimeout(nextDialogue, 0);
+             return <div className="min-h-screen bg-slate-950"></div>;
+        }
+
+        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
+        const speakerChar = CHARACTERS.find(c => c.name === speakerName || c.name.includes(speakerName));
+        
+        return (
+            <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
+                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
+                 {speakerChar && (
+                     <div className={`absolute bottom-0 left-4 md:left-24 transition-all duration-500 pointer-events-none drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]`}>
+                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-emerald-500 opacity-100" />
+                     </div>
+                 )}
+                 <div className="bg-slate-900/95 border-2 border-emerald-400 p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer shadow-[0_0_40px_rgba(16,185,129,0.2)] relative mb-12 animate-fade-in">
+                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md bg-emerald-500 text-white`}>{dialogue.s}</div>
+                      <p className="text-xl md:text-2xl mt-4 leading-relaxed font-medium text-white italic">"{dialogue.t}"</p>
+                      <p className="text-right text-xs text-emerald-400 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
+                 </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_team_select') {
+        const isFinalRaid = campaignState.sectorIdx === CAMPAIGN_DATA.sectors.length - 1;
+        const maxTeamSize = isFinalRaid ? 20 : 4;
+
+        const toggleChar = (id) => {
+            if (campaignSelectedTeam.includes(id)) {
+                setCampaignSelectedTeam(campaignSelectedTeam.filter(c => c !== id));
+            } else {
+                if (campaignSelectedTeam.length < maxTeamSize) setCampaignSelectedTeam([...campaignSelectedTeam, id]);
+            }
+        };
+        
+        const handleStartCampaignBattle = () => {
+            if (campaignSelectedTeam.length === 0) return setSystemAlert("Seleziona almeno un personaggio!");
+            
+            const mission = CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
+            
+            const p1Team = campaignSelectedTeam.map(id => {
+                const baseChar = CHARACTERS.find(c => c.id === id);
+                const hp = campaignState.rosterStats[id];
+                return {
+                    ...JSON.parse(JSON.stringify(baseChar)), hp: hp, statuses: [], consecutiveProtect: 0,
+                    baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
+                    moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                };
+            });
+
+            const p2Team = mission.boss.map(id => {
+                const baseChar = CHARACTERS.find(c => c.id === id);
+                
+                // BUFF GIGANTESCO PER I RAID BOSS FINALI!
+                let hpMultiplier = 1;
+                if (isFinalRaid) hpMultiplier = 15; // Trigon e Gaster hanno 15x HP!
+                else if (campaignState.difficulty === 'Insane') hpMultiplier = 1.5; 
+                
+                let hp = Math.floor(baseChar.maxHp * hpMultiplier);
+                
+                let charInst = {
+                    ...JSON.parse(JSON.stringify(baseChar)), hp: hp, maxHp: hp, statuses: [], consecutiveProtect: 0,
+                    baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
+                    moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                };
+                
+                if (!isFinalRaid) {
+                    charInst.imageFilter = 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                } else {
+                    charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
+                }
+
+                if (campaignState.difficulty === 'Insane' || isFinalRaid) {
+                    charInst.statuses.push({ type: 'Protetto', turns: 1 });
+                    charInst.statuses.push({ type: 'Scudo Team', turns: 2 });
+                }
+                
+                // Buff Alle Statistiche dei Super Boss
+                if (isFinalRaid) {
+                     charInst.atk = Math.floor(charInst.atk * 1.5);
+                     charInst.baseAtk = charInst.atk;
+                     charInst.def = Math.floor(charInst.def * 1.2);
+                     charInst.baseDef = charInst.def;
+                }
+
+                return charInst;
+            });
+
+            const state = initialGameState();
+            state.gameMode = 'classica';
+            state.isCampaignBattle = true;
+            state.settings = { teamSize: p1Team.length, fieldSize: Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length)) };
+            
+            state.players.p1 = playerName || "Resistenza";
+            state.playerAvatars.p1 = CHARACTERS.find(c=>c.id===campaignSelectedTeam[0])?.img || '';
+            state.isBot.p1 = false;
+            
+            state.players.p2 = mission.boss.map(id => CHARACTERS.find(c=>c.id===id).name).join(" & ");
+            state.playerAvatars.p2 = CHARACTERS.find(c=>c.id===mission.boss[0])?.img || '';
+            state.isBot.p2 = true;
+
+            state.teams = { p1: p1Team, p2: p2Team, p3: [], p4: [] };
+            state.field = { 
+                p1: p1Team.slice(0, state.settings.fieldSize).map((_, i) => i), 
+                p2: p2Team.slice(0, state.settings.fieldSize).map((_, i) => i),
+                p3: [], p4: []
+            };
+            state.status = 'pre_battle';
+            
+            setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
+        };
+        
+        return (
+            <div className="min-h-screen bg-slate-950 text-white p-6 flex flex-col items-center justify-center relative">
+                <button onClick={() => setAppMode('campaign_map')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors bg-slate-900/50 px-4 py-2 rounded-xl border border-slate-700/50">
+                     <ArrowLeft size={20} /> Indietro
+                </button>
+                <div className="text-center mb-8">
+                    <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+                        {isFinalRaid ? "LA BATTAGLIA FINALE - MODALITÀ RAID" : "Prepara la tua Squadra"}
+                    </h2>
+                    <p className={`text-slate-400 mt-2 ${isFinalRaid ? 'font-bold text-rose-400' : ''}`}>
+                        {isFinalRaid ? `Schiera un esercito! Seleziona fino a ${maxTeamSize} eroi per abbattere i Veri Padroni. (Selezionati: ${campaignSelectedTeam.length}/${maxTeamSize})` : `Seleziona fino a ${maxTeamSize} eroi per lo scontro. (Selezionati: ${campaignSelectedTeam.length}/${maxTeamSize})`}
+                    </p>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
+                    {campaignState.roster.map(id => {
+                        const char = CHARACTERS.find(c=>c.id===id);
+                        const hp = campaignState.rosterStats[id];
+                        const isSelected = campaignSelectedTeam.includes(id);
+                        const isDead = hp <= 0;
+                        if(!char) return null;
+                        return (
+                            <div key={id} onClick={() => !isDead && toggleChar(id)} className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col items-center text-center shadow-lg hover:-translate-y-1 ${isDead ? 'opacity-40 border-rose-900 grayscale bg-slate-900 pointer-events-none' : isSelected ? 'border-emerald-500 bg-emerald-900/40 shadow-[0_0_20px_rgba(16,185,129,0.4)]' : 'border-slate-700 bg-slate-800 hover:border-slate-500'}`}>
+                                <img src={char.img} className={`w-20 h-20 rounded-full border-2 mb-3 object-cover ${isSelected ? 'border-emerald-400' : 'border-slate-600'}`} />
+                                <div className="font-bold text-sm mb-2 truncate w-full">{char.name}</div>
+                                <div className="w-full">{renderHealthBar(hp, char.maxHp)}</div>
+                                {isDead && <div className="text-[10px] text-rose-500 font-bold mt-2 uppercase tracking-widest bg-rose-900/50 px-2 py-0.5 rounded">Esausto</div>}
+                            </div>
+                        );
+                    })}
+                </div>
+                <button onClick={handleStartCampaignBattle} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 px-12 py-5 rounded-full font-black text-2xl shadow-[0_10px_30px_rgba(59,130,246,0.4)] hover:-translate-y-1 transition-all flex items-center gap-3">
+                    <Swords size={28}/> Inizia Battaglia!
+                </button>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_shop') {
+        const buyHeal = () => {
+            if (campaignState.coins >= 50) {
+                const newStats = {...campaignState.rosterStats};
+                campaignState.roster.forEach(id => {
+                    newStats[id] = CHARACTERS.find(c=>c.id===id).maxHp;
+                });
+                setCampaignState(p => ({...p, coins: p.coins - 50, rosterStats: newStats}));
+            } else {
+                setSystemAlert("Non hai abbastanza monete!");
+            }
+        };
+
+        return (
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
+                <div className="bg-slate-900/90 border border-yellow-500/50 p-10 rounded-3xl max-w-lg w-full text-center shadow-[0_0_50px_rgba(234,179,8,0.15)] z-10">
+                    <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">Checkpoint Dimensionale</h2>
+                    <p className="text-slate-400 text-sm mb-10">Riposa e cura la tua squadra prima del prossimo settore.</p>
+                    
+                    <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 mb-10 flex justify-between items-center shadow-inner">
+                         <div className="text-left flex items-center gap-4">
+                             <div className="bg-emerald-500/20 p-3 rounded-xl text-emerald-400"><Heart size={28}/></div>
+                             <div>
+                                 <div className="font-black text-xl text-white">Cura Totale Squadra</div>
+                                 <div className="text-xs text-slate-400 mt-1">Ripristina tutti gli HP al massimo</div>
+                             </div>
+                         </div>
+                         <button onClick={buyHeal} className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-black px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg hover:-translate-y-0.5 transition-all"><Coins size={20}/> 50</button>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-3 mb-10 text-2xl font-black bg-black/40 py-4 rounded-xl border border-slate-800">
+                        Bilancio: <Coins className="text-yellow-400" size={28} /> <span className="text-yellow-400">{campaignState.coins} Monete</span>
+                    </div>
+                    
+                    <button onClick={() => setAppMode('campaign_map')} className="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-full font-black text-xl transition-all shadow-lg hover:-translate-y-1">Avanza al Prossimo Settore</button>
+                </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_ending') {
+        return (
+            <div className="min-h-screen bg-gradient-to-t from-blue-950 to-slate-950 text-white flex flex-col items-center justify-center p-6 text-center">
+                <Trophy size={80} className="text-yellow-400 mb-6 drop-shadow-[0_0_30px_rgba(234,179,8,0.8)] animate-bounce" />
+                <h1 className="text-6xl md:text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 drop-shadow-md tracking-tighter">IL MULTIVERSO È LIBERO!</h1>
+                <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mb-12 font-medium leading-relaxed">
+                    Cell Perfetto è stato sconfitto e il suo influsso spezzato. Il varco rimane aperto, ma ora eroi e cattivi di ogni dimensione possono convivere in pace. Hai salvato innumerevoli mondi!
+                </p>
+                <div className="bg-slate-900/50 p-6 rounded-3xl border border-white/10 mb-12 w-full max-w-4xl backdrop-blur-md">
+                    <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-6">La Resistenza Finale</h3>
+                    <div className="flex flex-wrap justify-center gap-4">
+                         {campaignState.roster.map(id => {
+                              const char = CHARACTERS.find(c=>c.id===id);
+                              if(!char) return null;
+                              return <img key={id} src={char.img} className="w-16 h-16 rounded-full border-2 border-emerald-500 object-cover shadow-lg" title={char.name} alt={char.name} />;
+                         })}
+                    </div>
+                </div>
+                <button onClick={() => { localStorage.removeItem('multiverse_rpg_campaign_save'); setAppMode('menu'); }} className="bg-white text-black px-12 py-5 rounded-full font-black text-xl hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.4)]">Torna al Menu Principale</button>
+            </div>
+        );
+    }
+
     if (appMode === 'shop') {
         const playerData = getPlayerData();
         
@@ -2848,7 +4215,7 @@
 
     if (gameState.status === 'lobby') {
         const isHost = playerRole === 'p1';
-        const reqPlayers = getRequiredPlayers(gameState.gameMode);
+        const reqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const canStartDraft = isAllPlayersJoined();
 
         return (
@@ -2872,6 +4239,7 @@
                                  <select value={gameState.gameMode} onChange={e => updateState({ gameMode: e.target.value })} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500">
                                          <option value="classica">Sfida Classica (1v1)</option>
                                          <option value="torneo">Torneo (4 Giocatori)</option>
+                                         <option value="torneo_punti">Torneo a Punti (Tutti vs Tutti)</option>
                                          <option value="multipla">Multipla (2v2)</option>
                                  </select>
                          </div>
@@ -2882,7 +4250,7 @@
                     )}
 
                     <div className="grid grid-cols-2 gap-4 mb-8">
-                         {['p1', 'p2', reqPlayers > 2 ? 'p3' : null, reqPlayers > 2 ? 'p4' : null].filter(Boolean).map(slot => (
+                         {['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, reqPlayers).map(slot => (
                              <div key={slot} className="bg-slate-950/50 rounded-2xl p-4 border border-slate-700/50 flex flex-col items-center justify-center min-h-[140px] relative">
                                  <div className="absolute top-2 left-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{slot}</div>
                                  {gameState.players[slot] ? (
@@ -2929,6 +4297,12 @@
                     {isHost ? (
                         <div className="space-y-4 text-left">
                             <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Regole</h3>
+                            {gameState.gameMode === 'torneo_punti' && (
+                                <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30 mb-4">
+                                    <span className="font-semibold text-slate-300">Numero Giocatori (Max):</span>
+                                    <input type="number" min="2" max="8" value={gameState.settings.maxPlayers} onChange={e => updateState({ settings: { ...gameState.settings, maxPlayers: Math.min(8, Math.max(2, parseInt(e.target.value) || 2)) } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
+                                </div>
+                            )}
                             <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30">
                                 <span className="font-semibold text-slate-300">Dimensione Squadra:</span>
                                 <input type="number" min="1" max="10" value={gameState.settings.teamSize} onChange={e => updateState({ settings: { ...gameState.settings, teamSize: parseInt(e.target.value) || 1 } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
@@ -2945,9 +4319,9 @@
                                 let hasBots = false;
                                 const draftable = CHARACTERS.filter(c => !c.isSummonOnly);
                                 const newDraft = { ...gameState.draft };
-                                const req = getRequiredPlayers(gameState.gameMode);
+                                const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
                                 
-                                ['p1', 'p2', 'p3', 'p4'].slice(0, req).forEach(p => {
+                                ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).forEach(p => {
                                     if (gameState.isBot[p]) {
                                         const cpuDraft = [];
                                         const shuffled = [...draftable].sort(() => 0.5 - Math.random());
@@ -2978,14 +4352,17 @@
     }
 
     if (gameState.status === 'drafting') {
-        const activeReqPlayers = getRequiredPlayers(gameState.gameMode);
+        const activeReqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
+        const activePlayersList = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+        const draftLimitToCheck = gameState.gameMode === 'torneo_punti' ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
+        
         const myDraft = gameState.draft[playerRole] || [];
         const isReady = myDraft.length === gameState.settings.teamSize;
         
         let allReady = true;
         let readyCount = 0;
-        ['p1', 'p2', 'p3', 'p4'].slice(0, activeReqPlayers).forEach(p => {
-                if (gameState.draft[p].length === gameState.settings.teamSize) readyCount++;
+        draftLimitToCheck.forEach(p => {
+                if (gameState.draft[p] && gameState.draft[p].length === gameState.settings.teamSize) readyCount++;
                 else allReady = false;
         });
 
@@ -3003,7 +4380,7 @@
                          {appMode === 'vs_cpu' ? (
                              <span>Scegli il tuo Team!</span>
                          ) : (
-                             <>Giocatori Pronti: <span className={allReady ? "text-emerald-400" : "text-amber-400"}>{readyCount}/{activeReqPlayers}</span></>
+                             <>Giocatori Pronti: <span className={allReady ? "text-emerald-400" : "text-amber-400"}>{readyCount}/{draftLimitToCheck.length}</span></>
                          )}
                     </div>
                 </div>
@@ -3022,8 +4399,7 @@
                          <h3 className="text-5xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 font-black mb-8 drop-shadow-md">Squadra Pronta!</h3>
                          
                          {appMode === 'local_room' && !allReady && (() => {
-                                 const activeP = ['p1', 'p2', 'p3', 'p4'].slice(0, activeReqPlayers);
-                                 const humans = activeP.filter(p => !gameState.isBot[p]);
+                                 const humans = draftLimitToCheck.filter(p => !gameState.isBot[p]);
                                  const nextIdx = humans.indexOf(playerRole) + 1;
                                  const nextHuman = humans[nextIdx];
                                  
@@ -3171,6 +4547,53 @@
 
     if (gameState.status === 'intermission') {
         const isHost = playerRole === 'p1';
+        
+        if (gameState.gameMode === 'torneo_punti') {
+            const sortedPlayers = Object.keys(gameState.playerScores)
+                .filter(p => gameState.players[p])
+                .sort((a, b) => gameState.playerScores[b] - gameState.playerScores[a]);
+            const nextMatch = gameState.roundRobinMatches[gameState.currentMatchIdx + 1];
+
+            return (
+                <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
+                    <div className="bg-slate-800/80 backdrop-blur-xl p-10 rounded-3xl w-full max-w-2xl border border-slate-700/50 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                        <Trophy className="mx-auto text-yellow-400 mb-4" size={64} />
+                        <h2 className="text-5xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Classifica Torneo</h2>
+                        
+                        <div className="flex flex-col gap-3 mb-8">
+                            {sortedPlayers.map((p, idx) => (
+                                <div key={p} className={`flex justify-between items-center p-4 rounded-xl border ${idx === 0 ? 'bg-yellow-500/20 border-yellow-500/50' : 'bg-slate-950/50 border-slate-700/50'}`}>
+                                    <div className="flex items-center gap-3">
+                                        <span className={`font-black text-xl ${idx === 0 ? 'text-yellow-400' : 'text-slate-400'}`}>#{idx + 1}</span>
+                                        <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} className="w-10 h-10 rounded-full object-cover border-2 border-slate-600" />
+                                        <span className="font-bold text-lg">{gameState.players[p]}</span>
+                                    </div>
+                                    <div className="font-black text-2xl text-emerald-400">{gameState.playerScores[p]} pt</div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="bg-slate-950/80 border border-cyan-500/50 p-4 rounded-2xl mb-8">
+                            <h4 className="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-2">Prossimo Scontro</h4>
+                            <div className="text-2xl font-black flex items-center justify-center gap-4">
+                                <span>{gameState.players[nextMatch.pA]}</span>
+                                <span className="text-rose-500 italic text-xl">VS</span>
+                                <span>{gameState.players[nextMatch.pB]}</span>
+                            </div>
+                        </div>
+
+                        {isHost ? (
+                            <button onClick={handleNextTournamentMatch} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xl py-4 px-8 rounded-full shadow-[0_10px_30px_rgba(59,130,246,0.3)] transition-all">
+                                Avvia Prossimo Match
+                            </button>
+                        ) : (
+                            <div className="text-slate-400 animate-pulse font-bold text-xl"><Loader2 className="animate-spin inline mr-2"/> In attesa dell'Host...</div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
         const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
         return (
             <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
@@ -3384,7 +4807,7 @@
                                                         )}
                                                         <div className="flex items-center gap-3 bg-slate-900/80 px-4 py-2 rounded-full border border-slate-700/50 backdrop-blur-md relative z-10">
                                                                 {hasScudoTeam && <Shield size={20} className="text-teal-400 drop-shadow-[0_0_8px_rgba(45,212,191,1)]" />}
-                                                                <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} className={`w-8 h-8 rounded-full border-2 ${isTop ? 'border-rose-400' : 'border-cyan-400'} object-cover bg-slate-950`} alt="" />
+                                                                <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} className={`w-8 h-8 rounded-full border-2 ${isTop ? 'border-rose-400' : 'border-cyan-400'} object-cover bg-slate-950`} style={{ filter: (gameState.isCampaignBattle && gameState.isBot[p]) ? 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3)' : 'none' }} alt="" />
                                                                 <span className={`font-bold text-sm uppercase tracking-widest ${isTop ? 'text-rose-300' : 'text-cyan-300'}`}>{gameState.players[p]}</span>
                                                         </div>
                                                         {/* INDICATORE PERSONAGGI VIVI/MORTI */}
@@ -3645,6 +5068,66 @@
     }
 
     if (gameState.status === 'gameover') {
+        if (gameState.isCampaignBattle) {
+            const isWin = gameState.winner === gameState.players.p1;
+            
+            return (
+                <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
+                    <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isWin ? 'from-emerald-900/40' : 'from-rose-900/40'} via-slate-950 to-black pointer-events-none`}></div>
+                    <div className="relative z-10 bg-slate-900/80 p-12 rounded-3xl border border-slate-700/50 shadow-2xl backdrop-blur-xl">
+                        <h1 className={`text-7xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${isWin ? 'from-emerald-400 to-teal-500' : 'from-rose-500 to-red-600'}`}>{isWin ? 'VITTORIA!' : 'SCONFITTA!'}</h1>
+                        
+                        {isWin ? (
+                            <>
+                                <p className="text-xl text-slate-300 mb-8 font-medium">Hai sconfitto i burattini di Cell e spezzato il controllo mentale!</p>
+                                <button onClick={() => {
+                                    const newRosterStats = { ...campaignState.rosterStats };
+                                    const faintedThisBattle = [];
+                                    
+                                    gameState.teams.p1.forEach(c => {
+                                        newRosterStats[c.id] = c.hp;
+                                        if (c.hp <= 0 && !c.isSummonOnly) {
+                                            faintedThisBattle.push(c.name);
+                                        }
+                                    });
+                                    
+                                    const mission = CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
+                                    const newRoster = [...campaignState.roster];
+                                    mission.unlock.forEach(id => {
+                                        if (!newRoster.includes(id)) {
+                                            newRoster.push(id);
+                                            newRosterStats[id] = CHARACTERS.find(c=>c.id===id).maxHp;
+                                        }
+                                    });
+
+                                    setCampaignState(prev => ({
+                                        ...prev,
+                                        rosterStats: newRosterStats,
+                                        roster: newRoster,
+                                        faintedInLastBattle: faintedThisBattle // Salva i personaggi andati KO
+                                    }));
+                                    setCampaignDialogueIdx(0);
+                                    setAppMode('campaign_post_dialogue');
+                                }} className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 px-10 py-5 rounded-full font-black text-2xl transition-all shadow-[0_10px_30px_rgba(16,185,129,0.4)] hover:-translate-y-1">Continua e Vedi Epilogo</button>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-xl text-slate-300 mb-8 font-medium">La tua squadra è caduta... ma la resistenza non si arrende!</p>
+                                <button onClick={() => {
+                                    const newRosterStats = { ...campaignState.rosterStats };
+                                    campaignState.roster.forEach(id => {
+                                        if (newRosterStats[id] <= 0) newRosterStats[id] = 1; 
+                                    });
+                                    setCampaignState(p => ({...p, rosterStats: newRosterStats}));
+                                    setAppMode('campaign_map');
+                                }} className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-10 py-5 rounded-full font-black text-2xl transition-all shadow-[0_10px_30px_rgba(225,29,72,0.4)] hover:-translate-y-1">Ritirata Strategica (Riprova)</button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
         let rewardText = "";
         let rankText = "";
         
