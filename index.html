@@ -2082,6 +2082,32 @@
               }
           }, [gameState.status, appMode, playerRole]);
 
+          // --- FIX CRITICO: Sblocco turno iniziale e ricollegamenti per i client Online ---
+          useEffect(() => {
+              if (gameState.status === 'battling' && !isPlayingEvents && appMode === 'online_room' && !gameState.isBot[playerRole]) {
+                  const myField = gameState.field[playerRole] || [];
+                  const myActions = gameState.actions[playerRole] || {};
+                  
+                  // Se non abbiamo un bersaglio attivo (-1) e abbiamo personaggi in campo senza un'azione assegnata
+                  if (commandingIdx === -1 && myField.length > 0 && Object.keys(myActions).length < myField.length) {
+                      // Cerca il primo personaggio in campo che non ha ancora agito e che non è andato KO
+                      let nextIdx = -1;
+                      for (let i = 0; i < myField.length; i++) {
+                          const cIdx = myField[i];
+                          if (!myActions[cIdx] && gameState.teams[playerRole][cIdx]?.hp > 0) {
+                              nextIdx = i;
+                              break;
+                          }
+                      }
+                      
+                      if (nextIdx !== -1) {
+                          setCommandingIdx(nextIdx);
+                          setActionMenuMode('moves');
+                      }
+                  }
+              }
+          }, [gameState.status, isPlayingEvents, appMode, playerRole, gameState.field, gameState.actions, commandingIdx, gameState.isBot, gameState.teams]);
+
           const updateState = async (newState) => {
             if (appMode === 'local_room') {
               setGameState(prev => {
