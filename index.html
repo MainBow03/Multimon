@@ -1641,6 +1641,12 @@
                   try { 
                       let parsed = JSON.parse(saved);
                       if (parsed.isStarted === undefined) parsed.isStarted = true; // Migrazione vecchi save
+                      // FIX: Sicurezza aggiuntiva per evitare crash da salvataggi corrotti
+                      if (!parsed.roster) parsed.roster = ['finn', 'topolino'];
+                      if (!parsed.rosterStats) parsed.rosterStats = { 'finn': 100, 'topolino': 100 };
+                      if (parsed.sectorIdx === undefined) parsed.sectorIdx = 0;
+                      if (parsed.missionIdx === undefined) parsed.missionIdx = 0;
+                      if (parsed.coins === undefined) parsed.coins = 50;
                       return parsed; 
                   } catch(e){}
               }
@@ -3662,6 +3668,7 @@
                     <div>
                         <label className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-2 flex items-center gap-2"><ImageIcon size={14}/> URL Avatar (Opzionale)</label>
                         <input type="text" value={playerAvatarUrl} onChange={e => setPlayerAvatarUrl(e.target.value)} className="w-full bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all text-sm" placeholder="Es: https://.../img.jpg" />
+                        <p className="text-[10px] text-slate-500 mt-1 italic">Da tablet/mobile: tieni premuto sull'immagine web e scegli "Copia indirizzo immagine" (non "Copia immagine").</p>
                     </div>
 
                     <div className="pt-4 border-t border-slate-800 space-y-4">
@@ -3785,10 +3792,14 @@
                         <div className="flex items-center justify-center gap-4 mb-8 bg-black/30 p-4 rounded-2xl w-full">
                             <span className="text-slate-400 font-bold uppercase tracking-widest text-sm mr-4">Boss:</span>
                             {(() => {
-                                const activeBosses = mission.isAnomaly && campaignState.anomalyTargets ? campaignState.anomalyTargets : mission.boss;
-                                return activeBosses.map(bId => {
+                                let activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+                                // FIX: Evita che i placeholder dinamici rompano l'interfaccia se non sono stati generati dal salvataggio
+                                if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) {
+                                    activeBosses = ['scheletro'];
+                                }
+                                return activeBosses.map((bId, idx) => {
                                     const b = CHARACTERS.find(c=>c.id===bId);
-                                    return b ? <img key={bId} src={b.img} className={`w-16 h-16 rounded-full border-2 ${mission.isAnomaly ? 'border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.8)] filter sepia-[0.3] hue-rotate-[280deg]' : 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]'} object-cover`} title={b.name} alt={b.name} /> : null;
+                                    return b ? <img key={`${bId}-${idx}`} src={b.img} className={`w-16 h-16 rounded-full border-2 ${mission.isAnomaly ? 'border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.8)] filter sepia-[0.3] hue-rotate-[280deg]' : 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]'} object-cover`} title={b.name} alt={b.name} /> : null;
                                 });
                             })()}
                         </div>
@@ -4111,23 +4122,29 @@
         const handleStartCampaignBattle = () => {
             if (campaignSelectedTeam.length === 0) return setSystemAlert("Seleziona almeno un personaggio!");
             
-            const activeBosses = mission.isAnomaly && campaignState.anomalyTargets ? campaignState.anomalyTargets : mission.boss;
+            const activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
             
             const p1Team = campaignSelectedTeam.map(id => {
                 const baseChar = CHARACTERS.find(c => c.id === id);
-                const hp = campaignState.rosterStats[id];
+                if (!baseChar) return null; // FIX: Previene crash fatali
+                const hp = campaignState.rosterStats[id] || 100;
                 return {
                     ...JSON.parse(JSON.stringify(baseChar)), hp: hp, statuses: [], consecutiveProtect: 0,
                     baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
                     moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
                 };
-            });
+            }).filter(Boolean); // Rimuove i null per sicurezza
 
             // Calcolo scaling progressivo (ogni settore aumenta HP del 5% e Stat del 3%)
             let progressiveScale = 1 + (campaignState.sectorIdx * 0.05);
 
             const p2Team = activeBosses.map(id => {
-                const baseChar = CHARACTERS.find(c => c.id === id);
+                let baseChar = CHARACTERS.find(c => c.id === id);
+                
+                // FIX CRITICO: Se l'id del boss manca (es. anomalia non salvata bene), usa uno scheletro per evitare lo SCHERMO NERO
+                if (!baseChar) {
+                    baseChar = CHARACTERS.find(c => c.id === 'scheletro');
+                }
                 
                 let hpMultiplier = progressiveScale;
                 if (isFinalRaid) hpMultiplier = 15; // Trigon e Gaster hanno 15x HP!
@@ -4178,11 +4195,14 @@
             state.settings = { teamSize: p1Team.length, fieldSize: Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length)) };
             
             state.players.p1 = playerName || "Resistenza";
-            state.playerAvatars.p1 = CHARACTERS.find(c=>c.id===campaignSelectedTeam[0])?.img || '';
+            state.playerAvatars.p1 = p1Team.length > 0 ? p1Team[0].img : '';
             state.isBot.p1 = false;
             
-            state.players.p2 = mission.isAnomaly ? "Team Infetto" : activeBosses.map(id => CHARACTERS.find(c=>c.id===id).name).join(" & ");
-            state.playerAvatars.p2 = CHARACTERS.find(c=>c.id===activeBosses[0])?.img || '';
+            state.players.p2 = mission.isAnomaly ? "Team Infetto" : activeBosses.map(id => {
+                 const b = CHARACTERS.find(c=>c.id===id);
+                 return b ? b.name : "Sconosciuto";
+            }).join(" & ");
+            state.playerAvatars.p2 = p2Team.length > 0 ? p2Team[0].img : '';
             state.isBot.p2 = true;
 
             state.teams = { p1: p1Team, p2: p2Team, p3: [], p4: [] };
