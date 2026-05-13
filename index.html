@@ -81,10 +81,10 @@
         const TYPES = ['Normale', 'Lotta', 'Fuoco', 'Acqua', 'Erba', 'Aria', 'Roccia', 'Ghiaccio', 'Robot', 'Drago', 'Magico', 'Veleno', 'Insetto', 'Elettro', 'Oscuro', 'Spettro', 'Buio'];
 
         const ITEMS_DB = {
-            'pozione': { id: 'pozione', name: 'Pozione', desc: 'Cura il 50% dei PS del personaggio in campo.', price: 100, type: 'heal', value: 0.5, icon: '🧪' },
-            'cura_totale': { id: 'cura_totale', name: 'Cura Totale', desc: 'Ripristina il 100% dei PS del personaggio.', price: 200, type: 'heal', value: 1.0, icon: '💊' },
-            'resurrezione': { id: 'resurrezione', name: 'Revitalizzante', desc: 'Riporta in vita il primo alleato sconfitto (50% PS).', price: 250, type: 'revive', value: 0.5, icon: '✨' },
-            'cura_status': { id: 'cura_status', name: 'Cura Status', desc: 'Rimuove ogni alterazione di stato negativa.', price: 50, type: 'heal_status', icon: '🌿' }
+            'pozione': { id: 'pozione', name: 'Pozione', desc: 'Cura il 50% dei PS del personaggio in campo.', price: 200, type: 'heal', value: 0.5, icon: '🧪' },
+            'cura_totale': { id: 'cura_totale', name: 'Cura Totale', desc: 'Ripristina il 100% dei PS del personaggio.', price: 400, type: 'heal', value: 1.0, icon: '💊' },
+            'resurrezione': { id: 'resurrezione', name: 'Revitalizzante', desc: 'Riporta in vita il primo alleato sconfitto (50% PS).', price: 500, type: 'revive', value: 0.5, icon: '✨' },
+            'cura_status': { id: 'cura_status', name: 'Cura Status', desc: 'Rimuove ogni alterazione di stato negativa.', price: 100, type: 'heal_status', icon: '🌿' }
         };
 
         const MOVES_DB = {
@@ -608,6 +608,15 @@
           'Ala della notte': { name: 'Ala della notte', type: 'Buio', power: 100, maxUses: 1, statusEffect: { type: 'Confuso', chance: 1.0 }, desc: 'Un attacco dall\'alto devastante. Confonde il bersaglio al 100%. (1 utilizzo)' },
           'Colpo mirato': { name: 'Colpo mirato', type: 'Buio', power: 60, targetCount: 2, desc: 'Lancia i suoi dardi colpendo con precisione fino a 2 bersagli.' },
           'Fendente notturno': { name: 'Fendente notturno', type: 'Lotta', power: 85, desc: 'Un potente colpo marziale sferrato sfruttando l\'oscurità.' },
+
+          // NUOVE MOSSE BULMA E AIUTANTI
+          'Senzu per tutti': { name: 'Senzu per tutti', type: 'Normale', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, maxUses: 2, desc: 'Cura il 50% dei PS massimi di tutti gli alleati in campo. (2 utilizzi)' },
+          'Capsula Gadget': { name: 'Capsula Gadget', type: 'Robot', power: 0, isSummon: ['robo_aiutante_1', 'robo_aiutante_2'], requireSummonsDead: ['robo_aiutante_1', 'robo_aiutante_2'], desc: 'Bulma lancia una capsula ed evoca 2 Robo Aiutanti in campo. (Utilizzabile solo se entrambi i robot sono sconfitti)' },
+          'Geyser fotonico': { name: 'Geyser fotonico', type: 'Robot', power: 100, desc: 'Spara un potentissimo raggio di energia dalla sua mano robotica.' },
+          'Cortocircuito': { name: 'Cortocircuito', type: 'Elettro', power: 300, suicide: true, desc: 'Sovraccarica il mech esplodendo! Danni immensi (300), ma costa la vita dell\'utilizzatore.' },
+          'Difesa al minimo!': { name: 'Difesa al minimo!', type: 'Robot', power: 0, targetCount: 4, targetStatDebuff: { def: 0.7 }, desc: 'Diminuisce di uno stadio la Difesa di tutti gli avversari in campo.' },
+          'Attacco al minimo!': { name: 'Attacco al minimo!', type: 'Robot', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.7 }, desc: 'Diminuisce di uno stadio l\'Attacco di tutti gli avversari in campo.' },
+          'Missile': { name: 'Missile', type: 'Robot', power: 30, desc: 'Spara un piccolo missile a ricerca che infligge 30 danni.' }
         };
 
         const CHARACTERS = [
@@ -708,13 +717,17 @@
           { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Guardia&backgroundColor=dc2626', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
+          
+          { id: 'bulma', name: 'Bulma', types: ['Robot'], hp: 100, maxHp: 100, atk: 70, def: 110, spd: 85, img: 'https://i.pinimg.com/736x/a4/d0/2c/a4d02c84248f59d5e683b1d57a9ad3b8.jpg', moves: [MOVES_DB['Senzu per tutti'], MOVES_DB['Capsula Gadget'], MOVES_DB['Geyser fotonico'], MOVES_DB['Cortocircuito']] },
+          { id: 'robo_aiutante_1', name: 'Robo Aiutante (Difesa)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/2e/e4/74/2ee4744e03259e47f7005eb9a799b54b.jpg', moves: [MOVES_DB['Difesa al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
+          { id: 'robo_aiutante_2', name: 'Robo Aiutante (Attacco)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/3e/8c/64/3e8c64997be28096fd2bc924b3743d39.jpg', moves: [MOVES_DB['Attacco al minimo!'], MOVES_DB['Missile']], isSummonOnly: true }
         ];
 
         const CHAR_PRICES = {
-            'goku': 200, 'kratos': 200, 'godzilla': 200, 'cell': 200, 'nito': 200, 'ryuk': 200, 'rias': 200, 'utopia': 200,
-            'laxus': 150, 'zabuza': 150, 'pyra': 150, 'natsu': 150, 'aang': 150, 'yugo': 150, 'garnet': 150, 'nightwing': 150,
-            'bowser': 100, 'sdentato': 100, 'corvina': 100, 'zatchbell': 100, 'lapis': 100, 'sage': 100, 'ariana': 100, 'groot': 100, 'dannyphantom': 100, 'reboo': 100, 'metalsonic': 100, 'astral': 100, 'yusei': 100, 'stellarubia': 100, 'shego': 100, 'hannibal': 100, 'po': 100, 'strega': 100, 'yukionna': 100,
-            'zazan': 50, 'charmcaster': 50, 'patrick': 50, 'plankton': 50, 'wario': 50, 'zuko': 50, 'barry': 50, 'bloom': 50, 'juvia': 50, 'sanemi': 50, 'cuoredipietra': 50, 'poisonivy': 50, 'zergling': 50, 'gaston': 50, 'leslie': 50, 'dolli': 50, 'reghiaccio': 50, 'cosmo': 50, 'mantide': 50, 'renarouge': 50, 'rainbowdash': 50, 'spike': 50, 'jackfrost': 50, 'polterpup': 50, 'whisper': 50, 'juri': 50, 'iris': 50, 'bumblebee': 50, 'marceline': 50, 'jakedc': 50
+            'goku': 300, 'kratos': 300, 'godzilla': 300, 'cell': 300, 'nito': 300, 'ryuk': 300, 'rias': 300, 'utopia': 300,
+            'laxus': 200, 'zabuza': 200, 'pyra': 200, 'natsu': 200, 'aang': 200, 'yugo': 200, 'garnet': 200, 'nightwing': 200,
+            'bowser': 150, 'sdentato': 150, 'corvina': 150, 'zatchbell': 150, 'lapis': 150, 'sage': 150, 'ariana': 150, 'groot': 150, 'dannyphantom': 150, 'reboo': 150, 'metalsonic': 150, 'astral': 150, 'yusei': 150, 'stellarubia': 150, 'shego': 150, 'hannibal': 150, 'po': 150, 'strega': 150, 'yukionna': 150, 'bulma': 150,
+            'zazan': 100, 'charmcaster': 100, 'patrick': 100, 'plankton': 100, 'wario': 100, 'zuko': 100, 'barry': 100, 'bloom': 100, 'juvia': 100, 'sanemi': 100, 'cuoredipietra': 100, 'poisonivy': 100, 'zergling': 100, 'gaston': 100, 'leslie': 100, 'dolli': 100, 'reghiaccio': 100, 'cosmo': 100, 'mantide': 100, 'renarouge': 100, 'rainbowdash': 100, 'spike': 100, 'jackfrost': 100, 'polterpup': 100, 'whisper': 100, 'juri': 100, 'iris': 100, 'bumblebee': 100, 'marceline': 100, 'jakedc': 100
         };
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
@@ -915,15 +928,18 @@
                   id: 'm10', title: 'Un Eroe Caduto',
                   dialogue: [
                     { s: "Goku (Corrotto)", t: "Non riesco... a fermarmi! Il mio corpo... vuole solo lottare per LUI!" },
+                    { s: "Bulma (Corrotta)", t: "Analisi completata! Siete delle imperfezioni da eliminare. Fuoco a volontà dai miei Robo Aiutanti!" },
                     { s: "Topolino", t: "Sta resistendo al controllo mentale! Dobbiamo indebolirlo per spezzare il legame!" },
-                    { s: "Cyborg", t: "Indebolire quel tizio?! Sembra che possa far esplodere un pianeta con uno starnuto!" }
+                    { s: "Cyborg", t: "Indebolire quel tizio?! Sembra che possa far esplodere un pianeta con uno starnuto, e ora ha anche supporto robotico!" }
                   ],
                   postDialogue: [
                     { s: "Goku", t: "Uff, grazie ragazzi! Stavo rischiando di fare davvero un bel disastro." },
-                    { s: "Finn l'Umano", t: "Sei fortissimo! Avremo bisogno del tuo potere per abbattere l'Arena." },
-                    { s: "Goku", t: "Quel Cell colpisce forte! Non vedo l'ora di combatterlo di nuovo, ma stavolta insieme a voi!" }
+                    { s: "Bulma", t: "I miei circuiti sono di nuovo stabili... quel Cell aveva hackerato il mio mech! Inaccettabile!" },
+                    { s: "Finn l'Umano", t: "Siete fortissimi! Avremo bisogno del vostro potere per abbattere l'Arena." },
+                    { s: "Bulma", t: "Goku, vai con loro. Io resterò qui a riparare i danni e coordinare le comunicazioni... fate attenzione!" },
+                    { s: "Goku", t: "Agli ordini! Quel Cell colpisce forte! Non vedo l'ora di combatterlo di nuovo, ma stavolta insieme a voi!" }
                   ],
-                  boss: ['goku'],
+                  boss: ['goku', 'bulma'],
                   unlock: ['goku']
                 }
               ]
@@ -2148,6 +2164,7 @@
                     if (!bestAction) {
                         cpuChar.moves.forEach((move, moveIdx) => {
                             if (move.remainingUses === 0) return;
+                            if (move.requireSummonsDead && gameState.teams[cpuPlayer].some(c => move.requireSummonsDead.includes(c.id) && c.hp > 0)) return;
 
                             if (move.target === 'self' || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.isProtect || move.isSummon) {
                                 // Mosse di Supporto
@@ -2939,6 +2956,10 @@
                 if (move.recharge && attackSucceeded && attacker.hp > 0) {
                     attacker.statuses.push({ type: 'Ricarica', turns: 1 });
                     updateStatusUI(player, charTeamIdx);
+                }
+
+                if (move.suicide && attacker.hp > 0) {
+                    applyDamage(attacker, attacker.hp, player, charTeamIdx, `${attacker.name} va in cortocircuito ed esplode sacrificandosi!`);
                 }
             }
         } // Fine ciclo coda dei turni
@@ -5004,7 +5025,12 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {activeCommandChar.moves.map((move, idx) => {
-                                                    const isDisabled = move.remainingUses === 0;
+                                                    let isDisabled = move.remainingUses === 0;
+                                                    if (move.requireSummonsDead && !isDisabled) {
+                                                        if (gameState.teams[playerRole].some(c => move.requireSummonsDead.includes(c.id) && c.hp > 0)) {
+                                                            isDisabled = true;
+                                                        }
+                                                    }
                                                     return (
                                                         <button
                                                             key={idx}
