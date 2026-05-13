@@ -363,7 +363,7 @@
           'Baou Zakeruga': { name: 'Baou Zakeruga', type: 'Elettro', power: 150, maxUses: 1, desc: 'Evoca un colossale drago elettrico. Danni immensi, ma utilizzabile solo 1 volta.' },
 
           // NUOVE MOSSE RENA ROUGE
-          'Miraggio!': { name: 'Miraggio!', type: 'Magico', power: 0, isSummon: ['clone_rosso', 'clone_verde'], maxUses: 1, desc: 'Suona il flauto ed evoca due cloni illusori (rosso e verde) con il 50% delle statistiche. Solo 1 utilizzo.' },
+          'Miraggio!': { name: 'Miraggio!', type: 'Magico', power: 0, isSummon: ['clone_rosso', 'clone_verde'], maxUses: 4, requireSummonsDead: ['clone_rosso', 'clone_verde'], desc: 'Suona il flauto ed evoca due cloni illusori. Usabile solo se i cloni sono sconfitti. (4 utilizzi)' },
           'Colpo di flauto': { name: 'Colpo di flauto', type: 'Normale', power: 20, desc: 'Colpisce il nemico con il flauto magico.' },
           'Zuffa di colpi': { name: 'Zuffa di colpi', type: 'Normale', power: 150, recharge: true, desc: 'Una scarica di colpi violentissima. Richiede un turno di ricarica successivo al suo utilizzo.' },
           'Devia-colpi': { name: 'Devia-colpi', type: 'Normale', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 3, desc: 'Ruota il bastone ad alta velocità per deviare l\'attacco e riflettere il 25% del danno al mittente.' },
@@ -630,6 +630,32 @@
           'Ride Or Die': { name: 'Ride Or Die', type: 'Normale', power: 90, accuracy: 0.75, desc: 'Un colpo tutto o niente! Infligge molti danni ma ha solo il 75% di precisione.' },
           'Love is Strange': { name: 'Love is Strange', type: 'Magico', power: 150, maxUses: 1, isCombo: ['maxcaulfield', 'chloeprice'], selfStatBuff: { def: 2.0 }, desc: 'Mossa Combinata: 150 danni e Raddoppia la Difesa di Max e Chloe! Consuma il turno di entrambe.' }
         };
+
+        // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
+        Object.values(MOVES_DB).forEach(move => {
+            if (move.power === 0 || move.isProtect || move.heal || move.selfHeal || move.healAlone || move.healFlat || move.targetMode === 'revive') {
+                if (move.maxUses === 1 && move.targetMode === 'revive') {
+                    move.maxUses = 3; // Buff ai revive
+                } else if (move.maxUses === 1 || move.maxUses === 2) {
+                    move.maxUses = 5; // Aumentati gli usi per le mosse limitate
+                } else if (!move.maxUses) {
+                    if (move.isProtect) {
+                        move.maxUses = 8; // Protezioni hanno 8 PP
+                    } else if (move.heal || move.selfHeal || move.healAlone || move.healFlat) {
+                        move.maxUses = 6; // Cure hanno 6 PP
+                    } else if (move.isSummon) {
+                        move.maxUses = 5; // Evocazioni
+                    } else {
+                        move.maxUses = 5; // Buff e Debuff di base
+                    }
+                } else {
+                    // Se aveva già maxUses (es. 3, 4, 5), aumentiamo per bilanciare
+                    if (move.maxUses < 8 && move.isProtect) move.maxUses = 8;
+                    else if (move.maxUses < 6 && (move.heal || move.healAlone || move.selfHeal)) move.maxUses = 6;
+                    else if (move.maxUses < 5) move.maxUses = 5;
+                }
+            }
+        });
 
         const CHARACTERS = [
           { id: 'snorlax', name: 'Snorlax', types: ['Normale'], hp: 160, maxHp: 160, atk: 110, def: 65, spd: 30, img: 'https://i.pinimg.com/736x/49/99/27/499927d6452845cbf3a5e65c116bbaca.jpg', moves: [MOVES_DB['Riposo'], MOVES_DB['Doppia Sberla'], MOVES_DB['Corposcontro'], MOVES_DB['Tuonopugno']] },
@@ -1627,6 +1653,7 @@
           const [draftHoverInfo, setDraftHoverInfo] = useState(null);
           const [actionMenuMode, setActionMenuMode] = useState('moves');
           const [hoveredMove, setHoveredMove] = useState(null);
+          const [hasRewarded, setHasRewarded] = useState(false);
           
           const matchStartTimeRef = useRef(null);
           const draftLongPressRef = useRef(false);
@@ -1662,7 +1689,8 @@
                       'topolino': topo ? topo.maxHp : 100
                   },
                   coins: 50,
-                  difficulty: 'Normal'
+                  difficulty: 'Normal',
+                  currentBossState: null
               };
           });
           const [campaignDialogueIdx, setCampaignDialogueIdx] = useState(0);
@@ -1841,6 +1869,58 @@
               localStorage.setItem('multiverse_rpg_saved_name', playerName);
           }, [playerAvatarUrl, playerName]);
 
+          // AGGIORNAMENTO STATISTICHE E PREMI (Risolto bug Battle Royale e Ospiti Online)
+          useEffect(() => {
+              if (gameState.status === 'pre_battle') {
+                  setHasRewarded(false);
+              }
+              if (gameState.status === 'gameover' && !hasRewarded && playerName.trim() && !gameState.isCampaignBattle) {
+                  setHasRewarded(true);
+                  
+                  if (matchStartTimeRef.current) {
+                      const playTimeSecs = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
+                      updateLocalStats({ playtime: playTimeSecs });
+                  }
+                  
+                  const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
+                  if (myKey && gameState.inventory[myKey]) {
+                      updateLocalStats({ overwriteInventory: gameState.inventory[myKey] });
+                  }
+
+                  if (myKey) {
+                      let coinsToReward = 0;
+                      let won = false;
+
+                      if (gameState.gameMode === 'torneo') {
+                          const tr = gameState.tournamentResults;
+                          if (tr.final && tr.final.winner === myKey) { coinsToReward = 200; won = true; }
+                          else if (tr.final && tr.final.loser === myKey) { coinsToReward = 100; }
+                          else if (tr.bronze && tr.bronze.winner === myKey) { coinsToReward = 70; }
+                          else if (tr.bronze && tr.bronze.loser === myKey) { coinsToReward = 50; }
+                          else { coinsToReward = 50; }
+                      } else {
+                          if (gameState.gameMode === 'multipla') {
+                               if (gameState.winner && gameState.winner.includes(playerName)) won = true;
+                          } else if (gameState.winner === playerName) {
+                               won = true;
+                          }
+                          coinsToReward = won ? 100 : 50;
+                          if (gameState.winner === 'Pareggio') coinsToReward = 50;
+                      }
+                      
+                      const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
+                      coinsToReward += teamSizeBonus;
+
+                      if (won) {
+                           updateLocalStats({ win: true });
+                      }
+                      if (coinsToReward > 0) {
+                           updateLocalStats({ addCoins: coinsToReward });
+                      }
+                  }
+              }
+          }, [gameState.status, hasRewarded, playerName, gameState.winner, gameState.gameMode, gameState.tournamentResults, gameState.settings.teamSize, gameState.inventory, gameState.players, gameState.isCampaignBattle]);
+
           useEffect(() => {
               const saveableModes = ['local_room', 'online_room'];
               if (saveableModes.includes(appMode)) {
@@ -1886,6 +1966,14 @@
                   if (data.coins === undefined) data.coins = 100;
                   if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                   if (data.unlockedChars === undefined) data.unlockedChars = [];
+                  
+                  // FIX: Scuse e Regalo di 200 Monete
+                  if (!data.apologyGiftReceived) {
+                      data.coins += 200;
+                      data.apologyGiftReceived = true;
+                      localStorage.setItem(key, JSON.stringify(data));
+                  }
+                  
                   return data;
               }
 
@@ -1900,12 +1988,18 @@
                           if (data.coins === undefined) data.coins = 100;
                           if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                           if (data.unlockedChars === undefined) data.unlockedChars = [];
+                          
+                          if (!data.apologyGiftReceived) {
+                              data.coins += 200;
+                              data.apologyGiftReceived = true;
+                              localStorage.setItem(key, JSON.stringify(data));
+                          }
                           return data;
                       }
                   }
               }
 
-              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 100, inventory: { cura_totale: 1 }, unlockedChars: [] };
+              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 300, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true };
           };
 
           const updateLocalStats = (updates) => {
@@ -1952,15 +2046,40 @@
               const inBattleStates = ['battling', 'executing', 'switching_phase', 'pre_battle', 'intermission'];
 
               if (gameState.isCampaignBattle) {
-                  // Ritiro in campagna: Fallimento automatico, cura minima per non soft-lockare
+                  // Ritiro in campagna: Fallimento automatico, salva HP del team e dei boss
                   const newRosterStats = { ...campaignState.rosterStats };
-                  campaignState.roster.forEach(id => {
-                      if (newRosterStats[id] <= 0) {
+                  if (gameState.teams && gameState.teams.p1) {
+                      gameState.teams.p1.forEach(c => {
+                          if (!c.isSummonOnly) newRosterStats[c.id] = c.hp;
+                      });
+                  }
+
+                  let currentEnemyState = null;
+                  if (gameState.teams && gameState.teams.p2) {
+                      const aliveEnemies = gameState.teams.p2.filter(c => c.hp > 0);
+                      if (aliveEnemies.length > 0) {
+                          currentEnemyState = aliveEnemies.map(c => ({
+                              id: c.id,
+                              hp: c.hp,
+                              maxHp: c.maxHp,
+                              atk: c.atk,
+                              def: c.def,
+                              spd: c.spd,
+                              statuses: c.statuses
+                          }));
+                      }
+                  }
+
+                  // Prevenzione Soft-lock: se muoiono TUTTI i pg del roster, li cura al 30% per riprovare
+                  const aliveCount = campaignState.roster.filter(id => newRosterStats[id] > 0).length;
+                  if (aliveCount === 0) {
+                      campaignState.roster.forEach(id => {
                           const baseChar = CHARACTERS.find(c=>c.id===id);
                           newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
-                      }
-                  });
-                  setCampaignState(p => ({...p, rosterStats: newRosterStats}));
+                      });
+                  }
+
+                  setCampaignState(p => ({...p, rosterStats: newRosterStats, currentBossState: currentEnemyState}));
                   leaveRoom();
                   setAppMode('campaign_map');
                   return;
@@ -2449,15 +2568,21 @@
 
                             if (move.target === 'self' || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.isProtect || move.isSummon) {
                                 // Mosse di Supporto
-                                let score = 50; 
+                                let score = 0; 
                                 if (move.heal || move.healAlone) {
-                                    if (cpuChar.hp < cpuChar.maxHp * 0.5) score += 200;
-                                    else score = 0;
+                                    if (cpuChar.hp < cpuChar.maxHp * 0.5) score += 150;
+                                } else if (move.isProtect) {
+                                    if ((cpuChar.consecutiveProtect || 0) > 0) score += 0;
+                                    else score += 50;
+                                } else if (move.statBuff || move.targetStatBuff) {
+                                    score += 40;
+                                } else if (move.isSummon) {
+                                    score += 80;
+                                } else {
+                                    score += 30;
                                 }
-                                if (move.isProtect) score = 80 - ((cpuChar.consecutiveProtect || 0) * 40);
-                                if (move.statBuff) score += 100;
 
-                                score += Math.random() * 20; 
+                                if (score > 0) score += Math.random() * 30; 
                                 
                                 if (score > bestScore) {
                                     bestScore = score;
@@ -2486,7 +2611,7 @@
                             } else {
                                 // Mosse di Attacco contro Nemici
                                 possibleEnemies.forEach(target => {
-                                    let score = 10;
+                                    let score = 30;
                                     if (move.power > 0) {
                                         const mult = getMultiplier(move.type, target.char.types);
                                         const dmgEst = (move.power * mult * (cpuChar.atk / Math.max(1, target.char.def))) / 2;
@@ -3134,12 +3259,39 @@
                     }
 
                 } else if (action.targetPlayer && action.targetIdx !== undefined) {
-                    resolvedTargets.push({ 
-                        player: action.targetPlayer, 
-                        idx: action.targetIdx, 
-                        fieldIdx: action.targetFieldIdx, 
-                        char: workingTeams[action.targetPlayer][action.targetIdx] 
-                    });
+                    
+                    // --- FIX: DINAMICA DELLO SLOT (Sostituzioni) ---
+                    let finalTargetIdx = action.targetIdx;
+                    
+                    // Se stavamo mirando a una posizione specifica in campo, guardiamo CHI c'è ora!
+                    if (action.targetFieldIdx !== undefined) {
+                        const currentIdxAtPos = workingField[action.targetPlayer][action.targetFieldIdx];
+                        if (currentIdxAtPos !== undefined) {
+                            finalTargetIdx = currentIdxAtPos; // Colpisce chi è subentrato
+                        } else {
+                            // Se lo slot è vuoto (es. morto prima del colpo), mira al primo vivo disponibile
+                            const anyAlive = workingField[action.targetPlayer].filter(i => workingTeams[action.targetPlayer][i].hp > 0);
+                            if (anyAlive.length > 0) {
+                                finalTargetIdx = anyAlive[0];
+                            } else {
+                                finalTargetIdx = null; // Nessuno in campo!
+                            }
+                        }
+                    }
+
+                    if (finalTargetIdx !== null) {
+                        resolvedTargets.push({ 
+                            player: action.targetPlayer, 
+                            idx: finalTargetIdx, 
+                            fieldIdx: action.targetFieldIdx, 
+                            char: workingTeams[action.targetPlayer][finalTargetIdx] 
+                        });
+                    }
+                }
+
+                if (resolvedTargets.length === 0) {
+                    events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma non c'è nessun bersaglio!` });
+                    continue;
                 }
 
                 let attackSucceeded = false;
@@ -3486,52 +3638,6 @@
 
             if (hasPendingSwitches) {
                 nextStatus = 'switching_phase';
-            }
-        }
-
-        // AGGIORNAMENTO STATISTICHE DI FINE PARTITA
-        if (nextStatus === 'gameover' && playerName.trim()) {
-            if (matchStartTimeRef.current) {
-                const playTimeSecs = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
-                updateLocalStats({ playtime: playTimeSecs });
-            }
-            
-            // Salva l'inventario rimasto a fine partita
-            const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
-            if (myKey && workingInventory[myKey]) {
-                updateLocalStats({ overwriteInventory: workingInventory[myKey] });
-            }
-
-            // Controllo Vittoria e Ricompensa Monete
-            if (myKey) {
-                let coinsToReward = 0;
-                let won = false;
-
-                if (gameState.gameMode === 'torneo') {
-                    if (tResults.final && tResults.final.winner === myKey) { coinsToReward = 200; won = true; }
-                    else if (tResults.final && tResults.final.loser === myKey) { coinsToReward = 100; }
-                    else if (tResults.bronze && tResults.bronze.winner === myKey) { coinsToReward = 70; }
-                    else if (tResults.bronze && tResults.bronze.loser === myKey) { coinsToReward = 50; }
-                    else { coinsToReward = 50; }
-                } else {
-                    if (gameState.gameMode === 'multipla') {
-                         if (winner && winner.includes(playerName)) won = true;
-                    } else if (winner === playerName) {
-                         won = true;
-                    }
-                    coinsToReward = won ? 100 : 50;
-                }
-                
-                // CALCOLO BONUS TEAM SIZE
-                const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
-                coinsToReward += teamSizeBonus;
-
-                if (won) {
-                     updateLocalStats({ win: true });
-                }
-                if (coinsToReward > 0) {
-                     updateLocalStats({ addCoins: coinsToReward });
-                }
             }
         }
 
@@ -3946,7 +4052,8 @@
                         roster: ['finn', 'topolino'],
                         rosterStats: { 'finn': finn ? finn.maxHp : 100, 'topolino': topo ? topo.maxHp : 100 },
                         coins: 50,
-                        difficulty: 'Normal'
+                        difficulty: 'Normal',
+                        currentBossState: null
                     });
                     setAppMode('menu'); 
                 }} className="absolute top-6 right-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 text-sm font-bold shadow-lg">
@@ -4159,59 +4266,92 @@
                 };
             }).filter(Boolean); // Rimuove i null per sicurezza
 
-            // Calcolo scaling progressivo (ogni settore aumenta HP del 5% e Stat del 3%)
-            let progressiveScale = 1 + (campaignState.sectorIdx * 0.05);
+            let p2Team = [];
 
-            const p2Team = activeBosses.map(id => {
-                let baseChar = CHARACTERS.find(c => c.id === id);
-                
-                // FIX CRITICO: Se l'id del boss manca (es. anomalia non salvata bene), usa uno scheletro per evitare lo SCHERMO NERO
-                if (!baseChar) {
-                    baseChar = CHARACTERS.find(c => c.id === 'scheletro');
-                }
-                
-                let hpMultiplier = progressiveScale;
-                if (isFinalRaid) hpMultiplier = 15; // Trigon e Gaster hanno 15x HP!
-                else if (campaignState.difficulty === 'Insane') hpMultiplier *= 1.5; 
-                
-                let hp = Math.floor(baseChar.maxHp * hpMultiplier);
-                
-                let charInst = {
-                    ...JSON.parse(JSON.stringify(baseChar)), hp: hp, maxHp: hp, statuses: [], consecutiveProtect: 0,
-                    baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                    moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
-                };
-                
-                // Buff Alle Statistiche (Attacco e Difesa scalano in base al settore)
-                if (!isFinalRaid) {
-                     charInst.atk = Math.floor(charInst.atk * (1 + (campaignState.sectorIdx * 0.03)));
-                     charInst.baseAtk = charInst.atk;
-                     charInst.def = Math.floor(charInst.def * (1 + (campaignState.sectorIdx * 0.03)));
-                     charInst.baseDef = charInst.def;
-                     charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
-                } else {
-                     charInst.atk = Math.floor(charInst.atk * 1.5); // Final raid buff
-                     charInst.baseAtk = charInst.atk;
-                     charInst.def = Math.floor(charInst.def * 1.2);
-                     charInst.baseDef = charInst.def;
-                     charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
-                }
+            if (campaignState.currentBossState && campaignState.currentBossState.length > 0) {
+                p2Team = campaignState.currentBossState.map(savedC => {
+                    let baseChar = CHARACTERS.find(c => c.id === savedC.id);
+                    if (!baseChar) baseChar = CHARACTERS.find(c => c.id === 'scheletro');
+                    
+                    let charInst = {
+                        ...JSON.parse(JSON.stringify(baseChar)), 
+                        hp: savedC.hp, 
+                        maxHp: savedC.maxHp, 
+                        statuses: savedC.statuses || [], 
+                        consecutiveProtect: 0,
+                        atk: savedC.atk, 
+                        baseAtk: savedC.atk, 
+                        def: savedC.def, 
+                        baseDef: savedC.def, 
+                        spd: savedC.spd, 
+                        baseSpd: savedC.spd,
+                        moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                    };
 
-                if (campaignState.difficulty === 'Insane' || isFinalRaid) {
-                    charInst.statuses.push({ type: 'Protetto', turns: 1 });
-                    charInst.statuses.push({ type: 'Scudo Team', turns: 2 });
-                }
-                
-                // Buff Alle Statistiche dei Super Boss
-                if (isFinalRaid) {
-                     charInst.atk = Math.floor(charInst.atk * 1.5);
-                     charInst.baseAtk = charInst.atk;
-                     charInst.def = Math.floor(charInst.def * 1.2);
-                     charInst.baseDef = charInst.def;
-                }
+                    // Riassegna il filtro immagine
+                    if (!isFinalRaid) {
+                         charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                    } else {
+                         charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; 
+                    }
 
-                return charInst;
-            });
+                    return charInst;
+                });
+            } else {
+                // Calcolo scaling progressivo (ogni settore aumenta HP del 5% e Stat del 3%)
+                let progressiveScale = 1 + (campaignState.sectorIdx * 0.05);
+
+                p2Team = activeBosses.map(id => {
+                    let baseChar = CHARACTERS.find(c => c.id === id);
+                    
+                    // FIX CRITICO: Se l'id del boss manca (es. anomalia non salvata bene), usa uno scheletro per evitare lo SCHERMO NERO
+                    if (!baseChar) {
+                        baseChar = CHARACTERS.find(c => c.id === 'scheletro');
+                    }
+                    
+                    let hpMultiplier = progressiveScale;
+                    if (isFinalRaid) hpMultiplier = 15; // Trigon e Gaster hanno 15x HP!
+                    else if (campaignState.difficulty === 'Insane') hpMultiplier *= 1.5; 
+                    
+                    let hp = Math.floor(baseChar.maxHp * hpMultiplier);
+                    
+                    let charInst = {
+                        ...JSON.parse(JSON.stringify(baseChar)), hp: hp, maxHp: hp, statuses: [], consecutiveProtect: 0,
+                        baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
+                        moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                    };
+                    
+                    // Buff Alle Statistiche (Attacco e Difesa scalano in base al settore)
+                    if (!isFinalRaid) {
+                         charInst.atk = Math.floor(charInst.atk * (1 + (campaignState.sectorIdx * 0.03)));
+                         charInst.baseAtk = charInst.atk;
+                         charInst.def = Math.floor(charInst.def * (1 + (campaignState.sectorIdx * 0.03)));
+                         charInst.baseDef = charInst.def;
+                         charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                    } else {
+                         charInst.atk = Math.floor(charInst.atk * 1.5); // Final raid buff
+                         charInst.baseAtk = charInst.atk;
+                         charInst.def = Math.floor(charInst.def * 1.2);
+                         charInst.baseDef = charInst.def;
+                         charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
+                    }
+
+                    if (campaignState.difficulty === 'Insane' || isFinalRaid) {
+                        charInst.statuses.push({ type: 'Protetto', turns: 1 });
+                        charInst.statuses.push({ type: 'Scudo Team', turns: 2 });
+                    }
+                    
+                    // Buff Alle Statistiche dei Super Boss
+                    if (isFinalRaid) {
+                         charInst.atk = Math.floor(charInst.atk * 1.5);
+                         charInst.baseAtk = charInst.atk;
+                         charInst.def = Math.floor(charInst.def * 1.2);
+                         charInst.baseDef = charInst.def;
+                    }
+
+                    return charInst;
+                });
+            }
 
             const state = initialGameState();
             state.gameMode = 'classica';
@@ -4279,12 +4419,34 @@
     }
 
     if (appMode === 'campaign_shop') {
-        const buyHeal = () => {
-            if (campaignState.coins >= 50) {
+        const buyFullHeal = () => {
+            if (campaignState.coins >= 600) {
                 const newStats = {...campaignState.rosterStats};
                 campaignState.roster.forEach(id => {
                     newStats[id] = CHARACTERS.find(c=>c.id===id).maxHp;
                 });
+                setCampaignState(p => ({...p, coins: p.coins - 600, rosterStats: newStats}));
+            } else {
+                setSystemAlert("Non hai abbastanza monete!");
+            }
+        };
+
+        const buyRevive = (id) => {
+            if (campaignState.coins >= 100) {
+                const newStats = {...campaignState.rosterStats};
+                const maxHp = CHARACTERS.find(c=>c.id===id).maxHp;
+                newStats[id] = Math.floor(maxHp * 0.5);
+                setCampaignState(p => ({...p, coins: p.coins - 100, rosterStats: newStats}));
+            } else {
+                setSystemAlert("Non hai abbastanza monete!");
+            }
+        };
+
+        const buyPotion = (id) => {
+            if (campaignState.coins >= 50) {
+                const newStats = {...campaignState.rosterStats};
+                const maxHp = CHARACTERS.find(c=>c.id===id).maxHp;
+                newStats[id] = Math.min(maxHp, newStats[id] + Math.floor(maxHp * 0.5));
                 setCampaignState(p => ({...p, coins: p.coins - 50, rosterStats: newStats}));
             } else {
                 setSystemAlert("Non hai abbastanza monete!");
@@ -4294,26 +4456,60 @@
         return (
             <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                <div className="bg-slate-900/90 border border-yellow-500/50 p-10 rounded-3xl max-w-lg w-full text-center shadow-[0_0_50px_rgba(234,179,8,0.15)] z-10">
-                    <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">Checkpoint Dimensionale</h2>
-                    <p className="text-slate-400 text-sm mb-10">Riposa e cura la tua squadra prima del prossimo settore.</p>
-                    
-                    <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 mb-10 flex justify-between items-center shadow-inner">
-                         <div className="text-left flex items-center gap-4">
-                             <div className="bg-emerald-500/20 p-3 rounded-xl text-emerald-400"><Heart size={28}/></div>
-                             <div>
-                                 <div className="font-black text-xl text-white">Cura Totale Squadra</div>
-                                 <div className="text-xs text-slate-400 mt-1">Ripristina tutti gli HP al massimo</div>
-                             </div>
-                         </div>
-                         <button onClick={buyHeal} className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-black px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg hover:-translate-y-0.5 transition-all"><Coins size={20}/> 50</button>
-                    </div>
+                <div className="bg-slate-900/90 border border-yellow-500/50 p-8 rounded-3xl max-w-2xl w-full text-center shadow-[0_0_50px_rgba(234,179,8,0.15)] z-10 max-h-[95vh] flex flex-col">
+                    <div className="shrink-0">
+                        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">Checkpoint Dimensionale</h2>
+                        <p className="text-slate-400 text-sm mb-4">Riposa e cura la tua squadra prima del prossimo settore.</p>
+                        
+                        <div className="flex items-center justify-center gap-3 mb-6 text-xl font-black bg-black/40 py-2 rounded-xl border border-slate-800">
+                            Bilancio: <Coins className="text-yellow-400" size={24} /> <span className="text-yellow-400">{campaignState.coins} Monete</span>
+                        </div>
 
-                    <div className="flex items-center justify-center gap-3 mb-10 text-2xl font-black bg-black/40 py-4 rounded-xl border border-slate-800">
-                        Bilancio: <Coins className="text-yellow-400" size={28} /> <span className="text-yellow-400">{campaignState.coins} Monete</span>
+                        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 mb-6 flex justify-between items-center shadow-inner">
+                             <div className="text-left flex items-center gap-4">
+                                 <div className="bg-emerald-500/20 p-2 rounded-xl text-emerald-400"><Heart size={24}/></div>
+                                 <div>
+                                     <div className="font-black text-lg text-white">Cura Totale Squadra</div>
+                                     <div className="text-xs text-slate-400 mt-1">Ripristina tutti gli HP al massimo</div>
+                                 </div>
+                             </div>
+                             <button onClick={buyFullHeal} className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-black px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg hover:-translate-y-0.5 transition-all"><Coins size={16}/> 600</button>
+                        </div>
                     </div>
                     
-                    <button onClick={() => setAppMode('campaign_map')} className="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-full font-black text-xl transition-all shadow-lg hover:-translate-y-1">Avanza al Prossimo Settore</button>
+                    <div className="text-left text-sm font-bold text-slate-400 mb-2 px-2">Cure Individuali:</div>
+                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 mb-6 space-y-3 text-left">
+                        {campaignState.roster.map(id => {
+                            const char = CHARACTERS.find(c=>c.id===id);
+                            const hp = campaignState.rosterStats[id] || 0;
+                            if(!char) return null;
+                            const isDead = hp <= 0;
+                            const isFull = hp >= char.maxHp;
+
+                            return (
+                                <div key={id} className={`bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 flex items-center gap-3`}>
+                                    <img src={char.img} className={`w-12 h-12 rounded-full border border-slate-600 object-cover ${isDead ? 'grayscale' : ''}`} />
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bold text-sm truncate">{char.name} {isDead && <span className="text-rose-500 text-[10px] ml-1">(Esausto)</span>}</div>
+                                        {renderHealthBar(hp, char.maxHp)}
+                                    </div>
+                                    <div className="shrink-0 flex gap-2">
+                                        {isDead ? (
+                                            <button onClick={() => buyRevive(id)} className="bg-rose-600 hover:bg-rose-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 text-xs shadow-md transition-all">
+                                                <Heart size={12}/> Revitalizza <Coins size={10}/> 100
+                                            </button>
+                                        ) : (
+                                            <button disabled={isFull} onClick={() => buyPotion(id)} className={`font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 text-xs shadow-md transition-all ${isFull ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-500 text-white'}`}>
+                                                <Heart size={12}/> Pozione (+50%) <Coins size={10}/> 50
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    
+                    <button onClick={() => setAppMode('campaign_map')} className="w-full shrink-0 bg-blue-600 hover:bg-blue-500 py-4 rounded-full font-black text-xl transition-all shadow-lg hover:-translate-y-1">Avanza al Prossimo Settore</button>
                 </div>
             </div>
         );
@@ -4347,7 +4543,8 @@
                         roster: ['finn', 'topolino'],
                         rosterStats: { 'finn': finn ? finn.maxHp : 100, 'topolino': topo ? topo.maxHp : 100 },
                         coins: 50,
-                        difficulty: 'Normal'
+                        difficulty: 'Normal',
+                        currentBossState: null
                     });
                     setAppMode('menu'); 
                 }} className="bg-white text-black px-12 py-5 rounded-full font-black text-xl hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.4)]">Torna al Menu Principale</button>
@@ -5478,7 +5675,7 @@
                                                                             return; 
                                                                     }
                                                                     
-                                                                    if (move.target === 'self' || move.isSummon || move.targetMode === 'team_smart_heal' || move.targetMode === 'team') {
+                                                                    if (move.target === 'self' || move.isSummon || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.targetMode === 'revive') {
                                                                             commitAction({
                                                                                     type: 'attack',
                                                                                     moveIdx: idx,
@@ -5613,12 +5810,16 @@
                                     const newRosterStats = { ...campaignState.rosterStats };
                                     const faintedThisBattle = [];
                                     
-                                    gameState.teams.p1.forEach(c => {
-                                        newRosterStats[c.id] = c.hp;
-                                        if (c.hp <= 0 && !c.isSummonOnly) {
-                                            faintedThisBattle.push(c.name);
-                                        }
-                                    });
+                                    if (gameState.teams && gameState.teams.p1) {
+                                        gameState.teams.p1.forEach(c => {
+                                            if (!c.isSummonOnly) {
+                                                newRosterStats[c.id] = c.hp;
+                                                if (c.hp <= 0) {
+                                                    faintedThisBattle.push(c.name);
+                                                }
+                                            }
+                                        });
+                                    }
                                     
                                     const mission = CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
                                     const newRoster = [...campaignState.roster];
@@ -5647,8 +5848,9 @@
                                         ...prev,
                                         rosterStats: newRosterStats,
                                         roster: newRoster,
-                                        faintedInLastBattle: faintedThisBattle, // Salva i personaggi andati KO
-                                        lastUnlocked: unlockedThisTime // Salva per usarlo nei dialoghi dinamici!
+                                        faintedInLastBattle: faintedThisBattle, 
+                                        lastUnlocked: unlockedThisTime,
+                                        currentBossState: null // Pulisce lo stato del boss alla vittoria!
                                     }));
                                     setCampaignDialogueIdx(0);
                                     setAppMode('campaign_post_dialogue');
@@ -5659,13 +5861,38 @@
                                 <p className="text-xl text-slate-300 mb-8 font-medium">La tua squadra è caduta... ma la resistenza non si arrende!</p>
                                 <button onClick={() => {
                                     const newRosterStats = { ...campaignState.rosterStats };
-                                    campaignState.roster.forEach(id => {
-                                        if (newRosterStats[id] <= 0) {
+                                    if (gameState.teams && gameState.teams.p1) {
+                                        gameState.teams.p1.forEach(c => {
+                                            if (!c.isSummonOnly) newRosterStats[c.id] = c.hp;
+                                        });
+                                    }
+
+                                    let currentEnemyState = null;
+                                    if (gameState.teams && gameState.teams.p2) {
+                                        const aliveEnemies = gameState.teams.p2.filter(c => c.hp > 0);
+                                        if (aliveEnemies.length > 0) {
+                                            currentEnemyState = aliveEnemies.map(c => ({
+                                                id: c.id,
+                                                hp: c.hp,
+                                                maxHp: c.maxHp,
+                                                atk: c.atk,
+                                                def: c.def,
+                                                spd: c.spd,
+                                                statuses: c.statuses
+                                            }));
+                                        }
+                                    }
+
+                                    // Prevenzione Soft-lock se tutto il Roster è morto
+                                    const aliveCount = campaignState.roster.filter(id => newRosterStats[id] > 0).length;
+                                    if (aliveCount === 0) {
+                                        campaignState.roster.forEach(id => {
                                             const baseChar = CHARACTERS.find(c=>c.id===id);
                                             newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
-                                        }
-                                    });
-                                    setCampaignState(p => ({...p, rosterStats: newRosterStats}));
+                                        });
+                                    }
+
+                                    setCampaignState(p => ({...p, rosterStats: newRosterStats, currentBossState: currentEnemyState}));
                                     setAppMode('campaign_map');
                                 }} className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-10 py-5 rounded-full font-black text-2xl transition-all shadow-[0_10px_30px_rgba(225,29,72,0.4)] hover:-translate-y-1">Ritirata Strategica (Riprova)</button>
                             </>
