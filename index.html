@@ -153,6 +153,7 @@
           'Lucky Charm': { name: 'Lucky Charm', type: 'Magico', power: 0, targetMode: 'ally', targetStatBuff: { atk: 1.5, def: 1.5 }, desc: 'Evoca l\'oggetto perfetto per la situazione! Aumenta Attacco e Difesa di un alleato del 50%.' },
           'Miraculous Ladybug': { name: 'Miraculous Ladybug', type: 'Magico', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, maxUses: 2, desc: 'Lancia in aria il Lucky Charm riparando i danni! Cura tutto il team in campo del 50% dei PS.' },
           'Schivata Agile': { name: 'Schivata Agile', type: 'Normale', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Evita l\'attacco nemico con estrema agilità (funziona come protezione).' },
+          'Lucky Charm Illusorio!': { name: 'Lucky Charm Illusorio!', type: 'Magico', power: 100, maxUses: 1, isCombo: ['ladybug', 'renarouge'], selfHeal: 1.0, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Mossa Combinata: 100 danni, brucia il bersaglio e cura al 100% Ladybug e Rena Rouge! Consuma il turno di entrambe.' },
 
           // NUOVE MOSSE WARIO
           'Peto Velenoso': { name: 'Peto Velenoso', type: 'Veleno', power: 80, statusEffect: { type: 'Avvelenato', chance: 0.8 }, desc: 'Emana un gas tossico letale. 80% di probabilità di avvelenare gravemente il bersaglio.' },
@@ -510,7 +511,7 @@
 
           // NUOVE MOSSE CHAT NOIR
           'Bastone Estendibile': { name: 'Bastone Estendibile', type: 'Lotta', power: 50, multiHit: { min: 1, max: 2 }, desc: 'Colpisce il nemico da lontano con il suo bastone estendibile. Può colpire 1 o 2 volte.' },
-          'Cataclisma': { name: 'Cataclisma', type: 'Oscuro', power: 150, ignoreDefBuffs: true, maxUses: 1, desc: 'Il potere della distruzione assoluta! Ignora le difese nemiche infliggendo danni mostruosi. (Solo 1 utilizzo)' },
+          'Cataclisma': { name: 'Cataclisma', type: 'Oscuro', power: 150, ignoreDefBuffs: true, maxUses: 4, desc: 'Il potere della distruzione assoluta! Ignora le difese nemiche infliggendo danni mostruosi. (4 utilizzi)' },
           'Balzo Felino': { name: 'Balzo Felino', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 4, desc: 'Un agilissimo salto acrobatico che gli permette di schivare i danni per un turno. (4 utilizzi)' },
           'Fascino Sfacciato': { name: 'Fascino Sfacciato', type: 'Normale', power: 0, targetStatDebuff: { def: 0.7 }, statusEffect: { type: 'Infatuato', chance: 0.5 }, desc: 'Fa l\'occhiolino e dice una battuta: riduce la Difesa avversaria e ha il 50% di infatuare il nemico.' },
 
@@ -573,6 +574,7 @@
           'Non sono Rick!': { name: 'Non sono Rick!', type: 'Normale', power: 50, statusEffect: { type: 'Confuso', chance: 0.5 }, desc: 'Urla arrabbiato il suo nome. Infligge danni e ha il 50% di probabilità di confondere.' },
           'Riposino sotto la Roccia': { name: 'Riposino sotto la Roccia', type: 'Roccia', power: 0, target: 'self', heal: 0.5, statBuff: { def: 1.5 }, desc: 'Torna sotto la sua roccia per farsi un sonnellino. Si cura del 50% e aumenta la Difesa.' },
           'Lancio del Sasso': { name: 'Lancio del Sasso', type: 'Roccia', power: 30, multiHit: { min: 2, max: 4 }, desc: 'Raccoglie e lancia sassi trovati in giro. Colpisce l\'avversario da 2 a 4 volte.' },
+          'A caccia di meduse': { name: 'A caccia di meduse', type: 'Normale', power: 250, ignoreDefBuffs: true, maxUses: 1, isCombo: ['spongebob', 'patrick'], specificComboEffects: { 'patrick': { selfHeal: -0.75 }, 'spongebob': { statBuff: { atk: 2.0, def: 2.0, spd: 2.0 } } }, desc: 'Mossa Combinata: Danni immensi (250). Patrick si sacrifica perdendo il 75% dei PS massimi, ma Spongebob raddoppia Attacco, Difesa e Velocità!' },
 
           // NUOVE MOSSE PLANKTON
           'Laser Mentale': { name: 'Laser Mentale', type: 'Robot', power: 85, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Spari ad alta tecnologia. 20% di probabilità di confondere il nemico.' },
@@ -696,7 +698,7 @@
           { id: 'mantide', name: 'Mantide', types: ['Insetto'], hp: 70, maxHp: 70, atk: 110, def: 60, spd: 115, img: 'https://i.pinimg.com/736x/ec/13/e7/ec13e73634b743dda5723d1fbe45c5e4.jpg', moves: [MOVES_DB['Colpo della Mantide'], MOVES_DB['Agopuntura'], MOVES_DB['Raffica di Pugni'], MOVES_DB['Schivata Acrobatica']] },
           { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i.pinimg.com/1200x/7f/2a/f8/7f2af80ef1d08f7d8d433aef9be18421.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
           { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga']] },
-          { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa']] },
+          { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
           { id: 'strega', name: 'Strega', types: ['Oscuro', 'Magico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
           { id: 'garnet', name: 'Garnet', types: ['Lotta', 'Roccia'], hp: 110, maxHp: 110, atk: 115, def: 100, spd: 75, img: 'https://i.pinimg.com/1200x/df/77/0f/df770ffb5866a4773afcd2f05d6fcd60.jpg', moves: [MOVES_DB['Pugno Razzo'], MOVES_DB['Visione del Futuro'], MOVES_DB['Schianto Sismico'], MOVES_DB['Forza dell\'Amore']] },
@@ -710,7 +712,7 @@
           { id: 'finn', name: 'Finn l\'Umano', types: ['Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 95, img: 'https://i.pinimg.com/736x/01/18/1f/01181f2e01e50d16dcceef78de8ac0bd.jpg', moves: [MOVES_DB['Spada d\'Oro'], MOVES_DB['Calcio Volante Eroe'], MOVES_DB['Zaino Verde'], MOVES_DB['Eroe di Ooo']] },
           { id: 'jake', name: 'Jake il Cane', types: ['Magico'], hp: 115, maxHp: 115, atk: 100, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/00/07/e5/0007e54a9a0d180850ed97718df1e432.jpg', moves: [MOVES_DB['Pugno Elastico'], MOVES_DB['Trasformazione Scudo'], MOVES_DB['Schiacciata Gigante'], MOVES_DB['Bacon Pancakes']] },
           { id: 'rainbowdash', name: 'Rainbow Dash', types: ['Aria', 'Elettro'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 130, img: 'https://i.pinimg.com/1200x/f2/61/79/f26179f6cfb3f6331d5843fb83d29fdd.jpg', moves: [MOVES_DB['Sonic Rainboom'], MOVES_DB['Barriera di Nuvole'], MOVES_DB['Calcio Fulmineo'], MOVES_DB['Volo Acrobatico']] },
-          { id: 'ladybug', name: 'Ladybug', types: ['Insetto', 'Magico'], hp: 95, maxHp: 95, atk: 100, def: 85, spd: 105, img: 'https://i.pinimg.com/736x/3a/f1/51/3af1517371cc28cac5cdb6af420f1da4.jpg', moves: [MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Lucky Charm'], MOVES_DB['Miraculous Ladybug'], MOVES_DB['Schivata Agile']] },
+          { id: 'ladybug', name: 'Ladybug', types: ['Insetto', 'Magico'], hp: 95, maxHp: 95, atk: 100, def: 85, spd: 105, img: 'https://i.pinimg.com/736x/3a/f1/51/3af1517371cc28cac5cdb6af420f1da4.jpg', moves: [MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Lucky Charm'], MOVES_DB['Miraculous Ladybug'], MOVES_DB['Schivata Agile'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'wario', name: 'Wario', types: ['Veleno', 'Lotta'], hp: 120, maxHp: 120, atk: 115, def: 95, spd: 50, img: 'https://i.pinimg.com/736x/07/72/16/07721681614a459938a7f85ec450f957.jpg', moves: [MOVES_DB['Peto Velenoso'], MOVES_DB['Carica di Spalla'], MOVES_DB['Masticata d\'Aglio'], MOVES_DB['Moto da teppista']] },
           { id: 'zuko', name: 'Zuko', types: ['Fuoco', 'Lotta'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/0a/bf/45/0abf4521f089ae4629e57fb7edd207cb.jpg', moves: [MOVES_DB['Frusta di Fuoco'], MOVES_DB['Danza del Drago'], MOVES_DB['Calcio Infuocato'], MOVES_DB['Deviazione del Fulmine']] },
           { id: 'spike', name: 'Spike', types: ['Erba', 'Oscuro'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/736x/fe/40/32/fe40323f442d7843df0be4c5b4223e6a.jpg', moves: [MOVES_DB['Sfera di Spine'], MOVES_DB['Campo di Cactus'], MOVES_DB['Abbraccio Oscuro'], MOVES_DB['Fertilizzante']] },
@@ -749,8 +751,8 @@
           { id: 'hannibal', name: 'Hannibal', types: ['Oscuro', 'Normale'], hp: 105, maxHp: 105, atk: 110, def: 80, spd: 85, img: 'https://i.pinimg.com/1200x/01/ca/db/01cadbc63ec87dcfcb6e8cfe85e37f50.jpg', moves: [MOVES_DB['Banchetto Macabro'], MOVES_DB['Analisi Psicologica'], MOVES_DB['Colpo di Scalpello'], MOVES_DB['Buone Maniere']] },
           { id: 'po', name: 'Po', types: ['Lotta', 'Magico'], hp: 130, maxHp: 130, atk: 115, def: 100, spd: 60, img: 'https://i.pinimg.com/736x/10/7e/7e/107e7e6950aa24fb10c0428eb4d2b63b.jpg', moves: [MOVES_DB['Pancia Rimbalzante'], MOVES_DB['Presa del Dito Wuxi'], MOVES_DB['Maestro del Chi'], MOVES_DB['Rotolamento Furioso']] },
           { id: 'robin', name: 'Robin', types: ['Lotta', 'Buio'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 115, img: 'https://i.pinimg.com/736x/a2/19/05/a219056712e870f76d8eb16e8948297f.jpg', moves: [MOVES_DB['Birdarang'], MOVES_DB['Bo Staff'], MOVES_DB['Bomba Fumogena'], MOVES_DB['Calcio Volante Tattico']] },
-          { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso']] },
-          { id: 'patrick', name: 'Patrick Stella', types: ['Acqua', 'Roccia'], hp: 140, maxHp: 140, atk: 115, def: 110, spd: 40, img: 'https://i.pinimg.com/736x/60/80/69/60806924c9fa74a24fbeb4c4a81c344e.jpg', moves: [MOVES_DB['Schianto Stella'], MOVES_DB['Non sono Rick!'], MOVES_DB['Riposino sotto la Roccia'], MOVES_DB['Lancio del Sasso']] },
+          { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso'], MOVES_DB['A caccia di meduse']] },
+          { id: 'patrick', name: 'Patrick Stella', types: ['Acqua', 'Roccia'], hp: 140, maxHp: 140, atk: 115, def: 110, spd: 40, img: 'https://i.pinimg.com/736x/60/80/69/60806924c9fa74a24fbeb4c4a81c344e.jpg', moves: [MOVES_DB['Schianto Stella'], MOVES_DB['Non sono Rick!'], MOVES_DB['Riposino sotto la Roccia'], MOVES_DB['Lancio del Sasso'], MOVES_DB['A caccia di meduse']] },
           { id: 'plankton', name: 'Plankton', types: ['Insetto', 'Robot'], hp: 60, maxHp: 60, atk: 125, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/af/f1/8b/aff18ba41f798ebe95ae1809410cbec9.jpg', moves: [MOVES_DB['Laser Mentale'], MOVES_DB['Piano Z'], MOVES_DB['Karen, Aiuto!'], MOVES_DB['Furto della Ricetta']] },
           { id: 'marceline', name: 'Marceline', types: ['Spettro', 'Oscuro'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']] },
           
@@ -1869,13 +1871,53 @@
 
                   const finalSpeaker = speakerName === faintedName ? "Topolino" : speakerName;
 
-                  const randomPhrases = [
-                      `Oh no! ${faintedName} è a terra! Dobbiamo rimetterlo in sesto!`,
-                      `${faintedName} ha preso una bella batosta... forza, resisti! Ti cureremo!`,
-                      `Accidenti, ${faintedName} è esausto! Qualcuno prenda una Pozione!`,
-                      `Abbiamo vinto, ma a che prezzo? ${faintedName} ha perso i sensi...`
+                  // --- NUOVI DIALOGHI PERSONALIZZATI PER I CADUTI ---
+                  const specificFaintLines = [
+                      { s: 'finn', f: 'Jake il Cane', t: "Jake! Fratello! Resisti, ti rimetteremo in sesto!" },
+                      { s: 'jake', f: 'Finn l\'Umano', t: "Finn!! Ohi ohi, ti preparo subito dei pancake curativi, amico!" },
+                      { s: 'ladybug', f: 'Chat Noir', t: "Chat... no! M'lady non può farcela senza di te." },
+                      { s: 'chatnoir', f: 'Ladybug', t: "M'lady!! La mia fortuna si è azzerata vedendoti cadere... ti proteggerò!" },
+                      { s: 'marceline', f: 'Re Ghiaccio', t: "Simon! Non fare scherzi, vecchio pazzo. Svegliati!" },
+                      { s: 'goku', f: 'Kratos', t: "Ehi, Kratos! Ti sei fatto stendere? Forza, non è da te!" },
+                      { s: 'kratos', f: 'Goku', t: "Il guerriero spensierato è caduto. La sua ingenuità gli è costata cara." },
+                      { s: 'spongebob', f: 'Patrick Stella', t: "Patrick!! Amico miooooo! Sniff... ti salverò io!" },
+                      { s: 'patrick', f: 'Spongebob', t: "Spongebob! Oh no, si è asciugato tutto! Serve acqua, presto!" },
+                      { s: 'maxcaulfield', f: 'Chloe Price', t: "Chloe... no, di nuovo no. Devo riavvolgere il tempo... resisti." },
+                      { s: 'chloeprice', f: 'Max Caulfield', t: "Max! Brutti bastardi, me la pagherete cara per averle fatto del male!" },
+                      { s: 'stewie', f: 'Plankton', t: "Bene, l'organismo monocellulare è fuori uso. Un peso in meno per me." },
+                      { s: 'cyborg', f: 'Robin', t: "Robin è a terra! Squadra, copritelo finché non lo curiamo!" },
+                      { s: 'corvina', f: 'Stellarubia', t: "Stella... la sua luce si è spenta. La farò pagare a chi le ha fatto questo." }
                   ];
-                  const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+
+                  const genericSpeakerLines = {
+                      'finn': `Accidenti, ${faintedName} ha preso una brutta batosta! Curiamolo in fretta!`,
+                      'kratos': `${faintedName} è caduto. Debole. Ma non lo lasceremo qui a morire.`,
+                      'stewie': `Perfetto, ${faintedName} è svenuto. Ora devo fare tutto il lavoro sporco io?`,
+                      'topolino': `Oh cielo! ${faintedName} è ferito! Presto, diamogli una mano!`,
+                      'cyborg': `Emergenza medica per ${faintedName}! Chiama un medico, o un meccanico!`,
+                      'poisonivy': `Povero ${faintedName}... appassito così in fretta. Lo curerò con le mie erbe.`,
+                      'goku': `Urca! ${faintedName} ha esaurito l'energia. Presto, ci serve un Senzu!`,
+                      'wario': `Wah! ${faintedName} è andato K.O.! Spero non mi chieda i soldi per l'ospedale!`,
+                      'zuko': `L'onore di ${faintedName} è intatto, ha combattuto bene. Ora riposi.`,
+                      'charmcaster': `Tsk... ${faintedName} è un peso morto. Ma suppongo ci serva ancora per vincere.`,
+                      'default': `Oh no! ${faintedName} è a terra! Dobbiamo rimetterlo in sesto!`
+                  };
+
+                  let phrase = genericSpeakerLines['default'];
+                  
+                  // Controlla se c'è un'interazione specifica
+                  const specificMatch = specificFaintLines.find(l => CHARACTERS.find(c=>c.id===l.s)?.name === finalSpeaker && l.f === faintedName);
+                  if (specificMatch) {
+                      phrase = specificMatch.t;
+                  } else {
+                      // Altrimenti usa una generica del personaggio che parla (se esiste)
+                      const speakerIdMatched = CHARACTERS.find(c=>c.name===finalSpeaker)?.id;
+                      if (speakerIdMatched && genericSpeakerLines[speakerIdMatched]) {
+                          phrase = genericSpeakerLines[speakerIdMatched];
+                      } else {
+                          phrase = `Oh no! ${faintedName} è a terra! Dobbiamo rimetterlo in sesto!`;
+                      }
+                  }
                   
                   dialogs.unshift({ s: finalSpeaker, t: phrase, isDynamicFaint: true });
               }
@@ -2107,6 +2149,7 @@
                       });
                   }
 
+                  setCampaignSelectedTeam([]); // FIX: Svuota la squadra selezionata per poter riprovare senza blocchi
                   setCampaignState(p => ({...p, rosterStats: newRosterStats, currentBossState: currentEnemyState}));
                   leaveRoom();
                   setAppMode('campaign_map');
@@ -3464,29 +3507,85 @@
                     if (statTexts.length > 0) {
                         events.push({ type: 'text', text: `La ${statTexts.join(" e ")} di ${attacker.name} aumenta per via dell'attacco!` });
                     }
-
-                    if (move.isCombo) {
-                        const partnerIds = move.isCombo.filter(id => id !== attacker.id);
-                        partnerIds.forEach(pId => {
-                            const partnerTeamIdx = workingField[player].find(idx => workingTeams[player][idx].id === pId && workingTeams[player][idx].hp > 0);
-                            if (partnerTeamIdx !== undefined) {
-                                const partner = workingTeams[player][partnerTeamIdx];
-                                let pStatTexts = [];
-                                if (move.selfStatBuff.def) { partner.def = Math.floor(partner.def * move.selfStatBuff.def); pStatTexts.push("Difesa"); }
-                                if (move.selfStatBuff.spd) { partner.spd = Math.floor(partner.spd * move.selfStatBuff.spd); pStatTexts.push("Velocità"); }
-                                if (move.selfStatBuff.atk) { partner.atk = Math.floor(partner.atk * move.selfStatBuff.atk); pStatTexts.push("Attacco"); }
-                                if (pStatTexts.length > 0) {
-                                    events.push({ type: 'text', text: `Anche la ${pStatTexts.join(" e ")} di ${partner.name} aumenta grazie all'attacco combinato!` });
-                                }
-                            }
-                        });
-                    }
                 }
 
                 if (attackSucceeded && move.selfHeal && attacker.hp > 0) {
                     const healAmount = Math.floor(attacker.maxHp * move.selfHeal);
                     attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                    events.push({ type: 'damage', text: `${attacker.name} assorbe energia vitale e recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                    events.push({ type: 'damage', text: `${attacker.name} recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                }
+
+                // GESTIONE EFFETTI SUL PARTNER PER LE MOSSE COMBINATE E COMBINATE ASIMMETRICHE
+                if (attackSucceeded && move.isCombo && attacker.hp > 0) {
+                    if (move.specificComboEffects && move.specificComboEffects[attacker.id]) {
+                        const eff = move.specificComboEffects[attacker.id];
+                        if (eff.selfHeal) {
+                            if (eff.selfHeal < 0) {
+                                const dmg = Math.floor(attacker.maxHp * Math.abs(eff.selfHeal));
+                                applyDamage(attacker, dmg, player, charTeamIdx, `${attacker.name} sacrifica ${dmg} HP per la mossa combinata!`);
+                            } else {
+                                const healAmount = Math.floor(attacker.maxHp * eff.selfHeal);
+                                attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                                events.push({ type: 'damage', text: `${attacker.name} recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                            }
+                        }
+                        if (eff.statBuff && attacker.hp > 0) {
+                            let statTexts = [];
+                            if (eff.statBuff.def) { attacker.def = Math.floor(attacker.def * eff.statBuff.def); statTexts.push("Difesa"); }
+                            if (eff.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * eff.statBuff.spd); statTexts.push("Velocità"); }
+                            if (eff.statBuff.atk) { attacker.atk = Math.floor(attacker.atk * eff.statBuff.atk); statTexts.push("Attacco"); }
+                            if (statTexts.length > 0) {
+                                events.push({ type: 'text', text: `La ${statTexts.join(" e ")} di ${attacker.name} aumenta drasticamente!` });
+                            }
+                        }
+                    }
+
+                    const partnerIds = move.isCombo.filter(id => id !== attacker.id);
+                    partnerIds.forEach(pId => {
+                        const partnerTeamIdx = workingField[player].find(idx => workingTeams[player][idx].id === pId && workingTeams[player][idx].hp > 0);
+                        if (partnerTeamIdx !== undefined) {
+                            const partner = workingTeams[player][partnerTeamIdx];
+                            
+                            if (move.specificComboEffects && move.specificComboEffects[pId]) {
+                                const eff = move.specificComboEffects[pId];
+                                if (eff.selfHeal) {
+                                    if (eff.selfHeal < 0) {
+                                        const dmg = Math.floor(partner.maxHp * Math.abs(eff.selfHeal));
+                                        applyDamage(partner, dmg, player, partnerTeamIdx, `${partner.name} sacrifica ${dmg} HP per la mossa combinata!`);
+                                    } else {
+                                        const healAmount = Math.floor(partner.maxHp * eff.selfHeal);
+                                        partner.hp = Math.min(partner.maxHp, partner.hp + healAmount);
+                                        events.push({ type: 'damage', text: `${partner.name} recupera ${healAmount} HP grazie alla Mossa Combinata!`, targetPlayer: player, targetIdx: partnerTeamIdx, newHp: partner.hp });
+                                    }
+                                }
+                                if (eff.statBuff && partner.hp > 0) {
+                                    let pStatTexts = [];
+                                    if (eff.statBuff.def) { partner.def = Math.floor(partner.def * eff.statBuff.def); pStatTexts.push("Difesa"); }
+                                    if (eff.statBuff.spd) { partner.spd = Math.floor(partner.spd * eff.statBuff.spd); pStatTexts.push("Velocità"); }
+                                    if (eff.statBuff.atk) { partner.atk = Math.floor(partner.atk * eff.statBuff.atk); pStatTexts.push("Attacco"); }
+                                    if (pStatTexts.length > 0) {
+                                        events.push({ type: 'text', text: `La ${pStatTexts.join(" e ")} di ${partner.name} aumenta drasticamente!` });
+                                    }
+                                }
+                            } else if (!move.specificComboEffects) {
+                                if (move.selfStatBuff) {
+                                    let pStatTexts = [];
+                                    if (move.selfStatBuff.def) { partner.def = Math.floor(partner.def * move.selfStatBuff.def); pStatTexts.push("Difesa"); }
+                                    if (move.selfStatBuff.spd) { partner.spd = Math.floor(partner.spd * move.selfStatBuff.spd); pStatTexts.push("Velocità"); }
+                                    if (move.selfStatBuff.atk) { partner.atk = Math.floor(partner.atk * move.selfStatBuff.atk); pStatTexts.push("Attacco"); }
+                                    if (pStatTexts.length > 0) {
+                                        events.push({ type: 'text', text: `Anche la ${pStatTexts.join(" e ")} di ${partner.name} aumenta grazie all'attacco combinato!` });
+                                    }
+                                }
+                                
+                                if (move.selfHeal) {
+                                    const pHealAmount = Math.floor(partner.maxHp * move.selfHeal);
+                                    partner.hp = Math.min(partner.maxHp, partner.hp + pHealAmount);
+                                    events.push({ type: 'damage', text: `${partner.name} recupera ${pHealAmount} HP grazie alla Mossa Combinata!`, targetPlayer: player, targetIdx: partnerTeamIdx, newHp: partner.hp });
+                                }
+                            }
+                        }
+                    });
                 }
 
                 if (move.recharge && attackSucceeded && attacker.hp > 0) {
@@ -4073,6 +4172,7 @@
                 <button onClick={() => { 
                     const finn = CHARACTERS.find(c=>c.id==='finn');
                     const topo = CHARACTERS.find(c=>c.id==='topolino');
+                    setCampaignSelectedTeam([]); // FIX: Svuota la squadra
                     setCampaignState({
                         isStarted: false,
                         sectorIdx: 0,
@@ -4564,6 +4664,7 @@
                 <button onClick={() => { 
                     const finn = CHARACTERS.find(c=>c.id==='finn');
                     const topo = CHARACTERS.find(c=>c.id==='topolino');
+                    setCampaignSelectedTeam([]); // FIX: Svuota la squadra
                     setCampaignState({
                         isStarted: false,
                         sectorIdx: 0,
@@ -5872,6 +5973,7 @@
                                         });
                                     }
 
+                                    setCampaignSelectedTeam([]); // FIX: Svuota la squadra per la prossima missione
                                     setCampaignState(prev => ({
                                         ...prev,
                                         rosterStats: newRosterStats,
@@ -5886,7 +5988,38 @@
                             </>
                         ) : (
                             <>
-                                <p className="text-xl text-slate-300 mb-8 font-medium">La tua squadra è caduta... ma la resistenza non si arrende!</p>
+                                {/* --- NUOVI DIALOGHI PERSONALIZZATI PER LA SCONFITTA (GAME OVER) --- */}
+                                {(() => {
+                                    const defeatQuotes = {
+                                        'finn': "Ahi... che botta. Ma gli eroi si rialzano sempre!",
+                                        'kratos': "Sconfitti... ma non piegati. Torneremo, e ci prenderemo la nostra vendetta.",
+                                        'topolino': "Oh, mamma mia! Ci hanno battuto... ma la magia non si spegne così facilmente!",
+                                        'goku': "Urca, sono fortissimi! Dobbiamo allenarci di più e riprovarci!",
+                                        'ladybug': "Miraculous o no, oggi abbiamo perso. Ritiriamoci e pensiamo a un nuovo piano.",
+                                        'stewie': "Vittoria calcolata male. È palesemente colpa vostra. Ritirata immediata!",
+                                        'chatnoir': "Sembra che abbiamo finito le nostre sette vite... per oggi.",
+                                        'spongebob': "Sono pronto... a scappare a gambe levate! Torniamo al Checkpoint!",
+                                        'marceline': "Odio ammetterlo, ma ci hanno fatto a pezzi. Ripieghiamo.",
+                                        'bowser': "BWAHAHAH... ohi ahi... il Re dei Koopa ha solo bisogno di un pisolino strategico!",
+                                        'zuko': "La caduta fa parte del viaggio per ritrovare l'onore. Dobbiamo solo rialzarci.",
+                                        'wario': "Wah! Abbiamo perso! Spero di non aver smarrito nessuna moneta d'oro cadendo!",
+                                        'default': "La tua squadra è caduta... ma la Resistenza si rialzerà più forte!"
+                                    };
+                                    
+                                    // Sceglie a caso un personaggio dal Roster come "Capitano" della schermata di sconfitta
+                                    const speakerId = campaignState.roster.length > 0 ? campaignState.roster[Math.floor(Math.random() * campaignState.roster.length)] : 'default';
+                                    const char = CHARACTERS.find(c => c.id === speakerId);
+                                    const quote = defeatQuotes[speakerId] || defeatQuotes['default'];
+                                    
+                                    return (
+                                        <div className="bg-slate-950/50 p-6 rounded-2xl border border-rose-900/50 mb-8 flex flex-col items-center shadow-lg relative max-w-xl mx-auto">
+                                            {char && <img src={char.img} className="w-20 h-20 rounded-full border-2 border-rose-500 mb-4 object-cover grayscale opacity-80" />}
+                                            <p className="text-2xl text-rose-200 font-medium italic text-center leading-relaxed">"{quote}"</p>
+                                            {char && <span className="text-rose-500 font-black tracking-widest uppercase text-xs mt-3">- {char.name} -</span>}
+                                        </div>
+                                    );
+                                })()}
+
                                 <button onClick={() => {
                                     const newRosterStats = { ...campaignState.rosterStats };
                                     if (gameState.teams && gameState.teams.p1) {
@@ -5920,6 +6053,7 @@
                                         });
                                     }
 
+                                    setCampaignSelectedTeam([]); // FIX: Svuota la squadra in modo da poterne scegliere una nuova
                                     setCampaignState(p => ({...p, rosterStats: newRosterStats, currentBossState: currentEnemyState}));
                                     setAppMode('campaign_map');
                                 }} className="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 px-10 py-5 rounded-full font-black text-2xl transition-all shadow-[0_10px_30px_rgba(225,29,72,0.4)] hover:-translate-y-1">Ritirata Strategica (Riprova)</button>
