@@ -1668,6 +1668,164 @@
           const [campaignDialogueIdx, setCampaignDialogueIdx] = useState(0);
           const [campaignSelectedTeam, setCampaignSelectedTeam] = useState([]);
           
+          const activeSector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
+          const activeMission = activeSector.missions[campaignState.missionIdx] || activeSector.missions[0];
+
+          // --- LOGICA LORE DINAMICO (Spostata al top level per evitare violazioni di React Hooks) ---
+          const campaignDialogueMemo = React.useMemo(() => {
+              let dialogs = [...(activeMission.dialogue || [])];
+              
+              const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+              const activeBosses = activeMission.isAnomaly && campaignState.anomalyTargets ? campaignState.anomalyTargets : activeMission.boss;
+
+              const ANOMALY_LINES = {
+                  'finn': "La mia spada... vuole solo distruggere! Non posso fermarmi!",
+                  'topolino': "Ah-ah! L'oscurità è così divertente! Venite a giocare con me!",
+                  'patrick': "La polvere nera mi rende... malvagiamente intelligente! E spietato!",
+                  'jake': "Mi sto allungando verso l'infinito oscuro, amico! Vi stritolerò!",
+                  'spongebob': "Ahahah! Bolle nere per tutti! Sarete perfetti!",
+                  'marceline': "Questo nero è molto più gustoso e caotico del rosso...",
+                  'poisonivy': "Le mie piante amano questo veleno. Crescete, mie creature oscure!",
+                  'corvina': "L'oscurità di quel gatto... si sposa perfettamente con la mia.",
+                  'cyborg': "Sistemi infetti. Malware Cataclisma attivo. Eliminare Resistenza.",
+                  'goku': "Un potere distruttivo incredibile! Devo assolutamente testarlo su di voi!",
+                  'kratos': "LA RABBIA NON HA FINE! MORIRETE TUTTI!",
+                  'ladybug': "Il Lucky Charm prevede la vostra totale e assoluta distruzione!",
+                  'renarouge': "Le mie illusioni vi faranno impazzire di puro terrore!",
+                  'chatnoir': "Ancora Cataclisma! M'lady, non mi fermerò stavolta!",
+                  'bowser': "BWAHAH! La polvere oscura mi rende invincibile!",
+                  'sdentato': "*Ruggito assordante intriso di energia nera e fulmini viola*",
+                  'plankton': "Finalmente un potere superiore per schiacciarvi, molluschi!",
+                  'stewie': "I miei calcoli indicano che ora godo di una sadica invincibilità.",
+                  'default': "La polvere nera... il Maestro mi chiama di nuovo. Vi annienterò!"
+              };
+
+              if (activeMission.isAnomaly && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
+                  let insertIdx = Math.min(2, dialogs.length); 
+                  campaignState.anomalyTargets.forEach(tId => {
+                      const cObj = CHARACTERS.find(c => c.id === tId);
+                      if (cObj) {
+                          dialogs.splice(insertIdx++, 0, { s: `${cObj.name} (Corrotto)`, t: ANOMALY_LINES[tId] || ANOMALY_LINES['default'], isAnomalyInjection: true });
+                      }
+                  });
+                  dialogs.splice(insertIdx, 0, { s: "Finn l'Umano", t: "No! È inutile parlargli, l'infezione ha preso il sopravvento. Non ci lasciano scelta... dobbiamo lottare!", isAnomalyInjection: true });
+              }
+
+              if (!dialogs.some(d => d.isDynamicLore) && !activeMission.isAnomaly) {
+                  const lorePool = [
+                      { h: 'finn', b: 'jake', t: "Jake! Ricordati di noi! Di BMO, della Casa sull'Albero! Non lasciare che quel testone verde ti porti via!" },
+                      { h: 'marceline', b: 'jake', t: "Ehi cagnolone, svegliati o ti prosciugo tutto il sangue! Sto scherzando... forse." },
+                      { h: 'finn', b: 'marceline', t: "Marceline, ti prego! Non sei tu! Rompi il controllo, ricordati di Ooo e delle nostre canzoni!" },
+                      { h: 'spongebob', b: 'patrick', t: "Patrick, migliore amico mio! Non farti controllare! Ricordati di quando cacciavamo le meduse!" },
+                      { h: 'patrick', b: 'spongebob', t: "Spongebob! Ti salverò io! Anzi, ti prenderò a testate finché non torni normale!" },
+                      { h: 'ladybug', b: 'chatnoir', t: "Chat, gattino sciocco, resisti! Il tuo Miraculous è più forte di questo trucco mentale!" },
+                      { h: 'chatnoir', b: 'renarouge', t: "Rena, smettila con queste illusioni! Siamo una squadra, svegliati!" },
+                      { h: 'cyborg', b: 'corvina', t: "Corvina! Usa il tuo mantra! Azzarath Metrion... dai, blocca la sua frequenza!" },
+                      { h: 'robin', b: 'cyborg', t: "Cyborg, riavvia i sistemi! Scavalca il firewall di Cell, ora!" },
+                      { h: 'goku', b: 'cell', t: "Ancora tu, Cell?! Questa volta non avrai bisogno di esplodere per perdere contro di noi!" },
+                      { h: 'kratos', b: 'goku', t: "Un guerriero che si fa dominare la mente è debole. Ti libererò io a suon di pugni." },
+                      { h: 'stewie', b: 'plankton', t: "Un microbo con un occhio solo? Amico, i miei laser sono perfetti per disinfestare l'arena." },
+                      { h: 'finn', b: 'reghiaccio', t: "Simon! Smettila di fare il cattivo o ti prendo a calci il sedere ghiacciato un'altra volta!" },
+                      { h: 'astral', b: 'utopia', t: "Numero 39: Utopia... la mia carta più fedele. Ti libererò da questa oscurità con la luce della speranza!" },
+                      { h: 'goku', b: 'snorlax', t: "Ehi bestione! Se ti liberi da quell'insetto ti offro io la cena, promesso!" },
+                      { h: 'poisonivy', b: 'roserade', t: "La tua tossina è potente, piccola Roserade. Smettila di servire lui e combatti per il Verde!" },
+                      { h: 'luigi', b: 'mario', t: "M-Mario! Fratellone! Svegliati, mi fai troppa paura quando hai quegli occhi viola!" },
+                      { h: 'bowser', b: 'mario', t: "Bwahahah! Mario, farti comandare a bacchetta da un insetto gigante è patetico! Ti schiaccio io prima che lo faccia lui!" },
+                      { h: 'bowser', b: 'luigi', t: "Lo spilungone verde! Fatti da parte, non ho tempo da perdere con un fifone come te!" },
+                      { h: 'zuko', b: 'katara', t: "Katara, reagisci! Non puoi piegarti a questo Cell! Abbiamo ancora una pace da costruire!" },
+                      { h: 'zuko', b: 'aang', t: "Aang, tu sei l'Avatar! Sei tu che devi portare l'equilibrio, non la sottomissione!" },
+                      { h: 'katara', b: 'aang', t: "Aang, ti prego! Guarda i miei occhi, ricordati di noi! Rompi questa frequenza oscura!" },
+                      { h: 'bowser', b: 'spyro', t: "Un draghetto lilla? Bwahaha! Ti faccio vedere io come sputa fuoco un VERO drago!" },
+                      { h: 'aang', b: 'zabuza', t: "Usare il dominio dell'acqua per creare una nebbia assassina?! Io ti fermerò!" },
+                      { h: 'natsu', b: 'juvia', t: "Juvia! Smettila di fare fiumi di lacrime e datti una mossa, dobbiamo rompere questo incantesimo!" },
+                      { h: 'kratos', b: 'nito', t: "Un altro signore dei morti che brama anime. Le mie lame conoscono bene il tuo tipo." },
+                      { h: 'carlos', b: 'hannibal', t: "Hai l'aria del mostro psicopatico... Ho affrontato gli zombie, non ho paura di te!" },
+                      { h: 'corvina', b: 'trigon', t: "Padre... pensavi di potermi manipolare di nuovo nascondendoti dietro quel burattino di Cell? Questa volta la tua fine sarà definitiva!" }
+                  ];
+
+                  let injected = false;
+                  lorePool.forEach(lore => {
+                      if (!injected && aliveHeroes.includes(lore.h) && activeBosses.includes(lore.b)) {
+                          const heroObj = CHARACTERS.find(c => c.id === lore.h);
+                          if (heroObj) {
+                              dialogs.splice(1, 0, { s: heroObj.name, t: lore.t, isDynamicLore: true });
+                              injected = true;
+                          }
+                      }
+                  });
+              }
+              return dialogs;
+          }, [activeMission, campaignState.roster, campaignState.rosterStats, campaignState.anomalyTargets]);
+
+          const campaignPostDialogueMemo = React.useMemo(() => {
+              let dialogs = [...(activeMission.postDialogue || [])];
+
+              const RECOVERY_LINES = {
+                  'finn': "Amici... scusate, avevo perso totalmente il controllo della mia spada.",
+                  'topolino': "Oh cielo... che brutto sogno che ho fatto. L'oscurità fa paura.",
+                  'patrick': "Ehi, dov'è finita la mia polvere magica dell'intelligenza?",
+                  'jake': "Ugh, mi sento tutto annodato come un pretzel malriuscito.",
+                  'spongebob': "Sono di nuovo una spugna felice, porosa e assorbente!",
+                  'marceline': "Bleah, ho un saporaccio in bocca. Mai più polvere di gatto nero.",
+                  'poisonivy': "Il Verde... mi ha purificata di nuovo dalla marcescenza.",
+                  'corvina': "Azarath Metrion... fiuu, sto bene. Grazie ragazzi, mi avete salvata.",
+                  'cyborg': "Antivirus completato. Rimossa stringa 'Malware Cataclisma'. Booyah.",
+                  'goku': "Che botta! Però mi sono divertito un po', ammettetelo!",
+                  'kratos': "Ancora una volta, ho ceduto all'ira cieca... vi ringrazio.",
+                  'ladybug': "Di nuovo?! Dobbiamo sconfiggere Cell al più presto, prima che accada di peggio.",
+                  'renarouge': "Ahi... la mia testa gira peggio delle mie stesse illusioni.",
+                  'chatnoir': "Scusate... il potere del mio Cataclisma vi ha messi in pericolo.",
+                  'bowser': "Grrr... odierò quella polvere per il resto della mia vita!",
+                  'sdentato': "*Guaisce scuotendo la testa, visibilmente stordito ma docile*",
+                  'plankton': "Maledizione! Ero così vicino alla superiorità intellettuale!",
+                  'stewie': "Ignorate tutto ciò che ho detto. Sono stati i fumi della polvere.",
+                  'default': "Cosa è successo? Mi sentivo come avvolto nel buio totale..."
+              };
+
+              if (activeMission.randomUnlockCount && campaignState.lastUnlocked && campaignState.lastUnlocked.length > 0 && !dialogs.some(d => d.isDynamicUnlock)) {
+                  const unlockedId = campaignState.lastUnlocked[0];
+                  if (unlockedId === 'maxcaulfield') {
+                      dialogs.push({ s: "Chloe Price", t: "Senti Max... vai con loro. Io rimarrò qui a tenere a bada i mostri in questa zona con il fucile. Usa i tuoi poteri e fagli il culo!", isDynamicUnlock: true });
+                      dialogs.push({ s: "Max Caulfield", t: "D'accordo Chloe... starò attenta. Ragazzi, sono con voi. Facciamo a pezzi questo Cell.", isDynamicUnlock: true });
+                  } else if (unlockedId === 'chloeprice') {
+                      dialogs.push({ s: "Max Caulfield", t: "Chloe, devi andare con loro. Devo rimanere qui a stabilizzare la frattura temporale che abbiamo causato o l'universo collasserà.", isDynamicUnlock: true });
+                      dialogs.push({ s: "Chloe Price", t: "Hella yes! Vado a spaccare qualche muso alieno. Cerca di sbrigarti a sistemare le cose, Max.", isDynamicUnlock: true });
+                  }
+              }
+
+              if (activeMission.isAnomaly && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
+                  let insertIdx = Math.min(1, dialogs.length); 
+                  campaignState.anomalyTargets.forEach(tId => {
+                      const cObj = CHARACTERS.find(c => c.id === tId);
+                      if (cObj) {
+                          dialogs.splice(insertIdx++, 0, { s: cObj.name, t: RECOVERY_LINES[tId] || RECOVERY_LINES['default'], isAnomalyInjection: true });
+                      }
+                  });
+              }
+              
+              if (campaignState.faintedInLastBattle && campaignState.faintedInLastBattle.length > 0 && !dialogs.some(d => d.isDynamicFaint)) {
+                  const faintedName = campaignState.faintedInLastBattle[0]; 
+                  
+                  const aliveCharacters = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+                  let speakerId = aliveCharacters.length > 0 ? aliveCharacters[Math.floor(Math.random() * aliveCharacters.length)] : 'finn';
+                  const speakerNameObj = CHARACTERS.find(c => c.id === speakerId);
+                  const speakerName = speakerNameObj ? speakerNameObj.name : "Finn l'Umano";
+
+                  const finalSpeaker = speakerName === faintedName ? "Topolino" : speakerName;
+
+                  const randomPhrases = [
+                      `Oh no! ${faintedName} è a terra! Dobbiamo rimetterlo in sesto!`,
+                      `${faintedName} ha preso una bella batosta... forza, resisti! Ti cureremo!`,
+                      `Accidenti, ${faintedName} è esausto! Qualcuno prenda una Pozione!`,
+                      `Abbiamo vinto, ma a che prezzo? ${faintedName} ha perso i sensi...`
+                  ];
+                  const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+                  
+                  dialogs.unshift({ s: finalSpeaker, t: phrase, isDynamicFaint: true });
+              }
+              return dialogs;
+          }, [activeMission, campaignState.lastUnlocked, campaignState.anomalyTargets, campaignState.faintedInLastBattle, campaignState.roster, campaignState.rosterStats]);
+          
           // Autosave Campagna
           useEffect(() => {
               if (campaignState.isStarted) {
@@ -2100,8 +2258,7 @@
                 moves: char.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
             };
 
-            const newDraft = { ...gameState.draft, [playerRole]: [...currentDraft, charInstance] };
-            updateState({ draft: newDraft });
+            updateState({ [`draft.${playerRole}`]: [...currentDraft, charInstance] });
           };
 
           const startBattle = () => {
@@ -2375,12 +2532,7 @@
                 }
             }
 
-            const newActions = {
-                ...gameState.actions,
-                [playerRole]: myNewActions
-            };
-            
-            updateState({ actions: newActions }).then(() => {
+            updateState({ [`actions.${playerRole}`]: myNewActions }).then(() => {
               setTargetingMoveIdx(null);
               
               let nextIdx = commandingIdx + 1;
@@ -3750,8 +3902,8 @@
     }
 
     if (appMode === 'campaign_map') {
-        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx];
-        const mission = sector.missions[campaignState.missionIdx];
+        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
+        const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
         
         return (
             <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
@@ -3831,95 +3983,10 @@
     }
 
     if (appMode === 'campaign_dialogue') {
-        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx];
-        const mission = sector.missions[campaignState.missionIdx];
+        const sector = activeSector;
+        const mission = activeMission;
         
-        // --- LOGICA LORE DINAMICO ---
-        const fullDialogue = React.useMemo(() => {
-            let dialogs = [...(mission.dialogue || [])];
-            
-            const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
-            const activeBosses = mission.isAnomaly && campaignState.anomalyTargets ? campaignState.anomalyTargets : mission.boss;
-
-            // DIALOGHI ANOMALIA (Pre-Battaglia)
-            const ANOMALY_LINES = {
-                'finn': "La mia spada... vuole solo distruggere! Non posso fermarmi!",
-                'topolino': "Ah-ah! L'oscurità è così divertente! Venite a giocare con me!",
-                'patrick': "La polvere nera mi rende... malvagiamente intelligente! E spietato!",
-                'jake': "Mi sto allungando verso l'infinito oscuro, amico! Vi stritolerò!",
-                'spongebob': "Ahahah! Bolle nere per tutti! Sarete perfetti!",
-                'marceline': "Questo nero è molto più gustoso e caotico del rosso...",
-                'poisonivy': "Le mie piante amano questo veleno. Crescete, mie creature oscure!",
-                'corvina': "L'oscurità di quel gatto... si sposa perfettamente con la mia.",
-                'cyborg': "Sistemi infetti. Malware Cataclisma attivo. Eliminare Resistenza.",
-                'goku': "Un potere distruttivo incredibile! Devo assolutamente testarlo su di voi!",
-                'kratos': "LA RABBIA NON HA FINE! MORIRETE TUTTI!",
-                'ladybug': "Il Lucky Charm prevede la vostra totale e assoluta distruzione!",
-                'renarouge': "Le mie illusioni vi faranno impazzire di puro terrore!",
-                'chatnoir': "Ancora Cataclisma! M'lady, non mi fermerò stavolta!",
-                'bowser': "BWAHAH! La polvere oscura mi rende invincibile!",
-                'sdentato': "*Ruggito assordante intriso di energia nera e fulmini viola*",
-                'plankton': "Finalmente un potere superiore per schiacciarvi, molluschi!",
-                'stewie': "I miei calcoli indicano che ora godo di una sadica invincibilità.",
-                'default': "La polvere nera... il Maestro mi chiama di nuovo. Vi annienterò!"
-            };
-
-            if (mission.isAnomaly && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
-                let insertIdx = Math.min(2, dialogs.length); // Inseriamo dopo la battuta di Topolino
-                campaignState.anomalyTargets.forEach(tId => {
-                    const cObj = CHARACTERS.find(c => c.id === tId);
-                    if (cObj) {
-                        dialogs.splice(insertIdx++, 0, { s: `${cObj.name} (Corrotto)`, t: ANOMALY_LINES[tId] || ANOMALY_LINES['default'], isAnomalyInjection: true });
-                    }
-                });
-                dialogs.splice(insertIdx, 0, { s: "Finn l'Umano", t: "No! È inutile parlargli, l'infezione ha preso il sopravvento. Non ci lasciano scelta... dobbiamo lottare!", isAnomalyInjection: true });
-            }
-
-            // Se siamo all'inizio della conversazione, verifichiamo se ci sono legami speciali
-            if (!dialogs.some(d => d.isDynamicLore) && !mission.isAnomaly) {
-                const lorePool = [
-                    { h: 'finn', b: 'jake', t: "Jake! Ricordati di noi! Di BMO, della Casa sull'Albero! Non lasciare che quel testone verde ti porti via!" },
-                    { h: 'marceline', b: 'jake', t: "Ehi cagnolone, svegliati o ti prosciugo tutto il sangue! Sto scherzando... forse." },
-                    { h: 'finn', b: 'marceline', t: "Marceline, ti prego! Non sei tu! Rompi il controllo, ricordati di Ooo e delle nostre canzoni!" },
-                    { h: 'spongebob', b: 'patrick', t: "Patrick, migliore amico mio! Non farti controllare! Ricordati di quando cacciavamo le meduse!" },
-                    { h: 'patrick', b: 'spongebob', t: "Spongebob! Ti salverò io! Anzi, ti prenderò a testate finché non torni normale!" },
-                    { h: 'ladybug', b: 'chatnoir', t: "Chat, gattino sciocco, resisti! Il tuo Miraculous è più forte di questo trucco mentale!" },
-                    { h: 'chatnoir', b: 'renarouge', t: "Rena, smettila con queste illusioni! Siamo una squadra, svegliati!" },
-                    { h: 'cyborg', b: 'corvina', t: "Corvina! Usa il tuo mantra! Azzarath Metrion... dai, blocca la sua frequenza!" },
-                    { h: 'robin', b: 'cyborg', t: "Cyborg, riavvia i sistemi! Scavalca il firewall di Cell, ora!" },
-                    { h: 'goku', b: 'cell', t: "Ancora tu, Cell?! Questa volta non avrai bisogno di esplodere per perdere contro di noi!" },
-                    { h: 'kratos', b: 'goku', t: "Un guerriero che si fa dominare la mente è debole. Ti libererò io a suon di pugni." },
-                    { h: 'stewie', b: 'plankton', t: "Un microbo con un occhio solo? Amico, i miei laser sono perfetti per disinfestare l'arena." },
-                    { h: 'finn', b: 'reghiaccio', t: "Simon! Smettila di fare il cattivo o ti prendo a calci il sedere ghiacciato un'altra volta!" },
-                    { h: 'astral', b: 'utopia', t: "Numero 39: Utopia... la mia carta più fedele. Ti libererò da questa oscurità con la luce della speranza!" },
-                    { h: 'goku', b: 'snorlax', t: "Ehi bestione! Se ti liberi da quell'insetto ti offro io la cena, promesso!" },
-                    { h: 'poisonivy', b: 'roserade', t: "La tua tossina è potente, piccola Roserade. Smettila di servire lui e combatti per il Verde!" },
-                    { h: 'luigi', b: 'mario', t: "M-Mario! Fratellone! Svegliati, mi fai troppa paura quando hai quegli occhi viola!" },
-                    { h: 'bowser', b: 'mario', t: "Bwahahah! Mario, farti comandare a bacchetta da un insetto gigante è patetico! Ti schiaccio io prima che lo faccia lui!" },
-                    { h: 'bowser', b: 'luigi', t: "Lo spilungone verde! Fatti da parte, non ho tempo da perdere con un fifone come te!" },
-                    { h: 'zuko', b: 'katara', t: "Katara, reagisci! Non puoi piegarti a questo Cell! Abbiamo ancora una pace da costruire!" },
-                    { h: 'zuko', b: 'aang', t: "Aang, tu sei l'Avatar! Sei tu che devi portare l'equilibrio, non la sottomissione!" },
-                    { h: 'katara', b: 'aang', t: "Aang, ti prego! Guarda i miei occhi, ricordati di noi! Rompi questa frequenza oscura!" },
-                    { h: 'bowser', b: 'spyro', t: "Un draghetto lilla? Bwahaha! Ti faccio vedere io come sputa fuoco un VERO drago!" },
-                    { h: 'aang', b: 'zabuza', t: "Usare il dominio dell'acqua per creare una nebbia assassina?! Io ti fermerò!" },
-                    { h: 'natsu', b: 'juvia', t: "Juvia! Smettila di fare fiumi di lacrime e datti una mossa, dobbiamo rompere questo incantesimo!" },
-                    { h: 'kratos', b: 'nito', t: "Un altro signore dei morti che brama anime. Le mie lame conoscono bene il tuo tipo." },
-                    { h: 'carlos', b: 'hannibal', t: "Hai l'aria del mostro psicopatico... Ho affrontato gli zombie, non ho paura di te!" },
-                    { h: 'corvina', b: 'trigon', t: "Padre... pensavi di potermi manipolare di nuovo nascondendoti dietro quel burattino di Cell? Questa volta la tua fine sarà definitiva!" }
-                ];
-
-                let injected = false;
-                lorePool.forEach(lore => {
-                    if (!injected && aliveHeroes.includes(lore.h) && activeBosses.includes(lore.b)) {
-                        const heroName = CHARACTERS.find(c => c.id === lore.h).name;
-                        // Inserisci la battuta di legame speciale subito dopo la prima battuta del boss (indice 1)
-                        dialogs.splice(1, 0, { s: heroName, t: lore.t, isDynamicLore: true });
-                        injected = true;
-                    }
-                });
-            }
-            return dialogs;
-        }, [mission, campaignState.roster, campaignState.rosterStats, campaignState.anomalyTargets]);
+        const fullDialogue = campaignDialogueMemo;
 
         const dialogue = fullDialogue[campaignDialogueIdx];
         
@@ -3957,80 +4024,10 @@
     }
 
     if (appMode === 'campaign_post_dialogue') {
-        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx];
-        const mission = sector.missions[campaignState.missionIdx];
+        const sector = activeSector;
+        const mission = activeMission;
 
-        // COSTRUZIONE DINAMICA DEL DIALOGO CON USEMEMO PER EVITARE FLICKERING
-        const fullDialogue = React.useMemo(() => {
-            let dialogs = [...(mission.postDialogue || [])];
-
-            const RECOVERY_LINES = {
-                'finn': "Amici... scusate, avevo perso totalmente il controllo della mia spada.",
-                'topolino': "Oh cielo... che brutto sogno che ho fatto. L'oscurità fa paura.",
-                'patrick': "Ehi, dov'è finita la mia polvere magica dell'intelligenza?",
-                'jake': "Ugh, mi sento tutto annodato come un pretzel malriuscito.",
-                'spongebob': "Sono di nuovo una spugna felice, porosa e assorbente!",
-                'marceline': "Bleah, ho un saporaccio in bocca. Mai più polvere di gatto nero.",
-                'poisonivy': "Il Verde... mi ha purificata di nuovo dalla marcescenza.",
-                'corvina': "Azarath Metrion... fiuu, sto bene. Grazie ragazzi, mi avete salvata.",
-                'cyborg': "Antivirus completato. Rimossa stringa 'Malware Cataclisma'. Booyah.",
-                'goku': "Che botta! Però mi sono divertito un po', ammettetelo!",
-                'kratos': "Ancora una volta, ho ceduto all'ira cieca... vi ringrazio.",
-                'ladybug': "Di nuovo?! Dobbiamo sconfiggere Cell al più presto, prima che accada di peggio.",
-                'renarouge': "Ahi... la mia testa gira peggio delle mie stesse illusioni.",
-                'chatnoir': "Scusate... il potere del mio Cataclisma vi ha messi in pericolo.",
-                'bowser': "Grrr... odierò quella polvere per il resto della mia vita!",
-                'sdentato': "*Guaisce scuotendo la testa, visibilmente stordito ma docile*",
-                'plankton': "Maledizione! Ero così vicino alla superiorità intellettuale!",
-                'stewie': "Ignorate tutto ciò che ho detto. Sono stati i fumi della polvere.",
-                'default': "Cosa è successo? Mi sentivo come avvolto nel buio totale..."
-            };
-
-            if (mission.randomUnlockCount && campaignState.lastUnlocked && campaignState.lastUnlocked.length > 0 && !dialogs.some(d => d.isDynamicUnlock)) {
-                const unlockedId = campaignState.lastUnlocked[0];
-                if (unlockedId === 'maxcaulfield') {
-                    dialogs.push({ s: "Chloe Price", t: "Senti Max... vai con loro. Io rimarrò qui a tenere a bada i mostri in questa zona con il fucile. Usa i tuoi poteri e fagli il culo!", isDynamicUnlock: true });
-                    dialogs.push({ s: "Max Caulfield", t: "D'accordo Chloe... starò attenta. Ragazzi, sono con voi. Facciamo a pezzi questo Cell.", isDynamicUnlock: true });
-                } else if (unlockedId === 'chloeprice') {
-                    dialogs.push({ s: "Max Caulfield", t: "Chloe, devi andare con loro. Devo rimanere qui a stabilizzare la frattura temporale che abbiamo causato o l'universo collasserà.", isDynamicUnlock: true });
-                    dialogs.push({ s: "Chloe Price", t: "Hella yes! Vado a spaccare qualche muso alieno. Cerca di sbrigarti a sistemare le cose, Max.", isDynamicUnlock: true });
-                }
-            }
-
-            if (mission.isAnomaly && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
-                let insertIdx = Math.min(1, dialogs.length); 
-                campaignState.anomalyTargets.forEach(tId => {
-                    const cObj = CHARACTERS.find(c => c.id === tId);
-                    if (cObj) {
-                        dialogs.splice(insertIdx++, 0, { s: cObj.name, t: RECOVERY_LINES[tId] || RECOVERY_LINES['default'], isAnomalyInjection: true });
-                    }
-                });
-            }
-            
-            if (campaignState.faintedInLastBattle && campaignState.faintedInLastBattle.length > 0 && !dialogs.some(d => d.isDynamicFaint)) {
-                const faintedName = campaignState.faintedInLastBattle[0]; 
-                
-                // Trova un personaggio ancora in piedi per dire la battuta
-                const aliveCharacters = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
-                let speakerId = aliveCharacters.length > 0 ? aliveCharacters[Math.floor(Math.random() * aliveCharacters.length)] : 'finn';
-                const speakerNameObj = CHARACTERS.find(c => c.id === speakerId);
-                const speakerName = speakerNameObj ? speakerNameObj.name : "Finn l'Umano";
-
-                // Se il personaggio scelto per parlare è se stesso, forza Finn o Topolino
-                const finalSpeaker = speakerName === faintedName ? "Topolino" : speakerName;
-
-                const randomPhrases = [
-                    `Oh no! ${faintedName} è a terra! Dobbiamo rimetterlo in sesto!`,
-                    `${faintedName} ha preso una bella batosta... forza, resisti! Ti cureremo!`,
-                    `Accidenti, ${faintedName} è esausto! Qualcuno prenda una Pozione!`,
-                    `Abbiamo vinto, ma a che prezzo? ${faintedName} ha perso i sensi...`
-                ];
-                const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
-                
-                dialogs.unshift({ s: finalSpeaker, t: phrase, isDynamicFaint: true });
-            }
-            return dialogs;
-        }, [mission, campaignState.lastUnlocked, campaignState.anomalyTargets, campaignState.faintedInLastBattle, campaignState.roster, campaignState.rosterStats]);
+        const fullDialogue = campaignPostDialogueMemo;
 
         const dialogue = fullDialogue[campaignDialogueIdx];
         
@@ -4101,9 +4098,10 @@
     }
 
     if (appMode === 'campaign_team_select') {
-        const isFinalRaid = campaignState.sectorIdx === CAMPAIGN_DATA.sectors.length - 1;
+        const isFinalRaid = campaignState.sectorIdx >= CAMPAIGN_DATA.sectors.length - 1;
         const maxTeamSize = isFinalRaid ? 20 : 4;
-        const mission = CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
+        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
+        const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
 
         const toggleChar = (id) => {
             const isAnomalyTarget = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
@@ -4216,13 +4214,12 @@
             state.status = 'pre_battle';
             
             setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
         };
 
         return (
-            <div className={`min-h-screen flex flex-col p-6 text-white ${CAMPAIGN_DATA.sectors[campaignState.sectorIdx].bg} relative overflow-hidden`}>
-                <button onClick={() => setAppMode('campaign_map')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
-                     <ArrowLeft size={20} /> Indietro
-                </button>
+            <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
                 <div className="flex-1 flex flex-col items-center justify-center mt-12 w-full z-10">
                     <h2 className="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">Seleziona la tua Resistenza ({campaignSelectedTeam.length}/{maxTeamSize})</h2>
                 
@@ -4909,7 +4906,7 @@
 
                 <div className="flex gap-4 mb-6 z-10 min-h-[80px] overflow-x-auto pb-2 custom-scrollbar">
                      {myDraft.map((char, i) => (
-                         <div key={i} className="relative group cursor-pointer flex-shrink-0 animate-fade-in" onClick={() => updateState({ draft: { ...gameState.draft, [playerRole]: myDraft.filter((_, idx) => idx !== i) } })}>
+                         <div key={i} className="relative group cursor-pointer flex-shrink-0 animate-fade-in" onClick={() => updateState({ [`draft.${playerRole}`]: myDraft.filter((_, idx) => idx !== i) })}>
                              <img src={char.img} alt={char.name} className="w-20 h-20 rounded-full object-cover border-4 border-emerald-400" />
                              <div className="absolute inset-0 bg-red-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"><span className="font-black text-xl">X</span></div>
                          </div>
@@ -5079,9 +5076,7 @@
                                         <button key={i} onClick={() => {
                                             const currentActions = gameState.switchActions[playerRole] || [];
                                             const newActions = [...currentActions, i];
-                                            updateState({
-                                                switchActions: { ...gameState.switchActions, [playerRole]: newActions }
-                                            }).then(() => {
+                                            updateState({ [`switchActions.${playerRole}`]: newActions }).then(() => {
                                                 if (appMode === 'local_room') {
                                                     const nextActive = getActivePlayers().filter(p => !gameState.isBot[p] && (p === playerRole ? newActions.length < gameState.pendingSwitches[p] : gameState.pendingSwitches[p] > (gameState.switchActions[p]?.length || 0)));
                                                     if (nextActive.length > 0) {
