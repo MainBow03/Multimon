@@ -628,7 +628,19 @@
           'Caos Punk': { name: 'Caos Punk', type: 'Suono', power: 10, statusEffects: [{ type: 'Avvelenato', chance: 0.25 }, { type: 'Scottato', chance: 0.25 }, { type: 'Confuso', chance: 0.25 }, { type: 'Infatuato', chance: 0.25 }], desc: 'Causa caos totale! Può infliggere a caso veleno, scottatura, confusione o infatuazione.' },
           'Testa Calda': { name: 'Testa Calda', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5, def: 0.7 }, desc: 'Aumenta drasticamente Attacco e Velocità (+50%), ma diminuisce la Difesa (-30%).' },
           'Ride Or Die': { name: 'Ride Or Die', type: 'Normale', power: 90, accuracy: 0.75, desc: 'Un colpo tutto o niente! Infligge molti danni ma ha solo il 75% di precisione.' },
-          'Love is Strange': { name: 'Love is Strange', type: 'Magico', power: 150, maxUses: 1, isCombo: ['maxcaulfield', 'chloeprice'], selfStatBuff: { def: 2.0 }, desc: 'Mossa Combinata: 150 danni e Raddoppia la Difesa di Max e Chloe! Consuma il turno di entrambe.' }
+          'Love is Strange': { name: 'Love is Strange', type: 'Magico', power: 150, maxUses: 1, isCombo: ['maxcaulfield', 'chloeprice'], selfStatBuff: { def: 2.0 }, desc: 'Mossa Combinata: 150 danni e Raddoppia la Difesa di Max e Chloe! Consuma il turno di entrambe.' },
+
+          // NUOVE MOSSE MIKU
+          'Vocal Burst': { name: 'Vocal Burst', type: 'Suono', power: 60, targetCount: 4, priority: 1, desc: 'Un\'esplosione vocale rapida che colpisce tutti i nemici (Priorità +1).' },
+          'Melodia Curativa': { name: 'Melodia Curativa', type: 'Suono', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, removeNegativeStatuses: true, desc: 'Cura il 50% dei PS a tutto il team e purifica dalle alterazioni di stato. Perfetta per supporto.' },
+          'Risonanza Mentale': { name: 'Risonanza Mentale', type: 'Magico', power: 70, selfStatBuff: { atk: 1.3 }, desc: 'Attacco a onde cerebrali che aumenta il proprio Attacco del 30% dopo aver colpito il nemico.' },
+          'Canto Armonico': { name: 'Canto Armonico', type: 'Suono', power: 0, targetStatDebuff: { atk: 0.6 }, desc: 'Una melodia fastidiosa che riduce drasticamente l\'Attacco del bersaglio (del 40%).' },
+
+          // NUOVE MOSSE SOUNDWAVE
+          'Onda d\'Urto': { name: 'Onda d\'Urto', type: 'Suono', power: 85, targetCount: 2, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Spara una violenta onda sonora. Colpisce fino a 2 nemici con il 30% di probabilità di stordirli.' },
+          'Laserbeak, all\'attacco!': { name: 'Laserbeak, all\'attacco!', type: 'Robot', power: 30, multiHit: { min: 2, max: 4 }, desc: 'Invia il fido mini-bot Laserbeak a bersagliare il nemico. Colpisce da 2 a 4 volte.' },
+          'Jammer di Frequenza': { name: 'Jammer di Frequenza', type: 'Elettro', power: 0, targetCount: 4, statusEffect: { type: 'Confuso', chance: 0.5 }, targetStatDebuff: { def: 0.7 }, desc: 'Disturba i sensori avversari. Diminuisce la Difesa di tutti i nemici (30%) e ha il 50% di confonderli.' },
+          'Scudo Acustico': { name: 'Scudo Acustico', type: 'Suono', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 3, desc: 'Frequenza barriera. Protegge dai danni e ne riflette il 25%. (3 utilizzi)' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -752,6 +764,9 @@
           { id: 'maxcaulfield', name: 'Max Caulfield', types: ['Normale'], hp: 95, maxHp: 95, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay'], MOVES_DB['Love is Strange']] },
           { id: 'chloeprice', name: 'Chloe Price', types: ['Suono', 'Normale'], hp: 100, maxHp: 100, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/c0/95/1a/c0951ab8f88e25c6cf1f076f3f26dcbb.jpg', moves: [MOVES_DB['Riff Ribelle'], MOVES_DB['Caos Punk'], MOVES_DB['Testa Calda'], MOVES_DB['Ride Or Die'], MOVES_DB['Love is Strange']] },
 
+          { id: 'miku', name: 'Hatsune Miku', types: ['Suono', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 115, img: 'https://i.pinimg.com/736x/51/cf/f4/51cff4f1b602b7220d4eaeccf558ffbf.jpg', moves: [MOVES_DB['Vocal Burst'], MOVES_DB['Melodia Curativa'], MOVES_DB['Risonanza Mentale'], MOVES_DB['Canto Armonico']] },
+          { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soundwave&backgroundColor=1e293b', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
+
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 35, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
           { id: 'golem_pietra', name: 'Golem di Pietra', types: ['Roccia'], hp: 60, maxHp: 60, atk: 50, def: 90, spd: 20, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Golem&backgroundColor=4b5563', moves: [MOVES_DB['Sassata'], MOVES_DB['Protezione']], isSummonOnly: true },
@@ -765,10 +780,10 @@
         ];
 
         const CHAR_PRICES = {
-            'goku': 300, 'kratos': 300, 'godzilla': 300, 'cell': 300, 'nito': 300, 'ryuk': 300, 'rias': 300, 'utopia': 300,
-            'laxus': 200, 'zabuza': 200, 'pyra': 200, 'natsu': 200, 'aang': 200, 'yugo': 200, 'garnet': 200, 'nightwing': 200,
-            'bowser': 150, 'sdentato': 150, 'corvina': 150, 'zatchbell': 150, 'lapis': 150, 'sage': 150, 'ariana': 150, 'groot': 150, 'dannyphantom': 150, 'reboo': 150, 'metalsonic': 150, 'astral': 150, 'yusei': 150, 'stellarubia': 150, 'shego': 150, 'hannibal': 150, 'po': 150, 'strega': 150, 'yukionna': 150, 'bulma': 150, 'maxcaulfield': 150, 'chloeprice': 150,
-            'zazan': 100, 'charmcaster': 100, 'patrick': 100, 'plankton': 100, 'wario': 100, 'zuko': 100, 'barry': 100, 'bloom': 100, 'juvia': 100, 'sanemi': 100, 'cuoredipietra': 100, 'poisonivy': 100, 'zergling': 100, 'gaston': 100, 'leslie': 100, 'dolli': 100, 'reghiaccio': 100, 'cosmo': 100, 'mantide': 100, 'renarouge': 100, 'rainbowdash': 100, 'spike': 100, 'jackfrost': 100, 'polterpup': 100, 'whisper': 100, 'juri': 100, 'iris': 100, 'bumblebee': 100, 'marceline': 100, 'jakedc': 100
+            'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350,
+            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200,
+            'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150
         };
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
@@ -1051,7 +1066,13 @@
                   postDialogue: [
                     { s: "Bloom", t: "La Fiamma... è tornata a scaldarmi il cuore. Ero intrappolata in un gelo mentale terribile." },
                     { s: "Iris", t: "Ephedia vi ringrazia. Con le nostre magie unite, Cell non avrà scampo!" },
-                    { s: "Charmcaster", t: "Che umiliazione... Vabbè, vi aiuto. Ma solo perché detesto chi mi dà ordini." }
+                    { s: "Charmcaster", t: "Che umiliazione... Vabbè, vi aiuto. Ma solo perché detesto chi mi dà ordini." },
+                    { s: "Spongebob", t: "Ehi fatine magiche! Per festeggiare la vostra liberazione, che ne dite di un bel Krabby Patty scoppiettante?!" },
+                    { s: "Charmcaster", t: "Una spugna parlante in calzoncini che cucina panini... Vi prego, ditemi che sto ancora avendo un incubo." },
+                    { s: "Jake il Cane", t: "Tranquilla maghetta, ci farai l'abitudine. Ieri ho visto un topo con i pantaloni rossi lanciare incantesimi, figurati!" },
+                    { s: "Topolino", t: "Ehi! Ti ho sentito, Jake! E per la cronaca, la mia è Magia Disney certificata, mica trucchi da quattro soldi!" },
+                    { s: "Bloom", t: "Ahahah! Beh, alla scuola di Alfea non si vedono di certo alleati così... pittoreschi. Sarà un'avventura interessante!" },
+                    { s: "Finn l'Umano", t: "Questo è lo spirito giusto! Magia, panini e spade! Prossima fermata: prendere a calci i burattini di Cell!" }
                   ],
                   boss: ['bloom', 'iris', 'charmcaster'],
                   unlock: ['bloom', 'iris', 'charmcaster']
@@ -1123,7 +1144,14 @@
                   ],
                   postDialogue: [
                     { s: "Natsu", t: "Ugh... ho come la nausea... e non sono nemmeno su un mezzo di trasporto!" },
-                    { s: "Po", t: "Ragazzi, vi giuro che ero posseduto! Non avrei mai rinunciato ai ravioli di mia spontanea volontà!" }
+                    { s: "Po", t: "Ragazzi, vi giuro che ero posseduto! Non avrei mai rinunciato ai ravioli di mia spontanea volontà!" },
+                    { s: "Goku", t: "Urca, siete davvero forti voi due! Mi sono proprio divertito! Ehi tu, quello pallido con i muscoli e le lame incatenate..." },
+                    { s: "Kratos", t: "Il mio nome è Kratos. E ti suggerisco di misurare le parole, guerriero." },
+                    { s: "Goku", t: "Ma dai! Ho sentito la tua aura fin da quando ci siamo incontrati! Scommetto che sei fortissimo! Che ne dici di un piccolo scontro amichevole per scaldarci?" },
+                    { s: "Kratos", t: "Non ho tempo per i giochi dei mortali o per la tua ingenua sete di scontro. La nostra priorità è smembrare quell'insetto che ha osato manipolare la mia mente." },
+                    { s: "Topolino", t: "Ha ragione Kratos, Goku! Dobbiamo assolutamente conservare le energie per Cell!" },
+                    { s: "Goku", t: "Uff, che noiosi... Vabbè, me la rifarò con il prossimo nemico! Spero sia forte almeno la metà di te, Kratos!" },
+                    { s: "Kratos", t: "*grugnito di profonda disapprovazione*" }
                   ],
                   boss: ['natsu', 'po'],
                   unlock: ['natsu', 'po']
