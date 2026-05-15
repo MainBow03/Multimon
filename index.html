@@ -1755,6 +1755,7 @@
 
           const [commandingIdx, setCommandingIdx] = useState(-1);
           const [targetingMoveIdx, setTargetingMoveIdx] = useState(null);
+          const [selectedMultiTargets, setSelectedMultiTargets] = useState([]);
           
           const [catalogSort, setCatalogSort] = useState('alpha');
           const [catalogFilter, setCatalogFilter] = useState('Tutti');
@@ -2929,6 +2930,8 @@
             const activeCharTeamIdx = gameState.field[playerRole][commandingIdx];
             const activeCommandChar = gameState.teams[playerRole][activeCharTeamIdx];
             
+            setSelectedMultiTargets([]);
+
             let myNewActions = { ...(gameState.actions[playerRole] || {}) };
             myNewActions[activeCharTeamIdx] = actionDetails;
 
@@ -2980,15 +2983,68 @@
             const activeCharTeamIdx = gameState.field[playerRole][commandingIdx];
             const activeCommandChar = gameState.teams[playerRole][activeCharTeamIdx];
             const move = activeCommandChar.moves[targetingMoveIdx];
+            const targetCount = move.targetCount || 1;
             
-            // SELEZIONE SINGOLA CLASSICA
-            commitAction({
-                type: 'attack',
-                moveIdx: targetingMoveIdx,
-                targetPlayer,
-                targetIdx: gameState.field[targetPlayer][targetFieldIdx],
-                targetFieldIdx: targetFieldIdx
+            if (targetCount === 1) {
+                // SELEZIONE SINGOLA CLASSICA
+                commitAction({
+                    type: 'attack',
+                    moveIdx: targetingMoveIdx,
+                    targetPlayer,
+                    targetIdx: gameState.field[targetPlayer][targetFieldIdx],
+                    targetFieldIdx: targetFieldIdx
+                });
+                return;
+            }
+
+            // SELEZIONE MULTIPLA MANUALE (2 o 3 bersagli)
+            const isAlreadySelected = selectedMultiTargets.some(t => t.player === targetPlayer && t.fieldIdx === targetFieldIdx);
+            if (isAlreadySelected) return; // Ignora doppio click sullo stesso
+
+            const newTarget = {
+                player: targetPlayer,
+                fieldIdx: targetFieldIdx,
+                idx: gameState.field[targetPlayer][targetFieldIdx]
+            };
+
+            const updatedTargets = [...selectedMultiTargets, newTarget];
+
+            // Conta nemici vivi per sapere quando fermarsi
+            const activeMatchPlayers = getActivePlayers();
+            let enemyTeams = [];
+            if (gameState.gameMode === 'multipla') {
+                enemyTeams = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
+            } else if (gameState.gameMode === 'juggernaut') {
+                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+            } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
+            } else if (gameState.gameMode === 'battleroyale') {
+                enemyTeams = activeMatchPlayers.filter(p => p !== playerRole);
+            } else {
+                enemyTeams = [playerRole === 'p1' ? 'p2' : 'p1'];
+            }
+
+            let aliveEnemies = 0;
+            enemyTeams.forEach(ep => {
+                if (ep && gameState.field[ep]) {
+                    gameState.field[ep].forEach(idx => {
+                        if (gameState.teams[ep][idx].hp > 0) aliveEnemies++;
+                    });
+                }
             });
+
+            const neededTargets = Math.min(targetCount, aliveEnemies);
+
+            if (updatedTargets.length >= neededTargets) {
+                commitAction({
+                    type: 'attack',
+                    moveIdx: targetingMoveIdx,
+                    selectedTargets: updatedTargets
+                });
+            } else {
+                setSelectedMultiTargets(updatedTargets);
+            }
           };
 
           const checkTurnReady = (currentActions) => {
@@ -3546,8 +3602,35 @@
 
                 let resolvedTargets = [];
 
-                // GESTIONE NUOVI BERSAGLI MULTIPLI
-                if (action.targetPlayer && action.targetIdx !== undefined) {
+                // GESTIONE BERSAGLI MULTIPLI SCELTI MANUALMENTE
+                if (action.selectedTargets && action.selectedTargets.length > 0) {
+                    action.selectedTargets.forEach(st => {
+                        let finalTargetIdx = st.idx;
+                        if (st.fieldIdx !== undefined) {
+                            const currentIdxAtPos = workingField[st.player][st.fieldIdx];
+                            if (currentIdxAtPos !== undefined) {
+                                finalTargetIdx = currentIdxAtPos;
+                            } else {
+                                const anyAlive = workingField[st.player].filter(i => workingTeams[st.player][i].hp > 0);
+                                if (anyAlive.length > 0) finalTargetIdx = anyAlive[0];
+                                else finalTargetIdx = null;
+                            }
+                        }
+
+                        if (finalTargetIdx !== null) {
+                            if (!resolvedTargets.some(rt => rt.player === st.player && rt.idx === finalTargetIdx)) {
+                                resolvedTargets.push({ 
+                                    player: st.player, 
+                                    idx: finalTargetIdx, 
+                                    fieldIdx: st.fieldIdx, 
+                                    char: workingTeams[st.player][finalTargetIdx] 
+                                });
+                            }
+                        }
+                    });
+                }
+                // GESTIONE BERSAGLIO SINGOLO / AI / MOSSE GLOBALI
+                else if (action.targetPlayer && action.targetIdx !== undefined) {
                     
                     // --- FIX: DINAMICA DELLO SLOT (Sostituzioni) ---
                     let finalTargetIdx = action.targetIdx;
@@ -6143,6 +6226,9 @@
             const isBeingCommanded = isMyTurn && teamPlayer === playerRole && fieldIdx === commandingIdx;
             const isJuggernaut = char.isJuggernaut;
             
+            const targetIndex = selectedMultiTargets.findIndex(t => t.player === teamPlayer && t.fieldIdx === fieldIdx);
+            const isTargetedNow = targetIndex !== -1;
+
             let borderClass = isEnemySide ? 'border-red-500/50' : 'border-blue-500/50';
             if (gameState.gameMode === 'battleroyale') {
                 borderClass = PLAYER_THEMES[teamPlayer]?.border || 'border-slate-500';
@@ -6151,7 +6237,9 @@
                 borderClass = 'border-rose-600 shadow-[0_0_20px_rgba(225,29,72,0.6)]';
             }
             
-            if (isTargetable) {
+            if (isTargetedNow) {
+                borderClass = 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.8)] scale-105 cursor-pointer z-20';
+            } else if (isTargetable) {
                 borderClass = 'border-yellow-400 animate-pulse cursor-pointer shadow-[0_0_15px_rgba(250,204,21,0.5)]';
             }
             if (isBeingCommanded) borderClass = 'border-white shadow-[0_0_20px_rgba(255,255,255,0.6)] scale-105 z-10';
@@ -6193,7 +6281,12 @@
                                 <span className="text-cyan-100 text-6xl font-black drop-shadow-[0_4px_4px_black]">{char.juggHitsRemaining}</span>
                             </div>
                         )}
-                        {isTargetable && <Target className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-20 pointer-events-none" size={48} />}
+                        {isTargetedNow && (
+                            <div className="absolute inset-0 border-4 border-rose-500 rounded-xl bg-rose-500/30 z-20 flex items-center justify-center pointer-events-none shadow-[inset_0_0_15px_rgba(244,63,94,0.5)]">
+                                <span className="text-white font-black text-4xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{targetIndex + 1}</span>
+                            </div>
+                        )}
+                        {isTargetable && !isTargetedNow && <Target className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-20 pointer-events-none" size={48} />}
                         {effectivenessBadge}
                     </div>
                 </div>
@@ -6359,7 +6452,9 @@
                                     {!isPlayingEvents && isMyTurn && activeCommandChar && (
                                         targetingMoveIdx === null 
                                             ? (actionMenuMode === 'moves' ? `Cosa deve fare ${activeCommandChar.name}?` : (actionMenuMode === 'items' ? 'Seleziona un oggetto da usare' : 'Seleziona un compagno da mandare in campo'))
-                                            : `Seleziona il bersaglio per ${activeCommandChar.moves[targetingMoveIdx].name}!`
+                                            : (activeCommandChar.moves[targetingMoveIdx].targetCount && activeCommandChar.moves[targetingMoveIdx].targetCount > 1 && activeCommandChar.moves[targetingMoveIdx].targetCount < 4
+                                                ? `Seleziona i bersagli per ${activeCommandChar.moves[targetingMoveIdx].name}! (${selectedMultiTargets.length}/${activeCommandChar.moves[targetingMoveIdx].targetCount})`
+                                                : `Seleziona il bersaglio per ${activeCommandChar.moves[targetingMoveIdx].name}!`)
                                     )}
                                 </h3>
                          )}
@@ -6436,6 +6531,47 @@
                                                                                     moveIdx: idx,
                                                                                     targetPlayer: playerRole,
                                                                                     targetIdx: gameState.field[playerRole][commandingIdx]
+                                                                            });
+                                                                    } else if (move.targetCount && move.targetCount >= 4) {
+                                                                            // Bypass mira per le mosse ad area totale (tutti i nemici)
+                                                                            const activeMatchPlayers = getActivePlayers();
+                                                                            let enemyTeams = [];
+                                                                            if (gameState.gameMode === 'multipla') {
+                                                                                enemyTeams = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
+                                                                            } else if (gameState.gameMode === 'juggernaut') {
+                                                                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                                                                enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+                                                                            } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                                                                                enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
+                                                                            } else if (gameState.gameMode === 'battleroyale') {
+                                                                                enemyTeams = activeMatchPlayers.filter(p => p !== playerRole);
+                                                                            } else {
+                                                                                enemyTeams = [playerRole === 'p1' ? 'p2' : 'p1'];
+                                                                            }
+                                                        
+                                                                            let tPlayer = null;
+                                                                            let tIdx = null;
+                                                                            let tFieldIdx = null;
+                                                        
+                                                                            // Trova il primo nemico valido come bersaglio "ancora" (il motore poi colpirà tutti gli altri)
+                                                                            for (let ep of enemyTeams) {
+                                                                                if (ep && gameState.field[ep]) {
+                                                                                    const aliveIdx = gameState.field[ep].findIndex(cIdx => gameState.teams[ep][cIdx].hp > 0);
+                                                                                    if (aliveIdx !== -1) {
+                                                                                        tPlayer = ep;
+                                                                                        tIdx = gameState.field[ep][aliveIdx];
+                                                                                        tFieldIdx = aliveIdx;
+                                                                                        break;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                        
+                                                                            commitAction({
+                                                                                type: 'attack',
+                                                                                moveIdx: idx,
+                                                                                targetPlayer: tPlayer || (enemyTeams[0] || 'p2'),
+                                                                                targetIdx: tIdx !== null ? tIdx : 0,
+                                                                                targetFieldIdx: tFieldIdx !== null ? tFieldIdx : 0
                                                                             });
                                                                     } else {
                                                                             setTargetingMoveIdx(idx);
@@ -6529,7 +6665,7 @@
                                         })()}
                                     </>
                                 ) : (
-                                    <button onClick={() => setTargetingMoveIdx(null)} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
+                                    <button onClick={() => { setTargetingMoveIdx(null); setSelectedMultiTargets([]); }} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
                                          Annulla Selezione
                                     </button>
                                 )}
