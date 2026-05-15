@@ -2892,11 +2892,7 @@
 
                                     if (score > bestScore) {
                                         bestScore = score;
-                                        if (move.targetCount > 1) {
-                                            bestAction = { type: 'attack', moveIdx, autoTargetCount: move.targetCount };
-                                        } else {
-                                            bestAction = { type: 'attack', moveIdx, targetPlayer: target.player, targetIdx: target.idx, targetFieldIdx: target.fieldIdx };
-                                        }
+                                        bestAction = { type: 'attack', moveIdx, targetPlayer: target.player, targetIdx: target.idx, targetFieldIdx: target.fieldIdx };
                                     }
                                 });
                             }
@@ -3262,10 +3258,18 @@
 
               if (!canAttack) continue;
 
-              if (attacker.statuses.some(s => s.type === 'Infatuato')) {
-                  if (Math.random() < 0.5) {
-                      events.push({ type: 'text', text: `${attacker.name} è troppo infatuato e manca il bersaglio!` });
-                      canAttack = false; 
+              let infatIdx = attacker.statuses.findIndex(s => s.type === 'Infatuato');
+              if (infatIdx !== -1) {
+                  attacker.statuses[infatIdx].turns -= 1;
+                  if (attacker.statuses[infatIdx].turns > 0) {
+                      if (Math.random() < 0.5) {
+                          events.push({ type: 'text', text: `${attacker.name} è troppo infatuato e salta il turno!` });
+                          canAttack = false; 
+                      }
+                  } else {
+                      events.push({ type: 'text', text: `${attacker.name} ha ripreso il controllo e non è più infatuato!` });
+                      attacker.statuses.splice(infatIdx, 1);
+                      updateStatusUI(player, charTeamIdx);
                   }
               }
 
@@ -3542,43 +3546,8 @@
 
                 let resolvedTargets = [];
 
-                // GESTIONE NUOVI BERSAGLI MULTIPLI AUTOMATICI
-                if (action.autoTargetCount) {
-                    resolvedTargets = [];
-                    let enemyTeams = [];
-                    
-                    if (gameState.gameMode === 'multipla') {
-                        enemyTeams = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
-                    } else if (gameState.gameMode === 'juggernaut') {
-                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
-                        enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                    } else if (gameState.gameMode === 'torneo') {
-                        enemyTeams = [activeMatchPlayers.find(p => p !== player)];
-                    } else if (gameState.gameMode === 'battleroyale') {
-                        enemyTeams = activeMatchPlayers.filter(p => p !== player);
-                    } else {
-                        enemyTeams = [player === 'p1' ? 'p2' : 'p1'];
-                    }
-
-                    let possibleTargets = [];
-                    enemyTeams.forEach(ePlayer => {
-                        if (ePlayer && workingField[ePlayer]) {
-                            workingField[ePlayer].forEach((eIdx, eFieldIdx) => {
-                                const eChar = workingTeams[ePlayer][eIdx];
-                                if (eChar && eChar.hp > 0) {
-                                    possibleTargets.push({ player: ePlayer, idx: eIdx, fieldIdx: eFieldIdx, char: eChar });
-                                }
-                            });
-                        }
-                    });
-
-                    // Seleziona un numero di bersagli a caso pari a autoTargetCount
-                    for(let i=0; i<action.autoTargetCount && possibleTargets.length > 0; i++) {
-                        const randIdx = Math.floor(Math.random() * possibleTargets.length);
-                        resolvedTargets.push(possibleTargets.splice(randIdx, 1)[0]);
-                    }
-
-                } else if (action.targetPlayer && action.targetIdx !== undefined) {
+                // GESTIONE NUOVI BERSAGLI MULTIPLI
+                if (action.targetPlayer && action.targetIdx !== undefined) {
                     
                     // --- FIX: DINAMICA DELLO SLOT (Sostituzioni) ---
                     let finalTargetIdx = action.targetIdx;
@@ -3600,12 +3569,51 @@
                     }
 
                     if (finalTargetIdx !== null) {
+                        // 1. Aggiungi il bersaglio principale scelto dal giocatore/bot
                         resolvedTargets.push({ 
                             player: action.targetPlayer, 
                             idx: finalTargetIdx, 
                             fieldIdx: action.targetFieldIdx, 
                             char: workingTeams[action.targetPlayer][finalTargetIdx] 
                         });
+
+                        // 2. Se la mossa colpisce più bersagli, seleziona i restanti casualmente tra i nemici validi
+                        if (move.targetCount && move.targetCount > 1) {
+                            let enemyTeams = [];
+                            
+                            if (gameState.gameMode === 'multipla') {
+                                enemyTeams = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
+                            } else if (gameState.gameMode === 'juggernaut') {
+                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+                            } else if (gameState.gameMode === 'torneo') {
+                                enemyTeams = [activeMatchPlayers.find(p => p !== player)];
+                            } else if (gameState.gameMode === 'battleroyale') {
+                                enemyTeams = activeMatchPlayers.filter(p => p !== player);
+                            } else {
+                                enemyTeams = [player === 'p1' ? 'p2' : 'p1'];
+                            }
+
+                            let possibleTargets = [];
+                            enemyTeams.forEach(ePlayer => {
+                                if (ePlayer && workingField[ePlayer]) {
+                                    workingField[ePlayer].forEach((eIdx, eFieldIdx) => {
+                                        const eChar = workingTeams[ePlayer][eIdx];
+                                        // Aggiungi ai possibili bersagli solo se NON è il bersaglio principale già colpito
+                                        if (eChar && eChar.hp > 0 && !(ePlayer === action.targetPlayer && eIdx === finalTargetIdx)) {
+                                            possibleTargets.push({ player: ePlayer, idx: eIdx, fieldIdx: eFieldIdx, char: eChar });
+                                        }
+                                    });
+                                }
+                            });
+
+                            // Aggiungi bersagli casuali fino a colpire il targetCount massimo della mossa
+                            const extraNeeded = move.targetCount - 1;
+                            for(let i = 0; i < extraNeeded && possibleTargets.length > 0; i++) {
+                                const randIdx = Math.floor(Math.random() * possibleTargets.length);
+                                resolvedTargets.push(possibleTargets.splice(randIdx, 1)[0]);
+                            }
+                        }
                     }
                 }
 
@@ -3798,6 +3806,7 @@
                                 const existingIdx = t.char.statuses.findIndex(s => s.type === effect.type);
                                 let turns = effect.turns || 1;
                                 if (effect.type === 'Addormentato' && !effect.turns) turns = Math.floor(Math.random() * 3) + 2;
+                                if (effect.type === 'Infatuato' && !effect.turns) turns = Math.floor(Math.random() * 2) + 4;
                                 if (existingIdx === -1) {
                                     t.char.statuses.push({ type: effect.type, turns: turns });
                                     updateStatusUI(t.player, t.idx);
@@ -6427,13 +6436,6 @@
                                                                                     moveIdx: idx,
                                                                                     targetPlayer: playerRole,
                                                                                     targetIdx: gameState.field[playerRole][commandingIdx]
-                                                                            });
-                                                                    } else if (move.targetCount > 1) { 
-                                                                            // Tutte le mosse ad area o a più bersagli colpiscono in automatico
-                                                                            commitAction({
-                                                                                    type: 'attack',
-                                                                                    moveIdx: idx,
-                                                                                    autoTargetCount: move.targetCount
                                                                             });
                                                                     } else {
                                                                             setTargetingMoveIdx(idx);
