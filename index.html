@@ -401,7 +401,7 @@
           'Fratellanza del Tofu': { name: 'Fratellanza del Tofu', type: 'Normale', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.4, desc: 'Cura il team in campo del 40%, o se stesso del 50% se è rimasto solo.' },
 
           // NUOVE MOSSE SAGE E ARIANA GRANDE
-          'Muro Protettivo': { name: 'Muro Protettivo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, desc: 'Alza un muro che difende tutti i compagni in campo per un turno.' },
+          'Muro Protettivo': { name: 'Muro Protettivo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Alza un muro che difende tutti i compagni in campo per un turno. (1 utilizzo)' },
           'Sfera rallentante': { name: 'Sfera rallentante', type: 'Ghiaccio', power: 0, targetCount: 2, targetStatDebuff: { spd: 0.5 }, desc: 'Lancia una sfera rallentante sotto i piedi di due nemici diminuendone permanentemente la Velocità.' },
           'Non ucciderai i miei alleati!': { name: 'Non ucciderai i miei alleati!', type: 'Magico', power: 0, targetMode: 'revive', heal: 0.5, maxUses: 1, desc: 'Riporta in vita un tuo personaggio sconfitto con il 50% dei PS massimi.' },
           'Vandal': { name: 'Vandal', type: 'Normale', power: 65, desc: 'Spara con il fucile d\'assalto infliggendo 65 danni.' },
@@ -534,7 +534,7 @@
           'Raggio Esplosivo': { name: 'Raggio Esplosivo', type: 'Elettro', power: 90, desc: 'Carica le sue armi al massimo per sparare un raggio devastante.' },
 
           // NUOVE MOSSE CHARMCASTER
-          'Mostro di Pietra': { name: 'Mostro di Pietra', type: 'Magico', power: 0, isSummon: 'golem_pietra', maxUses: 2, desc: 'Anima la pietra per evocare un possente Golem in campo! (2 utilizzi)' },
+          'Mostro di Pietra': { name: 'Mostro di Pietra', type: 'Magico', power: 0, isSummon: 'golem_pietra', maxUses: 2, strictUses: true, desc: 'Anima la pietra per evocare un possente Golem in campo! (2 utilizzi)' },
           'Fulmine Viola': { name: 'Fulmine Viola', type: 'Magico', power: 80, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Un fulmine magico oscuro. 30% di probabilità di confondere il bersaglio.' },
           'Borsa Magica': { name: 'Borsa Magica', type: 'Magico', power: 0, target: 'self', heal: 0.4, statBuff: { atk: 1.3 }, desc: 'Estrae un artefatto dalla sua borsa: si cura del 40% e aumenta l\'Attacco del 30%.' },
           'Maledizione': { name: 'Maledizione', type: 'Oscuro', power: 0, targetStatDebuff: { atk: 0.6, spd: 0.6 }, desc: 'Lancia un malocchio che riduce drasticamente (40%) Attacco e Velocità del nemico.' },
@@ -592,7 +592,7 @@
           'Inferno demoniaco': { name: 'Inferno demoniaco', type: 'Fuoco', power: 100, targetCount: 4, statusEffect: { type: 'Scottato', chance: 0.5 }, desc: 'Fiamme infernali che colpiscono tutti i bersagli. 50% di probabilità di scottare i nemici.' },
           'Sguardo dell\'abisso': { name: 'Sguardo dell\'abisso', type: 'Oscuro', power: 0, targetStatDebuff: { atk: 0.5 }, desc: 'Uno sguardo terrificante che terrorizza il nemico, dimezzandone permanentemente l\'Attacco (diminuisce di 2 stage).' },
           'Artigli dell\'apocalisse': { name: 'Artigli dell\'apocalisse', type: 'Oscuro', power: 90, drain: 0.6, desc: 'Fendente apocalittico. Ha una probabilità di recuperare gran parte dell\'energia (drena 60% danni inflitti).' },
-          'Corvina unisciti a me!': { name: 'Corvina unisciti a me!', type: 'Oscuro', power: 0, isSummon: 'clone_corvina', maxUses: 1, desc: 'Costringe un frammento dell\'anima di sua figlia a combattere. Evoca Clone Corvina. 1 Uso.' },
+          'Corvina unisciti a me!': { name: 'Corvina unisciti a me!', type: 'Oscuro', power: 0, isSummon: 'clone_corvina', maxUses: 2, strictUses: true, desc: 'Costringe un frammento dell\'anima di sua figlia a combattere. Evoca Clone Corvina. (2 utilizzi)' },
 
           'Frattura della realtà': { name: 'Frattura della realtà', type: 'Spettro', power: 110, statusEffect: { type: 'Confuso', chance: 0.3 }, recharge: true, desc: 'Distorce il tessuto spaziotemporale. 30% di confondere. Richiede ricarica nel turno successivo.' },
           'Errore 404': { name: 'Errore 404', type: 'Oscuro', power: 30, priority: 3, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 1, desc: 'Un glitch istantaneo. Colpisce per primo (priorità alta) e fa tentennare il bersaglio (stordisce al 100%). Usabile solo 1 volta.' },
@@ -638,15 +638,21 @@
           'Risonanza Mentale': { name: 'Risonanza Mentale', type: 'Magico', power: 70, selfStatBuff: { atk: 1.3 }, desc: 'Attacco a onde cerebrali che aumenta il proprio Attacco del 30% dopo aver colpito il nemico.' },
           'Canto Armonico': { name: 'Canto Armonico', type: 'Suono', power: 0, targetStatDebuff: { atk: 0.6 }, desc: 'Una melodia fastidiosa che riduce drasticamente l\'Attacco del bersaglio (del 40%).' },
 
+          'Scudo Acustico': { name: 'Scudo Acustico', type: 'Suono', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 3, desc: 'Frequenza barriera. Protegge dai danni e ne riflette il 25%. (3 utilizzi)' },
+          
           // NUOVE MOSSE SOUNDWAVE
-          'Onda d\'Urto': { name: 'Onda d\'Urto', type: 'Suono', power: 85, targetCount: 2, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Spara una violenta onda sonora. Colpisce fino a 2 nemici con il 30% di probabilità di stordirli.' },
-          'Laserbeak, all\'attacco!': { name: 'Laserbeak, all\'attacco!', type: 'Robot', power: 30, multiHit: { min: 2, max: 4 }, desc: 'Invia il fido mini-bot Laserbeak a bersagliare il nemico. Colpisce da 2 a 4 volte.' },
-          'Jammer di Frequenza': { name: 'Jammer di Frequenza', type: 'Elettro', power: 0, targetCount: 4, statusEffect: { type: 'Confuso', chance: 0.5 }, targetStatDebuff: { def: 0.7 }, desc: 'Disturba i sensori avversari. Diminuisce la Difesa di tutti i nemici (30%) e ha il 50% di confonderli.' },
-          'Scudo Acustico': { name: 'Scudo Acustico', type: 'Suono', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 3, desc: 'Frequenza barriera. Protegge dai danni e ne riflette il 25%. (3 utilizzi)' }
+          'Onda d\'Urto': { name: 'Onda d\'Urto', type: 'Suono', power: 85, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Un\'onda sonora devastante. 20% di probabilità di stordire il nemico.' },
+          'Laserbeak, all\'attacco!': { name: 'Laserbeak, all\'attacco!', type: 'Robot', power: 45, multiHit: { min: 2, max: 2 }, desc: 'Invia il suo fido compagno a colpire 2 volte il bersaglio.' },
+          'Jammer di Frequenza': { name: 'Jammer di Frequenza', type: 'Elettro', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.7, spd: 0.7 }, desc: 'Emette onde di disturbo. Riduce Attacco e Velocità di tutti i nemici.' },
+
+          // NUOVE MOSSE CELL JR
+          'Raggio di Ki Piccolo': { name: 'Raggio di Ki Piccolo', type: 'Magico', power: 50, desc: 'Un raggio di energia basilare ma fastidioso.' },
+          'Raffica di Calci': { name: 'Raffica di Calci', type: 'Lotta', power: 20, multiHit: { min: 2, max: 3 }, desc: 'Una serie di calci rapidi. Colpisce da 2 a 3 volte.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
         Object.values(MOVES_DB).forEach(move => {
+            if (move.strictUses) return;
             if (move.power === 0 || move.isProtect || move.heal || move.selfHeal || move.healAlone || move.healFlat || move.targetMode === 'revive') {
                 if (move.maxUses === 1 && move.targetMode === 'revive') {
                     move.maxUses = 3; // Buff ai revive
@@ -756,8 +762,8 @@
           { id: 'plankton', name: 'Plankton', types: ['Insetto', 'Robot'], hp: 60, maxHp: 60, atk: 125, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/af/f1/8b/aff18ba41f798ebe95ae1809410cbec9.jpg', moves: [MOVES_DB['Laser Mentale'], MOVES_DB['Piano Z'], MOVES_DB['Karen, Aiuto!'], MOVES_DB['Furto della Ricetta']] },
           { id: 'marceline', name: 'Marceline', types: ['Spettro', 'Oscuro'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']] },
           
-          { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']] },
-          { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']] },
+          { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']], isSecretUnlock: true },
+          { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']], isSecretUnlock: true },
           
           { id: 'nightwing', name: 'Nightwing', types: ['Buio', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/fa/f0/7e/faf07eceb881811e8788b7c5ff539c90.jpg', moves: [MOVES_DB['Trappola d\'ombra'], MOVES_DB['Ala della notte'], MOVES_DB['Colpo mirato'], MOVES_DB['Fendente notturno']] },
 
@@ -778,7 +784,12 @@
           
           { id: 'bulma', name: 'Bulma', types: ['Robot'], hp: 100, maxHp: 100, atk: 70, def: 110, spd: 85, img: 'https://i.pinimg.com/736x/a4/d0/2c/a4d02c84248f59d5e683b1d57a9ad3b8.jpg', moves: [MOVES_DB['Senzu per tutti'], MOVES_DB['Capsula Gadget'], MOVES_DB['Geyser fotonico'], MOVES_DB['Cortocircuito']] },
           { id: 'robo_aiutante_1', name: 'Robo Aiutante (Difesa)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/2e/e4/74/2ee4744e03259e47f7005eb9a799b54b.jpg', moves: [MOVES_DB['Difesa al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
-          { id: 'robo_aiutante_2', name: 'Robo Aiutante (Attacco)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/3e/8c/64/3e8c64997be28096fd2bc924b3743d39.jpg', moves: [MOVES_DB['Attacco al minimo!'], MOVES_DB['Missile']], isSummonOnly: true }
+          { id: 'robo_aiutante_2', name: 'Robo Aiutante (Attacco)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/3e/8c/64/3e8c64997be28096fd2bc924b3743d39.jpg', moves: [MOVES_DB['Attacco al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
+          
+          { id: 'celljr_1', name: 'Cell Jr. (Rosso)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(300deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
+          { id: 'celljr_2', name: 'Cell Jr. (Blu)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(200deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
+          { id: 'celljr_3', name: 'Cell Jr. (Giallo)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(50deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
+          { id: 'celljr_4', name: 'Cell Jr. (Viola)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(270deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true }
         ];
 
         const CHAR_PRICES = {
@@ -919,11 +930,20 @@
                   ],
                   postDialogue: [
                     { s: "Stewie", t: "Cosa diavolo... mi sono fatto comandare da uno scarafaggio gigante? Che umiliazione." },
-                    { s: "Cyborg", t: "Benvenuto nel club dei liberati, tappo. Ci aiuti o torni a giocare con i pupazzi?" },
-                    { s: "Stewie", t: "Preparo la Macchina del Tempo e i laser. Questo Cell me la pagherà cara." }
+                    { s: "Cyborg", t: "Benvenuto nel club dei liberati, tappo. Ci aiuti o torni a giocare con i pupazzi?" }
                   ],
                   boss: ['stewie', 'plankton'],
-                  unlock: ['stewie']
+                  choiceUnlock: ['stewie', 'plankton'],
+                  choiceDialogues: {
+                    'stewie': [
+                        { s: "Stewie", t: "Ottima scelta. Quel microbo con un occhio solo mi stava già facendo venire l'orticaria." },
+                        { s: "Plankton", t: "COSA?! Preferite un poppante col testone al mio puro genio del male?! Karen, andiamo via, questa Resistenza non mi merita!" }
+                    ],
+                    'plankton': [
+                        { s: "Plankton", t: "Ah! Finalmente qualcuno che sa apprezzare un intelletto superiore! Vi guiderò alla vittoria!" },
+                        { s: "Stewie", t: "Tsk. Peggio per voi. Torno nel mio universo, Brian deve aver sicuramente fatto un disastro sul tappeto." }
+                    ]
+                  }
                 }
               ]
             },
@@ -941,10 +961,20 @@
                   ],
                   postDialogue: [
                     { s: "Danny Phantom", t: "Ahhh! Quella presenza nella mia testa... era agghiacciante." },
-                    { s: "Topolino", t: "Il tuo lato fantasma è libero ora, Danny. Unisciti a noi." }
+                    { s: "Topolino", t: "Il vostro lato oscuro è svanito! Abbiamo bisogno di voi!" }
                   ],
                   boss: ['dannyphantom', 'reboo'],
-                  unlock: ['dannyphantom']
+                  choiceUnlock: ['dannyphantom', 'reboo'],
+                  choiceDialogues: {
+                    'dannyphantom': [
+                        { s: "Danny Phantom", t: "Sono pronto a combattere. Quell'insetto pagherà per avermi controllato!" },
+                        { s: "Re Boo", t: "Fools! I miei ritratti aspetteranno... mi ritiro nell'ombra della mia villa! Bwahaha!" }
+                    ],
+                    'reboo': [
+                        { s: "Re Boo", t: "Ottima scelta! I miei fantasmi terrorizzeranno Cell a dovere!" },
+                        { s: "Danny Phantom", t: "Se preferite un pallone gonfiato... io torno ad Amity Park. Buona fortuna!" }
+                    ]
+                  }
                 },
                 {
                   id: 'm8', title: 'La Furia di Sparta',
@@ -1117,6 +1147,34 @@
                   unlock: ['astral', 'yusei']
                 },
                 {
+                  id: 'm15_5', title: 'Anomalia: Resistenza al Contagio',
+                  dialogue: [
+                    { s: "Finn l'Umano", t: "Attenti ragazzi! Un'altra nube di polvere nera! Sta puntando a chi è già stato infettato in precedenza!" },
+                    { s: "Patrick Stella", t: "Ugh... la mia testa... la voce mi dice di schiacciare Spongebob..." },
+                    { s: "Spongebob", t: "Patrick, no! Ricordati del nostro patto dei migliori amici! E dei campi di meduse!" },
+                    { s: "Patrick Stella", t: "Meduse... amicizia? Hai ragione! Nessuna polvere spaziale mi metterà contro il mio migliore amico!" },
+                    { s: "Jake il Cane", t: "Finn... mi sento strano... l'oscurità vuole che io stritoli tutto..." },
+                    { s: "Finn l'Umano", t: "Jake, non cedere! Noi siamo gli eroi di Ooo, siamo più forti di questo schifo viola!" },
+                    { s: "Jake il Cane", t: "Aaaah! Hai ragione fratello! Sono un cane magico, non un burattino!" },
+                    { s: "Ladybug", t: "Il mio Miraculous... la sfortuna sta prendendo di nuovo il sopravvento..." },
+                    { s: "Chat Noir", t: "Non permetterò che accada, M'lady! La tua luce è la guida di tutti noi. Concentrati su di me, resisti!" },
+                    { s: "Ladybug", t: "Chat... grazie. L'oscurità sta arretrando. Sono ancora io." },
+                    { s: "Sdentato", t: "*Ruggito soffocato e innaturale, mentre gli occhi vacillano verso il viola*" },
+                    { s: "Kratos", t: "Bestia! Non farti domare da un insetto. Controlla la tua furia e dimostra la tua vera natura, o ti abbatterò io stesso!" },
+                    { s: "Sdentato", t: "*Scuote violentemente la testa e ruggisce con vigore, dissipando la polvere oscura*" },
+                    { s: "Topolino", t: "Fantastico! Hanno resistito al contagio! Ma la nube di polvere ha creato dei mostri, spazziamoli via!" }
+                  ],
+                  postDialogue: [
+                    { s: "Finn l'Umano", t: "Siete stati grandiosi, ragazzi! La forza di volontà ha vinto sul controllo mentale." },
+                    { s: "Ladybug", t: "Grazie Chat... le tue parole mi hanno ancorata alla realtà." },
+                    { s: "Patrick Stella", t: "Tutto molto bello, ma... possiamo avere un Krabby Patty ora? Combattere le voci nella testa fa venire fame." },
+                    { s: "Topolino", t: "Non fermiamoci adesso, il viaggio continua!" }
+                  ],
+                  boss: ['dynamic_anomaly_1', 'dynamic_anomaly_2', 'dynamic_anomaly_3', 'dynamic_anomaly_4'],
+                  unlock: [],
+                  isAnomaly: true
+                },
+                {
                   id: 'm16', title: 'Combattenti Brutali',
                   dialogue: [
                     { s: "Juri (Corrotta)", t: "Ahahaha! Vi schiaccerò sotto il mio tacco per il mio nuovo Maestro!" },
@@ -1125,10 +1183,20 @@
                   ],
                   postDialogue: [
                     { s: "Juri", t: "Tsk... mi sono fatta controllare come una marionetta. Che seccatura." },
-                    { s: "Sanemi", t: "I miei demoni interiori sono nulla in confronto a quel mostro. Vi aiuterò a sventrarlo." }
+                    { s: "Sanemi", t: "I miei demoni interiori sono nulla in confronto a quel mostro." }
                   ],
                   boss: ['juri', 'sanemi'],
-                  unlock: ['juri', 'sanemi']
+                  choiceUnlock: ['juri', 'sanemi'],
+                  choiceDialogues: {
+                    'juri': [
+                        { s: "Juri", t: "Hehe... sembra che mi divertirò con voi. Facciamo a pezzi qualcuno!" },
+                        { s: "Sanemi", t: "Non ho tempo da perdere con dei rammolliti. Torno ad affettare demoni per conto mio." }
+                    ],
+                    'sanemi': [
+                        { s: "Sanemi", t: "Le mie lame sono al vostro servizio. Sventreremo quell'essere abominevole." },
+                        { s: "Juri", t: "Che noia... pensavo sareste stati dei padroni più divertenti. Ciao ciao!" }
+                    ]
+                  }
                 }
               ]
             },
@@ -1145,18 +1213,31 @@
                     { s: "Goku", t: "Questi guerrieri hanno un'aura incredibile! Lasciateli a me!" }
                   ],
                   postDialogue: [
-                    { s: "Natsu", t: "Ugh... ho come la nausea... e non sono nemmeno su un mezzo di trasporto!" },
-                    { s: "Po", t: "Ragazzi, vi giuro che ero posseduto! Non avrei mai rinunciato ai ravioli di mia spontanea volontà!" },
-                    { s: "Goku", t: "Urca, siete davvero forti voi due! Mi sono proprio divertito! Ehi tu, quello pallido con i muscoli e le lame incatenate..." },
-                    { s: "Kratos", t: "Il mio nome è Kratos. E ti suggerisco di misurare le parole, guerriero." },
-                    { s: "Goku", t: "Ma dai! Ho sentito la tua aura fin da quando ci siamo incontrati! Scommetto che sei fortissimo! Che ne dici di un piccolo scontro amichevole per scaldarci?" },
-                    { s: "Kratos", t: "Non ho tempo per i giochi dei mortali o per la tua ingenua sete di scontro. La nostra priorità è smembrare quell'insetto che ha osato manipolare la mia mente." },
-                    { s: "Topolino", t: "Ha ragione Kratos, Goku! Dobbiamo assolutamente conservare le energie per Cell!" },
-                    { s: "Goku", t: "Uff, che noiosi... Vabbè, me la rifarò con il prossimo nemico! Spero sia forte almeno la metà di te, Kratos!" },
-                    { s: "Kratos", t: "*grugnito di profonda disapprovazione*" }
+                    { s: "Goku", t: "Fiuu! È stata tosta! Siete forti, ma vi abbiamo battuti!" },
+                    { s: "Natsu", t: "Ugh... la mia testa... aspetta, cosa sono quegli esserini blu che arrivano?" },
+                    { s: "Topolino", t: "Oh no! Dei cloni in miniatura di Cell! Stanno spargendo di nuovo la polvere oscura su Natsu e Po!" },
+                    { s: "Po", t: "No! I ravioli... l'oscurità... argh! Vi distruggerò di nuovo per il Maestro!" }
                   ],
                   boss: ['natsu', 'po'],
-                  unlock: ['natsu', 'po']
+                  unlock: []
+                },
+                {
+                  id: 'm17_5', title: 'Anomalia: I Cloni Imperfetti',
+                  isAnomaly: true,
+                  forceFieldSize: 6,
+                  dialogue: [
+                    { s: "Cell Jr. (Rosso)", t: "Kikiki! Il Maestro ci ha mandati a proteggere i nostri nuovi giocattoli!" },
+                    { s: "Finn l'Umano", t: "Sono in sei! E sembrano avere una specie di barriera magica attorno a loro!" },
+                    { s: "Topolino", t: "Guardate! Lo scudo dei Cell Jr. è collegato a Natsu e Po! Finché loro sono in piedi, i piccoli sono invincibili!" }
+                  ],
+                  postDialogue: [
+                    { s: "Finn l'Umano", t: "Ce l'abbiamo fatta! Gli scudi sono caduti e i cloni sono stati sconfitti!" },
+                    { s: "Natsu", t: "Aaah... che liberazione! Quelle piccole pesti mi stavano friggendo il cervello!" },
+                    { s: "Goku", t: "Ehi, dov'è finito il panda gigante?" },
+                    { s: "Natsu", t: "È scappato mentre finivamo i cloni... l'oscurità lo ha portato via. Ma io sono con voi adesso! Mi sento tutto un fuoco!" }
+                  ],
+                  boss: ['natsu', 'po', 'celljr_1', 'celljr_2', 'celljr_3', 'celljr_4'],
+                  unlock: ['natsu']
                 },
                 {
                   id: 'm18', title: 'Velocità e Fiamme',
@@ -1219,14 +1300,17 @@
                   dialogue: [
                     { s: "Elsa (Corrotta)", t: "Il freddo non mi ha mai disturbata... ma questa Frequenza gela perfino la mia anima." },
                     { s: "Re Ghiaccio (Corrotto)", t: "Zitto Gunter! Il Maestro Cell mi ha promesso tutte le principesse del Multiverso se vi congelo!" },
-                    { s: "Topolino", t: "Attenti, le loro magie combinate potrebbero trasformarci in statue di ghiaccio!" }
+                    { s: "Po (Corrotto)", t: "Il freddo conserverà i ravioli in eterno... e anche voi!" },
+                    { s: "Topolino", t: "Attenti, le loro magie combinate potrebbero trasformarci in statue di ghiaccio! E c'è anche Po!" }
                   ],
                   postDialogue: [
                     { s: "Elsa", t: "La mia mente... era avvolta da un inverno oscuro e innaturale. Vi ringrazio per avermi liberata." },
-                    { s: "Re Ghiaccio", t: "Ahi, la mia schiena! Ma dove sono le mie principesse?! Vabbè, mi unisco a voi se promettete di presentarmi qualcuna." }
+                    { s: "Re Ghiaccio", t: "Ahi, la mia schiena! Ma dove sono le mie principesse?! Vabbè, mi unisco a voi se promettete di presentarmi qualcuna." },
+                    { s: "Po", t: "Ragazzi... vi giuro che ero posseduto! Non avrei mai rinunciato ai ravioli caldi di mia spontanea volontà! Scusate per la fuga!" },
+                    { s: "Finn l'Umano", t: "Tutto a posto, amico! L'importante è che ora sei dei nostri." }
                   ],
-                  boss: ['elsa', 'reghiaccio'],
-                  unlock: ['elsa', 'reghiaccio']
+                  boss: ['elsa', 'reghiaccio', 'po'],
+                  unlock: ['elsa', 'reghiaccio', 'po']
                 },
                 {
                   id: 'm22', title: 'Neve Assassina',
@@ -1507,9 +1591,11 @@
                 },
                 {
                   id: 'm37', title: 'La Perfezione Assoluta',
+                  forceFieldSize: 5,
                   dialogue: [
-                    { s: "Cell", t: "Io sono l'evoluzione finale. Voi siete solo... spazzatura multiversale." },
-                    { s: "Goku", t: "Non hai capito nulla della vera forza, Cell!" },
+                    { s: "Cell", t: "Io sono l'evoluzione finale. Voi siete solo... spazzatura multiversale. Figlioli, distruggeteli!" },
+                    { s: "Cell Jr. (Rosso)", t: "Kikiki! Giochiamo!" },
+                    { s: "Goku", t: "Attenti ragazzi! Quei piccoli mostriciattoli generano una barriera impenetrabile attorno a Cell! Dobbiamo eliminarli per primi!" },
                     { s: "Topolino", t: "Esatto! La nostra forza non viene dalla perfezione, ma dall'unione di tutti i nostri universi!" }
                   ],
                   postDialogue: [
@@ -1518,7 +1604,7 @@
                     { s: "Cell", t: "Ho fuso i mondi per nascondermi da LORO. Volevo un esercito per difendermi! Ma ora che l'avete distrutto... mi hanno trovato. Addio, feccia imperfetta! Arrangiatevi!" },
                     { s: "Finn l'Umano", t: "È scappato in un portale spaziotemporale! Ma... se lui era terrorizzato, cos'è quell'enorme voragine nera che si sta aprendo nel cielo?!" }
                   ],
-                  boss: ['cell'],
+                  boss: ['cell', 'celljr_1', 'celljr_2', 'celljr_3', 'celljr_4'],
                   unlock: []
                 }
               ]
@@ -1530,6 +1616,7 @@
               missions: [
                 {
                   id: 'm38', title: 'I Veri Padroni (RAID)',
+                  forceFieldSize: 6,
                   dialogue: [
                     { s: "Trigon", t: "Così, questo è l'esercito di insetti che ha distrutto il nostro umile scudo verde." },
                     { s: "Gaster", t: "I... n... t... e... r... e... s... s... a... n... t... e... La loro linea temporale finirà qui." },
@@ -1621,7 +1708,7 @@
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
-          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4 }, 
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1' }, 
           draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
@@ -1673,6 +1760,9 @@
           const [catalogFilter, setCatalogFilter] = useState('Tutti');
           const [catalogSearch, setCatalogSearch] = useState('');
           const [shopCharSearch, setShopCharSearch] = useState('');
+
+          const [resolutionDialogues, setResolutionDialogues] = useState([]);
+          const [resolutionDialogueIdx, setResolutionDialogueIdx] = useState(0);
 
           const [introCharIdx, setIntroCharIdx] = useState(0);
 
@@ -1728,6 +1818,41 @@
           
           const activeSector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
           const activeMission = activeSector.missions[campaignState.missionIdx] || activeSector.missions[0];
+
+          // Funzione di avanzamento campagna condivisa
+          const advanceCampaign = (extraCoins = 150) => {
+              const newCoins = campaignState.coins + extraCoins;
+              let nextMissionIdx = campaignState.missionIdx + 1;
+              let nextSectorIdx = campaignState.sectorIdx;
+              let nextAppMode = 'campaign_map';
+
+              let newAnomalyTargets = null;
+              if (nextSectorIdx === 5 && nextMissionIdx === 2) { 
+                   const shuffled = [...campaignState.roster].sort(() => 0.5 - Math.random());
+                   const maxAnomalyCount = Math.max(1, Math.min(4, campaignState.roster.length - 1));
+                   newAnomalyTargets = shuffled.slice(0, maxAnomalyCount);
+              }
+
+              if (nextMissionIdx >= CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions.length) {
+                  nextMissionIdx = 0;
+                  nextSectorIdx++;
+                  nextAppMode = 'campaign_shop';
+              }
+
+              if (nextSectorIdx >= CAMPAIGN_DATA.sectors.length) {
+                  nextAppMode = 'campaign_ending';
+              }
+
+              setCampaignState(prev => ({
+                  ...prev,
+                  coins: newCoins,
+                  missionIdx: nextMissionIdx,
+                  sectorIdx: nextSectorIdx,
+                  faintedInLastBattle: null,
+                  anomalyTargets: newAnomalyTargets || prev.anomalyTargets
+              }));
+              setAppMode(nextAppMode);
+          };
 
           // --- LOGICA LORE DINAMICO (Spostata al top level per evitare violazioni di React Hooks) ---
           const campaignDialogueMemo = React.useMemo(() => {
@@ -1968,6 +2093,29 @@
                           else if (tr.bronze && tr.bronze.winner === myKey) { coinsToReward = 70; }
                           else if (tr.bronze && tr.bronze.loser === myKey) { coinsToReward = 50; }
                           else { coinsToReward = 50; }
+                      } else if (gameState.gameMode === 'juggernaut') {
+                          // NUOVA LOGICA PREMI JUGGERNAUT
+                          const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                          const amIJuggernaut = myKey === juggPlayer;
+                          const juggWon = gameState.winner === gameState.players[juggPlayer];
+                          
+                          if (gameState.winner === 'Pareggio') {
+                              coinsToReward = 50;
+                          } else if (juggWon) {
+                              if (amIJuggernaut) {
+                                  coinsToReward = 150; // Juggernaut vince
+                                  won = true;
+                              } else {
+                                  coinsToReward = Math.floor(Math.random() * 21) + 40; // Sfidante sconfitto: 40-60
+                              }
+                          } else {
+                              if (amIJuggernaut) {
+                                  coinsToReward = Math.floor(Math.random() * 21) + 40; // Juggernaut sconfitto: 40-60
+                              } else {
+                                  coinsToReward = 110; // Sfidanti vincono
+                                  won = true;
+                              }
+                          }
                       } else {
                           if (gameState.gameMode === 'multipla') {
                                if (gameState.winner && gameState.winner.includes(playerName)) won = true;
@@ -2326,7 +2474,7 @@
 
           const getRequiredPlayers = (mode, currentSettings) => {
               if (mode === 'classica') return 2;
-              if (mode === 'torneo_punti' || mode === 'battleroyale') return currentSettings ? currentSettings.maxPlayers : 4;
+              if (mode === 'torneo_punti' || mode === 'battleroyale' || mode === 'juggernaut') return currentSettings ? currentSettings.maxPlayers : 4;
               return 4;
           };
           
@@ -2335,6 +2483,9 @@
               if (gameState.gameMode === 'multipla') return ['p1', 'p2', 'p3', 'p4'];
               if (gameState.gameMode === 'battleroyale') {
                   return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+              }
+              if (gameState.gameMode === 'juggernaut') {
+                  return ['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
               }
               if (gameState.gameMode === 'torneo') {
                   const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
@@ -2364,8 +2515,8 @@
                   if (gameState.players[slot]) joined++;
               });
               
-              if (gameState.gameMode === 'torneo_punti') return joined >= 2;
-              if (gameState.gameMode === 'battleroyale') return joined >= 2; // Almeno 2 per partire
+              if (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale') return joined >= 2;
+              if (gameState.gameMode === 'juggernaut') return joined === req;
               return joined === req;
           };
 
@@ -2471,7 +2622,7 @@
                 baseAtk: char.atk,
                 baseDef: char.def,
                 baseSpd: char.spd,
-                moves: char.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                moves: char.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
             };
 
             updateState({ [`draft.${playerRole}`]: [...currentDraft, charInstance] });
@@ -2521,6 +2672,45 @@
                         field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
                     }
                 });
+            } else if (gameState.gameMode === 'juggernaut') {
+                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                const activeJugg = ['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
+                activeJugg.forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, p === juggPlayer ? 1 : fieldSize).map((_, i) => i);
+                    }
+                });
+
+                // --- APPLICAZIONE BUFF JUGGERNAUT ---
+                if (teams[juggPlayer] && teams[juggPlayer][0]) {
+                    const numOpponents = activeJugg.length - 1;
+                    const jugg = teams[juggPlayer][0];
+                    // Moltiplica enormemente HP per sopravvivere all'assalto combinato
+                    jugg.maxHp = Math.floor(jugg.maxHp * numOpponents * 1.5); 
+                    jugg.hp = jugg.maxHp;
+                    // Aumenta attacco e difesa del +40% per ogni avversario extra
+                    jugg.atk = Math.floor(jugg.atk * (1 + (numOpponents * 0.4)));
+                    jugg.def = Math.floor(jugg.def * (1 + (numOpponents * 0.4)));
+                    jugg.baseAtk = jugg.atk;
+                    jugg.baseDef = jugg.def;
+                    jugg.imageFilter = 'drop-shadow(0 0 30px rgba(220,38,38,1)) contrast(1.3) saturate(1.2)'; // Aura speciale potenziata
+                    jugg.isJuggernaut = true; // Flag per UI e logiche boss
+                    jugg.juggShieldHpThresholds = [0.75, 0.50, 0.25]; // Soglie scudo
+                    jugg.juggHitsRemaining = 0; // Contatore scudo
+                    jugg.shieldGrantedHits = 4; // Il Juggernaut riceve uno scudo da 4 colpi
+                    jugg.juggTurnCount = 0; // Contatore turni per la purificazione passiva
+
+                    // Aggiunta mossa esclusiva "Furia del Boss"
+                    jugg.moves.push({
+                        name: 'Furia del Boss',
+                        type: 'Oscuro',
+                        power: 40,
+                        targetCount: 4,
+                        cooldown: 3, // Sistema di ricarica
+                        currentCooldown: 0,
+                        desc: 'Un attacco esplosivo che colpisce tutti gli avversari in campo. Ricarica: 3 turni.'
+                    });
+                }
             } else {
                 ['p1', 'p2', 'p3', 'p4'].forEach(p => {
                     if (teams[p] && teams[p].length > 0) {
@@ -2587,6 +2777,10 @@
                 let enemyTeams = [];
                 if (gameState.gameMode === 'multipla') {
                     enemyTeams = ['p1', 'p2'].includes(cpuPlayer) ? ['p3', 'p4'] : ['p1', 'p2'];
+                } else if (gameState.gameMode === 'juggernaut') {
+                    const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    const activeMatchPlayers = getActivePlayers();
+                    enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
                 } else if (gameState.gameMode === 'torneo') {
                     const activeMatchPlayers = getActivePlayers();
                     enemyTeams = [activeMatchPlayers.find(p => p !== cpuPlayer)];
@@ -2629,6 +2823,7 @@
                     if (!bestAction) {
                         cpuChar.moves.forEach((move, moveIdx) => {
                             if (move.remainingUses === 0) return;
+                            if (move.currentCooldown && move.currentCooldown > 0) return; // IA ignora le mosse in cooldown
                             if (move.requireSummonsDead && gameState.teams[cpuPlayer].some(c => move.requireSummonsDead.includes(c.id) && c.hp > 0)) return;
 
                             if (move.isCombo) {
@@ -2866,6 +3061,42 @@
             const applyDamage = (target, dmg, targetPlayer, targetIdx, text) => {
                 target.hp = Math.max(0, target.hp - dmg);
                 events.push({ type: 'damage', text: text, targetPlayer, targetIdx, newHp: target.hp });
+                
+                if (target.juggShieldHpThresholds && target.juggShieldHpThresholds.length > 0) {
+                    let thresholdTriggered = false;
+                    while (target.juggShieldHpThresholds.length > 0 && (target.hp / target.maxHp) <= target.juggShieldHpThresholds[0]) {
+                        target.juggShieldHpThresholds.shift();
+                        thresholdTriggered = true;
+                    }
+                    if (thresholdTriggered) {
+                        const hitsToGrant = target.shieldGrantedHits || 4;
+                        target.juggHitsRemaining = hitsToGrant;
+                        events.push({ type: 'text', text: `💥 ${target.name} si infuria! Uno Scudo Assoluto assorbirà i prossimi ${hitsToGrant} colpi! 💥` });
+                    }
+                }
+
+                // --- NUOVA LOGICA: RESURREZIONE CELL JR ---
+                if (target.id === 'cell' && target.hp > 0 && target.hp <= target.maxHp * 0.25 && !target.cellJrResurrected && gameState.isCampaignBattle) {
+                    target.cellJrResurrected = true;
+                    events.push({ type: 'text', text: `✨ Cell: "Maledetti! Pensavate fosse finita?! Risorgete, figli miei!"` });
+                    
+                    workingTeams[targetPlayer].forEach((c, idx) => {
+                        if (c.id.startsWith('celljr_')) {
+                            if (c.hp <= 0) {
+                                c.hp = c.maxHp;
+                                c.statuses = [];
+                                events.push({ type: 'damage', text: `${c.name} viene rigenerato dalla forza vitale di Cell!`, targetPlayer: targetPlayer, targetIdx: idx, newHp: c.hp });
+                                
+                                if (!workingField[targetPlayer].includes(idx)) {
+                                    workingField[targetPlayer].push(idx);
+                                    events.push({ type: 'revive_to_field', player: targetPlayer, targetIdx: idx });
+                                }
+                            }
+                        }
+                    });
+                }
+                // ------------------------------------------
+
                 if (target.hp === 0) handleFaint(targetPlayer, targetIdx);
             };
 
@@ -3064,6 +3295,11 @@
               if (action.type === 'attack' && move) {
                 if (move.remainingUses !== null && move.remainingUses !== undefined) {
                     move.remainingUses -= 1;
+                }
+                
+                // Attiva il Cooldown della mossa appena usata
+                if (move.cooldown !== undefined) {
+                    move.currentCooldown = move.cooldown;
                 }
                 
                 if (move.isCombo) {
@@ -3303,6 +3539,9 @@
                     
                     if (gameState.gameMode === 'multipla') {
                         enemyTeams = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
+                    } else if (gameState.gameMode === 'juggernaut') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                        enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
                     } else if (gameState.gameMode === 'torneo') {
                         enemyTeams = [activeMatchPlayers.find(p => p !== player)];
                     } else if (gameState.gameMode === 'battleroyale') {
@@ -3418,19 +3657,82 @@
 
                         let totalDmg = 0;
                         let actualHits = 0;
+                        let juggHitsAbsorbed = 0;
+
                         for (let i = 0; i < hits; i++) {
+                            if (t.char.juggHitsRemaining > 0) {
+                                t.char.juggHitsRemaining -= 1;
+                                juggHitsAbsorbed++;
+                                actualHits++;
+                                if (t.char.juggHitsRemaining === 0) {
+                                    events.push({ type: 'text', text: `🛡️ Lo Scudo di ${t.char.name} si è infranto!` });
+                                    // Danno da contraccolpo per rottura scudo (5% HP Max)
+                                    let recoilDmg = Math.max(5, Math.floor(t.char.maxHp * 0.05));
+                                    applyDamage(t.char, recoilDmg, t.player, t.idx, `💥 La frantumazione dello scudo infligge ${recoilDmg} danni a ${t.char.name}!`);
+                                }
+                                continue;
+                            }
+
                             let hitDmg = calculateDamage(attacker, t.char, move, multiplier);
                             if (isMagnetic) hitDmg *= 2;
+                            
+                            // --- NUOVA LOGICA: SCUDO INVINCIBILE DEI CELL JR E DI CELL ---
+                            if (t.char.id.startsWith('celljr_')) {
+                                const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
+                                const protectorAlive = teamAlive.some(c => c.id === 'natsu' || c.id === 'po');
+                                if (protectorAlive) {
+                                    hitDmg = 0;
+                                    if (i === 0) { // Mostra il messaggio solo al primo colpo dell'attacco
+                                        events.push({ type: 'text', text: `🛡️ Lo Scudo Invincibile blocca l'attacco su ${t.char.name}! Sconfiggi Natsu o Po prima!` });
+                                    }
+                                }
+                            }
+                            
+                            if (t.char.id === 'cell' && gameState.isCampaignBattle) {
+                                const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
+                                const cellJrAlive = teamAlive.some(c => c.id.startsWith('celljr_'));
+                                if (cellJrAlive) {
+                                    hitDmg = 0;
+                                    if (i === 0) {
+                                        events.push({ type: 'text', text: `🛡️ La Barriera Perfetta protegge Cell! Sconfiggi prima tutti i Cell Jr.!` });
+                                    }
+                                }
+                            }
+                            // ---------------------------------------------------
+
                             totalDmg += hitDmg;
                             actualHits++;
+                            
+                            if (t.char.juggShieldHpThresholds && t.char.juggShieldHpThresholds.length > 0) {
+                                let thresholdTriggered = false;
+                                while (t.char.juggShieldHpThresholds.length > 0 && ((t.char.hp - totalDmg) / t.char.maxHp) <= t.char.juggShieldHpThresholds[0]) {
+                                    t.char.juggShieldHpThresholds.shift();
+                                    thresholdTriggered = true;
+                                }
+                                if (thresholdTriggered) {
+                                    const hitsToGrant = t.char.shieldGrantedHits || 4;
+                                    t.char.juggHitsRemaining = hitsToGrant;
+                                    events.push({ type: 'text', text: `💥 ${t.char.name} si infuria! Uno Scudo Assoluto assorbirà i prossimi ${hitsToGrant} colpi! 💥` });
+                                }
+                            }
+
                             if (t.char.hp - totalDmg <= 0) break;
                         }
 
                         attackSucceeded = true;
 
-                        let hitText = hits > 1 ? ` Colpisce ${actualHits} volte!` : '';
+                        let hitText = actualHits > 1 ? ` Colpisce ${actualHits} volte!` : '';
                         let magText = isMagnetic ? ` Lo stato Magnetico raddoppia i danni!` : '';
-                        applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}${hitText}${magText} Infligge ${totalDmg} danni.`);
+
+                        if (juggHitsAbsorbed > 0 && totalDmg === 0) {
+                            let absTxt = actualHits > 1 ? `Lo Scudo ha assorbito tutti i ${actualHits} colpi!` : `Lo Scudo ha assorbito l'attacco!`;
+                            events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}... ma ${absTxt} (${t.char.juggHitsRemaining} cariche scudo rimaste)` });
+                        } else if (totalDmg > 0) {
+                            let shieldTxt = juggHitsAbsorbed > 0 ? ` (Lo scudo ha assorbito ${juggHitsAbsorbed} colpi).` : '';
+                            applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}${hitText}${magText} Infligge ${totalDmg} danni.${shieldTxt}`);
+                        } else {
+                            applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText} Infligge ${totalDmg} danni.`);
+                        }
                         
                         // Riflesso Danno
                         if (t.char.statuses.some(s => s.type === 'Riflesso') && totalDmg > 0 && attacker.hp > 0 && !move.ignoreDefBuffs) {
@@ -3608,6 +3910,30 @@
             let char = workingTeams[target.player]?.[target.charTeamIdx];
             if (!char || char.hp <= 0 || !char.statuses) continue;
 
+            // Riduzione Cooldown (Ricarica turni per mossa)
+            if (char.moves) {
+                char.moves.forEach(m => {
+                    if (m.currentCooldown && m.currentCooldown > 0) {
+                        m.currentCooldown -= 1;
+                    }
+                });
+            }
+
+            // Purificazione automatica del Juggernaut ogni 2 turni
+            if (char.isJuggernaut) {
+                char.juggTurnCount = (char.juggTurnCount || 0) + 1;
+                if (char.juggTurnCount >= 2) {
+                    char.juggTurnCount = 0; // Reset contatore
+                    const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
+                    const hasNegative = char.statuses.some(s => negatives.includes(s.type));
+                    if (hasNegative) {
+                        char.statuses = char.statuses.filter(s => !negatives.includes(s.type));
+                        updateStatusUI(target.player, target.charTeamIdx);
+                        events.push({ type: 'text', text: `✨ Aura Suprema: ${char.name} si purifica automaticamente da tutti gli status negativi!` });
+                    }
+                }
+            }
+
             let shieldIdx = char.statuses.findIndex(s => s.type === 'Scudo Team');
             if (shieldIdx !== -1) {
                 char.statuses[shieldIdx].turns -= 1;
@@ -3669,6 +3995,50 @@
             }
         }
 
+        // --- GESTIONE RITORNO TRADITORI (Anomalia Eclissi) ---
+        let betrayersToReturn = [];
+        workingTeams['p2'].forEach((c, idx) => {
+             if (c.isBetrayer) {
+                  if (c.hp <= 0 || c.betrayalTurns <= 0) {
+                       betrayersToReturn.push({ idx, char: c });
+                  } else {
+                       c.betrayalTurns -= 1;
+                  }
+             }
+        });
+
+        betrayersToReturn.forEach(b => {
+             let returningChar = JSON.parse(JSON.stringify(b.char));
+             returningChar.isBetrayer = false;
+             returningChar.imageFilter = 'none';
+             
+             // Uccide il clone fasullo nella squadra nemica per rimuoverlo
+             workingTeams['p2'][b.idx].isBetrayer = false; 
+             workingTeams['p2'][b.idx].hp = 0;
+             workingTeams['p2'][b.idx].isSummonOnly = true; 
+             
+             const fieldPos = workingField['p2'].indexOf(b.idx);
+             if (fieldPos !== -1) {
+                  workingField['p2'].splice(fieldPos, 1);
+                  events.push({ type: 'remove', player: 'p2', pos: fieldPos });
+             }
+             
+             workingTeams['p1'].push(returningChar);
+             const newIdx = workingTeams['p1'].length - 1;
+             
+             let textEvt = returningChar.hp > 0 
+                  ? `✨ L'eclissi svanisce! ${returningChar.name} riprende il controllo e torna in squadra!`
+                  : `💀 Sconfitto, ${returningChar.name} si libera dal controllo mentale e torna nella tua panchina.`;
+             
+             const putOnField = returningChar.hp > 0 && workingField['p1'].length < gameState.settings.fieldSize;
+             if (putOnField) {
+                 workingField['p1'].push(newIdx);
+             }
+             
+             events.push({ type: 'text', text: textEvt });
+             events.push({ type: 'summon', text: '', player: 'p1', newChar: returningChar, fieldIdx: newIdx, putOnField: putOnField });
+        });
+
         let nextStatus = 'battling';
         let winner = null;
         let tResults = { ...gameState.tournamentResults };
@@ -3687,6 +4057,18 @@
             if (!p1Alive && !p2Alive) { nextStatus = 'gameover'; winner = 'Pareggio'; }
             else if (!p1Alive) { nextStatus = 'gameover'; winner = gameState.players.p2; }
             else if (!p2Alive) { nextStatus = 'gameover'; winner = gameState.players.p1; }
+        }
+        else if (gameState.gameMode === 'juggernaut') {
+            const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+            const juggAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0);
+            const opponentsAlive = activeMatchPlayers.filter(p => p !== juggPlayer).some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0));
+            
+            if (!juggAlive && !opponentsAlive) { nextStatus = 'gameover'; winner = 'Pareggio'; }
+            else if (!juggAlive) { 
+                nextStatus = 'gameover'; 
+                winner = activeMatchPlayers.filter(p => p !== juggPlayer).map(p => gameState.players[p]).join(' & '); 
+            }
+            else if (!opponentsAlive) { nextStatus = 'gameover'; winner = gameState.players[juggPlayer]; }
         }
         else if (gameState.gameMode === 'torneo') {
             const pA = activeMatchPlayers[0];
@@ -3916,6 +4298,11 @@
                    if (currentDisplay[evt.targetPlayer] && currentDisplay[evt.targetPlayer][evt.targetIdx]) {
                        currentDisplay[evt.targetPlayer][evt.targetIdx].statuses = evt.statuses;
                        setDisplayTeams({ ...currentDisplay });
+                   }
+                } else if (evt.type === 'revive_to_field') {
+                   if (currentDisplayField[evt.player] && !currentDisplayField[evt.player].includes(evt.targetIdx)) {
+                       currentDisplayField[evt.player].push(evt.targetIdx);
+                       setDisplayField({ ...currentDisplayField });
                    }
                 }
                 await new Promise(r => setTimeout(r, 1600)); 
@@ -4164,6 +4551,11 @@
         const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
         const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
         
+        // Calcolo per l'avviso salute
+        const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+        const totalHpPercentage = aliveHeroes.reduce((acc, id) => acc + (campaignState.rosterStats[id] / CHARACTERS.find(c=>c.id===id).maxHp), 0) / Math.max(1, aliveHeroes.length);
+        const lowHealthWarning = aliveHeroes.length > 0 && totalHpPercentage < 0.4;
+        
         return (
             <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
                 <button onClick={() => setAppMode('menu')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
@@ -4187,10 +4579,27 @@
                 }} className="absolute top-6 right-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 text-sm font-bold shadow-lg">
                      Resetta Progressi
                 </button>
-                <div className="flex justify-center items-center bg-black/50 p-4 rounded-2xl mb-8 backdrop-blur-md border border-white/10 mt-14 max-w-4xl mx-auto w-full">
+                <div className="flex justify-center items-center bg-black/50 p-4 rounded-2xl mb-4 backdrop-blur-md border border-white/10 mt-14 max-w-4xl mx-auto w-full relative">
+                    <div className="absolute -top-3 left-4 bg-slate-900 border border-slate-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-slate-400">
+                        Difficoltà: <span className={campaignState.difficulty === 'Insane' ? 'text-rose-400' : 'text-blue-400'}>{campaignState.difficulty === 'Insane' ? 'Folle' : 'Normale'}</span>
+                    </div>
                     <div className="flex-1 text-center">
                         <h2 className="text-3xl font-black text-emerald-400">{sector.name}</h2>
                         <p className="text-slate-300 text-sm">{sector.description}</p>
+                        
+                        {/* BARRA DI PROGRESSO SETTORE */}
+                        <div className="flex justify-center items-center gap-2 mt-3">
+                            {sector.missions.map((m, i) => (
+                                <div key={i} className="flex items-center">
+                                    <div className={`w-3 h-3 rounded-full border-2 ${i < campaignState.missionIdx ? 'bg-emerald-500 border-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : i === campaignState.missionIdx ? 'bg-yellow-400 border-yellow-200 animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.8)]' : 'bg-slate-800 border-slate-600'}`} title={`Missione ${i+1}`}></div>
+                                    {i < sector.missions.length - 1 && <div className={`w-4 h-0.5 ${i < campaignState.missionIdx ? 'bg-emerald-500/50' : 'bg-slate-700'}`}></div>}
+                                </div>
+                            ))}
+                            <div className="flex items-center ml-1">
+                                <div className="w-4 h-0.5 bg-slate-700"></div>
+                                <div className={`w-4 h-4 rounded border-2 rotate-45 ml-1 ${campaignState.missionIdx >= sector.missions.length ? 'bg-amber-500 border-amber-300' : 'bg-slate-800 border-slate-600'}`} title="Accampamento / Negozio"></div>
+                            </div>
+                        </div>
                     </div>
                     <div className="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-xl border border-yellow-500/50 absolute right-8">
                         <Coins className="text-yellow-400" size={24} />
@@ -4198,23 +4607,46 @@
                     </div>
                 </div>
                 
+                {lowHealthWarning && (
+                    <div className="max-w-4xl mx-auto w-full bg-rose-900/40 border border-rose-500/50 text-rose-200 p-2 rounded-xl text-center text-sm font-bold animate-pulse mb-4">
+                        ⚠️ Attenzione: La salute media della squadra è molto bassa! Sfrutta i curatori o sii cauto!
+                    </div>
+                )}
+                
                 <div className="flex-1 flex flex-col md:flex-row gap-8 max-w-6xl w-full mx-auto">
-                    <div className="flex-1 bg-black/40 rounded-3xl p-8 border border-white/10 flex flex-col justify-center items-center text-center">
+                    <div className="flex-1 bg-black/40 rounded-3xl p-8 border border-white/10 flex flex-col justify-center items-center text-center relative">
                         <h3 className="text-sm text-slate-400 font-bold uppercase tracking-widest mb-2">Prossima Missione</h3>
                         <h1 className="text-5xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">{mission.title}</h1>
-                        <div className="flex items-center justify-center gap-4 mb-8 bg-black/30 p-4 rounded-2xl w-full">
-                            <span className="text-slate-400 font-bold uppercase tracking-widest text-sm mr-4">Boss:</span>
-                            {(() => {
-                                let activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
-                                // FIX: Evita che i placeholder dinamici rompano l'interfaccia se non sono stati generati dal salvataggio
-                                if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) {
-                                    activeBosses = ['scheletro'];
-                                }
-                                return activeBosses.map((bId, idx) => {
-                                    const b = CHARACTERS.find(c=>c.id===bId);
-                                    return b ? <img key={`${bId}-${idx}`} src={b.img} className={`w-16 h-16 rounded-full border-2 ${mission.isAnomaly ? 'border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.8)] filter sepia-[0.3] hue-rotate-[280deg]' : 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]'} object-cover`} title={b.name} alt={b.name} /> : null;
-                                });
-                            })()}
+                        <div className="flex flex-col items-center justify-center gap-4 mb-8 bg-black/30 p-4 rounded-2xl w-full">
+                            <div className="flex items-center justify-center gap-4">
+                                <span className="text-slate-400 font-bold uppercase tracking-widest text-sm mr-2">Boss:</span>
+                                {(() => {
+                                    let activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+                                    if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
+                                    return activeBosses.map((bId, idx) => {
+                                        const b = CHARACTERS.find(c=>c.id===bId);
+                                        return b ? <img key={`${bId}-${idx}`} src={b.img} className={`w-16 h-16 rounded-full border-2 ${mission.isAnomaly ? 'border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.8)] filter sepia-[0.3] hue-rotate-[280deg]' : 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]'} object-cover`} title={b.name} alt={b.name} /> : null;
+                                    });
+                                })()}
+                            </div>
+                            
+                            {/* ANTEPRIMA TIPI BOSS */}
+                            <div className="flex gap-2 justify-center flex-wrap mt-1">
+                                {(() => {
+                                    let activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+                                    if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
+                                    
+                                    const allTypes = new Set();
+                                    activeBosses.forEach(bId => {
+                                        const b = CHARACTERS.find(c=>c.id===bId);
+                                        if (b) b.types.forEach(t => allTypes.add(t));
+                                    });
+                                    
+                                    return Array.from(allTypes).map(t => (
+                                        <span key={t} className={`text-[10px] font-black px-2 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                    ));
+                                })()}
+                            </div>
                         </div>
                         <button onClick={() => { setCampaignDialogueIdx(0); setAppMode('campaign_dialogue'); }} className="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-xl font-bold text-xl flex items-center gap-2 shadow-lg hover:-translate-y-1 transition-all">Avvia Missione <ArrowLeft className="rotate-180"/></button>
                     </div>
@@ -4255,7 +4687,11 @@
             if (dialogue && campaignDialogueIdx < fullDialogue.length - 1) {
                 setCampaignDialogueIdx(p => p + 1);
             } else {
-                setAppMode('campaign_team_select');
+                if (activeMission.choiceUnlock) {
+                    setAppMode('campaign_choice');
+                } else {
+                    advanceCampaign(150);
+                }
             }
         };
 
@@ -4284,52 +4720,74 @@
         );
     }
 
-    if (appMode === 'campaign_post_dialogue') {
+    if (appMode === 'campaign_choice') {
         const sector = activeSector;
         const mission = activeMission;
 
-        const fullDialogue = campaignPostDialogueMemo;
+        const handleChoice = (pickedId) => {
+            const resDialogues = mission.choiceDialogues[pickedId];
+            setResolutionDialogues(resDialogues);
+            setResolutionDialogueIdx(0);
 
-        const dialogue = fullDialogue[campaignDialogueIdx];
+            const newRoster = [...campaignState.roster, pickedId];
+            const newRosterStats = { ...campaignState.rosterStats };
+            newRosterStats[pickedId] = CHARACTERS.find(c=>c.id===pickedId).maxHp;
+
+            setCampaignState(prev => ({
+                ...prev,
+                roster: newRoster,
+                rosterStats: newRosterStats
+            }));
+            updateLocalStats({ unlockChar: pickedId });
+
+            setAppMode('campaign_resolution_dialogue');
+        };
+
+        return (
+            <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden items-center justify-center`}>
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-0"></div>
+                <div className="relative z-10 text-center max-w-5xl w-full">
+                    <h2 className="text-5xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 drop-shadow-md">Scegli chi Reclutare!</h2>
+                    <p className="text-xl text-slate-300 mb-12 font-medium">Puoi accogliere solo uno di loro nella Resistenza.<br/>L'altro tornerà alla sua dimensione d'origine.</p>
+                    
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch w-full">
+                        {mission.choiceUnlock.map(id => {
+                            const char = CHARACTERS.find(c => c.id === id);
+                            if(!char) return null;
+                            return (
+                                <div key={id} onClick={() => handleChoice(id)} className="bg-slate-900/80 border-2 border-slate-600 hover:border-emerald-400 hover:bg-slate-800 p-8 rounded-3xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(16,185,129,0.3)] flex-1 flex flex-col items-center group">
+                                    <img src={char.img} className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover border-4 border-slate-700 group-hover:border-emerald-400 transition-colors mb-6 shadow-xl" alt={char.name} />
+                                    <h3 className="text-3xl font-black text-white mb-4">{char.name}</h3>
+                                    <div className="flex gap-2 justify-center mb-6">
+                                        {char.types.map(t => (
+                                            <span key={t} className={`text-xs font-black px-3 py-1 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                        ))}
+                                    </div>
+                                    <div className="w-full grid grid-cols-2 gap-3 text-sm font-mono bg-black/40 p-4 rounded-xl border border-slate-700/50 mt-auto">
+                                        <div className="text-emerald-400">HP: {char.maxHp}</div>
+                                        <div className="text-rose-400">ATK: {char.atk}</div>
+                                        <div className="text-blue-400">DEF: {char.def}</div>
+                                        <div className="text-amber-400">SPD: {char.spd}</div>
+                                    </div>
+                                    <button className="mt-8 bg-emerald-600 group-hover:bg-emerald-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-colors w-full uppercase tracking-widest text-sm">Scegli {char.name}</button>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'campaign_resolution_dialogue') {
+        const sector = activeSector;
+        const dialogue = resolutionDialogues[resolutionDialogueIdx];
         
         const nextDialogue = () => {
-            if (dialogue && campaignDialogueIdx < fullDialogue.length - 1) {
-                setCampaignDialogueIdx(p => p + 1);
+            if (dialogue && resolutionDialogueIdx < resolutionDialogues.length - 1) {
+                setResolutionDialogueIdx(p => p + 1);
             } else {
-                const newCoins = campaignState.coins + 150;
-                let nextMissionIdx = campaignState.missionIdx + 1;
-                let nextSectorIdx = campaignState.sectorIdx;
-                let nextAppMode = 'campaign_map';
-
-                // Calcolo Anomalia PRIMA del cambio di settore
-                let newAnomalyTargets = null;
-                // Se la prossima missione è la m12_5 (Settore 6, indice 2)
-                if (nextSectorIdx === 5 && nextMissionIdx === 2) { 
-                     const shuffled = [...campaignState.roster].sort(() => 0.5 - Math.random());
-                     // Assicuriamoci che rimanga ALMENO UN EROE GIOCABILE
-                     const maxAnomalyCount = Math.max(1, Math.min(4, campaignState.roster.length - 1));
-                     newAnomalyTargets = shuffled.slice(0, maxAnomalyCount);
-                }
-
-                if (nextMissionIdx >= CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions.length) {
-                    nextMissionIdx = 0;
-                    nextSectorIdx++;
-                    nextAppMode = 'campaign_shop';
-                }
-
-                if (nextSectorIdx >= CAMPAIGN_DATA.sectors.length) {
-                    nextAppMode = 'campaign_ending';
-                }
-
-                setCampaignState(prev => ({
-                    ...prev,
-                    coins: newCoins,
-                    missionIdx: nextMissionIdx,
-                    sectorIdx: nextSectorIdx,
-                    faintedInLastBattle: null,
-                    anomalyTargets: newAnomalyTargets || prev.anomalyTargets
-                }));
-                setAppMode(nextAppMode);
+                advanceCampaign(150);
             }
         };
 
@@ -4338,21 +4796,21 @@
              return <div className="min-h-screen bg-slate-950"></div>;
         }
 
-        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
+        const speakerName = dialogue.s;
         const speakerChar = CHARACTERS.find(c => c.name === speakerName || c.name.includes(speakerName));
         
         return (
             <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
-                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
+                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
                  {speakerChar && (
                      <div className={`absolute bottom-0 left-4 md:left-24 transition-all duration-500 pointer-events-none drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]`}>
-                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-emerald-500 opacity-100" />
+                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-amber-500 opacity-100" />
                      </div>
                  )}
-                 <div className="bg-slate-900/95 border-2 border-emerald-400 p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer shadow-[0_0_40px_rgba(16,185,129,0.2)] relative mb-12 animate-fade-in">
-                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md bg-emerald-500 text-white`}>{dialogue.s}</div>
+                 <div className="bg-slate-900/95 border-2 border-amber-400 p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer shadow-[0_0_40px_rgba(245,158,11,0.2)] relative mb-12 animate-fade-in">
+                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md bg-amber-500 text-white`}>{dialogue.s}</div>
                       <p className="text-xl md:text-2xl mt-4 leading-relaxed font-medium text-white italic">"{dialogue.t}"</p>
-                      <p className="text-right text-xs text-emerald-400 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
+                      <p className="text-right text-xs text-amber-400 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
                  </div>
             </div>
         );
@@ -4363,6 +4821,7 @@
         const maxTeamSize = isFinalRaid ? 20 : 4;
         const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
         const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
+        const activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
 
         const toggleChar = (id) => {
             const isAnomalyTarget = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
@@ -4390,7 +4849,7 @@
                 return {
                     ...JSON.parse(JSON.stringify(baseChar)), hp: hp, statuses: [], consecutiveProtect: 0,
                     baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                    moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                    moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
                 };
             }).filter(Boolean); // Rimuove i null per sicurezza
 
@@ -4413,7 +4872,7 @@
                         baseDef: savedC.def, 
                         spd: savedC.spd, 
                         baseSpd: savedC.spd,
-                        moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                        moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
                     };
 
                     // Riassegna il filtro immagine
@@ -4438,7 +4897,7 @@
                     }
                     
                     let hpMultiplier = progressiveScale;
-                    if (isFinalRaid) hpMultiplier = 15; // Trigon e Gaster hanno 15x HP!
+                    if (isFinalRaid) hpMultiplier = 25; // Aumentato da 15 a 25 per resistere a 20 PG
                     else if (campaignState.difficulty === 'Insane') hpMultiplier *= 1.5; 
                     
                     let hp = Math.floor(baseChar.maxHp * hpMultiplier);
@@ -4446,7 +4905,7 @@
                     let charInst = {
                         ...JSON.parse(JSON.stringify(baseChar)), hp: hp, maxHp: hp, statuses: [], consecutiveProtect: 0,
                         baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                        moves: baseChar.moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                        moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
                     };
                     
                     // Buff Alle Statistiche (Attacco e Difesa scalano in base al settore)
@@ -4455,7 +4914,11 @@
                          charInst.baseAtk = charInst.atk;
                          charInst.def = Math.floor(charInst.def * (1 + (campaignState.sectorIdx * 0.03)));
                          charInst.baseDef = charInst.def;
-                         charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                         if (baseChar.imageFilter) {
+                             charInst.imageFilter = baseChar.imageFilter; // Mantieni il colore base per i Cell Jr
+                         } else {
+                             charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                         }
                     } else {
                          charInst.atk = Math.floor(charInst.atk * 1.5); // Final raid buff
                          charInst.baseAtk = charInst.atk;
@@ -4471,10 +4934,19 @@
                     
                     // Buff Alle Statistiche dei Super Boss
                     if (isFinalRaid) {
-                         charInst.atk = Math.floor(charInst.atk * 1.5);
+                         charInst.atk = Math.floor(charInst.atk * 2.0); // Aumentato da 1.5 a 2.0
                          charInst.baseAtk = charInst.atk;
-                         charInst.def = Math.floor(charInst.def * 1.2);
+                         charInst.def = Math.floor(charInst.def * 1.5); // Aumentato da 1.2 a 1.5
                          charInst.baseDef = charInst.def;
+                         charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
+                         
+                         // Aggiunta meccanica Scudo da Raid per Trigon e Gaster
+                         if (charInst.id === 'trigon' || charInst.id === 'gaster') {
+                             charInst.juggShieldHpThresholds = [0.75, 0.50, 0.25];
+                             charInst.juggHitsRemaining = 0;
+                             charInst.shieldGrantedHits = 15; // Aumentato da 1 a 15 colpi
+                             charInst.isJuggernaut = true; // Attiva la purificazione passiva ogni 2 turni
+                         }
                     }
 
                     return charInst;
@@ -4484,7 +4956,9 @@
             const state = initialGameState();
             state.gameMode = 'classica';
             state.isCampaignBattle = true;
-            state.settings = { teamSize: p1Team.length, fieldSize: Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length)) };
+            let fSize = Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length));
+            if (mission.forceFieldSize) fSize = mission.forceFieldSize;
+            state.settings = { teamSize: p1Team.length, fieldSize: fSize };
             
             state.players.p1 = playerName || "Resistenza";
             state.playerAvatars.p1 = p1Team.length > 0 ? p1Team[0].img : '';
@@ -4514,26 +4988,72 @@
 
         return (
             <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
-                <div className="flex-1 flex flex-col items-center justify-center mt-12 w-full z-10">
-                    <h2 className="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">Seleziona la tua Resistenza ({campaignSelectedTeam.length}/{maxTeamSize})</h2>
+                <div className="flex-1 flex flex-col items-center justify-center mt-6 w-full z-10">
+                    <h2 className="text-4xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">Seleziona la tua Resistenza ({campaignSelectedTeam.length}/{maxTeamSize})</h2>
+                    
+                    {/* HINT TIPI NEMICI NELLA SELEZIONE */}
+                    <div className="mb-6 bg-slate-900/80 px-6 py-2 rounded-full border border-rose-500/30 flex items-center gap-3 backdrop-blur-md shadow-lg">
+                        <span className="text-xs text-slate-300 font-bold uppercase tracking-widest">Tipi Nemici:</span>
+                        <div className="flex gap-1.5">
+                            {(() => {
+                                let bossesToEval = activeBosses;
+                                if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) bossesToEval = ['scheletro'];
+                                const allTypes = new Set();
+                                bossesToEval.forEach(bId => {
+                                    const b = CHARACTERS.find(c=>c.id===bId);
+                                    if (b) b.types.forEach(t => allTypes.add(t));
+                                });
+                                return Array.from(allTypes).map(t => (
+                                    <span key={t} className={`text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                ));
+                            })()}
+                        </div>
+                    </div>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
                     {campaignState.roster.map(id => {
-                        const char = CHARACTERS.find(c=>c.id===id);
-                        const hp = campaignState.rosterStats[id];
-                        const isSelected = campaignSelectedTeam.includes(id);
-                        const isDead = hp <= 0;
-                        const isAnomalyTarget = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
-                        const isDisabled = isDead || isAnomalyTarget;
+                        const char = CHARACTERS.find(c => c.id === id);
+                        if (!char) return null;
                         
-                        if(!char) return null;
+                        const hp = campaignState.rosterStats[id] || 0;
+                        const isDead = hp <= 0;
+                        const isSelected = campaignSelectedTeam.includes(id);
+                        const isAnomalyTarget = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
+
                         return (
-                            <div key={id} onClick={() => !isDisabled && toggleChar(id)} className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col items-center text-center shadow-lg hover:-translate-y-1 ${isDisabled ? 'opacity-40 border-rose-900 grayscale bg-slate-900 pointer-events-none' : isSelected ? 'border-emerald-500 bg-emerald-900/40 shadow-[0_0_20px_rgba(16,185,129,0.4)]' : 'border-slate-700 bg-slate-800 hover:border-slate-500'} ${isAnomalyTarget ? 'filter sepia-[0.3] hue-rotate-[280deg]' : ''}`}>
-                                <img src={char.img} className={`w-20 h-20 rounded-full border-2 mb-3 object-cover ${isSelected ? 'border-emerald-400' : 'border-slate-600'}`} />
-                                <div className="font-bold text-sm mb-2 truncate w-full">{char.name}</div>
-                                <div className="w-full">{renderHealthBar(hp, char.maxHp)}</div>
-                                {isDead && !isAnomalyTarget && <div className="text-[10px] text-rose-500 font-bold mt-2 uppercase tracking-widest bg-rose-900/50 px-2 py-0.5 rounded">Esausto</div>}
-                                {isAnomalyTarget && <div className="text-[10px] text-fuchsia-400 font-bold mt-2 uppercase tracking-widest bg-fuchsia-900/50 px-2 py-0.5 rounded animate-pulse">Infetto!</div>}
+                            <div 
+                                key={id} 
+                                onClick={() => {
+                                    if (isDead) {
+                                        setSystemAlert("Questo personaggio è esausto! Curarlo all'accampamento prima di poterlo schierare in battaglia.");
+                                        return;
+                                    }
+                                    toggleChar(id);
+                                }}
+                                className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isDead ? 'opacity-50 grayscale border-rose-900 cursor-not-allowed' : isAnomalyTarget ? 'border-fuchsia-500 opacity-50 cursor-not-allowed' : isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
+                            >
+                                <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
+                                <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
+                                <div className="flex flex-wrap gap-1 justify-center mb-3">
+                                    {char.types.map(t => (
+                                        <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                    ))}
+                                </div>
+                                {renderHealthBar(hp, char.maxHp)}
+                                
+                                {isSelected && (
+                                    <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-black text-xs shadow-md">✓</div>
+                                )}
+                                {isAnomalyTarget && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-fuchsia-900/80 backdrop-blur-sm z-10">
+                                        <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Infetto</span>
+                                    </div>
+                                )}
+                                {isDead && !isAnomalyTarget && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-rose-900/60 backdrop-blur-sm z-10">
+                                        <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Esausto</span>
+                                    </div>
+                                )}
                             </div>
                         );
                     })}
@@ -4583,11 +5103,19 @@
 
         return (
             <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                <div className="bg-slate-900/90 border border-yellow-500/50 p-8 rounded-3xl max-w-2xl w-full text-center shadow-[0_0_50px_rgba(234,179,8,0.15)] z-10 max-h-[95vh] flex flex-col">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/40 via-amber-950 to-black pointer-events-none opacity-80"></div>
+                
+                {/* Animazione Fuoco di bivacco nello sfondo */}
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-9xl opacity-10 animate-pulse pointer-events-none blur-sm filter">🔥</div>
+
+                <div className="bg-slate-900/90 border border-orange-500/50 p-8 rounded-3xl max-w-2xl w-full text-center shadow-[0_0_50px_rgba(249,115,22,0.15)] z-10 max-h-[95vh] flex flex-col">
                     <div className="shrink-0">
-                        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-2">Checkpoint Dimensionale</h2>
-                        <p className="text-slate-400 text-sm mb-4">Riposa e cura la tua squadra prima del prossimo settore.</p>
+                        <div className="flex items-center justify-center gap-3 mb-2">
+                            <span className="text-4xl">⛺</span>
+                            <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500">Accampamento</h2>
+                            <span className="text-4xl animate-pulse">🔥</span>
+                        </div>
+                        <p className="text-orange-200/70 text-sm mb-4 font-medium">Riposa, cura le ferite e organizza la squadra prima del prossimo settore.</p>
                         
                         <div className="flex items-center justify-center gap-3 mb-6 text-xl font-black bg-black/40 py-2 rounded-xl border border-slate-800">
                             Bilancio: <Coins className="text-yellow-400" size={24} /> <span className="text-yellow-400">{campaignState.coins} Monete</span>
@@ -5109,6 +5637,7 @@
                                  <select value={gameState.gameMode} onChange={e => updateState({ gameMode: e.target.value })} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500">
                                          <option value="classica">Sfida Classica (1v1)</option>
                                          <option value="multipla">Multipla (2v2)</option>
+                                         <option value="juggernaut">Juggernaut (1 vs Tutti)</option>
                                          <option value="battleroyale">Battle Royale (Tutti vs Tutti)</option>
                                          <option value="torneo">Torneo (4 Giocatori)</option>
                                          <option value="torneo_punti">Torneo a Punti (Tutti vs Tutti)</option>
@@ -5168,10 +5697,20 @@
                     {isHost ? (
                         <div className="space-y-4 text-left">
                             <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Regole</h3>
-                            {(gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale') && (
+                            {gameState.gameMode === 'juggernaut' && (
+                                <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-rose-500/30 mb-4 animate-fade-in shadow-[0_0_10px_rgba(225,29,72,0.1)]">
+                                    <span className="font-bold text-rose-400">Juggernaut (Il Boss):</span>
+                                    <select value={gameState.settings.juggernautPlayer || 'p1'} onChange={e => updateState({ settings: { ...gameState.settings, juggernautPlayer: e.target.value } })} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-rose-500/50 focus:border-rose-400">
+                                        {['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]).map(p => (
+                                            <option key={p} value={p}>{gameState.players[p]}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+                            {(gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale' || gameState.gameMode === 'juggernaut') && (
                                 <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30 mb-4">
                                     <span className="font-semibold text-slate-300">Numero Giocatori (Max):</span>
-                                    <input type="number" min="2" max="8" value={gameState.settings.maxPlayers} onChange={e => updateState({ settings: { ...gameState.settings, maxPlayers: Math.min(8, Math.max(2, parseInt(e.target.value) || 2)) } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
+                                    <input type="number" min={gameState.gameMode === 'juggernaut' ? "3" : "2"} max={gameState.gameMode === 'juggernaut' ? "5" : "8"} value={gameState.settings.maxPlayers} onChange={e => updateState({ settings: { ...gameState.settings, maxPlayers: Math.min(gameState.gameMode === 'juggernaut' ? 5 : 8, Math.max(gameState.gameMode === 'juggernaut' ? 3 : 2, parseInt(e.target.value) || 2)) } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
                                 </div>
                             )}
                             <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30">
@@ -5191,13 +5730,15 @@
                                 const draftable = CHARACTERS.filter(c => !c.isSummonOnly);
                                 const newDraft = { ...gameState.draft };
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
+                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
                                 
                                 ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).forEach(p => {
                                     if (gameState.isBot[p]) {
                                         const cpuDraft = [];
                                         const shuffled = [...draftable].sort(() => 0.5 - Math.random());
-                                        for(let i=0; i<gameState.settings.teamSize; i++) {
-                                            let c = {...shuffled[i], statuses: [], consecutiveProtect: 0, baseAtk: shuffled[i].atk, baseDef: shuffled[i].def, baseSpd: shuffled[i].spd, moves: shuffled[i].moves.map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))};
+                                        const cpuTeamSize = (gameState.gameMode === 'juggernaut' && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                                        for(let i=0; i<cpuTeamSize; i++) {
+                                            let c = {...shuffled[i], statuses: [], consecutiveProtect: 0, baseAtk: shuffled[i].atk, baseDef: shuffled[i].def, baseSpd: shuffled[i].spd, moves: shuffled[i].moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))};
                                             cpuDraft.push(c);
                                         }
                                         newDraft[p] = cpuDraft;
@@ -5225,28 +5766,31 @@
     if (gameState.status === 'drafting') {
         const activeReqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const activePlayersList = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
-        const draftLimitToCheck = gameState.gameMode === 'torneo_punti' ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
+        const draftLimitToCheck = (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'juggernaut') ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
         
+        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
         const myDraft = gameState.draft[playerRole] || [];
-        const isReady = myDraft.length === gameState.settings.teamSize;
+        const myTeamSize = (gameState.gameMode === 'juggernaut' && playerRole === juggPlayer) ? 1 : gameState.settings.teamSize;
+        const isReady = myDraft.length === myTeamSize;
         
         let allReady = true;
         let readyCount = 0;
         draftLimitToCheck.forEach(p => {
-                if (gameState.draft[p] && gameState.draft[p].length === gameState.settings.teamSize) readyCount++;
+                const limit = (gameState.gameMode === 'juggernaut' && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                if (gameState.draft[p] && gameState.draft[p].length === limit) readyCount++;
                 else allReady = false;
         });
 
         const currentPlayerName = gameState.players[playerRole] || "Player";
         const myUnlocked = getPlayerData().unlockedChars || [];
-        const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && (!c.price || myUnlocked.includes(c.id)));
+        const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && ((!c.price && !c.isSecretUnlock) || myUnlocked.includes(c.id)));
 
         return (
             <div className="min-h-screen bg-slate-900 text-white p-6 flex flex-col relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black pointer-events-none opacity-40"></div>
                 
                 <div className="flex justify-between items-center mb-6 z-10">
-                    <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Scegli la tua Squadra ({myDraft.length}/{gameState.settings.teamSize})</h2>
+                    <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Scegli la tua Squadra ({myDraft.length}/{myTeamSize}) {gameState.gameMode === 'juggernaut' && playerRole === juggPlayer && <span className="text-rose-500 text-sm align-middle block mt-1">Sei il Juggernaut! Scegli 1 solo campione.</span>}</h2>
                     <div className="text-slate-300 bg-slate-950/80 px-6 py-3 rounded-xl border border-slate-700/50 shadow-inner font-bold flex items-center gap-3">
                          {appMode === 'vs_cpu' ? (
                              <span>Scegli il tuo Team!</span>
@@ -5336,17 +5880,21 @@
                                                 <span key={t} className={`text-[9px] font-black px-2 py-0.5 rounded-md uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
                                             ))}
                                         </div>
-
-                                        {/* OVERLAY MOSSE CON GRADIENTE */}
+                                        
                                         {draftHoverInfo === char.id && (
-                                            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-slate-900/95 to-slate-900/90 p-3 flex flex-col overflow-y-auto custom-scrollbar animate-fade-in text-left">
-                                                <h5 className="font-black text-cyan-400 text-xs mb-2 border-b border-cyan-500/30 pb-1 sticky top-0 bg-slate-950/80 backdrop-blur-sm z-10">{char.name} - Mosse</h5>
-                                                <div className="space-y-2 pb-1">
-                                                    {char.moves.map((m, i) => (
-                                                        <div key={i} className="flex flex-col gap-0.5 bg-slate-800/50 p-1.5 rounded border border-slate-700/50">
+                                            <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
+                                                <div className="w-full grid grid-cols-2 gap-2 text-xs font-mono bg-slate-950/50 p-3 rounded-xl mb-4 border border-slate-800">
+                                                    <div className="text-emerald-400">HP: {char.maxHp}</div>
+                                                    <div className="text-rose-400">ATK: {char.atk}</div>
+                                                    <div className="text-blue-400">DEF: {char.def}</div>
+                                                    <div className="text-amber-400">SPD: {char.spd}</div>
+                                                </div>
+                                                <div className="w-full space-y-2">
+                                                    {char.moves.filter(Boolean).map((m, i) => (
+                                                        <div key={i} className="text-[10px] bg-slate-800 p-2 rounded border border-slate-700 flex flex-col gap-1">
                                                             <div className="flex justify-between items-center">
-                                                                <span className="font-bold text-gray-200 text-[9px] truncate mr-1">{m.name}</span>
-                                                                <span className={`text-[7px] px-1 rounded uppercase ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
+                                                                <span className="font-bold text-gray-300">{m.name}</span>
+                                                                <span className={`${TYPE_STYLES[m.type]} px-1 py-0.5 rounded text-[8px]`}>{m.type}</span>
                                                             </div>
                                                             <span className="text-[8px] text-slate-400 leading-tight">{m.desc}</span>
                                                         </div>
@@ -5470,6 +6018,10 @@
         if (gameState.gameMode === 'multipla') {
                 if (playerRole === 'p1' || playerRole === 'p2') { bottomPlayers = ['p1', 'p2']; topPlayers = ['p3', 'p4']; }
                 else { bottomPlayers = ['p3', 'p4']; topPlayers = ['p1', 'p2']; }
+        } else if (gameState.gameMode === 'juggernaut') {
+                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                topPlayers = [juggPlayer]; 
+                bottomPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
         } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
                 if (playerRole === activeMatchPlayers[0] || playerRole === activeMatchPlayers[1]) {
                         bottomPlayers = [playerRole];
@@ -5516,6 +6068,10 @@
                     const move = activeCommandChar.moves[targetingMoveIdx];
                     if (move.targetMode === 'ally' || move.targetMode === 'team') {
                             isTargetable = teamPlayer === playerRole;
+                    } else if (gameState.gameMode === 'juggernaut') {
+                            const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                            const myTeam = playerRole === juggPlayer ? [juggPlayer] : activeMatchPlayers.filter(p => p !== juggPlayer);
+                            isTargetable = !myTeam.includes(teamPlayer);
                     } else {
                             const myTeam = gameState.gameMode === 'multipla' 
                                      ? (['p1', 'p2'].includes(playerRole) ? ['p1', 'p2'] : ['p3', 'p4']) 
@@ -5525,10 +6081,14 @@
             }
 
             const isBeingCommanded = isMyTurn && teamPlayer === playerRole && fieldIdx === commandingIdx;
+            const isJuggernaut = char.isJuggernaut;
             
             let borderClass = isEnemySide ? 'border-red-500/50' : 'border-blue-500/50';
             if (gameState.gameMode === 'battleroyale') {
                 borderClass = PLAYER_THEMES[teamPlayer]?.border || 'border-slate-500';
+            }
+            if (isJuggernaut) {
+                borderClass = 'border-rose-600 shadow-[0_0_20px_rgba(225,29,72,0.6)]';
             }
             
             if (isTargetable) {
@@ -5552,10 +6112,10 @@
             }
             
             return (
-                <div key={`${teamPlayer}-${charTeamIdx}`} className={`flex flex-col items-center w-36 transition-all ${isDead ? 'opacity-0 scale-0 absolute' : 'opacity-100'}`} onClick={() => isTargetable && handleSelectMoveTarget(teamPlayer, fieldIdx)}>
+                <div key={`${teamPlayer}-${charTeamIdx}`} className={`flex flex-col items-center ${isJuggernaut ? 'w-56' : 'w-36'} transition-all ${isDead ? 'opacity-0 scale-0 absolute' : 'opacity-100'}`} onClick={() => isTargetable && handleSelectMoveTarget(teamPlayer, fieldIdx)}>
                     <div className="bg-slate-800/80 p-2 rounded-lg w-full mb-2 backdrop-blur-sm text-center shadow-lg z-10">
                         <div className="font-bold text-xs truncate text-gray-400 uppercase tracking-widest">{gameState.players[teamPlayer]}</div>
-                        <div className="font-bold text-sm truncate text-gray-100 mb-1">{char.name}</div>
+                        <div className="font-bold text-sm truncate text-gray-100 mb-1">{char.name} {isJuggernaut && <span className="text-[10px] text-rose-500">(BOSS)</span>}</div>
                         
                         <div className="flex gap-1 justify-center mb-1 flex-wrap">
                             {char.types.map(t => (
@@ -5567,7 +6127,12 @@
                         {renderStatuses(char.statuses)}
                     </div>
                     <div className="relative">
-                        <img src={char.img} style={{ filter: char.imageFilter || 'none' }} className={`w-28 h-28 object-cover rounded-xl border-4 ${borderClass} transition-all`} alt="" />
+                        <img src={char.img} style={{ filter: char.imageFilter || 'none' }} className={`${isJuggernaut ? 'w-48 h-48 md:w-56 md:h-56' : 'w-28 h-28'} object-cover rounded-xl border-4 ${borderClass} transition-all`} alt="" />
+                        {char.juggHitsRemaining > 0 && (
+                            <div className="absolute inset-0 border-[6px] border-cyan-400 rounded-xl shadow-[inset_0_0_20px_rgba(34,211,238,0.8),_0_0_20px_rgba(34,211,238,0.8)] z-30 animate-pulse pointer-events-none flex items-center justify-center bg-cyan-900/30">
+                                <span className="text-cyan-100 text-6xl font-black drop-shadow-[0_4px_4px_black]">{char.juggHitsRemaining}</span>
+                            </div>
+                        )}
                         {isTargetable && <Target className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-20 pointer-events-none" size={48} />}
                         {effectivenessBadge}
                     </div>
@@ -5723,6 +6288,7 @@
                                                 <span className="text-xs text-slate-400 font-mono font-bold">
                                                         {hoveredMove.power > 0 ? `Potenza: ${hoveredMove.power} | ` : ''}
                                                         {hoveredMove.accuracy ? `Prec: ${hoveredMove.accuracy * 100}% | ` : ''}
+                                                        {hoveredMove.cooldown !== undefined ? `Ricarica: ${hoveredMove.cooldown} turni | ` : ''}
                                                         {hoveredMove.remainingUses !== undefined && hoveredMove.remainingUses !== null ? `Usi: ${hoveredMove.remainingUses}/${hoveredMove.maxUses}` : ''}
                                                 </span>
                                         </div>
@@ -5761,7 +6327,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {activeCommandChar.moves.map((move, idx) => {
-                                                    let isDisabled = move.remainingUses === 0;
+                                                    let isDisabled = move.remainingUses === 0 || (move.currentCooldown && move.currentCooldown > 0);
                                                     if (move.requireSummonsDead && !isDisabled) {
                                                         if (gameState.teams[playerRole].some(c => move.requireSummonsDead.includes(c.id) && c.hp > 0)) {
                                                             isDisabled = true;
@@ -5826,7 +6392,11 @@
                                                     >
                                                             <div className="flex flex-col items-start pointer-events-none">
                                                                     <span className="font-bold text-lg drop-shadow-sm">{move.name}</span>
-                                                                    {move.maxUses !== undefined && <span className="text-[10px] text-slate-400 font-bold mt-1">Usi: {move.remainingUses}/{move.maxUses}</span>}
+                                                                    {move.currentCooldown > 0 ? (
+                                                                        <span className="text-[10px] text-rose-400 font-bold mt-1">In ricarica ({move.currentCooldown})</span>
+                                                                    ) : (
+                                                                        move.maxUses !== undefined && <span className="text-[10px] text-slate-400 font-bold mt-1">Usi: {move.remainingUses}/{move.maxUses}</span>
+                                                                    )}
                                                             </div>
                                                             <div className="flex flex-col items-end pointer-events-none">
                                                                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${TYPE_STYLES[move.type] || 'bg-gray-500'}`}>{move.type}</span>
@@ -5962,14 +6532,16 @@
                                             newRoster.push(pickedId);
                                             newRosterStats[pickedId] = CHARACTERS.find(c=>c.id===pickedId).maxHp;
                                             unlockedThisTime.push(pickedId);
+                                            updateLocalStats({ unlockChar: pickedId });
                                         }
-                                    } else {
+                                    } else if (!mission.choiceUnlock) {
                                         (mission.unlock || []).forEach(id => {
                                             if (!newRoster.includes(id)) {
                                                 newRoster.push(id);
                                                 newRosterStats[id] = CHARACTERS.find(c=>c.id===id).maxHp;
                                                 unlockedThisTime.push(id);
                                             }
+                                            updateLocalStats({ unlockChar: id });
                                         });
                                     }
 
