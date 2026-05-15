@@ -649,12 +649,12 @@
           'Raffica di Calci': { name: 'Raffica di Calci', type: 'Lotta', power: 20, multiHit: { min: 2, max: 3 }, desc: 'Una serie di calci rapidi. Colpisce da 2 a 3 volte.' },
           
           // NUOVE MOSSE MOSTRI CAMPAGNA
-          'Sospiro Dimezzante': { name: 'Sospiro Dimezzante', type: 'Spettro', power: 0, percentDmgCurrent: 0.5, desc: 'Soffia un gas inquietante che dimezza istantaneamente i PS attuali del bersaglio.' },
-          'Attacco Rapido': { name: 'Attacco Rapido', type: 'Normale', power: 40, priority: 1, desc: 'Un attacco fulmineo. Colpisce quasi sempre per primo (Priorità +1).' },
-          'Mocciolo Rosa': { name: 'Mocciolo Rosa', type: 'Magico', power: 70, desc: 'Spara una palla di energia melmosa e magica contro il nemico.' },
-          'Bava Velenosa': { name: 'Bava Velenosa', type: 'Veleno', power: 10, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Sputa bava tossica che infligge lievi danni ma avvelena sicuramente il bersaglio.' },
-          'Bava Appiccicosa': { name: 'Bava Appiccicosa', type: 'Insetto', power: 30, targetStatDebuff: { spd: 0.5 }, desc: 'Sputa un liquido colloso che infligge danni e dimezza la Velocità avversaria.' },
-          'Onda Melmosa': { name: 'Onda Melmosa', type: 'Veleno', power: 0, targetCount: 4, percentDmgMax: 0.25, desc: 'Un\'onda di melma acida che investe tutti i nemici, togliendo il 25% dei loro PS massimi.' }
+          'Sospiro Dimezzante': { name: 'Sospiro Dimezzante', type: 'Spettro', power: 0, percentDmgCurrent: 0.5, statusEffect: { type: 'Confuso', chance: 0.5 }, desc: 'Soffia un gas inquietante che dimezza istantaneamente i PS attuali del bersaglio e può confonderlo (50%).' },
+          'Attacco Rapido': { name: 'Attacco Rapido', type: 'Normale', power: 60, priority: 1, desc: 'Un attacco fulmineo e inaspettato. Colpisce quasi sempre per primo (Priorità +1).' },
+          'Mocciolo Rosa': { name: 'Mocciolo Rosa', type: 'Magico', power: 90, targetStatDebuff: { spd: 0.7 }, desc: 'Spara una palla di energia melmosa contro il nemico. Infligge ingenti danni e riduce la Velocità.' },
+          'Bava Velenosa': { name: 'Bava Velenosa', type: 'Veleno', power: 50, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Sputa bava tossica che infligge ottimi danni e avvelena sicuramente il bersaglio.' },
+          'Bava Appiccicosa': { name: 'Bava Appiccicosa', type: 'Insetto', power: 65, targetStatDebuff: { spd: 0.5 }, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Liquido colloso che infligge danni, dimezza la Velocità avversaria e può stordire (20%).' },
+          'Onda Melmosa': { name: 'Onda Melmosa', type: 'Veleno', power: 0, targetCount: 4, percentDmgMax: 0.30, statusEffect: { type: 'Avvelenato', chance: 0.4 }, desc: 'Un\'onda acida su tutti i nemici: toglie il 30% dei loro PS massimi e ha il 40% di avvelenare.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -799,10 +799,10 @@
           { id: 'celljr_4', name: 'Cell Jr. (Viola)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(270deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
           
           // MOSTRI ESCLUSIVI CAMPAGNA
-          { id: 'slime', name: 'Slime', types: ['Acqua', 'Spettro'], hp: 80, maxHp: 80, atk: 50, def: 80, spd: 50, img: 'https://i.pinimg.com/736x/c8/1d/90/c81d90f114fb59defbd2cbab86dc0419.jpg', moves: [MOVES_DB['Sospiro Dimezzante'], MOVES_DB['Azione']], isSummonOnly: true },
-          { id: 'blob', name: 'Blob', types: ['Magico', 'Normale'], hp: 90, maxHp: 90, atk: 70, def: 60, spd: 80, img: 'https://i.pinimg.com/736x/5b/ae/51/5bae51f0859c57935ac843efad17e9d5.jpg', moves: [MOVES_DB['Attacco Rapido'], MOVES_DB['Mocciolo Rosa']], isSummonOnly: true },
-          { id: 'worm', name: 'Worm', types: ['Insetto', 'Veleno'], hp: 70, maxHp: 70, atk: 85, def: 50, spd: 90, img: 'https://i.pinimg.com/736x/e7/a7/c9/e7a7c9f0c1900346917ad240c653b040.jpg', moves: [MOVES_DB['Bava Velenosa'], MOVES_DB['Bava Appiccicosa']], isSummonOnly: true },
-          { id: 'melma', name: 'Melma', types: ['Veleno'], hp: 120, maxHp: 120, atk: 40, def: 100, spd: 30, img: 'https://i.pinimg.com/1200x/37/2e/91/372e918950bda6ea563aa49703b1200c.jpg', moves: [MOVES_DB['Onda Melmosa'], MOVES_DB['Azione']], isSummonOnly: true }
+          { id: 'slime', name: 'Slime', types: ['Acqua', 'Spettro'], hp: 100, maxHp: 100, atk: 70, def: 85, spd: 60, img: 'https://i.pinimg.com/736x/c8/1d/90/c81d90f114fb59defbd2cbab86dc0419.jpg', moves: [MOVES_DB['Sospiro Dimezzante'], MOVES_DB['Corposcontro']], isSummonOnly: true },
+          { id: 'blob', name: 'Blob', types: ['Magico', 'Normale'], hp: 110, maxHp: 110, atk: 95, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/5b/ae/51/5bae51f0859c57935ac843efad17e9d5.jpg', moves: [MOVES_DB['Attacco Rapido'], MOVES_DB['Mocciolo Rosa']], isSummonOnly: true },
+          { id: 'worm', name: 'Worm', types: ['Insetto', 'Veleno'], hp: 90, maxHp: 90, atk: 110, def: 65, spd: 105, img: 'https://i.pinimg.com/736x/e7/a7/c9/e7a7c9f0c1900346917ad240c653b040.jpg', moves: [MOVES_DB['Bava Velenosa'], MOVES_DB['Bava Appiccicosa']], isSummonOnly: true },
+          { id: 'melma', name: 'Melma', types: ['Veleno'], hp: 140, maxHp: 140, atk: 60, def: 115, spd: 40, img: 'https://i.pinimg.com/1200x/37/2e/91/372e918950bda6ea563aa49703b1200c.jpg', moves: [MOVES_DB['Onda Melmosa'], MOVES_DB['Fangobomba']], isSummonOnly: true }
         ];
 
         const CHAR_PRICES = {
