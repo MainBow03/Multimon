@@ -5030,8 +5030,15 @@
             }).filter(Boolean); // Rimuove i null per sicurezza
 
             let p2Team = [];
+            let isValidSavedBoss = false;
 
             if (campaignState.currentBossState && campaignState.currentBossState.length > 0) {
+                // Valida se il salvataggio dei boss è coerente con i mostri di questo livello. 
+                // Se c'è un disallineamento (es. vecchio aggiornamento), lo ignora.
+                isValidSavedBoss = (mission.isAnomaly && mission.id === 'm12_5') || campaignState.currentBossState.some(c => activeBosses.includes(c.id));
+            }
+
+            if (isValidSavedBoss) {
                 p2Team = campaignState.currentBossState.map(savedC => {
                     let baseChar = CHARACTERS.find(c => c.id === savedC.id);
                     if (!baseChar) baseChar = CHARACTERS.find(c => c.id === 'scheletro');
