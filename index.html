@@ -1863,7 +1863,7 @@
                   missionIdx: nextMissionIdx,
                   sectorIdx: nextSectorIdx,
                   faintedInLastBattle: null,
-                  anomalyTargets: newAnomalyTargets || prev.anomalyTargets
+                  anomalyTargets: newAnomalyTargets
               }));
               setAppMode(nextAppMode);
           };
@@ -1873,7 +1873,7 @@
               let dialogs = [...(activeMission.dialogue || [])];
               
               const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
-              const activeBosses = activeMission.isAnomaly && campaignState.anomalyTargets ? campaignState.anomalyTargets : activeMission.boss;
+              const activeBosses = activeMission.isAnomaly && activeMission.id === 'm12_5' && campaignState.anomalyTargets ? campaignState.anomalyTargets : activeMission.boss;
 
               const ANOMALY_LINES = {
                   'finn': "La mia spada... vuole solo distruggere! Non posso fermarmi!",
@@ -1897,7 +1897,7 @@
                   'default': "La polvere nera... il Maestro mi chiama di nuovo. Vi annienterò!"
               };
 
-              if (activeMission.isAnomaly && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
+              if (activeMission.isAnomaly && activeMission.id === 'm12_5' && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
                   let insertIdx = Math.min(2, dialogs.length); 
                   campaignState.anomalyTargets.forEach(tId => {
                       const cObj = CHARACTERS.find(c => c.id === tId);
@@ -1990,7 +1990,7 @@
                   }
               }
 
-              if (activeMission.isAnomaly && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
+              if (activeMission.isAnomaly && activeMission.id === 'm12_5' && campaignState.anomalyTargets && !dialogs.some(d => d.isAnomalyInjection)) {
                   let insertIdx = Math.min(1, dialogs.length); 
                   campaignState.anomalyTargets.forEach(tId => {
                       const cObj = CHARACTERS.find(c => c.id === tId);
@@ -3431,7 +3431,7 @@
                             workingField[player].push(newCharTeamIdx);
                             
                             summonedNames.push(newSummon.name);
-                            events.push({ type: 'summon', text: `${attacker.name} ha evocato ${newSummon.name}!`, player: player, newChar: newSummon, fieldIdx: newCharTeamIdx });
+                            events.push({ type: 'summon', text: `${attacker.name} ha evocato ${newSummon.name}!`, player: player, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx });
                         }
                     });
                     
@@ -4756,8 +4756,8 @@
                             <div className="flex items-center justify-center gap-4">
                                 <span className="text-slate-400 font-bold uppercase tracking-widest text-sm mr-2">Boss:</span>
                                 {(() => {
-                                    let activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
-                                    if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
+                                    let activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+                                    if (mission.isAnomaly && mission.id === 'm12_5' && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
                                     return activeBosses.map((bId, idx) => {
                                         const b = CHARACTERS.find(c=>c.id===bId);
                                         return b ? <img key={`${bId}-${idx}`} src={b.img} className={`w-16 h-16 rounded-full border-2 ${mission.isAnomaly ? 'border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.8)] filter sepia-[0.3] hue-rotate-[280deg]' : 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]'} object-cover`} title={b.name} alt={b.name} /> : null;
@@ -4768,8 +4768,8 @@
                             {/* ANTEPRIMA TIPI BOSS */}
                             <div className="flex gap-2 justify-center flex-wrap mt-1">
                                 {(() => {
-                                    let activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
-                                    if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
+                                    let activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+                                    if (mission.isAnomaly && mission.id === 'm12_5' && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
                                     
                                     const allTypes = new Set();
                                     activeBosses.forEach(bId => {
@@ -4997,10 +4997,10 @@
         const maxTeamSize = isFinalRaid ? 20 : 4;
         const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
         const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
-        const activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+        const activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
 
         const toggleChar = (id) => {
-            const isAnomalyTarget = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
+            const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
             if (isAnomalyTarget) {
                 setSystemAlert("Questo personaggio è stato infettato dall'Anomalia e non può essere schierato! Lo affronterai a breve!");
                 return;
@@ -5016,7 +5016,7 @@
         const handleStartCampaignBattle = () => {
             if (campaignSelectedTeam.length === 0) return setSystemAlert("Seleziona almeno un personaggio!");
             
-            const activeBosses = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+            const activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
             
             const p1Team = campaignSelectedTeam.map(id => {
                 const baseChar = CHARACTERS.find(c => c.id === id);
@@ -5140,7 +5140,7 @@
             state.playerAvatars.p1 = p1Team.length > 0 ? p1Team[0].img : '';
             state.isBot.p1 = false;
             
-            state.players.p2 = mission.isAnomaly ? "Team Infetto" : activeBosses.map(id => {
+            state.players.p2 = mission.isAnomaly && mission.id === 'm12_5' ? "Team Infetto" : activeBosses.map(id => {
                  const b = CHARACTERS.find(c=>c.id===id);
                  return b ? b.name : "Sconosciuto";
             }).join(" & ");
@@ -5173,7 +5173,7 @@
                         <div className="flex gap-1.5">
                             {(() => {
                                 let bossesToEval = activeBosses;
-                                if (mission.isAnomaly && activeBosses.includes('dynamic_anomaly_1')) bossesToEval = ['scheletro'];
+                                if (mission.isAnomaly && mission.id === 'm12_5' && activeBosses.includes('dynamic_anomaly_1')) bossesToEval = ['scheletro'];
                                 const allTypes = new Set();
                                 bossesToEval.forEach(bId => {
                                     const b = CHARACTERS.find(c=>c.id===bId);
@@ -5194,7 +5194,7 @@
                         const hp = campaignState.rosterStats[id] || 0;
                         const isDead = hp <= 0;
                         const isSelected = campaignSelectedTeam.includes(id);
-                        const isAnomalyTarget = mission.isAnomaly && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
+                        const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
 
                         return (
                             <div 
