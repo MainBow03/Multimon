@@ -3441,6 +3441,16 @@
                                 didSomething = true;
                             }
                         }
+                        if (move.targetStatBuff) {
+                            let statTexts = [];
+                            if (move.targetStatBuff.atk) { ally.atk = Math.floor(ally.atk * move.targetStatBuff.atk); statTexts.push("Attacco"); }
+                            if (move.targetStatBuff.def) { ally.def = Math.floor(ally.def * move.targetStatBuff.def); statTexts.push("Difesa"); }
+                            if (move.targetStatBuff.spd) { ally.spd = Math.floor(ally.spd * move.targetStatBuff.spd); statTexts.push("Velocità"); }
+                            if (statTexts.length > 0) {
+                                events.push({ type: 'text', text: `Aumenta ${statTexts.join(" e ")} di ${ally.name}!` });
+                                didSomething = true;
+                            }
+                        }
                     }
                     continue;
                 }
