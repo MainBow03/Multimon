@@ -152,7 +152,7 @@
           'Yo-Yo Devastante': { name: 'Yo-Yo Devastante', type: 'Insetto', power: 80, desc: 'Colpisce il nemico con il suo inseparabile yo-yo magico.' },
           'Lucky Charm': { name: 'Lucky Charm', type: 'Magico', power: 0, targetMode: 'ally', targetStatBuff: { atk: 1.5, def: 1.5 }, desc: 'Evoca l\'oggetto perfetto per la situazione! Aumenta Attacco e Difesa di un alleato del 50%.' },
           'Miraculous Ladybug': { name: 'Miraculous Ladybug', type: 'Magico', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, maxUses: 2, desc: 'Lancia in aria il Lucky Charm riparando i danni! Cura tutto il team in campo del 50% dei PS.' },
-          'Mi serve un aiutante!': { name: 'Mi serve un aiutante!', type: 'Magico', power: 0, maxUses: 3, selfStatBuff: { def: 1.1 }, randomSummon: ['summon_chatnoir', 'summon_renarouge', 'viperion', 'summon_carapace', 'summon_ryuko', 'summon_kingmonkey'], desc: 'Aumenta la Difesa del 10% ed evoca un aiutante casuale tra gli eroi di Parigi.' },
+          'Mi serve un aiutante!': { name: 'Mi serve un aiutante!', type: 'Magico', power: 0, maxUses: 2, strictUses: true, selfStatBuff: { def: 1.1 }, randomSummon: ['summon_chatnoir', 'summon_renarouge', 'viperion', 'summon_carapace', 'summon_ryuko', 'summon_kingmonkey'], desc: 'Aumenta la Difesa del 10% ed evoca un aiutante casuale tra gli eroi di Parigi. (2 utilizzi)' },
           'Lucky Charm Illusorio!': { name: 'Lucky Charm Illusorio!', type: 'Magico', power: 100, maxUses: 1, isCombo: ['ladybug', 'renarouge'], selfHeal: 1.0, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Mossa Combinata: 100 danni, brucia il bersaglio e cura al 100% Ladybug e Rena Rouge! Consuma il turno di entrambe.' },
 
           // NUOVE MOSSE WARIO
@@ -676,17 +676,17 @@
           'Laserbeak, all\'attacco!': { name: 'Laserbeak, all\'attacco!', type: 'Robot', power: 45, multiHit: { min: 2, max: 2 }, desc: 'Invia il suo fido compagno a colpire 2 volte il bersaglio.' },
           'Jammer di Frequenza': { name: 'Jammer di Frequenza', type: 'Elettro', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.7, spd: 0.7 }, desc: 'Emette onde di disturbo. Riduce Attacco e Velocità di tutti i nemici.' },
 
-          // NUOVE MOSSE CELL JR
-          'Raggio di Ki Piccolo': { name: 'Raggio di Ki Piccolo', type: 'Magico', power: 50, desc: 'Un raggio di energia basilare ma fastidioso.' },
-          'Raffica di Calci': { name: 'Raffica di Calci', type: 'Lotta', power: 20, multiHit: { min: 2, max: 3 }, desc: 'Una serie di calci rapidi. Colpisce da 2 a 3 volte.' },
+          'Onda Melmosa': { name: 'Onda Melmosa', type: 'Veleno', power: 0, targetCount: 4, percentDmgMax: 0.30, statusEffect: { type: 'Avvelenato', chance: 0.4 }, desc: 'Un\'onda acida su tutti i nemici: toglie il 30% dei loro PS massimi e ha il 40% di avvelenare.' },
           
-          // NUOVE MOSSE MOSTRI CAMPAGNA
-          'Sospiro Dimezzante': { name: 'Sospiro Dimezzante', type: 'Spettro', power: 0, percentDmgCurrent: 0.5, statusEffect: { type: 'Confuso', chance: 0.5 }, desc: 'Soffia un gas inquietante che dimezza istantaneamente i PS attuali del bersaglio e può confonderlo (50%).' },
-          'Attacco Rapido': { name: 'Attacco Rapido', type: 'Normale', power: 60, priority: 1, desc: 'Un attacco fulmineo e inaspettato. Colpisce quasi sempre per primo (Priorità +1).' },
-          'Mocciolo Rosa': { name: 'Mocciolo Rosa', type: 'Magico', power: 90, targetStatDebuff: { spd: 0.7 }, desc: 'Spara una palla di energia melmosa contro il nemico. Infligge ingenti danni e riduce la Velocità.' },
-          'Bava Velenosa': { name: 'Bava Velenosa', type: 'Veleno', power: 50, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Sputa bava tossica che infligge ottimi danni e avvelena sicuramente il bersaglio.' },
-          'Bava Appiccicosa': { name: 'Bava Appiccicosa', type: 'Insetto', power: 65, targetStatDebuff: { spd: 0.5 }, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Liquido colloso che infligge danni, dimezza la Velocità avversaria e può stordire (20%).' },
-          'Onda Melmosa': { name: 'Onda Melmosa', type: 'Veleno', power: 0, targetCount: 4, percentDmgMax: 0.30, statusEffect: { type: 'Avvelenato', chance: 0.4 }, desc: 'Un\'onda acida su tutti i nemici: toglie il 30% dei loro PS massimi e ha il 40% di avvelenare.' }
+          // NUOVE MOSSE MOSTRI GIUNGLA (Pianta carnivora, Cespuglio, Alber(t)o, Fiore)
+          'Gas velenoso': { name: 'Gas velenoso', type: 'Veleno', power: 50, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Emana un gas tossico. 100% di probabilità di avvelenare il bersaglio.' },
+          'Morso affilato': { name: 'Morso affilato', type: 'Normale', power: 65, desc: 'Un morso rapido e letale.' },
+          'Nascondino Supremo': { name: 'Nascondino Supremo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, maxUses: 3, priority: 5, desc: 'Protegge se stesso e tutti gli alleati per un turno. Fallisce se usato di fila.' },
+          'Spine maledette': { name: 'Spine maledette', type: 'Erba', power: 70, targetCount: 6, desc: 'Lancia spine acuminate che colpiscono tutti i bersagli in campo.' },
+          'Face demoniaca': { name: 'Face demoniaca', type: 'Spettro', power: 120, recharge: true, desc: 'Infligge danni immensi (120), ma richiede un turno di ricarica.' },
+          'Ramo e stoccata': { name: 'Ramo e stoccata', type: 'Erba', power: 80, targetCount: 2, desc: 'Colpisce fino a due bersagli contemporaneamente con rami robusti.' },
+          'Sguardo incattivito': { name: 'Sguardo incattivito', type: 'Buio', power: 0, priority: 2, targetCount: 6, targetStatDebuff: { spd: 0.5 }, desc: 'Diminuisce permanentemente la Velocità di tutti i nemici. Colpisce per primo.' },
+          'Fotosintesi offensiva': { name: 'Fotosintesi offensiva', type: 'Fuoco', power: 200, costHpPercent: 0.5, desc: 'Un attacco devastante da 200 danni. L\'utilizzatore sacrifica il 50% della propria vita massima per usarla.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -845,7 +845,12 @@
           { id: 'slime', name: 'Slime', types: ['Acqua', 'Spettro'], hp: 100, maxHp: 100, atk: 70, def: 85, spd: 60, img: 'https://i.pinimg.com/736x/c8/1d/90/c81d90f114fb59defbd2cbab86dc0419.jpg', moves: [MOVES_DB['Sospiro Dimezzante'], MOVES_DB['Corposcontro']], isSummonOnly: true },
           { id: 'blob', name: 'Blob', types: ['Magico', 'Normale'], hp: 110, maxHp: 110, atk: 95, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/5b/ae/51/5bae51f0859c57935ac843efad17e9d5.jpg', moves: [MOVES_DB['Attacco Rapido'], MOVES_DB['Mocciolo Rosa']], isSummonOnly: true },
           { id: 'worm', name: 'Worm', types: ['Insetto', 'Veleno'], hp: 90, maxHp: 90, atk: 110, def: 65, spd: 105, img: 'https://i.pinimg.com/736x/e7/a7/c9/e7a7c9f0c1900346917ad240c653b040.jpg', moves: [MOVES_DB['Bava Velenosa'], MOVES_DB['Bava Appiccicosa']], isSummonOnly: true },
-          { id: 'melma', name: 'Melma', types: ['Veleno'], hp: 140, maxHp: 140, atk: 60, def: 115, spd: 40, img: 'https://i.pinimg.com/1200x/37/2e/91/372e918950bda6ea563aa49703b1200c.jpg', moves: [MOVES_DB['Onda Melmosa'], MOVES_DB['Fangobomba']], isSummonOnly: true }
+          { id: 'melma', name: 'Melma', types: ['Veleno'], hp: 140, maxHp: 140, atk: 60, def: 115, spd: 40, img: 'https://i.pinimg.com/1200x/37/2e/91/372e918950bda6ea563aa49703b1200c.jpg', moves: [MOVES_DB['Onda Melmosa'], MOVES_DB['Fangobomba']], isSummonOnly: true },
+          
+          { id: 'piantacarnivora', name: 'Pianta Carnivora', types: ['Erba', 'Veleno'], hp: 110, maxHp: 110, atk: 100, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/51/f6/6a/51f66a8bbd57907536460b11bfc700b8.jpg', moves: [MOVES_DB['Gas velenoso'], MOVES_DB['Morso affilato']], isSummonOnly: true },
+          { id: 'cespugliomaledetto', name: 'Cespuglio Maledetto', types: ['Erba', 'Oscuro'], hp: 120, maxHp: 120, atk: 90, def: 100, spd: 60, img: 'https://i.pinimg.com/1200x/0f/81/5c/0f815ca2dc8d2507f5d9ee22f3ef9f41.jpg', moves: [MOVES_DB['Nascondino Supremo'], MOVES_DB['Spine maledette']], isSummonOnly: true },
+          { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSummonOnly: true },
+          { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSummonOnly: true }
         ];
 
         const CHAR_PRICES = {
@@ -1376,10 +1381,14 @@
                 {
                   id: 'm21', title: 'Cuori di Ghiaccio',
                   dialogue: [
+                    { s: "Zatch bell", t: "B-b-brrr! Che freddo glaciale! Ponygon, amico mio, fammi salire in groppa! I miei piedini si stanno congelando!" },
+                    { s: "Ponygon", t: "Meru meru me! (Sbuffa, scuote la testa e gli gira le spalle)" },
+                    { s: "Zatch bell", t: "Uffa, sei un cavallino egoista! Se non mi aiuti diventerò un ghiacciolo e non potrò più darti il tuo cibo preferito!" },
+                    { s: "Ponygon", t: "Meru?! (Ci pensa su, poi si abbassa rassegnato per farlo salire)" },
                     { s: "Elsa (Corrotta)", t: "Il freddo non mi ha mai disturbata... ma questa Frequenza gela perfino la mia anima." },
-                    { s: "Re Ghiaccio (Corrotto)", t: "Zitto Gunter! Il Maestro Cell mi ha promesso tutte le principesse del Multiverso se vi congelo!" },
+                    { s: "Re Ghiaccio (Corrotto)", t: "Zitto Gunter! Guarda quel ragazzino sul cavallo! Il Maestro Cell mi ha promesso tutte le principesse del Multiverso se vi congelo tutti!" },
                     { s: "Po (Corrotto)", t: "Il freddo conserverà i ravioli in eterno... e anche voi!" },
-                    { s: "Topolino", t: "Attenti, le loro magie combinate potrebbero trasformarci in statue di ghiaccio! E c'è anche Po!" }
+                    { s: "Topolino", t: "Attenti, le loro magie combinate potrebbero trasformarci in statue di ghiaccio!" }
                   ],
                   postDialogue: [
                     { s: "Elsa", t: "La mia mente... era avvolta da un inverno oscuro e innaturale. Vi ringrazio per avermi liberata." },
@@ -1414,6 +1423,10 @@
                 {
                   id: 'm23', title: 'Flora Velenosa',
                   dialogue: [
+                    { s: "Zatch bell", t: "Ooooh! Guardate che bei fiori giganti! Ne voglio raccogliere uno da regalare a Vulcan 300!" },
+                    { s: "Ponygon", t: "MERU! MERU ME! (Morde Zatch per la maglietta e lo tira indietro con forza)" },
+                    { s: "Zatch bell", t: "Ahi! Ponygon, ma sei impazzito?! Volevo solo accarezzare quella bella pianta carnivora, sembrava così felice di vedermi!" },
+                    { s: "Poison Ivy", t: "Quel piccolo cavallo ha decisamente più istinto di sopravvivenza di te, ragazzino." },
                     { s: "Roserade (Corrotto)", t: "*Sibilo elegante ma velenoso, sprigionando spore viola*" },
                     { s: "Leslie (Corrotto)", t: "Io non volevo combattere! Ma la voce nella mia testa dice che devo farvi concime!" },
                     { s: "Poison Ivy", t: "Queste piante stanno soffrendo... Cell le sta forzando oltre i loro limiti!" }
@@ -1428,17 +1441,19 @@
                 },
                 {
                   id: 'm24', title: 'Giganti Addormentati',
+                  forceFieldSize: 6,
                   dialogue: [
                     { s: "Groot (Corrotto)", t: "Io. Sono. CELL." },
                     { s: "Snorlax (Corrotto)", t: "*Ronf... Zzz... la Perfezione è... Zzz...*" },
-                    { s: "Finn l'Umano", t: "Un albero gigante che parla e un orso che dorme anche se è posseduto? Dobbiamo svegliarli a suon di botte!" }
+                    { s: "Finn l'Umano", t: "Un albero gigante che parla e un orso che dorme anche se è posseduto? Aspetta... ci sono altri 4 mostriciattoli corrotti con loro! Una pianta carnivora, un cespuglio, un albero demoniaco e un fiore!" },
+                    { s: "Topolino", t: "Dobbiamo stare molto attenti, sembrano letali e fanno da guardia ai due giganti!" }
                   ],
                   postDialogue: [
                     { s: "Groot", t: "Io sono Groot." },
                     { s: "Snorlax", t: "*Sbadiglio*... Ho una fame da lupi! C'è niente da mangiare da queste parti?" },
-                    { s: "Cyborg", t: "Perfetto. Un albero monosillabico e un pozzo senza fondo. Ma almeno sono dalla nostra parte!" }
+                    { s: "Cyborg", t: "Perfetto. Quei mostriciattoli vegetali sono cenere. Un albero monosillabico e un pozzo senza fondo invece si sono uniti a noi!" }
                   ],
-                  boss: ['groot', 'snorlax'],
+                  boss: ['groot', 'snorlax', 'piantacarnivora', 'cespugliomaledetto', 'alberto', 'fioretenebroso'],
                   unlock: ['groot', 'snorlax']
                 }
               ]
@@ -1503,12 +1518,17 @@
                 {
                   id: 'm27', title: 'Verde d\'Invidia',
                   dialogue: [
+                    { s: "Zatch bell", t: "Wow! Ci sono funghi giganti ovunque! Chissà se sono buoni da mangiare... Ne assaggio uno!" },
+                    { s: "Ponygon", t: "Meru! Meru meru! (Si lancia per bloccarlo ma scivola su un guscio di tartaruga)" },
+                    { s: "Zatch bell", t: "Tranquillo Ponygon, ti proteggo io dai gusci scivolosi! Ti faccio strada a suon di fulmini!" },
                     { s: "Luigi (Corrotto)", t: "Sempre il numero due... ma per il Maestro Cell, io sarò il flagello perfetto! Tremate!" },
                     { s: "Topolino", t: "Luigi! Non è da te! Resisti a questa energia oscura!" }
                   ],
                   postDialogue: [
                     { s: "Luigi", t: "M-mamma mia... che incubo spaventoso! Grazie per avermi svegliato, ragazzi!" },
-                    { s: "Finn l'Umano", t: "Non c'è di che, baffone verde! Ma c'è ancora tuo fratello da salvare." }
+                    { s: "Zatch bell", t: "Prego amico coi baffi verdi! E grazie per il fungo, sapeva di... energia pura!" },
+                    { s: "Ponygon", t: "Meru... (Si dà una zampata in fronte, esasperato)" },
+                    { s: "Finn l'Umano", t: "Ahah! Non c'è di che, baffone verde! Ma c'è ancora tuo fratello da salvare." }
                   ],
                   boss: ['luigi'],
                   unlock: ['luigi']
@@ -2148,12 +2168,20 @@
               if (gameState.status === 'pre_battle') {
                   setHasRewarded(false);
               }
-              if (gameState.status === 'gameover' && !hasRewarded && playerName.trim() && !gameState.isCampaignBattle) {
+              if (gameState.status === 'gameover' && !hasRewarded && playerName.trim()) {
                   setHasRewarded(true);
                   
                   if (matchStartTimeRef.current) {
                       const playTimeSecs = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
                       updateLocalStats({ playtime: playTimeSecs });
+                  }
+                  
+                  if (gameState.isCampaignBattle) {
+                      const isWin = gameState.winner === gameState.players.p1;
+                      if (isWin) {
+                          updateLocalStats({ addCoins: 20, win: true });
+                      }
+                      return; // Esce per non eseguire la logica sottostante
                   }
                   
                   const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
@@ -4129,6 +4157,11 @@
                             }
                         }
                     });
+                }
+
+                if (attackSucceeded && move.costHpPercent && attacker.hp > 0) {
+                    const costDmg = Math.max(1, Math.floor(attacker.maxHp * move.costHpPercent));
+                    applyDamage(attacker, costDmg, player, charTeamIdx, `${attacker.name} sacrifica ${costDmg} HP per eseguire la mossa!`);
                 }
 
                 if (move.recharge && attackSucceeded && attacker.hp > 0) {
@@ -6857,7 +6890,8 @@
                         
                         {isWin ? (
                             <>
-                                <p className="text-xl text-slate-300 mb-8 font-medium">Hai sconfitto i burattini di Cell e spezzato il controllo mentale!</p>
+                                <p className="text-xl text-slate-300 mb-4 font-medium">Hai sconfitto i burattini di Cell e spezzato il controllo mentale!</p>
+                                <p className="text-2xl font-bold text-yellow-400 mb-8 flex items-center justify-center gap-2"><Coins size={28}/> +20 Monete Globali!</p>
                                 <button onClick={() => {
                                     const newRosterStats = { ...campaignState.rosterStats };
                                     const faintedThisBattle = [];
