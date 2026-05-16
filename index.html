@@ -152,7 +152,7 @@
           'Yo-Yo Devastante': { name: 'Yo-Yo Devastante', type: 'Insetto', power: 80, desc: 'Colpisce il nemico con il suo inseparabile yo-yo magico.' },
           'Lucky Charm': { name: 'Lucky Charm', type: 'Magico', power: 0, targetMode: 'ally', targetStatBuff: { atk: 1.5, def: 1.5 }, desc: 'Evoca l\'oggetto perfetto per la situazione! Aumenta Attacco e Difesa di un alleato del 50%.' },
           'Miraculous Ladybug': { name: 'Miraculous Ladybug', type: 'Magico', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, maxUses: 2, desc: 'Lancia in aria il Lucky Charm riparando i danni! Cura tutto il team in campo del 50% dei PS.' },
-          'Schivata Agile': { name: 'Schivata Agile', type: 'Normale', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Evita l\'attacco nemico con estrema agilità (funziona come protezione).' },
+          'Mi serve un aiutante!': { name: 'Mi serve un aiutante!', type: 'Magico', power: 0, maxUses: 3, selfStatBuff: { def: 1.1 }, randomSummon: ['summon_chatnoir', 'summon_renarouge', 'viperion', 'summon_carapace', 'summon_ryuko', 'summon_kingmonkey'], desc: 'Aumenta la Difesa del 10% ed evoca un aiutante casuale tra gli eroi di Parigi.' },
           'Lucky Charm Illusorio!': { name: 'Lucky Charm Illusorio!', type: 'Magico', power: 100, maxUses: 1, isCombo: ['ladybug', 'renarouge'], selfHeal: 1.0, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Mossa Combinata: 100 danni, brucia il bersaglio e cura al 100% Ladybug e Rena Rouge! Consuma il turno di entrambe.' },
 
           // NUOVE MOSSE WARIO
@@ -364,7 +364,7 @@
 
           // NUOVE MOSSE RENA ROUGE
           'Miraggio!': { name: 'Miraggio!', type: 'Magico', power: 0, isSummon: ['clone_rosso', 'clone_verde'], maxUses: 4, requireSummonsDead: ['clone_rosso', 'clone_verde'], desc: 'Suona il flauto ed evoca due cloni illusori. Usabile solo se i cloni sono sconfitti. (4 utilizzi)' },
-          'Colpo di flauto': { name: 'Colpo di flauto', type: 'Normale', power: 20, desc: 'Colpisce il nemico con il flauto magico.' },
+          'Colpo di flauto': { name: 'Colpo di flauto', type: 'Normale', power: 55, desc: 'Colpisce il nemico con il flauto magico.' },
           'Zuffa di colpi': { name: 'Zuffa di colpi', type: 'Normale', power: 150, recharge: true, desc: 'Una scarica di colpi violentissima. Richiede un turno di ricarica successivo al suo utilizzo.' },
           'Devia-colpi': { name: 'Devia-colpi', type: 'Normale', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 3, desc: 'Ruota il bastone ad alta velocità per deviare l\'attacco e riflettere il 25% del danno al mittente.' },
           'Volpe rabbiosa': { name: 'Volpe rabbiosa', type: 'Normale', power: 75, desc: 'Scatena una serie di colpi precisi e letali contro il nemico.' },
@@ -488,7 +488,7 @@
           
           'Guardie!': { name: 'Guardie!', type: 'Normale', power: 0, isSummon: 'carta_guardia', maxUses: 1, desc: 'Evoca una fedele Carta Guardia in campo. (1 utilizzo)' },
           'Madre, abbiate forza!': { name: 'Madre, abbiate forza!', type: 'Magico', power: 0, targetMode: 'ally', specificAlly: 'Strega', targetStatBuff: { spd: 1.5 }, desc: 'Dona energia alla Strega, aumentandone la Velocità del 50%. Funziona SOLO sulla Strega!' },
-          'Colpo di spada (Guardia)': { name: 'Colpo di spada', type: 'Normale', power: 25, desc: 'Un fendente della guardia. Possiede un bonus intrinseco del +25% ai danni.' },
+          'Colpo di spada (Guardia)': { name: 'Colpo di spada', type: 'Normale', power: 65, desc: 'Un fendente della guardia. Possiede un bonus intrinseco del +25% ai danni.' },
 
           // NUOVE MOSSE GODZILLA
           'Raggio Atomico': { name: 'Raggio Atomico', type: 'Fuoco', power: 120, ignoreDefBuffs: true, recharge: true, desc: 'Il suo iconico raggio radioattivo. Danni devastanti ma richiede un turno di ricarica.' },
@@ -513,6 +513,20 @@
           'Cataclisma': { name: 'Cataclisma', type: 'Oscuro', power: 150, ignoreDefBuffs: true, maxUses: 4, desc: 'Il potere della distruzione assoluta! Ignora le difese nemiche infliggendo danni mostruosi. (4 utilizzi)' },
           'Balzo Felino': { name: 'Balzo Felino', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 4, desc: 'Un agilissimo salto acrobatico che gli permette di schivare i danni per un turno. (4 utilizzi)' },
           'Fascino Sfacciato': { name: 'Fascino Sfacciato', type: 'Normale', power: 0, targetStatDebuff: { def: 0.7 }, statusEffect: { type: 'Infatuato', chance: 0.5 }, desc: 'Fa l\'occhiolino e dice una battuta: riduce la Difesa avversaria e ha il 50% di infatuare il nemico.' },
+
+          // NUOVE MOSSE VIPERION
+          'Colpo di arpa': { name: 'Colpo di arpa', type: 'Suono', power: 80, desc: 'Un colpo sonoro scagliato pizzicando le corde dell\'arpa.' },
+          'Seconda occasione!': { name: 'Seconda occasione!', type: 'Magico', power: 0, priority: 1, targetMode: 'ally', healLastTurnDamage: true, desc: 'Riporta indietro il tempo per un alleato, ripristinando i PS che ha perso nel turno precedente.' },
+
+          // NUOVE MOSSE CARAPACE E RYUKO
+          'Boomerang tartaruga': { name: 'Boomerang tartaruga', type: 'Normale', power: 50, targetCount: 2, desc: 'Lancia il suo scudo come un boomerang, colpendo fino a due bersagli.' },
+          'Scudo protettivo!': { name: 'Scudo protettivo!', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Genera una cupola impenetrabile che difende tutti i compagni in campo per un turno. (1 utilizzo)' },
+          'Drago d\'Acqua!': { name: 'Drago d\'Acqua!', type: 'Acqua', power: 60, desc: 'Evoca il potere del drago dell\'acqua.' },
+          'Drago del Fulmine!': { name: 'Drago del Fulmine!', type: 'Elettro', power: 60, desc: 'Evoca il potere del drago del fulmine.' },
+          'Drago del Vento!': { name: 'Drago del Vento!', type: 'Aria', power: 60, desc: 'Evoca il potere del drago del vento.' },
+
+          // NUOVE MOSSE KING MONKEY
+          'Confusione!': { name: 'Confusione!', type: 'Magico', power: 40, statusEffect: { type: 'Confuso', chance: 1.0 }, desc: 'Scatena il caos! Infligge 40 danni e confonde irrimediabilmente il bersaglio.' },
 
           // NUOVE MOSSE IRIS
           'Cristallo di Ephedia': { name: 'Cristallo di Ephedia', type: 'Magico', power: 85, desc: 'Scaglia una solida lancia di cristallo magico contro il bersaglio.' },
@@ -617,7 +631,7 @@
           'Cortocircuito': { name: 'Cortocircuito', type: 'Elettro', power: 300, suicide: true, desc: 'Sovraccarica il mech esplodendo! Danni immensi (300), ma costa la vita dell\'utilizzatore.' },
           'Difesa al minimo!': { name: 'Difesa al minimo!', type: 'Robot', power: 0, targetCount: 4, targetStatDebuff: { def: 0.7 }, desc: 'Diminuisce di uno stadio la Difesa di tutti gli avversari in campo.' },
           'Attacco al minimo!': { name: 'Attacco al minimo!', type: 'Robot', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.7 }, desc: 'Diminuisce di uno stadio l\'Attacco di tutti gli avversari in campo.' },
-          'Missile': { name: 'Missile', type: 'Robot', power: 30, desc: 'Spara un piccolo missile a ricerca che infligge 30 danni.' },
+          'Missile': { name: 'Missile', type: 'Robot', power: 80, desc: 'Spara un piccolo missile a ricerca che infligge 80 danni.' },
 
           // NUOVE MOSSE MAX CAULFIELD E CHLOE PRICE
           'Rewind': { name: 'Rewind', type: 'Magico', power: 0, target: 'self', maxUses: 3, heal: 0.5, removeNegativeStatuses: true, desc: 'Riavvolge il tempo per annullare i danni! Recupera il 50% dei PS e cura gli status. (3 utilizzi)' },
@@ -660,7 +674,7 @@
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
         Object.values(MOVES_DB).forEach(move => {
             if (move.strictUses) return;
-            if (move.power === 0 || move.isProtect || move.heal || move.selfHeal || move.healAlone || move.healFlat || move.targetMode === 'revive') {
+            if (move.power === 0 || move.isProtect || move.heal || move.selfHeal || move.healAlone || move.healFlat || move.targetMode === 'revive' || move.healLastTurnDamage) {
                 if (move.maxUses === 1 && move.targetMode === 'revive') {
                     move.maxUses = 3; // Buff ai revive
                 } else if (move.maxUses === 1 || move.maxUses === 2) {
@@ -668,9 +682,9 @@
                 } else if (!move.maxUses) {
                     if (move.isProtect) {
                         move.maxUses = 8; // Protezioni hanno 8 PP
-                    } else if (move.heal || move.selfHeal || move.healAlone || move.healFlat) {
+                    } else if (move.heal || move.selfHeal || move.healAlone || move.healFlat || move.healLastTurnDamage) {
                         move.maxUses = 6; // Cure hanno 6 PP
-                    } else if (move.isSummon) {
+                    } else if (move.isSummon || move.randomSummon) {
                         move.maxUses = 5; // Evocazioni
                     } else {
                         move.maxUses = 5; // Buff e Debuff di base
@@ -725,7 +739,7 @@
           { id: 'finn', name: 'Finn l\'Umano', types: ['Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 95, img: 'https://i.pinimg.com/736x/01/18/1f/01181f2e01e50d16dcceef78de8ac0bd.jpg', moves: [MOVES_DB['Spada d\'Oro'], MOVES_DB['Calcio Volante Eroe'], MOVES_DB['Zaino Verde'], MOVES_DB['Eroe di Ooo']] },
           { id: 'jake', name: 'Jake il Cane', types: ['Magico'], hp: 115, maxHp: 115, atk: 100, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/00/07/e5/0007e54a9a0d180850ed97718df1e432.jpg', moves: [MOVES_DB['Pugno Elastico'], MOVES_DB['Trasformazione Scudo'], MOVES_DB['Schiacciata Gigante'], MOVES_DB['Bacon Pancakes']] },
           { id: 'rainbowdash', name: 'Rainbow Dash', types: ['Aria', 'Elettro'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 130, img: 'https://i.pinimg.com/1200x/f2/61/79/f26179f6cfb3f6331d5843fb83d29fdd.jpg', moves: [MOVES_DB['Sonic Rainboom'], MOVES_DB['Barriera di Nuvole'], MOVES_DB['Calcio Fulmineo'], MOVES_DB['Volo Acrobatico']] },
-          { id: 'ladybug', name: 'Ladybug', types: ['Insetto', 'Magico'], hp: 95, maxHp: 95, atk: 100, def: 85, spd: 105, img: 'https://i.pinimg.com/736x/3a/f1/51/3af1517371cc28cac5cdb6af420f1da4.jpg', moves: [MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Lucky Charm'], MOVES_DB['Miraculous Ladybug'], MOVES_DB['Schivata Agile'], MOVES_DB['Lucky Charm Illusorio!']] },
+          { id: 'ladybug', name: 'Ladybug', types: ['Insetto', 'Magico'], hp: 95, maxHp: 95, atk: 100, def: 85, spd: 105, img: 'https://i.pinimg.com/736x/3a/f1/51/3af1517371cc28cac5cdb6af420f1da4.jpg', moves: [MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Lucky Charm'], MOVES_DB['Miraculous Ladybug'], MOVES_DB['Mi serve un aiutante!'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'wario', name: 'Wario', types: ['Veleno', 'Lotta'], hp: 120, maxHp: 120, atk: 115, def: 95, spd: 50, img: 'https://i.pinimg.com/736x/07/72/16/07721681614a459938a7f85ec450f957.jpg', moves: [MOVES_DB['Peto Velenoso'], MOVES_DB['Carica di Spalla'], MOVES_DB['Masticata d\'Aglio'], MOVES_DB['Moto da teppista']] },
           { id: 'zuko', name: 'Zuko', types: ['Fuoco', 'Lotta'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/0a/bf/45/0abf4521f089ae4629e57fb7edd207cb.jpg', moves: [MOVES_DB['Frusta di Fuoco'], MOVES_DB['Danza del Drago'], MOVES_DB['Calcio Infuocato'], MOVES_DB['Deviazione del Fulmine']] },
           { id: 'spike', name: 'Spike', types: ['Erba', 'Oscuro'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/736x/fe/40/32/fe40323f442d7843df0be4c5b4223e6a.jpg', moves: [MOVES_DB['Sfera di Spine'], MOVES_DB['Campo di Cactus'], MOVES_DB['Abbraccio Oscuro'], MOVES_DB['Fertilizzante']] },
@@ -782,10 +796,17 @@
           { id: 'miku', name: 'Hatsune Miku', types: ['Suono', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 115, img: 'https://i.pinimg.com/736x/51/cf/f4/51cff4f1b602b7220d4eaeccf558ffbf.jpg', moves: [MOVES_DB['Vocal Burst'], MOVES_DB['Melodia Curativa'], MOVES_DB['Risonanza Mentale'], MOVES_DB['Canto Armonico']] },
           { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soundwave&backgroundColor=1e293b', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
 
+          { id: 'summon_chatnoir', name: 'Chat Noir (Aiutante)', types: ['Buio', 'Lotta'], hp: 47, maxHp: 47, atk: 115, def: 37, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', moves: [MOVES_DB['Cataclisma']], isSummonOnly: true },
+          { id: 'summon_renarouge', name: 'Rena Rouge (Aiutante)', types: ['Normale'], hp: 45, maxHp: 45, atk: 100, def: 40, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Volpe rabbiosa']], isSummonOnly: true },
+          { id: 'viperion', name: 'Viperion', types: ['Suono', 'Magico'], hp: 50, maxHp: 50, atk: 90, def: 38, spd: 110, img: 'https://i.pinimg.com/736x/33/c9/ec/33c9ecacb70492bbff9645e25fc29eb4.jpg', moves: [MOVES_DB['Colpo di arpa'], MOVES_DB['Seconda occasione!']], isSummonOnly: true },
+          { id: 'summon_carapace', name: 'Carapace (Aiutante)', types: ['Roccia', 'Magico'], hp: 60, maxHp: 60, atk: 70, def: 120, spd: 80, img: 'https://i.pinimg.com/736x/55/e4/df/55e4dfd2d094b652c9677eb504e92291.jpg', moves: [MOVES_DB['Boomerang tartaruga'], MOVES_DB['Scudo protettivo!']], isSummonOnly: true },
+          { id: 'summon_ryuko', name: 'Ryuko (Aiutante)', types: ['Drago', 'Magico'], hp: 45, maxHp: 45, atk: 95, def: 50, spd: 120, img: 'https://i.pinimg.com/736x/02/48/a6/0248a651890f16e3e3f190387a057bb8.jpg', moves: [MOVES_DB['Drago d\'Acqua!'], MOVES_DB['Drago del Fulmine!'], MOVES_DB['Drago del Vento!']], isSummonOnly: true },
+          { id: 'summon_kingmonkey', name: 'King Monkey (Aiutante)', types: ['Lotta', 'Magico'], hp: 55, maxHp: 55, atk: 85, def: 50, spd: 100, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=KingMonkey&backgroundColor=f59e0b', moves: [MOVES_DB['Confusione!']], isSummonOnly: true },
+
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
-          { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 35, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
+          { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 70, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
           { id: 'golem_pietra', name: 'Golem di Pietra', types: ['Roccia'], hp: 60, maxHp: 60, atk: 50, def: 90, spd: 20, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Golem&backgroundColor=4b5563', moves: [MOVES_DB['Sassata'], MOVES_DB['Protezione']], isSummonOnly: true },
-          { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Guardia&backgroundColor=dc2626', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
+          { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://i.pinimg.com/736x/30/d0/fb/30d0fb1c737910c1a6448b25bf6077f0.jpg', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           
@@ -2846,17 +2867,17 @@
                                 if (!move.isCombo.every(id => myFieldIds.includes(id))) return;
                             }
 
-                            if (move.target === 'self' || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.isProtect || move.isSummon) {
+                            if (move.target === 'self' || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.isProtect || move.isSummon || move.randomSummon) {
                                 // Mosse di Supporto
                                 let score = 0; 
-                                if (move.heal || move.healAlone) {
+                                if (move.heal || move.healAlone || move.healLastTurnDamage) {
                                     if (cpuChar.hp < cpuChar.maxHp * 0.5) score += 150;
                                 } else if (move.isProtect) {
                                     if ((cpuChar.consecutiveProtect || 0) > 0) score += 0;
                                     else score += 50;
                                 } else if (move.statBuff || move.targetStatBuff) {
                                     score += 40;
-                                } else if (move.isSummon) {
+                                } else if (move.isSummon || move.randomSummon) {
                                     score += 80;
                                 } else {
                                     score += 30;
@@ -3125,6 +3146,7 @@
 
             const applyDamage = (target, dmg, targetPlayer, targetIdx, text) => {
                 target.hp = Math.max(0, target.hp - dmg);
+                target.damageTakenThisTurn = (target.damageTakenThisTurn || 0) + dmg;
                 events.push({ type: 'damage', text: text, targetPlayer, targetIdx, newHp: target.hp });
                 
                 if (target.juggShieldHpThresholds && target.juggShieldHpThresholds.length > 0) {
@@ -3574,6 +3596,17 @@
                         events.push({ type: 'damage', text: `${text} Lo cura di ${healAmount} HP!`, targetPlayer, targetIdx, newHp: target.hp });
                         didSomething = true;
                     }
+                    if (move.healLastTurnDamage) {
+                        const healAmount = target.damageTakenLastTurn || 0;
+                        if (healAmount > 0) {
+                            target.hp = Math.min(target.maxHp, target.hp + healAmount);
+                            events.push({ type: 'damage', text: `${text} Il tempo si riavvolge curandolo di ${healAmount} HP!`, targetPlayer, targetIdx, newHp: target.hp });
+                            didSomething = true;
+                        } else {
+                            events.push({ type: 'text', text: `${text} Ma il bersaglio non ha perso PS nel turno precedente!` });
+                            didSomething = true;
+                        }
+                    }
                     if (move.targetStatBuff) {
                         let statTexts = [];
                         if (move.targetStatBuff.atk) { target.atk = Math.floor(target.atk * move.targetStatBuff.atk); statTexts.push("Attacco"); }
@@ -3599,59 +3632,82 @@
                     continue;
                 }
 
-                if (move.targetMode === 'revive') {
-                    const deadAllyIdx = workingTeams[player].findIndex(c => c.hp <= 0 && !c.isSummonOnly);
-                    if (deadAllyIdx !== -1) {
-                        let ally = workingTeams[player][deadAllyIdx];
-                        const healAmount = Math.floor(ally.maxHp * move.heal);
-                        ally.hp = healAmount;
-                        ally.statuses = [];
-                        events.push({ type: 'damage', text: `${attacker.name} usa ${move.name}! ${ally.name} è tornato in vita con ${healAmount} HP!`, targetPlayer: player, targetIdx: deadAllyIdx, newHp: ally.hp });
+                if (move.isSummon || move.randomSummon) {
+                    let summonIds = [];
+                    if (move.randomSummon) {
+                        const randId = move.randomSummon[Math.floor(Math.random() * move.randomSummon.length)];
+                        summonIds.push(randId);
                     } else {
-                        events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma non ci sono alleati da rianimare!` });
+                        summonIds = Array.isArray(move.isSummon) ? move.isSummon : [move.isSummon];
                     }
+                    
+                    let summonedNames = [];
+                    
+                    summonIds.forEach(summonId => {
+                        const baseChar = CHARACTERS.find(c => c.id === summonId);
+                        if (baseChar) {
+                            const newSummon = {
+                                ...JSON.parse(JSON.stringify(baseChar)), 
+                                statuses: [],
+                                consecutiveProtect: 0,
+                                baseAtk: baseChar.atk,
+                                baseDef: baseChar.def,
+                                baseSpd: baseChar.spd
+                            };
+                            newSummon.moves.forEach(m => {
+                                if (m.maxUses !== undefined) m.remainingUses = m.maxUses;
+                            });
+
+                            workingTeams[player].push(newSummon);
+                            const newCharTeamIdx = workingTeams[player].length - 1;
+                            workingField[player].push(newCharTeamIdx);
+                            
+                            summonedNames.push(newSummon.name);
+                            events.push({ type: 'summon', text: `${attacker.name} ha evocato ${newSummon.name}!`, player: player, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx });
+                        }
+                    });
+                    
+                    if (summonedNames.length > 1) {
+                         // Modifica il testo se sono state fatte evocazioni multiple per renderlo più leggibile
+                         events[events.length - 1].text = `${attacker.name} ha evocato ${summonedNames.join(' e ')}!`;
+                    }
+                    
+                    if (move.selfStatBuff && attacker.hp > 0) {
+                        let statTexts = [];
+                        if (move.selfStatBuff.def) { attacker.def = Math.floor(attacker.def * move.selfStatBuff.def); statTexts.push("Difesa"); }
+                        if (move.selfStatBuff.spd) { attacker.spd = Math.floor(attacker.spd * move.selfStatBuff.spd); statTexts.push("Velocità"); }
+                        if (move.selfStatBuff.atk) { attacker.atk = Math.floor(attacker.atk * move.selfStatBuff.atk); statTexts.push("Attacco"); }
+                        if (statTexts.length > 0) {
+                            events.push({ type: 'text', text: `La ${statTexts.join(" e ")} di ${attacker.name} aumenta per via della mossa!` });
+                        }
+                    }
+                    continue;
+                }
+
+                if (move.accuracy && Math.random() > move.accuracy) {
+                    events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma manca clamorosamente il bersaglio!` });
                     continue;
                 }
 
                 let resolvedTargets = [];
 
-                // GESTIONE BERSAGLI MULTIPLI SCELTI MANUALMENTE
-                if (action.selectedTargets && action.selectedTargets.length > 0) {
-                    action.selectedTargets.forEach(st => {
-                        let finalTargetIdx = st.idx;
-                        if (st.fieldIdx !== undefined) {
-                            const currentIdxAtPos = workingField[st.player][st.fieldIdx];
-                            if (currentIdxAtPos !== undefined) {
-                                finalTargetIdx = currentIdxAtPos;
-                            } else {
-                                const anyAlive = workingField[st.player].filter(i => workingTeams[st.player][i].hp > 0);
-                                if (anyAlive.length > 0) finalTargetIdx = anyAlive[0];
-                                else finalTargetIdx = null;
-                            }
-                        }
-
-                        if (finalTargetIdx !== null) {
-                            if (!resolvedTargets.some(rt => rt.player === st.player && rt.idx === finalTargetIdx)) {
-                                resolvedTargets.push({ 
-                                    player: st.player, 
-                                    idx: finalTargetIdx, 
-                                    fieldIdx: st.fieldIdx, 
-                                    char: workingTeams[st.player][finalTargetIdx] 
-                                });
-                            }
-                        }
+                if (action.selectedTargets) {
+                    // Attacco a bersagli multipli selezionati manualmente
+                    action.selectedTargets.forEach(t => {
+                        resolvedTargets.push({
+                            player: t.player,
+                            idx: t.idx,
+                            fieldIdx: t.fieldIdx,
+                            char: workingTeams[t.player][t.idx]
+                        });
                     });
-                }
-                // GESTIONE BERSAGLIO SINGOLO / AI / MOSSE GLOBALI
-                else if (action.targetPlayer && action.targetIdx !== undefined) {
-                    
-                    // --- FIX: DINAMICA DELLO SLOT (Sostituzioni) ---
+                } else {
                     let finalTargetIdx = action.targetIdx;
                     
-                    // Se stavamo mirando a una posizione specifica in campo, guardiamo CHI c'è ora!
-                    if (action.targetFieldIdx !== undefined) {
+                    // Se il bersaglio originale è morto, cerca chi ha preso il suo posto (stesso fieldIdx)
+                    if (workingTeams[action.targetPlayer] && workingTeams[action.targetPlayer][action.targetIdx] && workingTeams[action.targetPlayer][action.targetIdx].hp <= 0) {
                         const currentIdxAtPos = workingField[action.targetPlayer][action.targetFieldIdx];
-                        if (currentIdxAtPos !== undefined) {
+                        if (currentIdxAtPos !== undefined && workingTeams[action.targetPlayer][currentIdxAtPos].hp > 0) {
                             finalTargetIdx = currentIdxAtPos; // Colpisce chi è subentrato
                         } else {
                             // Se lo slot è vuoto (es. morto prima del colpo), mira al primo vivo disponibile
@@ -4128,6 +4184,9 @@
                 char.statuses[psnIdx].turns += 1;
                 updateStatusUI(target.player, target.charTeamIdx);
             }
+
+            char.damageTakenLastTurn = char.damageTakenThisTurn || 0;
+            char.damageTakenThisTurn = 0;
         }
 
         // --- GESTIONE RITORNO TRADITORI (Anomalia Eclissi) ---
@@ -4832,7 +4891,8 @@
         }
 
         const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
-        const speakerChar = CHARACTERS.find(c => c.name === speakerName || c.name.includes(speakerName));
+        let speakerChar = CHARACTERS.find(c => c.name === speakerName);
+        if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
         
         return (
             <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
@@ -4877,7 +4937,8 @@
         }
 
         const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
-        const speakerChar = CHARACTERS.find(c => c.name === speakerName || c.name.includes(speakerName));
+        let speakerChar = CHARACTERS.find(c => c.name === speakerName);
+        if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
         
         return (
             <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
@@ -4973,7 +5034,8 @@
         }
 
         const speakerName = dialogue.s;
-        const speakerChar = CHARACTERS.find(c => c.name === speakerName || c.name.includes(speakerName));
+        let speakerChar = CHARACTERS.find(c => c.name === speakerName);
+        if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
         
         return (
             <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
@@ -5693,9 +5755,14 @@
     }
 
     if (appMode === 'catalog') {
-        let displayedChars = [...CHARACTERS].filter(c => !c.isSummonOnly);
-        if (catalogFilter !== 'Tutti') {
-            displayedChars = displayedChars.filter(c => c.types.includes(catalogFilter));
+        let displayedChars = [...CHARACTERS];
+        if (catalogFilter === 'Evocazioni') {
+            displayedChars = displayedChars.filter(c => c.isSummonOnly);
+        } else {
+            displayedChars = displayedChars.filter(c => !c.isSummonOnly);
+            if (catalogFilter !== 'Tutti') {
+                displayedChars = displayedChars.filter(c => c.types.includes(catalogFilter));
+            }
         }
         if (catalogSearch.trim() !== '') {
             const searchLower = catalogSearch.toLowerCase();
@@ -5733,7 +5800,8 @@
                         <div className="flex items-center gap-2">
                             <span className="text-slate-400 font-bold uppercase text-xs tracking-widest">Filtra:</span>
                             <select value={catalogFilter} onChange={e => setCatalogFilter(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500">
-                                <option value="Tutti">Tutti</option>
+                                <option value="Tutti">Tutti i Tipi</option>
+                                <option value="Evocazioni">Solo Evocazioni</option>
                                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                             </select>
                         </div>
@@ -5776,7 +5844,7 @@
                                                     <span className={`${TYPE_STYLES[m.type]} px-1 py-0.5 rounded text-[8px]`}>{m.type}</span>
                                                 </div>
                                                 <div className="flex justify-between text-slate-500 text-[9px] font-bold">
-                                                    <span>{m.power > 0 ? `Pot: ${m.power}` : (m.heal || m.healFlat || m.targetMode === 'team_smart_heal' || m.targetMode === 'team' || m.selfHeal ? 'Cura' : (m.isProtect ? 'Difesa' : (m.isSummon ? 'Evoca' : 'Stato')))}</span>
+                                                    <span>{m.power > 0 ? `Pot: ${m.power}` : (m.heal || m.healFlat || m.targetMode === 'team_smart_heal' || m.targetMode === 'team' || m.selfHeal || m.healLastTurnDamage ? 'Cura' : (m.isProtect ? 'Difesa' : ((m.isSummon || m.randomSummon) ? 'Evoca' : 'Stato')))}</span>
                                                     {m.accuracy && <span>Prec: {m.accuracy * 100}%</span>}
                                                     {m.maxUses && <span>Usi max: {m.maxUses}</span>}
                                                     {m.multiHit && <span>{m.multiHit.min}-{m.multiHit.max} Colpi</span>}
@@ -6626,12 +6694,12 @@
                                                                     ) : (
                                                                         move.maxUses !== undefined && <span className="text-[10px] text-slate-400 font-bold mt-1">Usi: {move.remainingUses}/{move.maxUses}</span>
                                                                     )}
-                                                            </div>
-                                                            <div className="flex flex-col items-end pointer-events-none">
-                                                                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${TYPE_STYLES[move.type] || 'bg-gray-500'}`}>{move.type}</span>
-                                                                 <span className="text-xs text-gray-400 mt-1 font-mono">{move.power > 0 ? `Potenza: ${move.power}` : (move.heal || move.healFlat || move.targetMode === 'team_smart_heal' || move.selfHeal || move.targetMode === 'team' ? 'Cura' : (move.isProtect ? 'Difesa' : (move.isSummon ? 'Evoca' : 'Stato')))}</span>
-                                                            </div>
-                                                    </button>
+                                                        </div>
+                                                        <div className="flex flex-col items-end pointer-events-none">
+                                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${TYPE_STYLES[move.type] || 'bg-gray-500'}`}>{move.type}</span>
+                                                             <span className="text-xs text-gray-400 mt-1 font-mono">{move.power > 0 ? `Potenza: ${move.power}` : (move.heal || move.healFlat || move.targetMode === 'team_smart_heal' || move.selfHeal || move.targetMode === 'team' || move.healLastTurnDamage ? 'Cura' : (move.isProtect ? 'Difesa' : ((move.isSummon || move.randomSummon) ? 'Evoca' : 'Stato')))}</span>
+                                                        </div>
+                                                </button>
                                             );
                                         })}
                                             </div>
