@@ -682,13 +682,13 @@
           
           // NUOVE MOSSE MOSTRI GIUNGLA (Pianta carnivora, Cespuglio, Alber(t)o, Fiore)
           'Gas velenoso': { name: 'Gas velenoso', type: 'Veleno', power: 50, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Emana un gas tossico. 100% di probabilità di avvelenare il bersaglio.' },
-          'Morso affilato': { name: 'Morso affilato', type: 'Normale', power: 65, desc: 'Un morso rapido e letale.' },
-          'Nascondino Supremo': { name: 'Nascondino Supremo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, maxUses: 3, priority: 5, desc: 'Protegge se stesso e tutti gli alleati per un turno. Fallisce se usato di fila.' },
-          'Spine maledette': { name: 'Spine maledette', type: 'Erba', power: 70, targetCount: 6, desc: 'Lancia spine acuminate che colpiscono tutti i bersagli in campo.' },
-          'Face demoniaca': { name: 'Face demoniaca', type: 'Spettro', power: 120, recharge: true, desc: 'Infligge danni immensi (120), ma richiede un turno di ricarica.' },
-          'Ramo e stoccata': { name: 'Ramo e stoccata', type: 'Erba', power: 80, targetCount: 2, desc: 'Colpisce fino a due bersagli contemporaneamente con rami robusti.' },
-          'Sguardo incattivito': { name: 'Sguardo incattivito', type: 'Buio', power: 0, priority: 2, targetCount: 6, targetStatDebuff: { spd: 0.5 }, desc: 'Diminuisce permanentemente la Velocità di tutti i nemici. Colpisce per primo.' },
-          'Fotosintesi offensiva': { name: 'Fotosintesi offensiva', type: 'Fuoco', power: 200, costHpPercent: 0.5, desc: 'Un attacco devastante da 200 danni. L\'utilizzatore sacrifica il 50% della propria vita massima per usarla.' }
+          'Fotosintesi offensiva': { name: 'Fotosintesi offensiva', type: 'Fuoco', power: 200, costHpPercent: 0.5, desc: 'Un attacco devastante da 200 danni. L\'utilizzatore sacrifica il 50% della propria vita massima per usarla.' },
+          
+          // NUOVE MOSSE FATA COSMICA
+          'Fata protettiva': { name: 'Fata protettiva', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Difende tutti i compagni in campo da ogni attacco. (Solo 1 utilizzo)' },
+          'Spirito!': { name: 'Spirito!', type: 'Aria', power: 0, targetMode: 'team', targetStatBuff: { spd: 1.5 }, desc: 'Energia spirituale che aumenta la Velocità di tutti gli alleati del 50%.' },
+          'ha,ha,ha!': { name: 'ha,ha,ha!', type: 'Suono', power: 0, targetMode: 'team', removeNegativeStatuses: true, desc: 'Una risata magica che cura tutti gli effetti di stato negativi degli alleati in campo.' },
+          'Schermoluce': { name: 'Schermoluce', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 5 }, targetStatBuff: { def: 1.3 }, desc: 'Genera uno schermo di luce. Aumenta la Difesa del team del 30% e li protegge per 5 turni.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -825,7 +825,7 @@
           { id: 'viperion', name: 'Viperion', types: ['Suono', 'Magico'], hp: 50, maxHp: 50, atk: 90, def: 38, spd: 110, img: 'https://i.pinimg.com/736x/33/c9/ec/33c9ecacb70492bbff9645e25fc29eb4.jpg', moves: [MOVES_DB['Colpo di arpa'], MOVES_DB['Seconda occasione!']], isSummonOnly: true },
           { id: 'summon_carapace', name: 'Carapace (Aiutante)', types: ['Roccia', 'Magico'], hp: 60, maxHp: 60, atk: 70, def: 120, spd: 80, img: 'https://i.pinimg.com/736x/55/e4/df/55e4dfd2d094b652c9677eb504e92291.jpg', moves: [MOVES_DB['Boomerang tartaruga'], MOVES_DB['Scudo protettivo!']], isSummonOnly: true },
           { id: 'summon_ryuko', name: 'Ryuko (Aiutante)', types: ['Drago', 'Magico'], hp: 45, maxHp: 45, atk: 95, def: 50, spd: 120, img: 'https://i.pinimg.com/736x/02/48/a6/0248a651890f16e3e3f190387a057bb8.jpg', moves: [MOVES_DB['Drago d\'Acqua!'], MOVES_DB['Drago del Fulmine!'], MOVES_DB['Drago del Vento!']], isSummonOnly: true },
-          { id: 'summon_kingmonkey', name: 'King Monkey (Aiutante)', types: ['Lotta', 'Magico'], hp: 55, maxHp: 55, atk: 85, def: 50, spd: 100, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=KingMonkey&backgroundColor=f59e0b', moves: [MOVES_DB['Confusione!']], isSummonOnly: true },
+          { id: 'summon_kingmonkey', name: 'King Monkey (Aiutante)', types: ['Lotta', 'Magico'], hp: 55, maxHp: 55, atk: 85, def: 50, spd: 100, img: 'https://i.pinimg.com/736x/3a/65/b7/3a65b746b30bd5b47c2550aef680a8d9.jpg', moves: [MOVES_DB['Confusione!']], isSummonOnly: true },
 
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 70, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
@@ -852,7 +852,9 @@
           { id: 'piantacarnivora', name: 'Pianta Carnivora', types: ['Erba', 'Veleno'], hp: 110, maxHp: 110, atk: 100, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/51/f6/6a/51f66a8bbd57907536460b11bfc700b8.jpg', moves: [MOVES_DB['Gas velenoso'], MOVES_DB['Morso affilato']], isSecretUnlock: true },
           { id: 'cespugliomaledetto', name: 'Cespuglio Maledetto', types: ['Erba', 'Oscuro'], hp: 120, maxHp: 120, atk: 90, def: 100, spd: 60, img: 'https://i.pinimg.com/1200x/0f/81/5c/0f815ca2dc8d2507f5d9ee22f3ef9f41.jpg', moves: [MOVES_DB['Nascondino Supremo'], MOVES_DB['Spine maledette']], isSecretUnlock: true },
           { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSecretUnlock: true },
-          { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true }
+          { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true },
+          
+          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 80, maxHp: 80, atk: 10, def: 80, spd: 300, img: 'https://i.pinimg.com/736x/b2/80/7e/b2807e1136b69ce5b2149b1ff3dc30e4.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true }
         ];
 
         const CHAR_PRICES = {
@@ -1467,16 +1469,19 @@
               missions: [
                 {
                   id: 'm25', title: 'Follia Cosmica',
+                  forceFieldSize: 3,
                   dialogue: [
                     { s: "N°39 Utopia (Corrotto)", t: "L'Aspirazione Imperiale è stata sovrascritta. Modalità: Sottomissione." },
                     { s: "Cosmo (Corrotto)", t: "Wanda! Timmy! Aiuto! Il signor insetto cattivo ha rubato la mia bacchetta mentale! Vi devo vaporizzare!" },
-                    { s: "Goku", t: "Un guerriero d'oro e una fatina volante... questo multiverso è davvero strano!" }
+                    { s: "Finn l'Umano", t: "Attenti ragazzi! Con loro c'è una Fata Cosmica velocissima che li protegge e li cura senza sosta!" },
+                    { s: "Goku", t: "Un guerriero d'oro, uno strano esserino verde e una fatina volante... questo multiverso è davvero strano!" }
                   ],
                   postDialogue: [
                     { s: "N°39 Utopia", t: "Sistemi ripristinati. Luce della Speranza online. Attendo ordini dalla Resistenza." },
-                    { s: "Cosmo", t: "Evviva! Sono tornato me stesso! Speriamo che Wanda non scopra che mi sono fatto fare il lavaggio del cervello!" }
+                    { s: "Cosmo", t: "Evviva! Sono tornato me stesso! Speriamo che Wanda non scopra che mi sono fatto fare il lavaggio del cervello!" },
+                    { s: "Topolino", t: "La fatina invece si è dissolta in polvere di stelle. Dobbiamo andare avanti!" }
                   ],
-                  boss: ['utopia', 'cosmo'],
+                  boss: ['utopia', 'cosmo', 'fatacosmica'],
                   unlock: ['utopia', 'cosmo']
                 },
                 {
