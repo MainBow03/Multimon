@@ -1893,6 +1893,7 @@
           const draftPressTimerRef = useRef(null);
           const isLongPressRef = useRef(false);
           const pressTimerRef = useRef(null);
+          const isCalculatingRef = useRef(false);
           
           // --- STATO CAMPAGNA ---
           const [campaignState, setCampaignState] = useState(() => {
@@ -2489,12 +2490,26 @@
 
                   activePlayers.forEach(p => {
                       if (!gameState.isBot[p]) {
-                          const fieldCount = gameState.field[p]?.length || 0;
-                          if (Object.keys(gameState.actions[p] || {}).length < fieldCount) humansReady = false;
+                          // Conta solo i personaggi ancora vivi sul campo
+                          const aliveFieldCount = gameState.field[p]?.filter(idx => gameState.teams[p] && gameState.teams[p][idx] && gameState.teams[p][idx].hp > 0).length || 0;
+                          
+                          // Conta le azioni solo per i personaggi ancora vivi
+                          let submittedAliveActions = 0;
+                          Object.keys(gameState.actions[p] || {}).forEach(idxStr => {
+                              const cIdx = parseInt(idxStr);
+                              if (gameState.teams[p] && gameState.teams[p][cIdx] && gameState.teams[p][cIdx].hp > 0) {
+                                  submittedAliveActions++;
+                              }
+                          });
+
+                          if (submittedAliveActions < aliveFieldCount) {
+                              humansReady = false;
+                          }
                       }
                   });
 
-                  if (humansReady) {
+                  if (humansReady && !isCalculatingRef.current) {
+                      isCalculatingRef.current = true;
                       let finalActions = { ...gameState.actions };
                       activePlayers.forEach(p => {
                           if (gameState.isBot[p]) {
@@ -2504,8 +2519,11 @@
                       // Aggiunto ritardo di sicurezza per evitare blocchi del main thread
                       setTimeout(() => calculateTurn(finalActions), 50);
                   }
+              } else {
+                  isCalculatingRef.current = false;
               }
-          }, [gameState.actions, gameState.status, appMode, playerRole]);
+          // Aggiunte dipendenze fondamentali per prevenire stale closures
+          }, [gameState.actions, gameState.status, appMode, playerRole, gameState.field, gameState.teams, gameState.isBot]);
 
           useEffect(() => {
             if (!isPlayingEvents && gameState.teams.p1) {
@@ -4064,6 +4082,21 @@
                         }
                     }
 
+                    if (finalTargetIdx !== null) {
+                        resolvedTargets.push({
+                            player: action.targetPlayer,
+                            idx: finalTargetIdx,
+                            fieldIdx: workingField[action.targetPlayer].indexOf(finalTargetIdx),
+                            char: workingTeams[action.targetPlayer][finalTargetIdx]
+                        });
+                    }
+                }
+
+                let attackSucceeded = false;
+
+                for (let t of resolvedTargets) {
+                    if (t.char.hp <= 0) continue;
+
                     let multiplier = getMultiplier(move.type, t.char.types);
                     let isImmuneDueToPassive = false;
 
@@ -4077,7 +4110,7 @@
                     let effectivenessText = "";
                     if (isImmuneDueToPassive) effectivenessText = ` Ma ${t.char.name} ne è immune grazie a ${t.char.passive.name}!`;
                     else if (multiplier > 1) effectivenessText = " È superefficace!";
-                    else if (multiplier > 0 && multiplier < 1) effectivenessText = " Non è molto efficace...";
+                    else if (multiplier < 1 && multiplier > 0) effectivenessText = " Non è molto efficace...";
                     else if (multiplier === 0) effectivenessText = " Non ha alcun effetto!";
                     
                     if (multiplier === 0) {
@@ -4086,6 +4119,14 @@
                     }
 
                     const wasAlive = t.char.hp > 0;
+                    
+                    let isMagnetic = false;
+                    const magIdx = t.char.statuses.findIndex(s => s.type === 'Magnetico');
+                    if (magIdx !== -1 && move.type === 'Elettro') {
+                        isMagnetic = true;
+                        t.char.statuses.splice(magIdx, 1);
+                        updateStatusUI(t.player, t.idx);
+                    }
 
                     if (move.percentDmgCurrent || move.percentDmgMax) {
                         let dmg = 0;
@@ -4219,7 +4260,7 @@
                             }
                         }
 
-                        // LOGICA RIMOZIONE POTENZIAMENTI (Trappola d'ombra di Nightwing)
+                        // LOGICA RIMOZIONE POTENZIAMENTI
                         if (move.removeBuffs && t.char.hp > 0) {
                             let removed = false;
                             if (t.char.atk > t.char.baseAtk) { t.char.atk = t.char.baseAtk; removed = true; }
@@ -4283,7 +4324,7 @@
                             }
                         }
                     }
-                }
+                } // FINE CICLO SUI BERSAGLI (resolvedTargets)
                 
                 if (attackSucceeded && move.selfStatBuff && attacker.hp > 0) {
                     let statTexts = [];
@@ -4963,7 +5004,7 @@
                 });
             }
         }
-    }, [gameState.status, gameState.switchActions, gameState.pendingSwitches, gameState.field, gameState.teams, appMode, playerRole]);
+    }, [gameState.status, gameState.switchActions, gameState.pendingSwitches, gameState.field, gameState.teams, appMode, playerRole, gameState.isBot]);
 
     // --- RENDERERS ---
 
