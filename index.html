@@ -544,6 +544,7 @@
 
           // NUOVE MOSSE BUMBLEBEE
           'Pungiglione Elettrico': { name: 'Pungiglione Elettrico', type: 'Elettro', power: 75, statusEffect: { type: 'Elettrizzato', chance: 0.3 }, desc: 'Una scossa letale dalle sue armi. 30% di probabilità di paralizzare.' },
+          'Pungiglione': { name: 'Pungiglione', type: 'Insetto', power: 80, desc: 'Un attacco fulmineo e letale con il pungiglione.' },
           'Rimpicciolimento': { name: 'Rimpicciolimento', type: 'Insetto', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 4, desc: 'Diventa minuscola per schivare ogni attacco avversario per un turno. (4 utilizzi)' },
           'Raffica Sonica': { name: 'Raffica Sonica', type: 'Robot', power: 25, multiHit: { min: 2, max: 4 }, desc: 'Attacca con piccole raffiche di energia colpendo da 2 a 4 volte.' },
           'Raggio Esplosivo': { name: 'Raggio Esplosivo', type: 'Elettro', power: 90, desc: 'Carica le sue armi al massimo per sparare un raggio devastante.' },
@@ -683,6 +684,12 @@
           // NUOVE MOSSE MOSTRI GIUNGLA (Pianta carnivora, Cespuglio, Alber(t)o, Fiore)
           'Gas velenoso': { name: 'Gas velenoso', type: 'Veleno', power: 50, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Emana un gas tossico. 100% di probabilità di avvelenare il bersaglio.' },
           'Fotosintesi offensiva': { name: 'Fotosintesi offensiva', type: 'Fuoco', power: 200, costHpPercent: 0.5, desc: 'Un attacco devastante da 200 danni. L\'utilizzatore sacrifica il 50% della propria vita massima per usarla.' },
+          'Morso affilato': { name: 'Morso affilato', type: 'Erba', power: 75, desc: 'Un morso ferocissimo sferrato con zanne vegetali letali.' },
+          'Nascondino Supremo': { name: 'Nascondino Supremo', type: 'Oscuro', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Si fonde con l\'ombra del bosco schivando ogni attacco nemico in questo turno. (3 utilizzi)' },
+          'Spine maledette': { name: 'Spine maledette', type: 'Oscuro', power: 65, statusEffect: { type: 'Avvelenato', chance: 0.4 }, desc: 'Scaglia spine intrise di magia nera. 40% di probabilità di avvelenare il bersaglio.' },
+          'Face demoniaca': { name: 'Face demoniaca', type: 'Spettro', power: 0, targetStatDebuff: { atk: 0.5, def: 0.5 }, desc: 'Mostra il terrificante volto intrappolato nel tronco, dimezzando permanentemente Attacco e Difesa nemica.' },
+          'Ramo e stoccata': { name: 'Ramo e stoccata', type: 'Erba', power: 85, desc: 'Trafigge il nemico usando un ramo nodoso affilato come un\'enorme lancia.' },
+          'Sguardo incattivito': { name: 'Sguardo incattivito', type: 'Buio', power: 0, statusEffect: { type: 'Stordito', chance: 0.8 }, desc: 'Uno sguardo di pura malvagità floreale. 80% di probabilità di stordire l\'avversario.' },
           
           // NUOVE MOSSE FATA COSMICA
           'Fata protettiva': { name: 'Fata protettiva', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Difende tutti i compagni in campo da ogni attacco. (Solo 1 utilizzo)' },
@@ -720,11 +727,11 @@
 
         const CHARACTERS = [
           { id: 'snorlax', name: 'Snorlax', types: ['Normale'], hp: 160, maxHp: 160, atk: 110, def: 65, spd: 30, img: 'https://i.pinimg.com/736x/49/99/27/499927d6452845cbf3a5e65c116bbaca.jpg', moves: [MOVES_DB['Riposo'], MOVES_DB['Doppia Sberla'], MOVES_DB['Corposcontro'], MOVES_DB['Tuonopugno']] },
-          { id: 'carlos', name: 'Carlos Oliveira', types: ['Normale', 'Lotta'], hp: 100, maxHp: 100, atk: 90, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/3b/32/29/3b3229d97074aac59eceb564b01601e8.jpg', moves: [MOVES_DB['Presa Militare'], MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Tiro Rapido']] },
+          { id: 'carlos', name: 'Carlos Oliveira', types: ['Normale', 'Lotta'], hp: 100, maxHp: 100, atk: 90, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/3b/32/29/3b3229d97074aac59eceb564b01601e8.jpg', passive: { name: 'Sopravvissuto R.C.', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Presa Militare'], MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Tiro Rapido']] },
           { id: 'topolino', name: 'Topolino', types: ['Normale'], hp: 105, maxHp: 105, atk: 85, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/d8/f2/ef/d8f2efccf41766493727a5bf5c49e082.jpg', moves: [MOVES_DB['Colpo Cartoon'], MOVES_DB['Fischietto amico'], MOVES_DB['Tappeto scivoloso'], MOVES_DB['Magia Disney']] },
-          { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 110, maxHp: 110, atk: 100, def: 70, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
-          { id: 'bloom', name: 'Bloom', types: ['Fuoco', 'Magico'], hp: 80, maxHp: 80, atk: 110, def: 60, spd: 100, img: 'https://i.pinimg.com/736x/d6/c1/38/d6c138c9b4720da37aa07f8ae69b158c.jpg', moves: [MOVES_DB['Fiamma del Drago'], MOVES_DB['Esplosione Solare'], MOVES_DB['Aura Stellare'], MOVES_DB['Incanto Protettivo']] },
-          { id: 'bowser', name: 'Bowser', types: ['Fuoco', 'Drago'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 40, img: 'https://i.pinimg.com/736x/cf/3f/ec/cf3fec1f6b9334e0255065f150fa97a9.jpg', moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Rolla-Guscio'], MOVES_DB['Ruggito del re koopa'], MOVES_DB['Dragartigli']] },
+          { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 110, maxHp: 110, atk: 100, def: 70, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', passive: { name: 'Testa Calda', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando la vita scende sotto il 25%, aumenta il proprio Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
+          { id: 'bloom', name: 'Bloom', types: ['Fuoco', 'Magico'], hp: 80, maxHp: 80, atk: 110, def: 60, spd: 100, img: 'https://i.pinimg.com/736x/d6/c1/38/d6c138c9b4720da37aa07f8ae69b158c.jpg', passive: { name: 'Cuore di Fenice', type: 'on_faint', reviveHpPercent: 0.3, maxUses: 1, desc: 'La prima volta che i PS scendono a 0, rinasce immediatamente recuperando il 30% della salute.' }, moves: [MOVES_DB['Fiamma del Drago'], MOVES_DB['Esplosione Solare'], MOVES_DB['Aura Stellare'], MOVES_DB['Incanto Protettivo']] },
+          { id: 'bowser', name: 'Bowser', types: ['Fuoco', 'Drago'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 40, img: 'https://i.pinimg.com/736x/cf/3f/ec/cf3fec1f6b9334e0255065f150fa97a9.jpg', passive: { name: 'Fiamma del Re Koopa', type: 'on_enter', maxUses: 1, applyStatusToRandomEnemy: { type: 'Scottato', turns: 1 }, desc: 'Appena scende in campo, scotta immediatamente un nemico casuale. (1 sola volta per battaglia)' }, moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Rolla-Guscio'], MOVES_DB['Ruggito del re koopa'], MOVES_DB['Dragartigli']] },
           { id: 'leslie', name: 'Leslie', types: ['Erba'], hp: 120, maxHp: 120, atk: 90, def: 110, spd: 65, img: 'https://i.pinimg.com/736x/27/9b/52/279b527b56263fab8939f6597633a51b.jpg', moves: [MOVES_DB['Polline fastidioso'], MOVES_DB['Foglia Danzerina'], MOVES_DB['Fotosintesi clorofiliana'], MOVES_DB['L ho fatta nel vaso']] },
           { id: 'roserade', name: 'Roserade', types: ['Erba', 'Veleno'], hp: 80, maxHp: 80, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/67/88/49/678849c01d18a4e0b90038bc069642ce.jpg', moves: [MOVES_DB['Tossina'], MOVES_DB['Gigassorbimento'], MOVES_DB['Fangobomba'], MOVES_DB['Protezione']] },
           { id: 'darwin', name: 'Darwin', types: ['Acqua', 'Normale'], hp: 95, maxHp: 95, atk: 85, def: 80, spd: 100, img: 'https://i.pinimg.com/1200x/5a/cf/9c/5acf9c886678411963046b04051e610e.jpg', moves: [MOVES_DB['Bolla Turbo'], MOVES_DB['Onda Amica'], MOVES_DB['Spruzzo Caotico'], MOVES_DB['Onda Travolgente']] },
@@ -732,7 +739,7 @@
           { id: 'sanemi', name: 'Sanemi', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/54/49/7f/54497f3c2cfb1a3467f996f942c4f812.jpg', moves: [MOVES_DB['Primo Kata'], MOVES_DB['Terzo Kata'], MOVES_DB['Settimo Kata'], MOVES_DB['Colpo Karate']] },
           { id: 'dolli', name: 'Dolli', types: ['Aria', 'Acqua'], hp: 90, maxHp: 90, atk: 85, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/5c/dd/8d/5cdd8d89ce9d32e38f97c50ccece9933.jpg', moves: [MOVES_DB['Riflesso Team'], MOVES_DB['Sorriso Luminoso'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
           { id: 'kevin', name: 'Kevin', types: ['Normale', 'Roccia'], hp: 110, maxHp: 110, atk: 90, def: 100, spd: 50, img: 'https://i.pinimg.com/736x/a6/c1/a5/a6c1a5535bcc84e78886d6e6f29a560a.jpg', moves: [MOVES_DB['Pugno Minerale'], MOVES_DB['Frana Impattante'], MOVES_DB['Assorbimento grezzo'], MOVES_DB['Carica selvaggia']] },
-          { id: 'cuoredipietra', name: 'Cuore di Pietra', types: ['Roccia'], hp: 120, maxHp: 120, atk: 105, def: 130, spd: 30, img: 'https://i.pinimg.com/736x/3d/91/a9/3d91a9f4d2e605b15a70289b5e0045e7.jpg', moves: [MOVES_DB['Ruggito di Pietra'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Scaglie di Roccia'], MOVES_DB['Presa Schiacciante']] },
+          { id: 'cuoredipietra', name: 'Cuore di Pietra', types: ['Roccia'], hp: 120, maxHp: 120, atk: 105, def: 130, spd: 30, img: 'https://i.pinimg.com/736x/3d/91/a9/3d91a9f4d2e605b15a70289b5e0045e7.jpg', passive: { name: 'Vigore', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Ruggito di Pietra'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Scaglie di Roccia'], MOVES_DB['Presa Schiacciante']] },
           { id: 'elsa', name: 'Elsa', types: ['Ghiaccio'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/4d/fa/e0/4dfae0259d23b33d9a4b90f7848f9ed8.jpg', moves: [MOVES_DB['Gelo Eterno'], MOVES_DB['Frammenti di Neve'], MOVES_DB['Canto dell Inverno'], MOVES_DB['Luce Cristallina']] },
           { id: 'reghiaccio', name: 'Re Ghiaccio', types: ['Ghiaccio', 'Magico'], hp: 95, maxHp: 95, atk: 90, def: 75, spd: 70, img: 'https://i.pinimg.com/736x/63/11/d2/6311d2bddf8b2672df70a957bea7a93d.jpg', moves: [MOVES_DB['Raggio Congelante'], MOVES_DB['Vai Gunter!'], MOVES_DB['Prigione di Ghiaccio'], MOVES_DB['Follia della Corona']] },
           { id: 'cyborg', name: 'Cyborg', types: ['Robot', 'Elettro'], hp: 110, maxHp: 110, atk: 100, def: 95, spd: 65, img: 'https://i.pinimg.com/736x/a7/45/42/a74542534570c959bced77c025e13427.jpg', moves: [MOVES_DB['Cannone Sonico'], MOVES_DB['Booyah!'], MOVES_DB['Missile a Ricerca'], MOVES_DB['Riparazione Automatica']] },
@@ -747,13 +754,13 @@
           { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga']] },
           { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
-          { id: 'strega', name: 'Strega', types: ['Oscuro', 'Magico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
+          { id: 'strega', name: 'Strega', types: ['Oscuro', 'Magico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', passive: { name: 'Corteo Oscuro', type: 'on_enter', isSummon: ['scheletro', 'carta_guardia'], maxUses: 1, desc: 'Appena scende in campo, evoca immediatamente uno Scheletro e una Carta Guardia al suo fianco. (Si attiva 1 sola volta per battaglia)' }, moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
           { id: 'garnet', name: 'Garnet', types: ['Lotta', 'Roccia'], hp: 110, maxHp: 110, atk: 115, def: 100, spd: 75, img: 'https://i.pinimg.com/1200x/df/77/0f/df770ffb5866a4773afcd2f05d6fcd60.jpg', moves: [MOVES_DB['Pugno Razzo'], MOVES_DB['Visione del Futuro'], MOVES_DB['Schianto Sismico'], MOVES_DB['Forza dell\'Amore']] },
           { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 95, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', moves: [MOVES_DB['Mano d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Ali Liquide']] },
-          { id: 'aang', name: 'Aang', types: ['Aria', 'Magico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
+          { id: 'aang', name: 'Aang', types: ['Aria', 'Magico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', passive: { name: 'Respiro dell\'Avatar', type: 'aura', immuneToType: 'Aria', boostMoveType: { type: 'Aria', multiplier: 1.2 }, desc: 'Garantisce immunità totale agli attacchi di tipo Aria e aumenta del 20% la potenza delle proprie mosse di tipo Aria.' }, moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
           { id: 'yugo', name: 'Yugo', types: ['Magico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Fratellanza del Tofu']] },
           { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 85, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
-          { id: 'ariana', name: 'Ariana Grande', types: ['Magico', 'Normale'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 100, img: 'https://i.pinimg.com/736x/1f/74/fa/1f74faeae0ec93a8288ab2e8bee3ffe7.jpg', moves: [MOVES_DB['YUH!'], MOVES_DB['Potere ariana grande'], MOVES_DB['Into You'], MOVES_DB['Bang Bang']] },
+          { id: 'ariana', name: 'Ariana Grande', types: ['Magico', 'Normale'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 100, img: 'https://i.pinimg.com/736x/1f/74/fa/1f74faeae0ec93a8288ab2e8bee3ffe7.jpg', passive: { name: 'Grido da Popstar', type: 'on_enter', maxUses: 1, teamStatBuff: { atk: 1.3 }, enemyStatDebuff: { spd: 0.7 }, desc: 'Appena schierata, aumenta l\'Attacco del tuo team e riduce la Velocità dei nemici in campo (30%).' }, moves: [MOVES_DB['YUH!'], MOVES_DB['Potere ariana grande'], MOVES_DB['Into You'], MOVES_DB['Bang Bang']] },
           { id: 'mario', name: 'Mario', types: ['Normale', 'Fuoco'], hp: 100, maxHp: 100, atk: 110, def: 85, spd: 90, img: 'https://i.pinimg.com/736x/f0/48/65/f04865769239ed667f302d6f19b8595e.jpg', moves: [MOVES_DB['Salto Idraulico'], MOVES_DB['Palla di Fuoco'], MOVES_DB['Martellata'], MOVES_DB['Super Fungo']] },
           { id: 'luigi', name: 'Luigi', types: ['Normale', 'Aria'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/6b/2d/ef/6b2def306298232ad8a40e93e51a413e.jpg', moves: [MOVES_DB['Salto Svolazzante'], MOVES_DB['Poltergust 3000'], MOVES_DB['Sguardo di Luigi'], MOVES_DB['Missile Verde']] },
           { id: 'finn', name: 'Finn l\'Umano', types: ['Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 95, img: 'https://i.pinimg.com/736x/01/18/1f/01181f2e01e50d16dcceef78de8ac0bd.jpg', moves: [MOVES_DB['Spada d\'Oro'], MOVES_DB['Calcio Volante Eroe'], MOVES_DB['Zaino Verde'], MOVES_DB['Eroe di Ooo']] },
@@ -763,8 +770,8 @@
           { id: 'wario', name: 'Wario', types: ['Veleno', 'Lotta'], hp: 120, maxHp: 120, atk: 115, def: 95, spd: 50, img: 'https://i.pinimg.com/736x/07/72/16/07721681614a459938a7f85ec450f957.jpg', moves: [MOVES_DB['Peto Velenoso'], MOVES_DB['Carica di Spalla'], MOVES_DB['Masticata d\'Aglio'], MOVES_DB['Moto da teppista']] },
           { id: 'zuko', name: 'Zuko', types: ['Fuoco', 'Lotta'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/0a/bf/45/0abf4521f089ae4629e57fb7edd207cb.jpg', moves: [MOVES_DB['Frusta di Fuoco'], MOVES_DB['Danza del Drago'], MOVES_DB['Calcio Infuocato'], MOVES_DB['Deviazione del Fulmine']] },
           { id: 'spike', name: 'Spike', types: ['Erba', 'Oscuro'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/736x/fe/40/32/fe40323f442d7843df0be4c5b4223e6a.jpg', moves: [MOVES_DB['Sfera di Spine'], MOVES_DB['Campo di Cactus'], MOVES_DB['Abbraccio Oscuro'], MOVES_DB['Fertilizzante']] },
-          { id: 'kratos', name: 'Kratos', types: ['Lotta', 'Oscuro'], hp: 130, maxHp: 130, atk: 125, def: 90, spd: 60, img: 'https://i.pinimg.com/736x/a5/f2/fb/a5f2fb9f780595e3266b66c7d625a98a.jpg', moves: [MOVES_DB['Lame del Caos'], MOVES_DB['Rabbia di Sparta'], MOVES_DB['Ascia Leviatano'], MOVES_DB['Furia Cieca']] },
-          { id: 'goku', name: 'Goku', types: ['Lotta', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/49/7f/b3/497fb342699f4ac700ea00c8bf5e0814.jpg', moves: [MOVES_DB['Kamehameha'], MOVES_DB['Trasmissione Istantanea'], MOVES_DB['Raffica Meteorica'], MOVES_DB['Sfera Genkidama']] },
+          { id: 'kratos', name: 'Kratos', types: ['Lotta', 'Oscuro'], hp: 130, maxHp: 130, atk: 125, def: 90, spd: 60, img: 'https://i.pinimg.com/736x/a5/f2/fb/a5f2fb9f780595e3266b66c7d625a98a.jpg', passive: { name: 'Volontà Indomabile', type: 'aura', immuneToNegativeStatuses: true, desc: 'La sua determinazione lo rende completamente immune a tutte le alterazioni di stato negative.' }, moves: [MOVES_DB['Lame del Caos'], MOVES_DB['Rabbia di Sparta'], MOVES_DB['Ascia Leviatano'], MOVES_DB['Furia Cieca']] },
+          { id: 'goku', name: 'Goku', types: ['Lotta', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/49/7f/b3/497fb342699f4ac700ea00c8bf5e0814.jpg', passive: { name: 'Super Saiyan', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 25%, si trasforma in Super Saiyan aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Kamehameha'], MOVES_DB['Trasmissione Istantanea'], MOVES_DB['Raffica Meteorica'], MOVES_DB['Sfera Genkidama']] },
           { id: 'natsu', name: 'Natsu', types: ['Fuoco', 'Drago'], hp: 100, maxHp: 100, atk: 115, def: 75, spd: 100, img: 'https://i.pinimg.com/736x/86/bc/e5/86bce50161217997ea61060ea41126eb.jpg', moves: [MOVES_DB['Pugno di Ferro del Drago'], MOVES_DB['Ruggito del Drago di Fuoco'], MOVES_DB['Mangiafuoco'], MOVES_DB['Loto Cremisi']] },
           { id: 'groot', name: 'Groot', types: ['Erba', 'Roccia'], hp: 140, maxHp: 140, atk: 85, def: 110, spd: 40, img: 'https://i.pinimg.com/1200x/dc/c5/77/dcc5776f7fe4a04e467b743f64983568.jpg', moves: [MOVES_DB['Io sono Groot'], MOVES_DB['Scudo di Rami'], MOVES_DB['Liane Sferzanti'], MOVES_DB['Pugno di Tronco']] },
           { id: 'nito', name: 'Gravelord Nito', types: ['Roccia', 'Oscuro'], hp: 150, maxHp: 150, atk: 120, def: 100, spd: 30, img: 'https://i.pinimg.com/736x/22/87/55/2287556595e62712232400e6929d9744.jpg', moves: [MOVES_DB['Miasma della Morte'], MOVES_DB['Spadone del Re Tombale'], MOVES_DB['Danza Macabra'], MOVES_DB['Risveglio dei Morti']] },
@@ -782,17 +789,17 @@
           { id: 'crash', name: 'Crash Bandicoot', types: ['Normale', 'Lotta'], hp: 90, maxHp: 90, atk: 105, def: 85, spd: 110, img: 'https://i.pinimg.com/1200x/72/83/d8/7283d8b496ad1920e26feb5414302b20.jpg', moves: [MOVES_DB['Tornado Rotante'], MOVES_DB['Spanciata'], MOVES_DB['Maschera Aku Aku'], MOVES_DB['Frutto Wumpa']] },
           { id: 'metalsonic', name: 'Metal Sonic', types: ['Robot', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 85, spd: 130, img: 'https://i.pinimg.com/736x/bd/5a/36/bd5a36920a109c8d5e13364d2b0d210f.jpg', moves: [MOVES_DB['Carica Sonica'], MOVES_DB['Raggio Copia'], MOVES_DB['Scudo di Ioni'], MOVES_DB['Maximum Overdrive']] },
           { id: 'zergling', name: 'Zergling', types: ['Insetto', 'Oscuro'], hp: 75, maxHp: 75, atk: 115, def: 50, spd: 120, img: 'https://i.pinimg.com/736x/55/11/31/5511317dc3f5ad73897dcad79d4ef45d.jpg', moves: [MOVES_DB['Sciame Feroce'], MOVES_DB['Adrenalina Mutante'], MOVES_DB['Artigli Laceranti'], MOVES_DB['Imboscata']] },
-          { id: 'cell', name: 'Cell', types: ['Insetto', 'Aria'], hp: 110, maxHp: 110, atk: 120, def: 90, spd: 105, img: 'https://i.pinimg.com/736x/7f/68/16/7f68163a4dfc599a7e518f92882c857d.jpg', moves: [MOVES_DB['Assorbimento Vitale'], MOVES_DB['Kamehameha Solare'], MOVES_DB['Barriera Perfetta'], MOVES_DB['Teletrasporto Perfetto']] },
+          { id: 'cell', name: 'Cell', types: ['Insetto', 'Aria'], hp: 110, maxHp: 110, atk: 120, def: 90, spd: 105, img: 'https://i.pinimg.com/736x/7f/68/16/7f68163a4dfc599a7e518f92882c857d.jpg', passive: { name: 'Paura Perfetta', type: 'on_enter', maxUses: 3, enemyStatDebuff: { atk: 0.7 }, desc: 'Appena scende in campo, la sua aura terrificante riduce l\'Attacco di tutti gli avversari in campo del 30% (fino a 3 volte per battaglia).' }, moves: [MOVES_DB['Assorbimento Vitale'], MOVES_DB['Kamehameha Solare'], MOVES_DB['Barriera Perfetta'], MOVES_DB['Teletrasporto Perfetto']] },
           { id: 'whisper', name: 'Whisper', types: ['Spettro', 'Normale'], hp: 105, maxHp: 105, atk: 85, def: 85, spd: 110, img: 'https://i.pinimg.com/736x/ef/3f/61/ef3f61c54eb4487957c3d2be9ac3f4d3.jpg', moves: [MOVES_DB['Consultazione Yo-kai Pad'], MOVES_DB['Sputo Ectoplasmatico'], MOVES_DB['Consiglio Sbagliato'], MOVES_DB['Corpo Gassoso']] },
-          { id: 'astral', name: 'Astral', types: ['Spettro', 'Magico'], hp: 85, maxHp: 85, atk: 125, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/d2/a0/79/d2a07975568065f659ec52ebe975311d.jpg', moves: [MOVES_DB['Pesca del Destino'], MOVES_DB['Potere dei Numeri'], MOVES_DB['Rete di Sovrapposizione'], MOVES_DB['Analisi Tattica']] },
+          { id: 'astral', name: 'Astral', types: ['Spettro', 'Magico'], hp: 85, maxHp: 85, atk: 125, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/d2/a0/79/d2a07975568065f659ec52ebe975311d.jpg', passive: { name: 'Visione Numeron', type: 'on_enter', maxUses: 1, selfStatBuff: { def: 1.5 }, revealStrongestEnemyMove: true, desc: 'Appena schierato, analizza la mossa nemica più potente e aumenta la propria Difesa del 50%.' }, moves: [MOVES_DB['Pesca del Destino'], MOVES_DB['Potere dei Numeri'], MOVES_DB['Rete di Sovrapposizione'], MOVES_DB['Analisi Tattica']] },
           { id: 'godzilla', name: 'Godzilla', types: ['Drago', 'Fuoco'], hp: 150, maxHp: 150, atk: 120, def: 110, spd: 30, img: 'https://i.pinimg.com/736x/54/98/35/549835141bd693db641b3c31b108f0c3.jpg', moves: [MOVES_DB['Raggio Atomico'], MOVES_DB['Colpo di Coda'], MOVES_DB['Ruggito del Re'], MOVES_DB['Rigenerazione G']] },
           { id: 'yusei', name: 'Yusei Fudo', types: ['Elettro', 'Aria'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 115, img: 'https://i.pinimg.com/1200x/70/32/59/703259fab8e9b70c86df962b605c29f2.jpg', moves: [MOVES_DB['Evocazione Synchro'], MOVES_DB['Drago Polvere di Stelle'], MOVES_DB['Accelerazione D-Wheel'], MOVES_DB['Forza Riflessa']] },
           { id: 'juri', name: 'Juri', types: ['Oscuro', 'Aria'], hp: 85, maxHp: 85, atk: 90, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/1f/45/62/1f456243b70b1088b021f8b471143014.jpg', moves: [MOVES_DB['Via all Incontro!'], MOVES_DB['Coda Demoniaca'], MOVES_DB['Fuga Tattica'], MOVES_DB['Chiamata Fuori Campo']] },
           { id: 'gaston', name: 'Gaston', types: ['Normale', 'Lotta'], hp: 120, maxHp: 120, atk: 110, def: 95, spd: 60, img: 'https://i.pinimg.com/736x/98/30/29/9830297f26d087e173f1cae8f928523b.jpg', moves: [MOVES_DB['Fucile da Caccia'], MOVES_DB['Cinque Dozzine di Uova'], MOVES_DB['Nessuno è come Gaston!'], MOVES_DB['Schianto del Bullo']] },
-          { id: 'chatnoir', name: 'Chat Noir', types: ['Buio', 'Lotta'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', moves: [MOVES_DB['Bastone Estendibile'], MOVES_DB['Cataclisma'], MOVES_DB['Balzo Felino'], MOVES_DB['Fascino Sfacciato']] },
+          { id: 'chatnoir', name: 'Chat Noir', types: ['Buio', 'Lotta'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', passive: { name: 'Miracolous Chat Noir', type: 'on_hp_threshold', threshold: 0.5, maxUses: 1, resetEnemyBuffs: true, desc: 'Quando i PS scendono al 50% o meno, sprigiona il potere del Miraculous, azzerando tutti i potenziamenti alle statistiche degli avversari in campo.' }, moves: [MOVES_DB['Bastone Estendibile'], MOVES_DB['Cataclisma'], MOVES_DB['Balzo Felino'], MOVES_DB['Fascino Sfacciato']] },
           { id: 'iris', name: 'Iris', types: ['Magico'], hp: 90, maxHp: 90, atk: 120, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/73/97/82/7397829809c9e0cfef827e17b4b97967.jpg', moves: [MOVES_DB['Cristallo di Ephedia'], MOVES_DB['Scudo Cristallino'], MOVES_DB['Voce della Principessa'], MOVES_DB['Trasformazione Shanila']] },
           { id: 'stellarubia', name: 'Stellarubia', types: ['Fuoco', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/33/a3/49/33a3490d7dee9b8c2d4187ca1f503573.jpg', moves: [MOVES_DB['Starbolts'], MOVES_DB['Volo Supersonico'], MOVES_DB['Furia Tamaraniana'], MOVES_DB['Raggio Oculare']] },
-          { id: 'bumblebee', name: 'Bumblebee', types: ['Elettro', 'Insetto'], hp: 85, maxHp: 85, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/03/d0/b7/03d0b7b67992985d3d18e7171e645680.jpg', moves: [MOVES_DB['Pungiglione Elettrico'], MOVES_DB['Rimpicciolimento'], MOVES_DB['Raffica Sonica'], MOVES_DB['Raggio Esplosivo']] },
+          { id: 'bumblebee', name: 'Bumblebee', types: ['Elettro', 'Insetto'], hp: 85, maxHp: 85, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/03/d0/b7/03d0b7b67992985d3d18e7171e645680.jpg', passive: { name: 'Punge come un\'ape', type: 'first_strike_bonus', damageBonus: 1.05, desc: 'Se è la prima ad attaccare nel turno, infligge il 5% di danni extra.' }, moves: [MOVES_DB['Pungiglione Elettrico'], MOVES_DB['Pungiglione'], MOVES_DB['Raffica Sonica'], MOVES_DB['Raggio Esplosivo']] },
           { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
           { id: 'shego', name: 'Shego', types: ['Lotta', 'Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 110, img: 'https://i.pinimg.com/1200x/c6/01/cd/c601cd6606acb917e8a0507a671bee5c.jpg', moves: [MOVES_DB['Artigli di Plasma'], MOVES_DB['Calcio Acrobatico'], MOVES_DB['Sfera di Fuoco Verde'], MOVES_DB['Rigenerazione Cellulare']] },
           { id: 'hannibal', name: 'Hannibal', types: ['Oscuro', 'Normale'], hp: 105, maxHp: 105, atk: 110, def: 80, spd: 85, img: 'https://i.pinimg.com/1200x/01/ca/db/01cadbc63ec87dcfcb6e8cfe85e37f50.jpg', moves: [MOVES_DB['Banchetto Macabro'], MOVES_DB['Analisi Psicologica'], MOVES_DB['Colpo di Scalpello'], MOVES_DB['Buone Maniere']] },
@@ -804,7 +811,7 @@
           { id: 'marceline', name: 'Marceline', types: ['Spettro', 'Oscuro'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']] },
           
           { id: 'penny', name: 'Penny', types: ['Acqua'], hp: 90, maxHp: 90, atk: 105, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/36/a1/68/36a168060154d2cb3d496213de3a99a2.jpg', moves: [MOVES_DB['Akur!'], MOVES_DB['guarda il mio faccino!'], MOVES_DB['Akur Kiro!'], MOVES_DB['Sou Giakuru!']] },
-          { id: 'brago', name: 'Brago', types: ['Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/dc/e7/52/dce7525b5b8f5b0bf5cae38d6f795967.jpg', moves: [MOVES_DB['Gravirei'], MOVES_DB['Oruga Reis'], MOVES_DB['Dioga Gravidon'], MOVES_DB['Nyoborotsu Ma Gravirei']] },
+          { id: 'brago', name: 'Brago', types: ['Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/dc/e7/52/dce7525b5b8f5b0bf5cae38d6f795967.jpg', passive: { name: 'Un re gentile è un re debole!', type: 'on_ko', statBuff: { atk: 1.3 }, desc: 'Se manda K.O. un avversario, il suo Attacco aumenta del 30%.' }, moves: [MOVES_DB['Gravirei'], MOVES_DB['Oruga Reis'], MOVES_DB['Dioga Gravidon'], MOVES_DB['Nyoborotsu Ma Gravirei']] },
           { id: 'ponygon', name: 'Ponygon', types: ['Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/53/e4/fb/53e4fb1c1f8964ca949c4e72663edd8f.jpg', moves: [MOVES_DB['Shudoruku'], MOVES_DB['Dioemuru Shudoruku'], MOVES_DB['Shin Shudoruku'], MOVES_DB['Ondata di calore']] },
 
           { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']], isSecretUnlock: true },
@@ -815,7 +822,7 @@
           { id: 'jakedc', name: 'Jake (DC)', types: ['Normale', 'Fuoco'], hp: 90, maxHp: 90, atk: 90, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/28/3b/2d/283b2d85ccb4762668e7d6138c6684f9.jpg', moves: [MOVES_DB['Battuta Fuori Luogo'], MOVES_DB['Sguardo Omosessuale'], MOVES_DB['Tom difendimi!'], MOVES_DB['Lanciafiamme Rubato']] },
 
           { id: 'maxcaulfield', name: 'Max Caulfield', types: ['Normale'], hp: 95, maxHp: 95, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay'], MOVES_DB['Love is Strange']] },
-          { id: 'chloeprice', name: 'Chloe Price', types: ['Suono', 'Normale'], hp: 100, maxHp: 100, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/c0/95/1a/c0951ab8f88e25c6cf1f076f3f26dcbb.jpg', moves: [MOVES_DB['Riff Ribelle'], MOVES_DB['Caos Punk'], MOVES_DB['Testa Calda'], MOVES_DB['Ride Or Die'], MOVES_DB['Love is Strange']] },
+          { id: 'chloeprice', name: 'Chloe Price', types: ['Suono', 'Normale'], hp: 100, maxHp: 100, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/c0/95/1a/c0951ab8f88e25c6cf1f076f3f26dcbb.jpg', passive: { name: 'Sfortuna Cronica', type: 'on_enter', maxUses: 3, randomStatDebuffToRandomEnemy: { chance: 0.5, multiplier: 0.7 }, desc: 'Appena scende in campo, la sua sfiga colpisce un nemico casuale: c\'è il 50% di probabilità per ogni statistica (Attacco, Difesa, Velocità) di essere ridotta del 30%.' }, moves: [MOVES_DB['Riff Ribelle'], MOVES_DB['Caos Punk'], MOVES_DB['Testa Calda'], MOVES_DB['Ride Or Die'], MOVES_DB['Love is Strange']] },
 
           { id: 'miku', name: 'Hatsune Miku', types: ['Suono', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 115, img: 'https://i.pinimg.com/736x/51/cf/f4/51cff4f1b602b7220d4eaeccf558ffbf.jpg', moves: [MOVES_DB['Vocal Burst'], MOVES_DB['Melodia Curativa'], MOVES_DB['Risonanza Mentale'], MOVES_DB['Canto Armonico']] },
           { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soundwave&backgroundColor=1e293b', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
@@ -834,7 +841,7 @@
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           
-          { id: 'bulma', name: 'Bulma', types: ['Robot'], hp: 100, maxHp: 100, atk: 70, def: 110, spd: 85, img: 'https://i.pinimg.com/736x/a4/d0/2c/a4d02c84248f59d5e683b1d57a9ad3b8.jpg', moves: [MOVES_DB['Senzu per tutti'], MOVES_DB['Capsula Gadget'], MOVES_DB['Geyser fotonico'], MOVES_DB['Cortocircuito']] },
+          { id: 'bulma', name: 'Bulma', types: ['Robot'], hp: 100, maxHp: 100, atk: 70, def: 110, spd: 85, img: 'https://i.pinimg.com/736x/a4/d0/2c/a4d02c84248f59d5e683b1d57a9ad3b8.jpg', passive: { name: 'Rifornimento Capsule Corp.', type: 'on_turn_end', healPercent: 0.03, desc: 'Alla fine di ogni turno, recupera il 3% dei propri PS massimi.' }, moves: [MOVES_DB['Senzu per tutti'], MOVES_DB['Capsula Gadget'], MOVES_DB['Geyser fotonico'], MOVES_DB['Cortocircuito']] },
           { id: 'robo_aiutante_1', name: 'Robo Aiutante (Difesa)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/2e/e4/74/2ee4744e03259e47f7005eb9a799b54b.jpg', moves: [MOVES_DB['Difesa al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
           { id: 'robo_aiutante_2', name: 'Robo Aiutante (Attacco)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/3e/8c/64/3e8c64997be28096fd2bc924b3743d39.jpg', moves: [MOVES_DB['Attacco al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
           
@@ -2519,7 +2526,11 @@
                   if (appMode === 'local_room' || playerRole === 'p1') {
                       // Aumentato il tempo totale della schermata per permettere la visione delle squadre (6 secondi)
                       timeout = setTimeout(() => {
-                          updateState({ status: 'battling' });
+                          if (gameState.events && gameState.events.length > 0) {
+                              updateState({ status: 'executing', postExecStatus: 'battling' });
+                          } else {
+                              updateState({ status: 'battling' });
+                          }
                           if (appMode === 'local_room') {
                               setPlayerRole('p1');
                               setCommandingIdx(0);
@@ -2532,7 +2543,7 @@
                       if (timeout) clearTimeout(timeout);
                   };
               }
-          }, [gameState.status, appMode, playerRole]);
+          }, [gameState.status, appMode, playerRole, gameState.events]);
 
           // --- FIX CRITICO: Sblocco turno iniziale e ricollegamenti per i client Online ---
           useEffect(() => {
@@ -2742,6 +2753,165 @@
             updateState({ [`draft.${playerRole}`]: [...currentDraft, charInstance] });
           };
 
+          const applyOnEnterPassive = (char, p, idx, workingTeams, workingField, eventsArr, gameMode, settings) => {
+              if (char.passive.isSummon) {
+                  const summonIds = Array.isArray(char.passive.isSummon) ? char.passive.isSummon : [char.passive.isSummon];
+                  let summonedNames = [];
+                  summonIds.forEach(summonId => {
+                      const baseChar = CHARACTERS.find(c => c.id === summonId);
+                      if (baseChar) {
+                          const newSummon = {
+                              ...JSON.parse(JSON.stringify(baseChar)), statuses: [], consecutiveProtect: 0,
+                              baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd, revealed: true
+                          };
+                          newSummon.moves.forEach(m => { if (m.maxUses !== undefined) m.remainingUses = m.maxUses; });
+                          workingTeams[p].push(newSummon);
+                          workingField[p].push(workingTeams[p].length - 1);
+                          summonedNames.push(newSummon.name);
+                      }
+                  });
+                  if (summonedNames.length > 0) {
+                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name} ed evoca ${summonedNames.join(' e ')}!` });
+                  }
+              }
+              
+              if (char.passive.teamStatBuff) {
+                  workingField[p].forEach(aIdx => {
+                      const ally = workingTeams[p][aIdx];
+                      if (ally && ally.hp > 0) {
+                          if (char.passive.teamStatBuff.atk) ally.atk = Math.floor(ally.atk * char.passive.teamStatBuff.atk);
+                          if (char.passive.teamStatBuff.def) ally.def = Math.floor(ally.def * char.passive.teamStatBuff.def);
+                          if (char.passive.teamStatBuff.spd) ally.spd = Math.floor(ally.spd * char.passive.teamStatBuff.spd);
+                      }
+                  });
+                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche del tuo team aumentano!` });
+              }
+              
+              if (char.passive.selfStatBuff) {
+                  if (char.passive.selfStatBuff.atk) char.atk = Math.floor(char.atk * char.passive.selfStatBuff.atk);
+                  if (char.passive.selfStatBuff.def) char.def = Math.floor(char.def * char.passive.selfStatBuff.def);
+                  if (char.passive.selfStatBuff.spd) char.spd = Math.floor(char.spd * char.passive.selfStatBuff.spd);
+                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le proprie statistiche aumentano!` });
+              }
+              
+              if (char.passive.enemyStatDebuff || char.passive.revealStrongestEnemyMove || char.passive.applyStatusToRandomEnemy || char.passive.randomStatDebuffToRandomEnemy) {
+                  const allPlayers = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'];
+                  let enemyPlayers = [];
+                  if (gameMode === 'multipla') {
+                      enemyPlayers = ['p1', 'p2'].includes(p) ? ['p3', 'p4'] : ['p1', 'p2'];
+                  } else if (gameMode === 'juggernaut') {
+                      const juggPlayer = settings?.juggernautPlayer || 'p1';
+                      enemyPlayers = p === juggPlayer ? allPlayers.filter(ap => ap !== juggPlayer && workingField[ap]) : [juggPlayer];
+                  } else {
+                      const pKeys = Object.keys(workingField).filter(k => workingField[k].length > 0);
+                      enemyPlayers = pKeys.filter(k => k !== p);
+                  }
+                  
+                  if (char.passive.enemyStatDebuff) {
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      if (char.passive.enemyStatDebuff.atk) enemy.atk = Math.floor(enemy.atk * char.passive.enemyStatDebuff.atk);
+                                      if (char.passive.enemyStatDebuff.def) enemy.def = Math.floor(enemy.def * char.passive.enemyStatDebuff.def);
+                                      if (char.passive.enemyStatDebuff.spd) enemy.spd = Math.floor(enemy.spd * char.passive.enemyStatDebuff.spd);
+                                  }
+                              });
+                          }
+                      });
+                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche dei nemici in campo diminuiscono!` });
+                  }
+                  
+                  if (char.passive.revealStrongestEnemyMove) {
+                      let strongestMove = null;
+                      let strongestPower = -1;
+                      let enemyName = '';
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      enemy.moves.forEach(m => {
+                                          if (m && m.power > strongestPower) {
+                                              strongestPower = m.power;
+                                              strongestMove = m;
+                                              enemyName = enemy.name;
+                                          }
+                                      });
+                                  }
+                              });
+                          }
+                      });
+                      if (strongestMove) {
+                          eventsArr.push({ type: 'text', text: `👁️ ${char.passive.name}! ${char.name} analizza e svela la mossa più potente: ${strongestMove.name} di ${enemyName} (Potenza: ${strongestPower})!` });
+                      }
+                  }
+                  
+                  if (char.passive.applyStatusToRandomEnemy) {
+                      let possibleTargets = [];
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      possibleTargets.push({ player: ep, idx: eIdx, char: enemy });
+                                  }
+                              });
+                          }
+                      });
+                      if (possibleTargets.length > 0) {
+                          const rTarget = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+                          const sType = char.passive.applyStatusToRandomEnemy.type;
+                          
+                          const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(sType);
+                          if (isNegative && rTarget.char.passive && rTarget.char.passive.immuneToNegativeStatuses) {
+                              eventsArr.push({ type: 'text', text: `🛡️ ${char.name} attiva ${char.passive.name}, ma ${rTarget.char.name} è immune a ${sType} grazie a ${rTarget.char.passive.name}!` });
+                          } else {
+                              const existingIdx = rTarget.char.statuses.findIndex(s => s.type === sType);
+                              if (existingIdx === -1) {
+                                  rTarget.char.statuses.push({ type: sType, turns: char.passive.applyStatusToRandomEnemy.turns || 1 });
+                              } else {
+                                  rTarget.char.statuses[existingIdx].turns = char.passive.applyStatusToRandomEnemy.turns || 1;
+                              }
+                              eventsArr.push({ type: 'text', text: `🔥 ${char.name} attiva ${char.passive.name}! ${rTarget.char.name} subisce lo status ${sType}!` });
+                              eventsArr.push({ type: 'status_update', targetPlayer: rTarget.player, targetIdx: rTarget.idx, statuses: JSON.parse(JSON.stringify(rTarget.char.statuses)) });
+                          }
+                      }
+                  }
+                  
+                  if (char.passive.randomStatDebuffToRandomEnemy) {
+                      let possibleTargets = [];
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      possibleTargets.push({ player: ep, idx: eIdx, char: enemy });
+                                  }
+                              });
+                          }
+                      });
+                      if (possibleTargets.length > 0) {
+                          const rTarget = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+                          const chance = char.passive.randomStatDebuffToRandomEnemy.chance || 0.5;
+                          const mult = char.passive.randomStatDebuffToRandomEnemy.multiplier || 0.7;
+                          let debuffedStats = [];
+                          
+                          if (Math.random() < chance) { rTarget.char.atk = Math.floor(rTarget.char.atk * mult); debuffedStats.push("Attacco"); }
+                          if (Math.random() < chance) { rTarget.char.def = Math.floor(rTarget.char.def * mult); debuffedStats.push("Difesa"); }
+                          if (Math.random() < chance) { rTarget.char.spd = Math.floor(rTarget.char.spd * mult); debuffedStats.push("Velocità"); }
+                          
+                          if (debuffedStats.length > 0) {
+                              eventsArr.push({ type: 'text', text: `🌪️ ${char.name} attiva ${char.passive.name}! La sfortuna colpisce ${rTarget.char.name}, riducendo: ${debuffedStats.join(", ")} (-30%)!` });
+                          } else {
+                              eventsArr.push({ type: 'text', text: `🌪️ ${char.name} attiva ${char.passive.name}... ma la sfortuna risparmia i nemici stavolta!` });
+                          }
+                      }
+                  }
+              }
+          };
+
           const startBattle = () => {
             const teams = JSON.parse(JSON.stringify(gameState.draft));
             let fieldSize = gameState.settings.fieldSize;
@@ -2833,11 +3003,23 @@
                 });
             }
 
+            let initialEvents = [];
+
             // Imposta come "rivelati" i personaggi che entrano in campo per la prima volta
             Object.keys(field).forEach(p => {
                 if (field[p]) {
-                    field[p].forEach(idx => {
-                        if (teams[p][idx]) teams[p][idx].revealed = true;
+                    const initialField = [...field[p]]; // Copia per non iterare sulle evocazioni appena aggiunte
+                    initialField.forEach(idx => {
+                        if (teams[p][idx]) {
+                            teams[p][idx].revealed = true;
+                            
+                            // GESTIONE ABILITÀ PASSIVE 'on_enter' (Allo start della battaglia)
+                            const char = teams[p][idx];
+                            if (char.passive && char.passive.type === 'on_enter' && (char.passiveUses || 0) < (char.passive.maxUses || 1)) {
+                                char.passiveUses = (char.passiveUses || 0) + 1;
+                                applyOnEnterPassive(char, p, idx, teams, field, initialEvents, gameState.gameMode, gameState.settings);
+                            }
+                        }
                     });
                 }
             });
@@ -2846,6 +3028,7 @@
               status: 'pre_battle', 
               teams: teams,
               field: field,
+              events: initialEvents,
               actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
               pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
               switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
@@ -3176,9 +3359,18 @@
             }
           };
 
-          const calculateDamage = (attacker, defender, move, multiplier) => {
+          const calculateDamage = (attacker, defender, move, multiplier, isFirstAttackOfTurn = false) => {
             let pwr = move.power;
             if (move.speedScaling) pwr += Math.floor(attacker.spd / 3);
+            
+            // --- GESTIONE PASSIVE: POTENZIAMENTO MOSSE ---
+            if (attacker.passive && attacker.passive.boostMoveType && attacker.passive.boostMoveType.type === move.type) {
+                pwr = Math.floor(pwr * attacker.passive.boostMoveType.multiplier);
+            }
+            if (attacker.passive && attacker.passive.type === 'first_strike_bonus' && isFirstAttackOfTurn) {
+                pwr = Math.floor(pwr * attacker.passive.damageBonus);
+            }
+            // ---------------------------------------------
             
             let defValue = move.ignoreDefBuffs && defender.def > defender.baseDef ? defender.baseDef : defender.def;
             
@@ -3225,9 +3417,23 @@
             };
 
             const applyDamage = (target, dmg, targetPlayer, targetIdx, text) => {
-                target.hp = Math.max(0, target.hp - dmg);
+                let willSurvive = false;
+                
+                // --- NUOVA LOGICA: PASSIVA SOPRAVVIVENZA KO (Es. Carlos, Cuore di Pietra) ---
+                if (target.hp - dmg <= 0 && target.passive && target.passive.type === 'survive_ko' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
+                    target.passiveUses = (target.passiveUses || 0) + 1;
+                    target.hp = 1;
+                    willSurvive = true;
+                } else {
+                    target.hp = Math.max(0, target.hp - dmg);
+                }
+                
                 target.damageTakenThisTurn = (target.damageTakenThisTurn || 0) + dmg;
                 events.push({ type: 'damage', text: text, targetPlayer, targetIdx, newHp: target.hp });
+                
+                if (willSurvive) {
+                    events.push({ type: 'text', text: `🛡️ ${target.name} stringe i denti! Resiste al colpo fatale grazie a "${target.passive.name}" e resta con 1 PS!` });
+                }
                 
                 if (target.juggShieldHpThresholds && target.juggShieldHpThresholds.length > 0) {
                     let thresholdTriggered = false;
@@ -3264,6 +3470,57 @@
                 }
                 // ------------------------------------------
 
+                // --- GESTIONE PASSIVE: SOTTO SOGLIA HP (es. Barry, Chat Noir) ---
+                if (target.hp > 0 && target.passive && target.passive.type === 'on_hp_threshold' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
+                    if ((target.hp / target.maxHp) <= target.passive.threshold) {
+                        target.passiveUses = (target.passiveUses || 0) + 1;
+                        
+                        if (target.passive.statBuff) {
+                            let statTexts = [];
+                            if (target.passive.statBuff.atk) { target.atk = Math.floor(target.atk * target.passive.statBuff.atk); statTexts.push("Attacco"); }
+                            if (target.passive.statBuff.def) { target.def = Math.floor(target.def * target.passive.statBuff.def); statTexts.push("Difesa"); }
+                            if (target.passive.statBuff.spd) { target.spd = Math.floor(target.spd * target.passive.statBuff.spd); statTexts.push("Velocità"); }
+                            events.push({ type: 'text', text: `🔥 ${target.name} attiva ${target.passive.name}! Aumenta ${statTexts.join(" e ")}!` });
+                        }
+
+                        if (target.passive.resetEnemyBuffs) {
+                            events.push({ type: 'text', text: `🐾 ${target.name} attiva ${target.passive.name}! I potenziamenti degli avversari in campo vengono azzerati!` });
+                            
+                            let enemyPlayers = [];
+                            if (gameState.gameMode === 'multipla') {
+                                enemyPlayers = ['p1', 'p2'].includes(targetPlayer) ? ['p3', 'p4'] : ['p1', 'p2'];
+                            } else if (gameState.gameMode === 'juggernaut') {
+                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                enemyPlayers = targetPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+                            } else {
+                                const pKeys = Object.keys(workingField).filter(k => workingField[k].length > 0);
+                                enemyPlayers = pKeys.filter(k => k !== targetPlayer);
+                            }
+
+                            enemyPlayers.forEach(ep => {
+                                if (workingField[ep]) {
+                                    workingField[ep].forEach(eIdx => {
+                                        const enemy = workingTeams[ep][eIdx];
+                                        if (enemy && enemy.hp > 0) {
+                                            if (enemy.atk > enemy.baseAtk) enemy.atk = enemy.baseAtk;
+                                            if (enemy.def > enemy.baseDef) enemy.def = enemy.baseDef;
+                                            if (enemy.spd > enemy.baseSpd) enemy.spd = enemy.baseSpd;
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+
+                // --- GESTIONE PASSIVE: ALLA SCONFITTA (es. Bloom) ---
+                if (target.hp === 0 && target.passive && target.passive.type === 'on_faint' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
+                    target.passiveUses = (target.passiveUses || 0) + 1;
+                    target.hp = Math.max(1, Math.floor(target.maxHp * target.passive.reviveHpPercent));
+                    target.statuses = []; // Rimuove status negativi alla rinascita
+                    events.push({ type: 'damage', text: `✨ ${target.name} attiva ${target.passive.name} e rinasce dalle proprie ceneri!`, targetPlayer, targetIdx, newHp: target.hp });
+                }
+
                 if (target.hp === 0) handleFaint(targetPlayer, targetIdx);
             };
 
@@ -3290,6 +3547,8 @@
             });
 
             turnQueue.sort((a, b) => b.priority - a.priority || b.effSpd - a.effSpd);
+
+            let isFirstAttackOfTurn = true;
 
             for (let order of turnQueue) {
               const { player, charTeamIdx, action, move } = order;
@@ -3579,10 +3838,15 @@
                         }
                     }
                     if (move.statusEffect) {
-                        attacker.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
-                        updateStatusUI(player, charTeamIdx);
-                        events.push({ type: 'text', text: `${attacker.name} ottiene lo status ${move.statusEffect.type}!` });
-                        didSomething = true;
+                        const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(move.statusEffect.type);
+                        if (isNegative && attacker.passive && attacker.passive.immuneToNegativeStatuses) {
+                            events.push({ type: 'text', text: `🛡️ ${attacker.name} resiste a ${move.statusEffect.type} grazie a ${attacker.passive.name}!` });
+                        } else {
+                            attacker.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
+                            updateStatusUI(player, charTeamIdx);
+                            events.push({ type: 'text', text: `${attacker.name} ottiene lo status ${move.statusEffect.type}!` });
+                            didSomething = true;
+                        }
                     }
                     if (!didSomething) events.push({ type: 'text', text });
                     continue;
@@ -3800,104 +4064,28 @@
                         }
                     }
 
-                    if (finalTargetIdx !== null) {
-                        // 1. Aggiungi il bersaglio principale scelto dal giocatore/bot
-                        resolvedTargets.push({ 
-                            player: action.targetPlayer, 
-                            idx: finalTargetIdx, 
-                            fieldIdx: action.targetFieldIdx, 
-                            char: workingTeams[action.targetPlayer][finalTargetIdx] 
-                        });
+                    let multiplier = getMultiplier(move.type, t.char.types);
+                    let isImmuneDueToPassive = false;
 
-                        // 2. Se la mossa colpisce più bersagli, seleziona i restanti casualmente tra i nemici validi
-                        if (move.targetCount && move.targetCount > 1) {
-                            let enemyTeams = [];
-                            
-                            if (gameState.gameMode === 'multipla') {
-                                enemyTeams = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
-                            } else if (gameState.gameMode === 'juggernaut') {
-                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
-                                enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                            } else if (gameState.gameMode === 'torneo') {
-                                enemyTeams = [activeMatchPlayers.find(p => p !== player)];
-                            } else if (gameState.gameMode === 'battleroyale') {
-                                enemyTeams = activeMatchPlayers.filter(p => p !== player);
-                            } else {
-                                enemyTeams = [player === 'p1' ? 'p2' : 'p1'];
-                            }
-
-                            let possibleTargets = [];
-                            enemyTeams.forEach(ePlayer => {
-                                if (ePlayer && workingField[ePlayer]) {
-                                    workingField[ePlayer].forEach((eIdx, eFieldIdx) => {
-                                        const eChar = workingTeams[ePlayer][eIdx];
-                                        // Aggiungi ai possibili bersagli solo se NON è il bersaglio principale già colpito
-                                        if (eChar && eChar.hp > 0 && !(ePlayer === action.targetPlayer && eIdx === finalTargetIdx)) {
-                                            possibleTargets.push({ player: ePlayer, idx: eIdx, fieldIdx: eFieldIdx, char: eChar });
-                                        }
-                                    });
-                                }
-                            });
-
-                            // Aggiungi bersagli casuali fino a colpire il targetCount massimo della mossa
-                            const extraNeeded = move.targetCount - 1;
-                            for(let i = 0; i < extraNeeded && possibleTargets.length > 0; i++) {
-                                const randIdx = Math.floor(Math.random() * possibleTargets.length);
-                                resolvedTargets.push(possibleTargets.splice(randIdx, 1)[0]);
-                            }
-                        }
+                    // --- GESTIONE PASSIVE: IMMUNITÀ ---
+                    if (t.char.passive && t.char.passive.immuneToType === move.type) {
+                        multiplier = 0;
+                        isImmuneDueToPassive = true;
                     }
-                }
-
-                if (resolvedTargets.length === 0) {
-                    events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma non c'è nessun bersaglio!` });
-                    continue;
-                }
-
-                let attackSucceeded = false;
-
-                for (let t of resolvedTargets) {
-                    if (t.char.hp <= 0) continue;
-
-                    // Protezione
-                    if (t.char.statuses.some(s => s.type === 'Protetto' || s.type === 'Rashield') && !move.ignoreDefBuffs && move.power > 0) {
-                        if (t.char.statuses.some(s => s.type === 'Rashield')) {
-                            events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}, ma si protegge e riflette il danno!` });
-                            let pwr = move.power;
-                            if (move.speedScaling) pwr += Math.floor(attacker.spd / 3);
-                            let defValue = t.char.baseDef;
-                            const baseDamage = ((2 * 50 / 5 + 2) * pwr * (attacker.atk / defValue)) / 50 + 2;
-                            const reflectDmg = Math.max(1, Math.floor(baseDamage * 0.25));
-                            if (reflectDmg > 0) {
-                                applyDamage(attacker, reflectDmg, player, charTeamIdx, `${attacker.name} subisce ${reflectDmg} danni di riflesso!`);
-                            }
-                        } else {
-                            events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}, ma si protegge dai danni!` });
-                        }
-                        continue;
-                    }
-
-                    let isMagnetic = false;
-                    if (move.type === 'Elettro') {
-                        const magIdx = t.char.statuses.findIndex(s => s.type === 'Magnetico');
-                        if (magIdx !== -1) {
-                            isMagnetic = true;
-                            t.char.statuses.splice(magIdx, 1);
-                            updateStatusUI(t.player, t.idx);
-                        }
-                    }
-
-                    const multiplier = getMultiplier(move.type, t.char.types);
+                    // ----------------------------------
                     
                     let effectivenessText = "";
-                    if (multiplier > 1) effectivenessText = " È superefficace!";
-                    if (multiplier > 0 && multiplier < 1) effectivenessText = " Non è molto efficace...";
-                    if (multiplier === 0) effectivenessText = " Non ha alcun effetto!";
+                    if (isImmuneDueToPassive) effectivenessText = ` Ma ${t.char.name} ne è immune grazie a ${t.char.passive.name}!`;
+                    else if (multiplier > 1) effectivenessText = " È superefficace!";
+                    else if (multiplier > 0 && multiplier < 1) effectivenessText = " Non è molto efficace...";
+                    else if (multiplier === 0) effectivenessText = " Non ha alcun effetto!";
                     
                     if (multiplier === 0) {
                         events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}` });
                         continue;
                     }
+
+                    const wasAlive = t.char.hp > 0;
 
                     if (move.percentDmgCurrent || move.percentDmgMax) {
                         let dmg = 0;
@@ -3943,7 +4131,7 @@
                                 continue;
                             }
 
-                            let hitDmg = calculateDamage(attacker, t.char, move, multiplier);
+                            let hitDmg = calculateDamage(attacker, t.char, move, multiplier, isFirstAttackOfTurn);
                             if (isMagnetic) hitDmg *= 2;
                             
                             // --- NUOVA LOGICA: SCUDO INVINCIBILE DEI CELL JR E DI CELL ---
@@ -4056,9 +4244,29 @@
                         }
                     }
 
+                    // --- NUOVA LOGICA: PASSIVE ON_KO ---
+                    if (wasAlive && t.char.hp <= 0 && attacker.passive && attacker.passive.type === 'on_ko' && attackSucceeded) {
+                        if (attacker.passive.statBuff) {
+                            let statTexts = [];
+                            if (attacker.passive.statBuff.atk) { attacker.atk = Math.floor(attacker.atk * attacker.passive.statBuff.atk); statTexts.push("Attacco"); }
+                            if (attacker.passive.statBuff.def) { attacker.def = Math.floor(attacker.def * attacker.passive.statBuff.def); statTexts.push("Difesa"); }
+                            if (attacker.passive.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * attacker.passive.statBuff.spd); statTexts.push("Velocità"); }
+                            events.push({ type: 'text', text: `👑 ${attacker.name} ha mandato K.O. un nemico! Attiva la passiva "${attacker.passive.name}": ${statTexts.join(" e ")} aumenta!` });
+                        }
+                    }
+
                     if (t.char.hp > 0) {
                         let effects = move.statusEffects || (move.statusEffect ? [move.statusEffect] : []);
                         for (let effect of effects) {
+                            const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(effect.type);
+                            
+                            if (isNegative && t.char.passive && t.char.passive.immuneToNegativeStatuses) {
+                                if (Math.random() < effect.chance) {
+                                    events.push({ type: 'text', text: `🛡️ ${t.char.name} resiste a ${effect.type} grazie a ${t.char.passive.name}!` });
+                                }
+                                continue;
+                            }
+
                             if (Math.random() < effect.chance) {
                                 const existingIdx = t.char.statuses.findIndex(s => s.type === effect.type);
                                 let turns = effect.turns || 1;
@@ -4179,6 +4387,8 @@
                 if (move.suicide && attacker.hp > 0) {
                     applyDamage(attacker, attacker.hp, player, charTeamIdx, `${attacker.name} va in cortocircuito ed esplode sacrificandosi!`);
                 }
+
+                isFirstAttackOfTurn = false;
             }
         } // Fine ciclo coda dei turni
 
@@ -4190,6 +4400,15 @@
         for (let target of eotTargets) {
             let char = workingTeams[target.player]?.[target.charTeamIdx];
             if (!char || char.hp <= 0 || !char.statuses) continue;
+
+            // --- NUOVA LOGICA: PASSIVE ON_TURN_END ---
+            if (char.passive && char.passive.type === 'on_turn_end') {
+                if (char.passive.healPercent && char.hp < char.maxHp) {
+                    const healAmount = Math.max(1, Math.floor(char.maxHp * char.passive.healPercent));
+                    char.hp = Math.min(char.maxHp, char.hp + healAmount);
+                    events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}: recupera ${healAmount} PS!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp });
+                }
+            }
 
             // Riduzione Cooldown (Ricarica turni per mossa)
             if (char.moves) {
@@ -4694,18 +4913,36 @@
                     if (gameState.switchActions[p] && gameState.switchActions[p].length > 0) {
                         gameState.switchActions[p].forEach(idx => {
                             newField[p].push(idx);
-                            if (newTeams[p][idx]) newTeams[p][idx].revealed = true; // Segna come rivelato!
+                            if (newTeams[p][idx]) {
+                                newTeams[p][idx].revealed = true; // Segna come rivelato!
+                                
+                                // GESTIONE ABILITÀ PASSIVE 'on_enter' (Durante la sostituzione)
+                                const char = newTeams[p][idx];
+                                if (char.passive && char.passive.type === 'on_enter' && (char.passiveUses || 0) < (char.passive.maxUses || 1)) {
+                                    char.passiveUses = (char.passiveUses || 0) + 1;
+                                    applyOnEnterPassive(char, p, idx, newTeams, newField, newEvents, gameState.gameMode, gameState.settings);
+                                }
+                            }
                         });
                     }
                 });
                 
-                updateState({ 
-                    status: 'battling', 
+                let nextSwitchState = { 
                     field: newField, 
                     teams: newTeams,
                     pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
                     switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }
-                }).then(() => {
+                };
+
+                if (newEvents.length > 0) {
+                    nextSwitchState.status = 'executing';
+                    nextSwitchState.postExecStatus = 'battling';
+                    nextSwitchState.events = newEvents;
+                } else {
+                    nextSwitchState.status = 'battling';
+                }
+
+                updateState(nextSwitchState).then(() => {
                     if (appMode === 'local_room') {
                         const humans = active.filter(p => !gameState.isBot[p] && newField[p] && newField[p].length > 0);
                         if (humans.length > 0) {
@@ -5930,6 +6167,15 @@
                                         <div className="text-amber-400">SPD: {char.spd}</div>
                                     </div>
                                     <div className="w-full space-y-2">
+                                        {char.passive && (
+                                            <div className="text-[10px] bg-amber-900/40 p-2 rounded border border-amber-500/50 flex flex-col gap-1 shadow-inner">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="font-bold text-amber-400 flex items-center gap-1">✨ Passiva: {char.passive.name}</span>
+                                                    <span className="text-[8px] text-amber-200/70">{char.passive.maxUses ? `Usi max: ${char.passive.maxUses}` : 'Infinito'}</span>
+                                                </div>
+                                                <span className="text-[9px] text-amber-100/80 leading-tight">{char.passive.desc}</span>
+                                            </div>
+                                        )}
                                         {char.moves.filter(Boolean).map((m, i) => (
                                             <div key={i} className="text-[10px] bg-slate-800 p-2 rounded border border-slate-700 flex flex-col gap-1">
                                                 <div className="flex justify-between items-center">
@@ -6071,7 +6317,8 @@
                             </div>
                             <button disabled={!canStartDraft} onClick={() => {
                                 let hasBots = false;
-                                const draftable = CHARACTERS.filter(c => !c.isSummonOnly);
+                                // FIX: Impedisce ai bot di usare personaggi e boss della campagna (isSecretUnlock)
+                                const draftable = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                 const newDraft = { ...gameState.draft };
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
                                 const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
@@ -6234,6 +6481,15 @@
                                                     <div className="text-amber-400">SPD: {char.spd}</div>
                                                 </div>
                                                 <div className="w-full space-y-2">
+                                                    {char.passive && (
+                                                        <div className="text-[10px] bg-amber-900/40 p-2 rounded border border-amber-500/50 flex flex-col gap-1 shadow-inner">
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="font-bold text-amber-400 flex items-center gap-1">✨ Passiva: {char.passive.name}</span>
+                                                                <span className="text-[8px] text-amber-200/70">{char.passive.maxUses ? `Usi max: ${char.passive.maxUses}` : 'Infinito'}</span>
+                                                            </div>
+                                                            <span className="text-[8px] text-amber-100/80 leading-tight">{char.passive.desc}</span>
+                                                        </div>
+                                                    )}
                                                     {char.moves.filter(Boolean).map((m, i) => (
                                                         <div key={i} className="text-[10px] bg-slate-800 p-2 rounded border border-slate-700 flex flex-col gap-1">
                                                             <div className="flex justify-between items-center">
