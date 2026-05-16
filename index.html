@@ -1934,6 +1934,7 @@
           
           const [showOnlinePlayers, setShowOnlinePlayers] = useState(false);
           const [onlineUsers, setOnlineUsers] = useState([]);
+          const [sessionId] = useState(() => Math.random().toString(36).substring(2, 15));
 
           const matchStartTimeRef = useRef(null);
           const draftLongPressRef = useRef(false);
@@ -2350,9 +2351,10 @@
               if (!user || !playerName.trim()) return;
               const updatePresence = async () => {
                   try {
-                      const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'online_users', user.uid);
+                      const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'online_users', sessionId);
                       await setDoc(userRef, {
                           uid: user.uid,
+                          sessionId: sessionId,
                           name: playerName,
                           avatar: playerAvatarUrl,
                           status: (appMode === 'online_room' && roomId) ? 'In Partita' : 'Nel Menu',
@@ -2366,7 +2368,7 @@
               updatePresence();
               const interval = setInterval(updatePresence, 30000); 
               return () => clearInterval(interval);
-          }, [user, playerName, playerAvatarUrl, appMode, roomId]);
+          }, [user, playerName, playerAvatarUrl, appMode, roomId, sessionId]);
 
           useEffect(() => {
               if (!user || !showOnlinePlayers) return;
@@ -2376,15 +2378,15 @@
                   const active = [];
                   snapshot.forEach(d => {
                       const data = d.data();
-                      // Tieni in lista solo utenti aggiornati negli ultimi 90 secondi
-                      if (now - data.timestamp < 90000 && data.uid !== user.uid) {
+                      // Tolleranza di 5 minuti (300000ms) per evitare problemi di orologi sfasati sui cellulari
+                      if (Math.abs(now - data.timestamp) < 300000 && data.sessionId !== sessionId) {
                           active.push(data);
                       }
                   });
                   setOnlineUsers(active);
               }, (err) => console.error(err));
               return () => unsubscribe();
-          }, [user, showOnlinePlayers]);
+          }, [user, showOnlinePlayers, sessionId]);
 
           const handleObserve = (targetRoomId) => {
               setShowOnlinePlayers(false);
@@ -7954,7 +7956,7 @@
                             {onlineUsers.length === 0 ? (
                                 <p className="text-slate-500 text-center italic py-8 font-medium">Nessun altro giocatore online al momento.</p>
                             ) : onlineUsers.map(u => (
-                                <div key={u.uid} className="bg-slate-800/80 border border-slate-700 p-3 rounded-xl flex items-center gap-3 shadow-md">
+                                <div key={u.sessionId} className="bg-slate-800/80 border border-slate-700 p-3 rounded-xl flex items-center gap-3 shadow-md">
                                     <img src={u.avatar || getDefaultAvatar(u.name)} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(u.name); }} className="w-12 h-12 rounded-full border-2 border-slate-600 bg-slate-900 object-cover" />
                                     <div className="flex-1 min-w-0">
                                         <div className="font-bold text-white truncate text-base mb-0.5">{u.name}</div>
