@@ -129,7 +129,7 @@
           'Ruggito del re koopa': { name: 'Ruggito del re koopa', type: 'Drago', power: 0, target: 'self', maxUses: 2, statBuff: { atk: 1.5, def: 1.5 }, desc: 'Emette un boato terrificante, aumentando Attacco e Difesa del 50%.' },
 
           'Tossina': { name: 'Tossina', type: 'Veleno', power: 0, statusEffect: { type: 'Avvelenato', chance: 1.0 }, desc: 'Avvelena gravemente il bersaglio.' },
-          'Gigassorbimento': { name: 'Gigassorbimento', type: 'Erba', power: 85, drain: 0.10, desc: 'Assorbe i PS del nemico. Cura chi la usa del 10% del danno inflitto.' },
+          'Gigassorbimento': { name: 'Gigassorbimento', type: 'Erba', power: 85, drain: 0.50, desc: 'Assorbe i PS del nemico. Cura chi la usa del 50% del danno inflitto.' },
           'Protezione': { name: 'Protezione', type: 'Normale', power: 0, target: 'self', maxUses: 5, priority: 5, isProtect: true, desc: 'Si protegge dagli attacchi. Se usata di fila, la probabilità di successo si dimezza.' },
 
           'Colpo Cartoon': { name: 'Colpo Cartoon', type: 'Normale', power: 50, priority: 1, desc: 'Un colpo imprevedibile che colpisce sempre per primo (Priorità +1).' },
@@ -1595,6 +1595,29 @@
                   ],
                   boss: ['aang'],
                   unlock: ['aang']
+                },
+                {
+                  id: 'm30_5', title: 'Anomalia: La Ricaduta dell\'Onore',
+                  isAnomaly: true,
+                  dialogue: [
+                    { s: "Topolino", t: "Oh no! Quella nube di polvere oscura è tornata e si sta dirigendo verso Katara e Aang!" },
+                    { s: "Katara (Corrotta)", t: "Le mie acque... si tingono di nero. Vi annegherò tutti!" },
+                    { s: "Aang (Corrotto)", t: "L'Avatar deve imporre... l'Ordine Assoluto!" },
+                    { s: "Zuko", t: "Non di nuovo! Resisterò... non mi farò controllare... argh!" },
+                    { s: "Zuko (Corrotto)", t: "Il mio onore... brucerà l'imperfezione!" },
+                    { s: "Finn l'Umano", t: "Zuko ha ceduto! Dobbiamo farli rinsavire un'altra volta, preparatevi!" }
+                  ],
+                  postDialogue: [
+                    { s: "Aang", t: "La mia testa... mi dispiace tanto ragazzi, l'oscurità era troppo forte." },
+                    { s: "Katara", t: "L'importante è che ora stiamo di nuovo bene... vero, Zuko?" },
+                    { s: "Zuko", t: "No. Non sto bene. Mi sono fatto controllare... DI NUOVO." },
+                    { s: "Finn l'Umano", t: "Ehi, non è colpa tua! Quella magia è infida, ha preso alla sprovvista anche noi a volte." },
+                    { s: "Zuko", t: "Un vero dominatore del fuoco non si fa spegnere la mente. Sono debole. Non posso viaggiare con voi se sono una minaccia costante per la mia stessa squadra." },
+                    { s: "Topolino", t: "Zuko, aspetta! Dove vai?!" },
+                    { s: "Zuko", t: "A ritrovare me stesso. O a bruciare da solo. Non cercatemi." }
+                  ],
+                  boss: ['aang', 'katara', 'zuko'],
+                  removeChars: ['zuko']
                 }
               ]
             },
@@ -1666,6 +1689,23 @@
                   ],
                   boss: ['nito', 'hannibal'],
                   unlock: ['nito', 'hannibal']
+                },
+                {
+                  id: 'm34_5', title: 'L\'Onore Ritrovato',
+                  dialogue: [
+                    { s: "Finn l'Umano", t: "Siamo quasi usciti da queste caverne puzzolenti! ...Aspetta, chi c'è laggiù?" },
+                    { s: "Zuko", t: "Siete arrivati. Vi stavo aspettando." },
+                    { s: "Topolino", t: "Zuko! Sei tornato in te! Vieni con noi, stiamo per affrontare Cell!" },
+                    { s: "Zuko", t: "Non ancora. Devo capire se le mie fiamme sono davvero mie o se sono ancora macchiate di nero. Combattetemi. Mostratemi che non sono un pericolo per voi, e vi seguirò fino alla fine." }
+                  ],
+                  postDialogue: [
+                    { s: "Zuko", t: "*Ansimando* Siete davvero forti... ma non vi ho feriti. Ho mantenuto il controllo sulle mie fiamme." },
+                    { s: "Katara", t: "Non l'hai mai perso del tutto, Zuko. Nessuno è perfetto, l'importante è sapersi rialzare." },
+                    { s: "Zuko", t: "Hai ragione. Il mio fuoco brucia per proteggere, non per distruggere. L'oscurità non mi avrà più. Cell ha i minuti contati." },
+                    { s: "Finn l'Umano", t: "Questo è lo spirito giusto! Bentornato nel gruppo, scintilla!" }
+                  ],
+                  boss: ['zuko'],
+                  unlock: ['zuko']
                 }
               ]
             },
@@ -7421,6 +7461,17 @@
                                                 unlockedThisTime.push(id);
                                             }
                                             updateLocalStats({ unlockChar: id });
+                                        });
+                                    }
+
+                                    // GESTIONE RIMOZIONE PERSONAGGI (Es. Zuko che se ne va)
+                                    if (mission.removeChars) {
+                                        mission.removeChars.forEach(rId => {
+                                            const indexToRemove = newRoster.indexOf(rId);
+                                            if (indexToRemove !== -1) {
+                                                newRoster.splice(indexToRemove, 1);
+                                                delete newRosterStats[rId];
+                                            }
                                         });
                                     }
 
