@@ -467,6 +467,8 @@
           'Kamehameha Solare': { name: 'Kamehameha Solare', type: 'Magico', power: 120, targetCount: 4, recharge: true, desc: 'Una Kamehameha capace di distruggere l\'intero sistema solare! Colpisce tutti ma richiede ricarica.' },
           'Barriera Perfetta': { name: 'Barriera Perfetta', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 2, desc: 'Genera una barriera sferica di pura energia che blocca i danni e ne riflette il 25%. (2 utilizzi)' },
           'Teletrasporto Perfetto': { name: 'Teletrasporto Perfetto', type: 'Aria', power: 0, target: 'self', statBuff: { spd: 1.5, atk: 1.5 }, desc: 'Si sposta istantaneamente sorprendendo l\'avversario: aumenta Attacco e Velocità del 50%.' },
+          'Raggio di Ki Piccolo': { name: 'Raggio di Ki Piccolo', type: 'Magico', power: 45, desc: 'Spara un piccolo ma potente raggio di energia concentrata.' },
+          'Raffica di Calci': { name: 'Raffica di Calci', type: 'Lotta', power: 20, multiHit: { min: 2, max: 4 }, desc: 'Una sequenza velocissima di calci. Colpisce da 2 a 4 volte.' },
 
           // NUOVE MOSSE WHISPER
           'Consultazione Yo-kai Pad': { name: 'Consultazione Yo-kai Pad', type: 'Robot', power: 0, targetStatDebuff: { def: 0.5 }, selfStatBuff: { spd: 1.5, atk: 1.3 }, desc: 'Cerca informazioni sul pad: dimezza la Difesa avversaria e aumenta Attacco (+30%) e Velocità (+50%).' },
@@ -5178,9 +5180,12 @@
             let isValidSavedBoss = false;
 
             if (campaignState.currentBossState && campaignState.currentBossState.length > 0) {
-                // Valida se il salvataggio dei boss è coerente con i mostri di questo livello. 
-                // Se c'è un disallineamento (es. vecchio aggiornamento), lo ignora.
-                isValidSavedBoss = (mission.isAnomaly && mission.id === 'm12_5') || campaignState.currentBossState.some(c => activeBosses.includes(c.id));
+                // FIX CRITICO: Ignora il salvataggio vecchio se avevi già perso contro Groot e Snorlax PRIMA dell'aggiornamento
+                const isOldM24Save = mission.id === 'm24' && campaignState.currentBossState.length <= 2 && !campaignState.currentBossState.some(c => ['piantacarnivora', 'cespugliomaledetto', 'alberto', 'fioretenebroso'].includes(c.id));
+                
+                if (!isOldM24Save) {
+                    isValidSavedBoss = (mission.isAnomaly && mission.id === 'm12_5') || campaignState.currentBossState.some(c => activeBosses.includes(c.id));
+                }
             }
 
             if (isValidSavedBoss) {
@@ -5920,7 +5925,7 @@
                                         <div className="text-amber-400">SPD: {char.spd}</div>
                                     </div>
                                     <div className="w-full space-y-2">
-                                        {char.moves.map((m, i) => (
+                                        {char.moves.filter(Boolean).map((m, i) => (
                                             <div key={i} className="text-[10px] bg-slate-800 p-2 rounded border border-slate-700 flex flex-col gap-1">
                                                 <div className="flex justify-between items-center">
                                                     <span className="font-bold text-gray-300">{m.name}</span>
