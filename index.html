@@ -2771,7 +2771,7 @@
             updateState({ [`draft.${playerRole}`]: [...currentDraft, charInstance] });
           };
 
-          const applyOnEnterPassive = (char, p, idx, workingTeams, workingField, eventsArr, gameMode, settings) => {
+          const applyOnEnterPassive = (char, p, idx, workingTeams, workingField, eventsArr, gameMode, settings, isCampaign) => {
               if (char.passive.isSummon) {
                   const summonIds = Array.isArray(char.passive.isSummon) ? char.passive.isSummon : [char.passive.isSummon];
                   let summonedNames = [];
@@ -2783,6 +2783,34 @@
                               baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd, revealed: true
                           };
                           newSummon.moves.forEach(m => { if (m.maxUses !== undefined) m.remainingUses = m.maxUses; });
+                          
+                          // --- POTENZIAMENTO EVOCAZIONI JUGGERNAUT / CAMPAGNA BOSS ---
+                          if (gameMode === 'juggernaut' && settings && p === (settings.juggernautPlayer || 'p1')) {
+                              const numOpp = Object.keys(workingField).filter(k => workingTeams[k] && workingTeams[k].length > 0).length - 1;
+                              if (numOpp > 0) {
+                                  newSummon.maxHp = Math.floor(newSummon.maxHp * (1 + numOpp * 0.8));
+                                  newSummon.hp = newSummon.maxHp;
+                                  newSummon.atk = Math.floor(newSummon.atk * (1 + numOpp * 0.3));
+                                  newSummon.def = Math.floor(newSummon.def * (1 + numOpp * 0.3));
+                                  newSummon.baseAtk = newSummon.atk;
+                                  newSummon.baseDef = newSummon.def;
+                                  newSummon.imageFilter = 'drop-shadow(0 0 15px rgba(220,38,38,0.8))';
+                              }
+                          } else if (isCampaign && p === 'p2') {
+                              const summonerBase = CHARACTERS.find(c => c.id === char.id);
+                              if (summonerBase) {
+                                  const hpRatio = char.maxHp / summonerBase.maxHp;
+                                  const statRatio = char.baseAtk / summonerBase.atk;
+                                  newSummon.maxHp = Math.floor(newSummon.maxHp * hpRatio);
+                                  newSummon.hp = newSummon.maxHp;
+                                  newSummon.atk = Math.floor(newSummon.atk * statRatio);
+                                  newSummon.def = Math.floor(newSummon.def * statRatio);
+                                  newSummon.baseAtk = newSummon.atk;
+                                  newSummon.baseDef = newSummon.def;
+                                  if (char.imageFilter) newSummon.imageFilter = char.imageFilter;
+                              }
+                          }
+
                           workingTeams[p].push(newSummon);
                           workingField[p].push(workingTeams[p].length - 1);
                           summonedNames.push(newSummon.name);
@@ -2794,12 +2822,27 @@
               }
               
               if (char.passive.teamStatBuff) {
-                  workingField[p].forEach(aIdx => {
-                      const ally = workingTeams[p][aIdx];
-                      if (ally && ally.hp > 0) {
-                          if (char.passive.teamStatBuff.atk) ally.atk = Math.floor(ally.atk * char.passive.teamStatBuff.atk);
-                          if (char.passive.teamStatBuff.def) ally.def = Math.floor(ally.def * char.passive.teamStatBuff.def);
-                          if (char.passive.teamStatBuff.spd) ally.spd = Math.floor(ally.spd * char.passive.teamStatBuff.spd);
+                  let myTeamPlayers = [p];
+                  if (gameMode === 'multipla') {
+                      myTeamPlayers = ['p1', 'p2'].includes(p) ? ['p1', 'p2'] : ['p3', 'p4'];
+                  } else if (gameMode === 'juggernaut') {
+                      const juggPlayer = settings?.juggernautPlayer || 'p1';
+                      if (p !== juggPlayer) {
+                          const allPlayers = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'];
+                          myTeamPlayers = allPlayers.filter(ap => ap !== juggPlayer && workingField[ap]);
+                      }
+                  }
+
+                  myTeamPlayers.forEach(pAlly => {
+                      if (workingField[pAlly]) {
+                          workingField[pAlly].forEach(aIdx => {
+                              const ally = workingTeams[pAlly][aIdx];
+                              if (ally && ally.hp > 0) {
+                                  if (char.passive.teamStatBuff.atk) ally.atk = Math.floor(ally.atk * char.passive.teamStatBuff.atk);
+                                  if (char.passive.teamStatBuff.def) ally.def = Math.floor(ally.def * char.passive.teamStatBuff.def);
+                                  if (char.passive.teamStatBuff.spd) ally.spd = Math.floor(ally.spd * char.passive.teamStatBuff.spd);
+                              }
+                          });
                       }
                   });
                   eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche del tuo team aumentano!` });
@@ -3035,7 +3078,7 @@
                             const char = teams[p][idx];
                             if (char.passive && char.passive.type === 'on_enter' && (char.passiveUses || 0) < (char.passive.maxUses || 1)) {
                                 char.passiveUses = (char.passiveUses || 0) + 1;
-                                applyOnEnterPassive(char, p, idx, teams, field, initialEvents, gameState.gameMode, gameState.settings);
+                                applyOnEnterPassive(char, p, idx, teams, field, initialEvents, gameState.gameMode, gameState.settings, gameState.isCampaignBattle);
                             }
                         }
                     });
@@ -3174,7 +3217,16 @@
                                 // Logic per curare alleati
                                 let allyScore = 0;
                                 let bestAlly = null;
-                                const myTeamPlayers = gameState.gameMode === 'multipla' ? (['p1', 'p2'].includes(cpuPlayer) ? ['p1', 'p2'] : ['p3', 'p4']) : [cpuPlayer];
+                                
+                                let myTeamPlayers = [cpuPlayer];
+                                if (gameState.gameMode === 'multipla') {
+                                    myTeamPlayers = ['p1', 'p2'].includes(cpuPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
+                                } else if (gameState.gameMode === 'juggernaut') {
+                                    const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                    if (cpuPlayer !== juggPlayer) {
+                                        myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                                    }
+                                }
                                 
                                 myTeamPlayers.forEach(allyPlayer => {
                                      gameState.field[allyPlayer]?.forEach((aIdx, aFieldIdx) => {
@@ -3189,6 +3241,20 @@
                                 if (bestAlly && allyScore > bestScore) {
                                     bestScore = allyScore;
                                     bestAction = { type: 'attack', moveIdx, targetPlayer: bestAlly.p, targetIdx: bestAlly.i, targetFieldIdx: bestAlly.fi };
+                                }
+                            } else if (move.targetCount && move.targetCount > 1 && move.targetCount < 4) {
+                                // Mosse di Attacco a bersagli multipli (es. 2 bersagli)
+                                let targets = [...possibleEnemies].sort(() => 0.5 - Math.random()).slice(0, move.targetCount);
+                                if (targets.length > 0) {
+                                    let score = 50 + (targets.length * 20) + Math.random() * 20; 
+                                    if (score > bestScore) {
+                                        bestScore = score;
+                                        bestAction = { 
+                                            type: 'attack', 
+                                            moveIdx, 
+                                            selectedTargets: targets.map(t => ({ player: t.player, idx: t.idx, fieldIdx: t.fieldIdx }))
+                                        };
+                                    }
                                 }
                             } else {
                                 // Mosse di Attacco contro Nemici
@@ -3871,10 +3937,32 @@
                 }
 
                 if (move.targetMode === 'team') {
-                    const aliveAllies = workingField[player].filter(idx => workingTeams[player][idx].hp > 0);
+                    let myTeamPlayers = [player];
+                    if (gameState.gameMode === 'multipla') {
+                        myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
+                    } else if (gameState.gameMode === 'juggernaut') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                        if (player !== juggPlayer) {
+                            myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                        }
+                    }
+                    
+                    let aliveAllies = [];
+                    myTeamPlayers.forEach(pAlly => {
+                        if (workingField[pAlly]) {
+                            workingField[pAlly].forEach(idx => {
+                                if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
+                                    aliveAllies.push({ p: pAlly, idx: idx });
+                                }
+                            });
+                        }
+                    });
+
                     events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su tutto il team!` });
-                    for (let aIdx of aliveAllies) {
-                        let ally = workingTeams[player][aIdx];
+                    for (let aObj of aliveAllies) {
+                        let allyPlayer = aObj.p;
+                        let aIdx = aObj.idx;
+                        let ally = workingTeams[allyPlayer][aIdx];
                         let didSomething = false;
                         
                         if (move.statusEffect) {
@@ -3884,7 +3972,7 @@
                             } else {
                                 ally.statuses[existingIdx].turns = move.statusEffect.turns || 1;
                             }
-                            updateStatusUI(player, aIdx);
+                            updateStatusUI(allyPlayer, aIdx);
                             events.push({ type: 'text', text: `${ally.name} ottiene lo status ${move.statusEffect.type}!` });
                             didSomething = true;
                         }
@@ -3893,7 +3981,7 @@
                             const filtered = ally.statuses.filter(s => !negatives.includes(s.type));
                             if (filtered.length < ally.statuses.length) {
                                 ally.statuses = filtered;
-                                updateStatusUI(player, aIdx);
+                                updateStatusUI(allyPlayer, aIdx);
                                 events.push({ type: 'text', text: `Gli status negativi di ${ally.name} svaniscono!` });
                                 didSomething = true;
                             }
@@ -3913,13 +4001,35 @@
                 }
 
                 if (move.targetMode === 'team_smart_heal') {
-                    const aliveAllies = workingField[player].filter(idx => workingTeams[player][idx].hp > 0);
+                    let myTeamPlayers = [player];
+                    if (gameState.gameMode === 'multipla') {
+                        myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
+                    } else if (gameState.gameMode === 'juggernaut') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                        if (player !== juggPlayer) {
+                            myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                        }
+                    }
+
+                    let aliveAllies = [];
+                    myTeamPlayers.forEach(pAlly => {
+                        if (workingField[pAlly]) {
+                            workingField[pAlly].forEach(idx => {
+                                if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
+                                    aliveAllies.push({ p: pAlly, idx: idx });
+                                }
+                            });
+                        }
+                    });
+
                     if (aliveAllies.length > 1) {
-                        for (let aIdx of aliveAllies) {
-                            let ally = workingTeams[player][aIdx];
+                        for (let aObj of aliveAllies) {
+                            let allyPlayer = aObj.p;
+                            let aIdx = aObj.idx;
+                            let ally = workingTeams[allyPlayer][aIdx];
                             const healAmount = Math.floor(ally.maxHp * move.healTeam);
                             ally.hp = Math.min(ally.maxHp, ally.hp + healAmount);
-                            events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e cura ${ally.name} di ${healAmount} HP!`, targetPlayer: player, targetIdx: aIdx, newHp: ally.hp });
+                            events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e cura ${ally.name} di ${healAmount} HP!`, targetPlayer: allyPlayer, targetIdx: aIdx, newHp: ally.hp });
                         }
                     } else {
                         const healAmount = Math.floor(attacker.maxHp * move.healAlone);
@@ -4020,6 +4130,33 @@
                                 if (m.maxUses !== undefined) m.remainingUses = m.maxUses;
                             });
 
+                            // --- POTENZIAMENTO EVOCAZIONI JUGGERNAUT / CAMPAGNA ---
+                            if (gameState.gameMode === 'juggernaut' && player === (gameState.settings.juggernautPlayer || 'p1')) {
+                                const numOpp = activeMatchPlayers.length - 1;
+                                if (numOpp > 0) {
+                                    newSummon.maxHp = Math.floor(newSummon.maxHp * (1 + numOpp * 0.8));
+                                    newSummon.hp = newSummon.maxHp;
+                                    newSummon.atk = Math.floor(newSummon.atk * (1 + numOpp * 0.3));
+                                    newSummon.def = Math.floor(newSummon.def * (1 + numOpp * 0.3));
+                                    newSummon.baseAtk = newSummon.atk;
+                                    newSummon.baseDef = newSummon.def;
+                                    newSummon.imageFilter = 'drop-shadow(0 0 15px rgba(220,38,38,0.8))';
+                                }
+                            } else if (gameState.isCampaignBattle && player === 'p2') {
+                                const summonerBase = CHARACTERS.find(c => c.id === attacker.id);
+                                if (summonerBase) {
+                                    const hpRatio = attacker.maxHp / summonerBase.maxHp;
+                                    const statRatio = attacker.baseAtk / summonerBase.atk;
+                                    newSummon.maxHp = Math.floor(newSummon.maxHp * hpRatio);
+                                    newSummon.hp = newSummon.maxHp;
+                                    newSummon.atk = Math.floor(newSummon.atk * statRatio);
+                                    newSummon.def = Math.floor(newSummon.def * statRatio);
+                                    newSummon.baseAtk = newSummon.atk;
+                                    newSummon.baseDef = newSummon.def;
+                                    if (attacker.imageFilter) newSummon.imageFilter = attacker.imageFilter;
+                                }
+                            }
+
                             workingTeams[player].push(newSummon);
                             const newCharTeamIdx = workingTeams[player].length - 1;
                             workingField[player].push(newCharTeamIdx);
@@ -4053,7 +4190,38 @@
 
                 let resolvedTargets = [];
 
-                if (action.selectedTargets) {
+                if (move.targetCount && move.targetCount >= 4) {
+                    // Mossa ad area totale: colpisce tutti i nemici
+                    const activeMatchPlayers = getActivePlayers();
+                    let enemyTeams = [];
+                    if (gameState.gameMode === 'multipla') {
+                        enemyTeams = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
+                    } else if (gameState.gameMode === 'juggernaut') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                        enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+                    } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                        enemyTeams = [activeMatchPlayers.find(p => p !== player)];
+                    } else if (gameState.gameMode === 'battleroyale') {
+                        enemyTeams = activeMatchPlayers.filter(p => p !== player);
+                    } else {
+                        enemyTeams = [player === 'p1' ? 'p2' : 'p1'];
+                    }
+
+                    enemyTeams.forEach(ep => {
+                        if (ep && workingField[ep]) {
+                            workingField[ep].forEach((cIdx, fIdx) => {
+                                if (workingTeams[ep][cIdx] && workingTeams[ep][cIdx].hp > 0) {
+                                    resolvedTargets.push({
+                                        player: ep,
+                                        idx: cIdx,
+                                        fieldIdx: fIdx,
+                                        char: workingTeams[ep][cIdx]
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } else if (action.selectedTargets) {
                     // Attacco a bersagli multipli selezionati manualmente
                     action.selectedTargets.forEach(t => {
                         resolvedTargets.push({
@@ -4961,7 +5129,7 @@
                                 const char = newTeams[p][idx];
                                 if (char.passive && char.passive.type === 'on_enter' && (char.passiveUses || 0) < (char.passive.maxUses || 1)) {
                                     char.passiveUses = (char.passiveUses || 0) + 1;
-                                    applyOnEnterPassive(char, p, idx, newTeams, newField, newEvents, gameState.gameMode, gameState.settings);
+                                    applyOnEnterPassive(char, p, idx, newTeams, newField, newEvents, gameState.gameMode, gameState.settings, gameState.isCampaignBattle);
                                 }
                             }
                         });
@@ -5027,8 +5195,14 @@
 
                     <div>
                         <label className="block text-xs uppercase tracking-widest font-bold text-slate-400 mb-2 flex items-center gap-2"><ImageIcon size={14}/> URL Avatar (Opzionale)</label>
-                        <input type="text" value={playerAvatarUrl} onChange={e => setPlayerAvatarUrl(e.target.value)} className="w-full bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all text-sm" placeholder="Es: https://.../img.jpg" />
-                        <p className="text-[10px] text-slate-500 mt-1 italic">Da tablet/mobile: tieni premuto sull'immagine web e scegli "Copia indirizzo immagine" (non "Copia immagine").</p>
+                        <div className="flex gap-3 items-center">
+                            <img src={playerAvatarUrl || getDefaultAvatar(playerName)} 
+                                 onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(playerName); }}
+                                 className="w-12 h-12 rounded-full border border-slate-600 object-cover bg-slate-900 shrink-0 shadow-inner" 
+                                 alt="Preview" />
+                            <input type="text" value={playerAvatarUrl} onChange={e => setPlayerAvatarUrl(e.target.value)} className="w-full bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all text-sm" placeholder="Es: https://.../img.jpg" />
+                        </div>
+                        <p className="text-[10px] text-slate-500 mt-2 italic">Da tablet/mobile: tieni premuto sull'immagine web e scegli "Copia indirizzo immagine" (non "Copia immagine"). Se l'immagine non compare qui a sinistra, il link non è valido.</p>
                     </div>
 
                     <div className="pt-4 border-t border-slate-800 space-y-4">
@@ -6286,7 +6460,7 @@
                                  <div className="absolute top-2 left-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{slot}</div>
                                  {gameState.players[slot] ? (
                                      <>
-                                         <img src={gameState.playerAvatars[slot] || getDefaultAvatar(gameState.players[slot])} className="w-16 h-16 rounded-full border-2 border-cyan-500 mb-2 object-cover bg-slate-900" alt="Avatar" />
+                                         <img src={gameState.playerAvatars[slot] || getDefaultAvatar(gameState.players[slot])} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(gameState.players[slot]); }} className="w-16 h-16 rounded-full border-2 border-cyan-500 mb-2 object-cover bg-slate-900" alt="Avatar" />
                                          <div className="font-bold text-lg text-white text-center w-full truncate px-2 flex items-center justify-center gap-2">
                                              {gameState.players[slot]} {gameState.isBot[slot] && <span className="bg-rose-600 text-white text-[10px] px-1.5 py-0.5 rounded-md">BOT</span>}
                                          </div>
@@ -6708,7 +6882,16 @@
             if (targetingMoveIdx !== null && !isDead && activeCommandChar) {
                     const move = activeCommandChar.moves[targetingMoveIdx];
                     if (move.targetMode === 'ally' || move.targetMode === 'team') {
-                            isTargetable = teamPlayer === playerRole;
+                            let myTeamPlayers = [playerRole];
+                            if (gameState.gameMode === 'multipla') {
+                                myTeamPlayers = ['p1', 'p2'].includes(playerRole) ? ['p1', 'p2'] : ['p3', 'p4'];
+                            } else if (gameState.gameMode === 'juggernaut') {
+                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                if (playerRole !== juggPlayer) {
+                                    myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                                }
+                            }
+                            isTargetable = myTeamPlayers.includes(teamPlayer);
                     } else if (gameState.gameMode === 'juggernaut') {
                             const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
                             const myTeam = playerRole === juggPlayer ? [juggPlayer] : activeMatchPlayers.filter(p => p !== juggPlayer);
@@ -6811,7 +6994,7 @@
                                                         )}
                                                         <div className={`flex items-center gap-3 bg-slate-900/80 px-4 py-2 rounded-full border ${gameState.gameMode === 'battleroyale' ? PLAYER_THEMES[p].border : 'border-slate-700/50'} backdrop-blur-md relative z-10`}>
                                                                 {hasScudoTeam && <Shield size={20} className="text-teal-400 drop-shadow-[0_0_8px_rgba(45,212,191,1)]" />}
-                                                                <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} className={`w-8 h-8 rounded-full border-2 ${gameState.gameMode === 'battleroyale' ? PLAYER_THEMES[p].border : (isTop ? 'border-rose-400' : 'border-cyan-400')} object-cover bg-slate-950`} style={{ filter: (gameState.isCampaignBattle && gameState.isBot[p]) ? 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3)' : 'none' }} alt="" />
+                                                                <img src={gameState.playerAvatars[p] || getDefaultAvatar(gameState.players[p])} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(gameState.players[p]); }} className={`w-8 h-8 rounded-full border-2 ${gameState.gameMode === 'battleroyale' ? PLAYER_THEMES[p].border : (isTop ? 'border-rose-400' : 'border-cyan-400')} object-cover bg-slate-950`} style={{ filter: (gameState.isCampaignBattle && gameState.isBot[p]) ? 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3)' : 'none' }} alt="" />
                                                                 <span className={`font-bold text-sm uppercase tracking-widest ${gameState.gameMode === 'battleroyale' ? PLAYER_THEMES[p].text : (isTop ? 'text-rose-300' : 'text-cyan-300')}`}>{gameState.players[p]}</span>
                                                         </div>
                                                         {/* INDICATORE PERSONAGGI VIVI/MORTI / RIVELATI */}
@@ -7429,7 +7612,7 @@
                             
                             return (
                                 <div key={p} className={`flex flex-col items-center justify-center p-4 rounded-3xl ${theme.bg} border border-slate-700/50 backdrop-blur-md transition-all duration-700 transform ${introCharIdx >= 1 ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`} style={{ width: `calc(${100 / Math.ceil(activeMatchPlayers.length / 2)}% - 1rem)`, minWidth: '250px' }}>
-                                    <img src={pAvatar} className={`w-16 h-16 md:w-24 md:h-24 rounded-full border-4 ${theme.border} object-cover ${theme.shadow} mb-4 bg-slate-900`} alt={pName} />
+                                    <img src={pAvatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(pName); }} className={`w-16 h-16 md:w-24 md:h-24 rounded-full border-4 ${theme.border} object-cover ${theme.shadow} mb-4 bg-slate-900`} alt={pName} />
                                     <h2 className={`text-xl font-black ${theme.text} text-center drop-shadow-md mb-4 uppercase tracking-widest`}>{pName}</h2>
                                     
                                     <div className="flex justify-center flex-wrap gap-2">
@@ -7471,10 +7654,10 @@
                         <div className={`flex flex-col items-center transition-all duration-700 ease-in-out ${introCharIdx >= 2 ? '-translate-y-16 md:-translate-y-32 scale-75' : 'translate-y-0 scale-100'}`}>
                             <div className="flex gap-4 mb-4 z-10 relative">
                                 <div className="relative">
-                                    <img src={p1Avatar} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-cyan-400 object-cover shadow-[0_0_50px_rgba(34,211,238,0.5)] bg-slate-900" alt="P1" />
+                                    <img src={p1Avatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(p1Name); }} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-cyan-400 object-cover shadow-[0_0_50px_rgba(34,211,238,0.5)] bg-slate-900" alt="P1" />
                                 </div>
                                 <div className="relative">
-                                    <img src={p2Avatar} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-cyan-400 object-cover shadow-[0_0_50px_rgba(34,211,238,0.5)] bg-slate-900" alt="P2" />
+                                    <img src={p2Avatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(p2Name); }} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-cyan-400 object-cover shadow-[0_0_50px_rgba(34,211,238,0.5)] bg-slate-900" alt="P2" />
                                 </div>
                             </div>
                             <h2 className="text-xl md:text-4xl font-black text-white text-center drop-shadow-xl">{p1Name} & {p2Name}</h2>
@@ -7496,10 +7679,10 @@
                         <div className={`flex flex-col items-center transition-all duration-700 ease-in-out ${introCharIdx >= 2 ? '-translate-y-16 md:-translate-y-32 scale-75' : 'translate-y-0 scale-100'}`}>
                             <div className="flex gap-4 mb-4 z-10 relative">
                                 <div className="relative">
-                                    <img src={p3Avatar} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-rose-400 object-cover shadow-[0_0_50px_rgba(244,63,94,0.5)] bg-slate-900" alt="P3" />
+                                    <img src={p3Avatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(p3Name); }} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-rose-400 object-cover shadow-[0_0_50px_rgba(244,63,94,0.5)] bg-slate-900" alt="P3" />
                                 </div>
                                 <div className="relative">
-                                    <img src={p4Avatar} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-rose-400 object-cover shadow-[0_0_50px_rgba(244,63,94,0.5)] bg-slate-900" alt="P4" />
+                                    <img src={p4Avatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(p4Name); }} className="w-20 h-20 md:w-32 md:h-32 rounded-full border-4 border-rose-400 object-cover shadow-[0_0_50px_rgba(244,63,94,0.5)] bg-slate-900" alt="P4" />
                                 </div>
                             </div>
                             <h2 className="text-xl md:text-4xl font-black text-white text-center drop-shadow-xl">{p3Name} & {p4Name}</h2>
@@ -7541,7 +7724,7 @@
                 <div className="w-1/2 h-full absolute left-0 bg-gradient-to-br from-blue-900 to-slate-950 flex flex-col items-center justify-center p-8 [animation:slide-in-left_0.5s_ease-out]">
                     <div className={`flex flex-col items-center transition-all duration-700 ease-in-out ${introCharIdx >= 2 ? '-translate-y-16 md:-translate-y-32 scale-75' : 'translate-y-0 scale-100'}`}>
                         <div className="relative">
-                            <img src={p1Avatar} className="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-cyan-400 object-cover shadow-[0_0_50px_rgba(34,211,238,0.5)] mb-6 z-10 relative bg-slate-900" alt="P1" />
+                            <img src={p1Avatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(p1Name); }} className="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-cyan-400 object-cover shadow-[0_0_50px_rgba(34,211,238,0.5)] mb-6 z-10 relative bg-slate-900" alt="P1" />
                             <div className="absolute inset-0 rounded-full border-4 border-cyan-400 blur-md opacity-50"></div>
                         </div>
                         <h2 className="text-3xl md:text-5xl font-black text-white text-center drop-shadow-xl">{p1Name}</h2>
@@ -7562,7 +7745,7 @@
                 <div className="w-1/2 h-full absolute right-0 bg-gradient-to-bl from-rose-900 to-slate-950 flex flex-col items-center justify-center p-8 [animation:slide-in-right_0.5s_ease-out]">
                     <div className={`flex flex-col items-center transition-all duration-700 ease-in-out ${introCharIdx >= 2 ? '-translate-y-16 md:-translate-y-32 scale-75' : 'translate-y-0 scale-100'}`}>
                         <div className="relative">
-                            <img src={p2Avatar} className="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-rose-400 object-cover shadow-[0_0_50px_rgba(244,63,94,0.5)] mb-6 z-10 relative bg-slate-900" alt="P2" />
+                            <img src={p2Avatar} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(p2Name); }} className="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-rose-400 object-cover shadow-[0_0_50px_rgba(244,63,94,0.5)] mb-6 z-10 relative bg-slate-900" alt="P2" />
                             <div className="absolute inset-0 rounded-full border-4 border-rose-400 blur-md opacity-50"></div>
                         </div>
                         <h2 className="text-3xl md:text-5xl font-black text-white text-center drop-shadow-xl">{p2Name}</h2>
