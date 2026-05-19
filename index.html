@@ -81,6 +81,18 @@
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'multiverse-rpg-1';
 
+        // --- MIGRAZIONE SALVATAGGI ---
+        const migrateSaves = () => {
+            try {
+                const oldSave = localStorage.getItem('multiverse_rpg_campaign_save');
+                if (oldSave) {
+                    localStorage.setItem('multiverse_rpg_campaign_save_crisi_varco', oldSave);
+                    localStorage.removeItem('multiverse_rpg_campaign_save');
+                }
+            } catch(e) {}
+        };
+        migrateSaves();
+
         // --- GAME DATA ---
         const TYPES = ['Normale', 'Lotta', 'Fuoco', 'Acqua', 'Erba', 'Aria', 'Roccia', 'Ghiaccio', 'Robot', 'Drago', 'Magico', 'Veleno', 'Insetto', 'Elettro', 'Oscuro', 'Spettro', 'Buio', 'Suono', 'Psico'];
 
@@ -200,7 +212,7 @@
           'Riflesso Team': { name: 'Riflesso', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 5 }, desc: 'Crea una barriera di luce magica. Moltiplica la Difesa di tutto il team x3 per 5 turni.' },
           'Sorriso Luminoso': { name: 'Sorriso Luminoso', type: 'Normale', power: 0, targetMode: 'team', removeNegativeStatuses: true, desc: 'Un sorriso abbagliante che cura chi la usa e tutti gli alleati da qualsiasi alterazione di stato negativa.' },
           'Faccino carino!': { name: 'Faccino carino!', type: 'Normale', power: 0, maxUses: 3, targetStatDebuff: { atk: 0.5 }, desc: 'Sfrutta la tenerezza per abbassare la guardia del nemico, dimezzandone permanentemente l\'Attacco. (3 utilizzi)' },
-          'Tsunami dolce': { name: 'Tsunami dolce', type: 'Acqua', power: 60, desc: 'Travolge il nemico con una massiccia e inaspettata onda zuccherata.' },
+          'Tsunami dolce': { name: 'Tsunami dolce', type: 'Acqua', power: 80, desc: 'Travolge il nemico con una massiccia e inaspettata onda zuccherata.' },
 
           'Pugno Minerale': { name: 'Pugno Minerale', type: 'Roccia', power: 60, desc: 'Un colpo fisico durissimo sferrato tramutando il proprio braccio in pietra massiccia.' },
           'Frana Impattante': { name: 'Frana Impattante', type: 'Roccia', power: 50, targetCount: 2, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Fa precipitare massi enormi dall\'alto. Colpisce fino a 2 nemici e ha il 30% di probabilità di stordirli.' },
@@ -714,7 +726,49 @@
 
           'Alchimia Metallica': { name: 'Alchimia Metallica', type: 'Robot', power: 80, desc: 'Trasmuta l\'ambiente circostante in armi acuminate.' },
           'Pugno d\'Acciaio': { name: 'Pugno d\'Acciaio', type: 'Lotta', power: 90, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Un pugno pesantissimo sferrato con l\'armatura. 20% di stordire.' },
-          'Muro Terrestre': { name: 'Muro Terrestre', type: 'Roccia', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, desc: 'Trasmuta un muro di roccia che protegge il team per 3 turni.' }
+          'Muro Terrestre': { name: 'Muro Terrestre', type: 'Roccia', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, desc: 'Trasmuta un muro di roccia che protegge il team per 3 turni.' },
+
+          // NUOVE MOSSE ARCO DEL TORNEO (DISCORD & ZENO)
+          'Schiocco di Dita': { name: 'Schiocco di Dita', type: 'Magico', power: 120, statusEffects: [{ type: 'Confuso', chance: 0.5 }, { type: 'Stordito', chance: 0.5 }], desc: 'Distorce la realtà. Alta probabilità di confondere o stordire il nemico.' },
+          'Pioggia di Cioccolato': { name: 'Pioggia di Cioccolato', type: 'Magico', power: 0, targetMode: 'team_smart_heal', healAlone: 0.6, healTeam: 0.4, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Fa piovere cioccolato curativo! Cura il team ma c\'è il 20% di probabilità di confonderli.' },
+          'Caos Totale': { name: 'Caos Totale', type: 'Oscuro', power: 95, targetCount: 4, removeBuffs: true, desc: 'Azzera i potenziamenti di tutti i nemici in campo e infligge ingenti danni.' },
+          'Cancellazione': { name: 'Cancellazione', type: 'Psico', power: 250, maxUses: 1, ignoreDefBuffs: true, desc: 'Cancella letteralmente l\'esistenza del bersaglio. Danni cosmici, usabile 1 sola volta.' },
+          'Giochiamo!': { name: 'Giochiamo!', type: 'Normale', power: 0, targetMode: 'team', targetStatBuff: { atk: 1.5, spd: 1.5 }, desc: 'Zeno vuole divertirsi! Aumenta Attacco e Velocità di tutto il suo team del 50%.' },
+          'Sguardo Onnipotente': { name: 'Sguardo Onnipotente', type: 'Psico', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.5, def: 0.5, spd: 0.5 }, maxUses: 2, desc: 'Uno sguardo che terrorizza gli universi. Dimezza tutte le statistiche dei nemici.' },
+
+          // NUOVE MOSSE PERIDOT E SHINOBU
+          'Dita Laser': { name: 'Dita Laser', type: 'Robot', power: 30, multiHit: { min: 2, max: 4 }, desc: 'Spara raffiche laser dai suoi potenziamenti. Colpisce da 2 a 4 volte.' },
+          'Ferrocinesi': { name: 'Ferrocinesi', type: 'Psico', power: 85, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Usa la telecinesi per scagliare metallo pesante. 30% di prob. stordire.' },
+          'Campo Magnetico': { name: 'Campo Magnetico', type: 'Robot', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 4 }, desc: 'Genera un campo magnetico che protegge il team per 4 turni.' },
+          'Siete dei Clod!': { name: 'Siete dei Clod!', type: 'Suono', power: 0, targetCount: 4, targetStatDebuff: { def: 0.6, spd: 0.6 }, desc: 'Un insulto alieno esilarante che riduce drasticamente Difesa e Velocità dei nemici.' },
+
+          'Danza della Farfalla': { name: 'Danza della Farfalla', type: 'Insetto', power: 75, speedScaling: true, desc: 'Un fendente acrobatico ad altissima velocità. Il danno scala con la Velocità.' },
+          'Estrazione del Veleno': { name: 'Estrazione del Veleno', type: 'Veleno', power: 70, statusEffect: { type: 'Avvelenato', chance: 0.8 }, desc: 'Inietta un potente veleno estratto dal glicine. 80% di prob. di avvelenare gravemente.' },
+          'Pungiglione Letale': { name: 'Pungiglione Letale', type: 'Veleno', power: 120, accuracy: 0.85, desc: 'Un colpo di stocco mirato e letale. Altissima potenza, ma con precisione dell\'85%.' },
+          'Medicina del Glicine': { name: 'Medicina del Glicine', type: 'Normale', power: 0, targetMode: 'ally', heal: 0.5, removeNegativeStatuses: true, desc: 'Sfrutta le sue abilità mediche per curare un alleato del 50% e purificarlo dagli status.' },
+          
+          // NUOVE MOSSE MAESTRO SHIFU
+          'Agilità del Maestro': { name: 'Agilità del Maestro', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 4, statBuff: { spd: 1.5 }, desc: 'Schiva ogni attacco con movimenti fluidi e aumenta la Velocità del 50%.' },
+          'Tocco Paralizzante': { name: 'Tocco Paralizzante', type: 'Lotta', power: 50, statusEffect: { type: 'Stordito', chance: 0.5 }, desc: 'Un colpo preciso ai centri nervosi. 50% di probabilità di stordire il nemico.' },
+          'Saggezza di Oogway': { name: 'Saggezza di Oogway', type: 'Magico', power: 0, targetMode: 'ally', heal: 0.4, targetStatBuff: { atk: 1.5, def: 1.5 }, desc: 'Infonde pace interiore in un alleato: lo cura del 40% e aumenta Attacco e Difesa del 50%.' },
+          'Colpo del Loto': { name: 'Colpo del Loto', type: 'Lotta', power: 90, ignoreDefBuffs: true, desc: 'Un fendente marziale di altissima tecnica che ignora le difese avversarie.' },
+
+          // NUOVE MOSSE GARDEVOIR E URSULA
+          'Psichico': { name: 'Psichico', type: 'Psico', power: 90, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Un potente attacco telecinetico. 20% di probabilità di confondere il bersaglio.' },
+          'Tentacoli Avvolgenti': { name: 'Tentacoli Avvolgenti', type: 'Acqua', power: 75, drain: 0.3, desc: 'Stritola il bersaglio con i tentacoli. Cura chi la usa del 30% del danno inflitto.' },
+          'Canto Ammaliatore': { name: 'Canto Ammaliatore', type: 'Suono', power: 0, statusEffect: { type: 'Infatuato', chance: 1.0 }, targetStatDebuff: { def: 0.7 }, desc: 'Canta una melodia che infatua infallibilmente il bersaglio e ne riduce la Difesa del 30%.' },
+          'Patto Ingannevole': { name: 'Patto Ingannevole', type: 'Veleno', power: 60, statusEffects: [{ type: 'Avvelenato', chance: 0.5 }, { type: 'Confuso', chance: 0.5 }], desc: 'Un contratto magico pericoloso. Infligge danni e ha il 50% di avvelenare o confondere.' },
+
+          // NUOVE MOSSE NICOLE E YOSHI
+          'Sguardo della morte': { name: 'Sguardo della morte', type: 'Oscuro', power: 70, statusEffect: { type: 'Elettrizzato', chance: 0.2 }, desc: 'Uno sguardo terrificante. 20% di probabilità di paralizzare.' },
+          'Zuffa': { name: 'Zuffa', type: 'Lotta', power: 110, selfStatBuff: { def: 0.7 }, desc: 'Una rissa furiosa. Infligge ingenti danni ma riduce la propria Difesa del 30%.' },
+          'Pausa Pranzo': { name: 'Pausa Pranzo', type: 'Normale', power: 0, target: 'self', heal: 0.2, statBuff: { def: 1.5 }, desc: 'Si rilassa mangiando: recupera il 20% dei PS e aumenta la Difesa del 50%.' },
+          'VAI A LETTO.': { name: 'VAI A LETTO.', type: 'Lotta', power: 75, statusEffect: { type: 'Addormentato', chance: 0.15 }, desc: 'Spedisce il nemico a dormire a suon di sberle. 15% di prob. di addormentare.' },
+
+          'Nyop-nyop': { name: 'Nyop-nyop', type: 'Drago', power: 40, drain: 0.5, statusEffect: { type: 'Elettrizzato', chance: 1.0 }, desc: 'Afferra il nemico con la lingua! Recupera il 50% dei danni inflitti e paralizza al 100% per il trauma.' },
+          'Uovo boomerang': { name: 'Uovo boomerang', type: 'Normale', power: 20, multiHit: { min: 2, max: 5 }, desc: 'Lancia uova a ripetizione. Colpisce da 2 a 5 volte.' },
+          'Sali sulla mia schiena': { name: 'Sali sulla mia schiena', type: 'Normale', power: 0, priority: 2, targetMode: 'ally', statusEffect: { type: 'In_Groppa', turns: 1 }, desc: 'Prende in groppa un alleato! Gli attacchi rivolti a lui colpiranno Yoshi, che subirà il 50% dei danni in meno (Priorità +2, più veloce di attacchi rapidi).' },
+          'Colpo salterino': { name: 'Colpo salterino', type: 'Drago', power: 80, desc: 'Un balzo potentissimo seguito da uno schianto sul nemico.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -766,7 +820,7 @@
           { id: 'sdentato', name: 'Sdentato', types: ['Drago'], hp: 90, maxHp: 90, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/64/e6/9d/64e69d5a9d5b7506d42b7080b2349fb6.jpg', moves: [MOVES_DB['Fuoco al Plasma'], MOVES_DB['Volo Furtivo'], MOVES_DB['Ruggito Alfa'], MOVES_DB['Tuffo in Picchiata']] },
           { id: 'spyro', name: 'Spyro', types: ['Fuoco', 'Drago'], hp: 85, maxHp: 85, atk: 95, def: 70, spd: 95, img: 'https://i.pinimg.com/736x/d3/86/d6/d386d682180fba073899e91eea331a82.jpg', moves: [MOVES_DB['Soffio di Fuoco'], MOVES_DB['Carica a Cornate'], MOVES_DB['L\'aiuto di Sparx'], MOVES_DB['Pioggia di Gemme']] },
           { id: 'cosmo', name: 'Cosmo', types: ['Magico'], hp: 95, maxHp: 95, atk: 105, def: 75, spd: 90, img: 'https://i.pinimg.com/1200x/33/a2/85/33a285b21be59bb1293704cd9c4257ce.jpg', moves: [MOVES_DB['Bacchetta Magica'], MOVES_DB['Desiderio: Cura!'], MOVES_DB['Trasformazione Bizzarra'], MOVES_DB['Esplosione Stellina']] },
-          { id: 'corvina', name: 'Corvina', types: ['Oscuro', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']] },
+          { id: 'corvina', name: 'Corvina', types: ['Oscuro', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', passive: { name: 'Libera dall\'oscurità', type: 'on_turn_end', chance: 0.20, healLowestAllyPercent: 0.20, desc: 'Alla fine di ogni turno, ha il 20% di probabilità di curare l\'alleato in campo con meno PS del 20%.' }, moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']] },
           { id: 'poisonivy', name: 'Poison Ivy', types: ['Veleno', 'Erba'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 75, img: 'https://i.pinimg.com/736x/d4/6d/c1/d46dc1e0c93db1696dbe77af5903bb50.jpg', moves: [MOVES_DB['Bacio Tossico'], MOVES_DB['Radici Avvolgenti'], MOVES_DB['Spore Soporifere'], MOVES_DB['Fascino Botanico']] },
           { id: 'mantide', name: 'Mantide', types: ['Insetto'], hp: 70, maxHp: 70, atk: 110, def: 60, spd: 115, img: 'https://i.pinimg.com/736x/ec/13/e7/ec13e73634b743dda5723d1fbe45c5e4.jpg', moves: [MOVES_DB['Colpo della Mantide'], MOVES_DB['Agopuntura'], MOVES_DB['Raffica di Pugni'], MOVES_DB['Schivata Acrobatica']] },
           { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i.pinimg.com/1200x/7f/2a/f8/7f2af80ef1d08f7d8d433aef9be18421.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
@@ -833,6 +887,16 @@
           { id: 'brago', name: 'Brago', types: ['Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/dc/e7/52/dce7525b5b8f5b0bf5cae38d6f795967.jpg', passive: { name: 'Un re gentile è un re debole!', type: 'on_ko', statBuff: { atk: 1.3 }, desc: 'Se manda K.O. un avversario, il suo Attacco aumenta del 30%.' }, moves: [MOVES_DB['Gravirei'], MOVES_DB['Oruga Reis'], MOVES_DB['Dioga Gravidon'], MOVES_DB['Nyoborotsu Ma Gravirei']] },
           { id: 'ponygon', name: 'Ponygon', types: ['Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/53/e4/fb/53e4fb1c1f8964ca949c4e72663edd8f.jpg', moves: [MOVES_DB['Shudoruku'], MOVES_DB['Dioemuru Shudoruku'], MOVES_DB['Shin Shudoruku'], MOVES_DB['Ondata di calore']] },
 
+          { id: 'peridot', name: 'Peridot', types: ['Robot', 'Psico'], hp: 95, maxHp: 95, atk: 100, def: 110, spd: 115, img: 'https://i.pinimg.com/736x/fa/81/bc/fa81bc97d2694dc7b9821b1ce3bdf4bb.jpg', passive: { name: 'Tablet Alieno', type: 'on_enter', maxUses: 1, selfStatBuff: { spd: 1.5, def: 1.3 }, desc: 'Consulta il tablet aggiornando le difese. Aumenta Velocità (+50%) e Difesa (+30%) all\'ingresso in campo.' }, moves: [MOVES_DB['Dita Laser'], MOVES_DB['Ferrocinesi'], MOVES_DB['Campo Magnetico'], MOVES_DB['Siete dei Clod!']] },
+          { id: 'shinobu', name: 'Shinobu', types: ['Veleno', 'Insetto'], hp: 85, maxHp: 85, atk: 120, def: 65, spd: 135, img: 'https://i.pinimg.com/736x/8b/71/a5/8b71a53282f08aea93f83852a01e4e44.jpg', passive: { name: 'Leggerezza Piumata', type: 'first_strike_bonus', damageBonus: 1.20, desc: 'Agilissima, colpisce con più slancio. Se attacca per prima nel turno, infligge il 20% di danni extra.' }, moves: [MOVES_DB['Danza della Farfalla'], MOVES_DB['Estrazione del Veleno'], MOVES_DB['Pungiglione Letale'], MOVES_DB['Medicina del Glicine']] },
+          { id: 'shifu', name: 'Maestro Shifu', types: ['Lotta', 'Aria'], hp: 85, maxHp: 85, atk: 115, def: 90, spd: 130, img: 'https://i.pinimg.com/736x/79/a4/0a/79a40aaa93313ebadf70526100142770.jpg', moves: [MOVES_DB['Agilità del Maestro'], MOVES_DB['Tocco Paralizzante'], MOVES_DB['Saggezza di Oogway'], MOVES_DB['Colpo del Loto']] },
+
+          { id: 'gardevoir', name: 'Gardevoir', types: ['Psico', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/3a/6b/31/3a6b317944e47ed8bb647813e45b9e58.jpg', moves: [MOVES_DB['Psichico'], MOVES_DB['Fulmine'], MOVES_DB['Schermoluce'], MOVES_DB['Geloraggio']] },
+          { id: 'ursula', name: 'Ursula', types: ['Acqua', 'Veleno'], hp: 130, maxHp: 130, atk: 100, def: 110, spd: 50, img: 'https://i.pinimg.com/1200x/a2/43/3b/a2433b064caf68f524d68e3cb61eaebe.jpg', moves: [MOVES_DB['Tentacoli Avvolgenti'], MOVES_DB['Canto Ammaliatore'], MOVES_DB['Onda Melmosa'], MOVES_DB['Patto Ingannevole']] },
+
+          { id: 'nicole', name: 'Nicole Watterson', types: ['Lotta', 'Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 85, spd: 115, img: 'https://i.pinimg.com/736x/d4/48/49/d44849bc672dc5a88293c048403fea7d.jpg', moves: [MOVES_DB['Sguardo della morte'], MOVES_DB['Zuffa'], MOVES_DB['Pausa Pranzo'], MOVES_DB['VAI A LETTO.']] },
+          { id: 'yoshi', name: 'Yoshi', types: ['Drago', 'Normale'], hp: 105, maxHp: 105, atk: 95, def: 85, spd: 110, img: 'https://i.pinimg.com/736x/e1/f3/ef/e1f3efeeaaedb7f96173a3cd032e7412.jpg', moves: [MOVES_DB['Nyop-nyop'], MOVES_DB['Uovo boomerang'], MOVES_DB['Sali sulla mia schiena'], MOVES_DB['Colpo salterino']] },
+
           { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']], isSecretUnlock: true },
           { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']], isSecretUnlock: true },
           
@@ -852,6 +916,10 @@
           { id: 'summon_carapace', name: 'Carapace (Aiutante)', types: ['Roccia', 'Magico'], hp: 60, maxHp: 60, atk: 70, def: 120, spd: 80, img: 'https://i.pinimg.com/736x/55/e4/df/55e4dfd2d094b652c9677eb504e92291.jpg', moves: [MOVES_DB['Boomerang tartaruga'], MOVES_DB['Scudo protettivo!']], isSummonOnly: true },
           { id: 'summon_ryuko', name: 'Ryuko (Aiutante)', types: ['Drago', 'Magico'], hp: 45, maxHp: 45, atk: 95, def: 50, spd: 120, img: 'https://i.pinimg.com/736x/02/48/a6/0248a651890f16e3e3f190387a057bb8.jpg', moves: [MOVES_DB['Drago d\'Acqua!'], MOVES_DB['Drago del Fulmine!'], MOVES_DB['Drago del Vento!']], isSummonOnly: true },
           { id: 'summon_kingmonkey', name: 'King Monkey (Aiutante)', types: ['Lotta', 'Magico'], hp: 55, maxHp: 55, atk: 85, def: 50, spd: 100, img: 'https://i.pinimg.com/736x/3a/65/b7/3a65b746b30bd5b47c2550aef680a8d9.jpg', moves: [MOVES_DB['Confusione!']], isSummonOnly: true },
+
+          // NUOVI BOSS ARCO DEL TORNEO
+          { id: 'discord', name: 'Discord', types: ['Magico', 'Oscuro'], hp: 180, maxHp: 180, atk: 130, def: 100, spd: 120, img: 'https://i.pinimg.com/736x/08/39/1b/08391b40b095f508fabd15bcb2693195.jpg', moves: [MOVES_DB['Schiocco di Dita'], MOVES_DB['Pioggia di Cioccolato'], MOVES_DB['Caos Totale'], MOVES_DB['Trasformazione Bizzarra']], isSecretUnlock: true },
+          { id: 'zeno', name: 'Zeno', types: ['Psico', 'Magico'], hp: 250, maxHp: 250, atk: 200, def: 150, spd: 150, img: 'https://i.pinimg.com/736x/aa/41/66/aa4166f77b5a871a426dece71c67d547.jpg', moves: [MOVES_DB['Cancellazione'], MOVES_DB['Giochiamo!'], MOVES_DB['Sguardo Onnipotente'], MOVES_DB['Stato Avatar']], isSecretUnlock: true },
 
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 70, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
@@ -880,25 +948,33 @@
           { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSecretUnlock: true },
           { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true },
           
-          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 80, maxHp: 80, atk: 10, def: 80, spd: 300, img: 'https://i.pinimg.com/736x/b2/80/7e/b2807e1136b69ce5b2149b1ff3dc30e4.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true },
-
-          { id: 'bort', name: 'Bort', types: ['Psico', 'Roccia'], hp: 100, maxHp: 100, atk: 125, def: 110, spd: 90, img: 'https://i.pinimg.com/736x/72/95/ed/7295ed57d0f49c049c6937f65463e370.jpg', moves: [MOVES_DB['Capelli di Diamante'], MOVES_DB['Durezza 10'], MOVES_DB['Istinto Combattivo'], MOVES_DB['Sguardo incattivito']] },
-          { id: 'sailormercury', name: 'Sailor Mercury', types: ['Acqua', 'Magico'], hp: 90, maxHp: 90, atk: 105, def: 85, spd: 110, img: 'https://i.pinimg.com/736x/5d/9a/ba/5d9abaccd9d252e6cb8295777032a6b0.jpg', moves: [MOVES_DB['Bolle di Nebbia'], MOVES_DB['Shabon Spray'], MOVES_DB['Raggio di Mercurio'], MOVES_DB['Onda Guaritrice']] },
-          { id: 'alphonse', name: 'Alphonse Elric', types: ['Robot', 'Lotta'], hp: 130, maxHp: 130, atk: 105, def: 120, spd: 65, img: 'https://i.pinimg.com/736x/70/5f/fb/705ffb700f13a07850a58145ab3d1900.jpg', moves: [MOVES_DB['Alchimia Metallica'], MOVES_DB['Pugno d\'Acciaio'], MOVES_DB['Muro Terrestre'], MOVES_DB['Assalto Frontale']] }
+          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 80, maxHp: 80, atk: 10, def: 80, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true }
         ];
 
         const CHAR_PRICES = {
             'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
-            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200,
-            'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150
+            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200,
+            'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
         };
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
         });
 
-        const CAMPAIGN_DATA = {
-          sectors: [
+        const CAMPAIGNS = [
+          {
+            id: 'crisi_varco',
+            title: "La Crisi del Varco Corrotto",
+            shortTitle: "Campagna Principale",
+            description: "Cell Perfetto ha fuso le dimensioni e controllato la mente degli eroi. Raduna la Resistenza e sconfiggilo!",
+            bg: "from-emerald-900 to-slate-950",
+            intro: {
+                title: "La Crisi del Varco Corrotto",
+                subtitle: "Prologo: L'Eclissi di Cell",
+                p1: "Un'entità proveniente da un futuro distorto, Cell Perfetto (Corrotto), ha utilizzato una tecnologia rubata per fondere le dimensioni.",
+                p2: "Ha emesso una 'Frequenza di Sottomissione' che ha lavato il cervello al 90% degli eroi, trasformandoli nei suoi Burattini Perfetti. Solo Finn l'Umano e Topolino sono sfuggiti. Ora devono formare la Resistenza Finale!"
+            },
+            sectors: [
             {
               name: "Settore 1: L'Atollo Post-Apocalittico",
               description: "Una fusione tra Bikini Bottom e le Terre di Ooo. Oceano viola radioattivo.",
@@ -1076,7 +1152,7 @@
                   dialogue: [
                     { s: "Kratos (Corrotto)", t: "NESSUNO PUÒ SFIDARE IL NUOVO ORDINE. Crollerete sotto il peso della Perfezione." },
                     { s: "Finn l'Umano", t: "Gulp... quello sembra parecchio arrabbiato." },
-                    { s: "Stewie", t: "Ragazzi, ho calcolato le probabilità di sopravvivenza contro di lui. Sono dello 0.0001%." }
+                    { s: "Topolino", t: "Ragazzi, ho un brutto presentimento. Quello sembra davvero inarrestabile!" }
                   ],
                   postDialogue: [
                     { s: "Kratos", t: "La mia mente... obnubilata da un insetto. Questa vergogna sarà lavata con il suo sangue." },
@@ -1105,7 +1181,7 @@
                     { s: "Finn l'Umano", t: "Bravo tartarugone! Ora siamo dalla stessa parte." }
                   ],
                   boss: ['bowser', 'sdentato'],
-                  unlock: ['bowser']
+                  unlock: ['bowser', 'sdentato']
                 },
                 {
                   id: 'm10', title: 'Un Eroe Caduto',
@@ -1806,8 +1882,8 @@
                   postDialogue: [
                     { s: "Trigon", t: "NOOO! I miei poteri oscuri... sconfitti da dei patetici mortali?! Maledizione a voi!" },
                     { s: "Gaster", t: "E... r... r... o... r... e... S... i... s... t... e... m... a... C... r... i... t... i... c... o..." },
-                    { s: "Finn l'Umano", t: "L'abbiamo fatto! Il multiverso è davvero salvo stavolta!" },
-                    { s: "Topolino", t: "Sì! E guardate, i mondi stanno tornando al loro posto. Abbiamo vinto!" }
+                    { s: "Finn l'Umano", t: "L'abbiamo fatto! Abbiamo distrutto i capi di Cell!" },
+                    { s: "Topolino", t: "Guardate! Il cielo si sta aprendo! Che succede ora?!" }
                   ],
                   boss: ['trigon', 'gaster'],
                   unlock: ['trigon', 'gaster']
@@ -1815,6 +1891,246 @@
               ]
             }
           ]
+        },
+        {
+            id: 'torneo_assoluto',
+            title: "Il Torneo Assoluto: Alleanze",
+            shortTitle: "Seconda Campagna",
+            description: "Gli Dei esigono spettacolo! Forma un'Alleanza di 8 campioni e affronta scontri tattici 2vs2 per salvare il tuo universo.",
+            bg: "from-indigo-900 to-purple-950",
+            intro: {
+                title: "Il Torneo Assoluto",
+                subtitle: "Regola d'Oro: Alleanze Multiversali",
+                p1: "Zeno e Discord hanno deciso che le lotte singole sono noiose. Hanno istituito la Regola dell'Alleanza: gli universi devono unirsi in squadre da 8 combattenti!",
+                p2: "Le battaglie si svolgeranno 2 contro 2 sul ring. Scegli i tuoi 8 eroi (5 membri + 3 riserve), vinci il torneo per ottenere il potere delle Super Sfere del Drago e salva il tuo universo dalla cancellazione!"
+            },
+            sectors: [
+            {
+              name: "Settore 0: Il Raduno",
+              description: "Il tuo eroe riceve l'invito al Torneo Assoluto. È il momento di formare l'alleanza definitiva.",
+              bg: "bg-blue-950",
+              missions: [
+                {
+                  id: 'm_zero', title: 'Una Nuova Sfida',
+                  dialogue: [
+                    { s: "Zeno", t: "Sì, sì! Ciao a tutti! Siete stati bravissimi contro quel brutto insetto verde e la sua polvere!" },
+                    { s: "Discord", t: "Oh, assolutamente sublimi. Ho sgranocchiato popcorn per tutto il tempo guardandovi ruzzolare disperatamente tra le dimensioni in cerca di una via d'uscita." },
+                    { s: "Topolino", t: "Oh mamma... e voi chi sareste? Siete per caso i padroni dell'oscurità che abbiamo intravisto alla fine?" },
+                    { s: "Zeno", t: "Io sono Zeno! Il Re di Tutto! E lui è Discord. Tutto quel pasticcio con i varchi ci ha fatto notare che i vostri universi sono un po'... disordinati. C'è troppa gente in giro." },
+                    { s: "Discord", t: "Esatto, caro roditore. È tempo di pulizie di primavera cosmiche. Abbiamo deciso di cancellare i mondi troppo caotici e inutili, ma Zeno è magnanimo e vi darà una possibilità di divertirci per salvarvi la pelliccia." },
+                    { s: "Zeno", t: "Sì, sì! Un grande torneo! Il Torneo Assoluto! Vogliamo vedere lotte pazzesche e tanto divertimento! E non è tutto: il team vincitore potrà esprimere un desiderio a sua scelta usando le Super Sfere del Drago!" },
+                    { s: "Topolino", t: "Le Super Sfere del Drago?! Ma aspetta... e per chi perde? Cancellerete i nostri mondi se non partecipiamo e non vinciamo?!" },
+                    { s: "Discord", t: "Bingo! L'Alleanza vincente avrà il suo premio, mentre gli sconfitti faranno poof! E per renderlo più... piccante, abbiamo istituito la Regola dell'Alleanza: ogni fazione deve schierare una squadra formata da ben 8 campioni. 5 titolari per gli scontri doppi e 3 riserve tattiche!" },
+                    { s: "Co-Protagonista", t: "Un torneo contro le alleanze più forti di tutti i mondi?! Non vedo l'ora di cominciare! Daremo il massimo!" },
+                    { s: "Topolino", t: "Ragazzi, vi rendete conto che è in gioco l'esistenza di tutti noi? Dobbiamo chiamare a raccolta gli amici che ci hanno aiutato contro Cell. Dovremo fare delle scelte difficili per comporre l'alleanza perfetta." },
+                    { s: "Whisper", t: "Attenzione, signori! Per qualificarvi ufficialmente e accedere al tabellone principale dovete prima superare il test di ammissione affrontando i robot d'allenamento di Bulma. Vi consiglio di non prenderlo alla leggera!" }
+                  ],
+                  postDialogue: [
+                    { s: "Topolino", t: "Fiuuu, test superato! La nostra squadra da 8 è ufficiale ed è iscritta al torneo! Adesso non si torna più indietro." },
+                    { s: "Co-Protagonista", t: "Siamo fortissimi! Ehi, adesso che siamo dentro possiamo andare al Villaggio dei Campioni? Ho bisogno di riposare prima degli scontri veri!" },
+                    { s: "Zeno", t: "Sì, sì! Siete qualificati! Ci vediamo sul ring del torneo, mi raccomando fateci divertire tantissimo!" }
+                  ],
+                  boss: ['robo_aiutante_1', 'robo_aiutante_2', 'robo_aiutante_1', 'robo_aiutante_2'],
+                  unlock: []
+                }
+              ]
+            },
+            {
+              name: "Settore 1: Le Qualificazioni",
+              description: "Le prime alleanze scendono in campo. Il lavoro di squadra è tutto.",
+              bg: "bg-indigo-950",
+              missions: [
+                {
+                  id: 'm39', title: 'L\'Alleanza Platform',
+                  dialogue: [
+                    { s: "Zeno", t: "Sì, sì! Benvenuti al Giorno 1 del Torneo Assoluto! Tutte le squadre sono state alloggiate nel Villaggio dei Campioni!" },
+                    { s: "Discord", t: "Esatto! Avete passato gli ultimi giorni a conoscervi, ma ora si fa sul serio. Gli spalti sono pieni e il tabellone vi ha accoppiati subito con le vecchie glorie." },
+                    { s: "Mario", t: "Mamma mia... abbiamo fatto settimane di ritiri tattici nel Regno dei Funghi per trovare la giusta sinergia tra me, Luigi e Bowser." },
+                    { s: "Crash Bandicoot", t: "*Fa stretching intensivo nel tunnel degli spogliatoi, scaldandosi i muscoli e sgranocchiando un frutto Wumpa*" },
+                    { s: "Co-Protagonista", t: "Ok squadra, siamo al nostro debutto. Respirate a fondo, guardate quanta gente là fuori... ricordatevi di coprire il compagno sul ring!" }
+                  ],
+                  postDialogue: [
+                    { s: "Luigi", t: "Okey dokey... siamo stati eliminati già ai gironi. Ma è stata una bellissima partita di squadra." },
+                    { s: "Discord", t: "Ah! Che scontro scoppiettante! Siete qualificati per il prossimo round, tornate pure in hotel a riposare!" }
+                  ],
+                  boss: ['mario', 'luigi', 'bowser', 'wario', 'crash', 'metalsonic'],
+                  unlock: []
+                },
+                {
+                  id: 'm40', title: 'L\'Alleanza Paranormale',
+                  dialogue: [
+                    { s: "Topolino", t: "Giorno 2. Uff, fa un freddo glaciale in questa sala d'attesa. Sono l'unico ad avere la tremarella?" },
+                    { s: "Stewie", t: "Nessun mistero, topo. Ho hackerato il sistema di ventilazione della vostra ala del villaggio per favorire i nostri spettri. Siamo tatticamente superiori." },
+                    { s: "Ladybug", t: "Non approvo questi trucchetti, Stewie! Un vero eroe vince lealmente basandosi sull'addestramento, non sabotando l'aria condizionata!" },
+                    { s: "Re Boo", t: "Bwahaha! Lealtà? Questo è un torneo di sopravvivenza! I gironi di qualificazione non perdonano. Fuori i secondi, si va in scena!" }
+                  ],
+                  postDialogue: [
+                    { s: "Chat Noir", t: "M'lady, le nostre sette vite non sono bastate. Le loro tattiche di panchina erano imprevedibili." },
+                    { s: "Danny Phantom", t: "Ammetto che il vostro allenamento ha dato i suoi frutti. Meritate l'accesso alle Semifinali." }
+                  ],
+                  boss: ['ladybug', 'chatnoir', 'renarouge', 'dannyphantom', 'reboo', 'stewie'],
+                  unlock: []
+                },
+                {
+                  id: 'm40_5', title: 'L\'Alleanza dei Titani',
+                  dialogue: [
+                    { s: "Cyborg", t: "Analisi olografica della squadra avversaria completata. Robin, le loro statistiche di vittoria in 2vs2 sono dell'88%." },
+                    { s: "Robin", t: "Perfetto. Titani, abbiamo passato le ultime 48 ore nella Stanza del Pericolo a simulare i loro pattern d'attacco. Sappiamo come neutralizzarli." },
+                    { s: "Nightwing", t: "Esatto. Ricordate la regola d'oro: comunicate quando volete dare il cambio. Le sostituzioni sono cruciali in questo campionato." },
+                    { s: "Bumblebee", t: "Abbiamo gli occhi di tutta Jump City puntati addosso sugli schermi! Pronta a pungere e a staccare un pass per i Quarti di Finale!" }
+                  ],
+                  postDialogue: [
+                    { s: "Corvina", t: "Uff... il nostro piano partita era perfetto, ma hanno saputo improvvisare in modo brillante." },
+                    { s: "Stellarubia", t: "Amici, è stata una sfida gloriosa e leale! Vi faremo il tifo dagli spalti per il resto del torneo!" }
+                  ],
+                  boss: ['bumblebee', 'robin', 'stellarubia', 'corvina', 'cyborg', 'nightwing'],
+                  unlock: []
+                }
+              ]
+            },
+            {
+              name: "Settore 2: Semifinali Cosmiche",
+              description: "Il torneo entra nel vivo. Combina gli elementi e prevedi le mosse avversarie.",
+              bg: "bg-red-950",
+              missions: [
+                {
+                  id: 'm41', title: 'L\'Alleanza Elementale',
+                  dialogue: [
+                    { s: "Aang", t: "*Seduto a gambe incrociate in levitazione nel cortile di riscaldamento* L'energia del pubblico oggi è travolgente. Sento la loro tensione." },
+                    { s: "Natsu", t: "*Sgranocchia carboni ardenti da un braciere* Quale tensione?! Io voglio solo spaccare tutto! Sono tre giorni che aspetto di salire su quel ring!" },
+                    { s: "Pyra", t: "Risparmia il tuo fuoco per il match, Natsu. Arrivare alle Semifinali significa che i nostri avversari sanno sfruttare ogni debolezza elementale." },
+                    { s: "Topolino", t: "Le telecamere sono accese. Controllate i subentri in panchina e non fatevi prendere dal panico. Questa alleanza non ha punti deboli evidenti." }
+                  ],
+                  postDialogue: [
+                    { s: "Aang", t: "Incredibile... avete spezzato il nostro equilibrio difensivo con un pressing costante." },
+                    { s: "Pyra", t: "Siamo fuori. È stato un onore incrociare le armi con voi. Vincerete questo torneo." }
+                  ],
+                  boss: ['aang', 'katara', 'zuko', 'natsu', 'juvia', 'pyra'],
+                  unlock: []
+                },
+                {
+                  id: 'm41_5', title: 'Arti Marziali e Magia',
+                  dialogue: [
+                    { s: "Maestro Shifu", t: "La pazienza è la virtù dei campioni. Abbiamo atteso questo incontro per giorni nei nostri alloggi, affinando lo spirito tramite la meditazione." },
+                    { s: "Laxus", t: "Io ho atteso affilando i miei fulmini. Mi sono stancato di meditare su una stuoia, voglio sentire il boato dell'arena!" },
+                    { s: "Po", t: "Io ho atteso scofanandomi i ravioli al vapore della mensa del Villaggio! Sono pazzeschi! Dovreste provarli prima di... beh, perdere." },
+                    { s: "Juvia", t: "Juvia ha studiato tutte le registrazioni dei vostri incontri! Ha scoperto i vostri punti deboli e li userà per farsi notare dal suo amato Natsu!" }
+                  ],
+                  postDialogue: [
+                    { s: "Maestro Shifu", t: "Eccellente tecnica marziale... avete mantenuto la disciplina persino sotto pressione." },
+                    { s: "Mantide", t: "Ahia, le mie povere antenne! Ma che dire, un bel match è un bel match." }
+                  ],
+                  boss: ['natsu', 'juvia', 'laxus', 'mantide', 'po', 'shifu'],
+                  unlock: []
+                },
+                {
+                  id: 'm42', title: 'Titani dell\'Olimpo e della Terra',
+                  dialogue: [
+                    { s: "Kratos", t: "*Affila l'ascia Leviatano nell'ombra. I suoi passi fanno tremare letteralmente il pavimento degli spogliatoi.*" },
+                    { s: "Poison Ivy", t: "Hanno dovuto rinforzare l'intera struttura architettonica dell'arena solo per permettere al nostro team di scendere sul ring. I pesi massimi sono qui." },
+                    { s: "Godzilla", t: "*Un ruggito sordo e radioattivo proviene dai sotterranei, facendo cadere calcinacci dal soffitto*" },
+                    { s: "Zazan", t: "Non vi servirà nessuna tattica. Tra un minuto sarete solo macchie sul pavimento. Schiacciamoli." }
+                  ],
+                  postDialogue: [
+                    { s: "Kratos", t: "La vostra sinergia mentale... ha superato la nostra pura forza bruta. Degni avversari." },
+                    { s: "Zeno", t: "Uaoooo! Un terremoto continuo! Che scontro esagerato! Ma c'è un'altra alleanza agguerritissima che vi aspetta prima della finalissima!" }
+                  ],
+                  boss: ['kratos', 'godzilla', 'groot', 'snorlax', 'poisonivy', 'zazan'],
+                  unlock: []
+                },
+                {
+                  id: 'm42_5', title: 'L\'Alleanza Implacabile',
+                  dialogue: [
+                    { s: "Peridot", t: "Ahah! Siete dei poveri illusi! Ho passato la nottata a trafugare il database del torneo per analizzare ogni vostra abitudine di combattimento!" },
+                    { s: "Sanemi", t: "Mettiti via quel tablet luminoso, secchiona. A me basta stringere l'elsa della spada e sentire l'adrenalina pre-partita per farli a fette." },
+                    { s: "Garnet", t: "Abbiamo riposato bene, ci siamo sincronizzate e abbiamo calcolato le percentuali di rischio. La probabilità che voi passiate questo turno è dello 0.1%." },
+                    { s: "Shinobu", t: "Ara ara~ L'agonismo è così affascinante. Spero solo che non soffriate troppo quando sarete costretti a chiamare il medico del torneo." }
+                  ],
+                  postDialogue: [
+                    { s: "Lapis", t: "Incredibile. Avete aggirato tutte le nostre difese e ribaltato i calcoli matematici." },
+                    { s: "Sanemi", t: "Tsk. Maledizione! Non posso credere che ci abbiate buttati fuori a un passo dalla vetta." },
+                    { s: "Discord", t: "Magnifico! Un trionfo tattico assoluto! Riposatevi, perché domani ci sarà la vera e unica Finale dei Mondi!" }
+                  ],
+                  boss: ['garnet', 'lapis', 'peridot', 'sanemi', 'shinobu', 'godzilla'],
+                  unlock: []
+                }
+              ]
+            },
+            {
+              name: "Settore 3: La Finale dei Mondi",
+              description: "La sfida finale tra mortali. I più grandi eroi dei cartoni animati si sono uniti per formare l'alleanza definitiva.",
+              bg: "bg-orange-950",
+              missions: [
+                {
+                  id: 'm43', title: 'L\'Alleanza Cartoon',
+                  dialogue: [
+                    { s: "Zeno", t: "Sì, sì! Ci siamo! La Finalissima Assoluta dei Mondi! Lo stadio trabocca, ci sono miliardi di spettatori sintonizzati da ogni galassia!" },
+                    { s: "Discord", t: "Abbiamo venduto i diritti televisivi perfino al Vuoto Cosmico! Fateci vedere uno spettacolo indimenticabile prima dell'incoronazione!" },
+                    { s: "Co-Protagonista", t: "Siamo arrivati in cima, ragazzi. Abbiamo superato ogni ostacolo, ci siamo allenati duramente e ora ci giochiamo tutto sotto i riflettori!" },
+                    { s: "Spongebob", t: "Sono pronto! I miei pori trasudano puro agonismo sportivo! Vinceremo noi la coppa gigante!" },
+                    { s: "Plankton", t: "Sciocchi, a me della coppa non importa! Metterò le mani sui fondi del montepremi per costruire l'impero del Chum Bucket!" },
+                    { s: "Marceline", t: "Mettiamo su un concerto rock che farà crollare le tribune. Dateci dentro, e che vinca l'alleanza migliore!" }
+                  ],
+                  postDialogue: [
+                    { s: "Jake il Cane", t: "Oh cavolo... ci avete suonati di brutto! Le vostre tattiche di sostituzione ci hanno mandati al tappeto!" },
+                    { s: "Zeno", t: "Coriandoli! Fuochi d'artificio! Siete i Campioni dei Mondi! Avete vinto il Torneo Regolare!" }
+                  ],
+                  boss: ['finn', 'jake', 'marceline', 'spongebob', 'patrick', 'plankton'],
+                  unlock: []
+                }
+              ]
+            },
+            {
+              name: "Settore 4: Sfida ai Creatori (Scontro Supremo)",
+              description: "Siete i Campioni, ma gli Dei vogliono la loro sfida. Sconfiggeteli in questo scontro 6vs6 finale.",
+              bg: "bg-purple-950",
+              missions: [
+                {
+                  id: 'm44', title: 'I Signori dell\'Equilibrio',
+                  dialogue: [
+                    { s: "Topolino", t: "Ce l'abbiamo fatta... il torneo è finito, i nostri mondi sono ufficialmente salvi! È ora di fare le valigie all'hotel e tornare a casa." },
+                    { s: "Discord", t: "Fermo lì, topo! Prima di lasciarvi andare via, io e Zeno vogliamo divertirci un po' in una partitella di esibizione fuori concorso!" },
+                    { s: "Zeno", t: "Esatto! Non ci sono regole, nessun mondo a rischio... ma abbiamo assemblato il Dream Team più illegale, rotto e sbilanciato di sempre apposta per voi!" },
+                    { s: "Goku", t: "Ehi ciao! Mi hanno detto che c'era l'opportunità di lottare contro i vincitori assoluti senza trattenere la potenza, non potevo mica perdermelo!" },
+                    { s: "Gaster", t: "S... t... r... a... n... a... a... l... l... e... a... n... z... a... v... e... d... i... a... m... o... c... h... i... c... a... d... e... p... r... i... m... a." }
+                  ],
+                  postDialogue: [
+                    { s: "Discord", t: "La mia... schiena astrale! Non ci posso credere, avete spazzato via anche il nostro Dream Team impossibile! Siete mostruosi!" },
+                    { s: "Zeno", t: "Ahahah! Mi sono divertito tantissimo a guardarvi fare strategia! Siete i Campioni Assoluti e Indiscussi delle Alleanze!" },
+                    { s: "Topolino", t: "Quindi... è finita sul serio? Discord, Zeno, abbiamo vinto. Ora pretendiamo il nostro premio: le Super Sfere del Drago!" },
+                    { s: "Zeno", t: "Sì, sì! Siete i Campioni, le Sfere sono vostre! Qual è il vostro desiderio?" },
+                    { s: "Co-Protagonista", t: "Non c'è nemmeno da pensarci. Desideriamo che tutti gli universi distrutti durante le eliminatorie vengano ripristinati immediatamente!" },
+                    { s: "Discord", t: "Che noia, siete i soliti eroi dal cuore d'oro. Ma le regole sono regole! *Schiocco di dita* Desiderio esaudito! È stato un grande e bellissimo gioco, alla prossima stagione!" }
+                  ],
+                  boss: ['goku', 'utopia', 'trigon', 'gaster', 'cell', 'nito'],
+                  unlock: []
+                }
+              ]
+            }
+          ]
+        }];
+
+        const getCampaignStoryCharacters = (campId) => {
+            const camp = CAMPAIGNS.find(c => c.id === campId);
+            if (!camp) return [];
+            let storyIds = new Set();
+            camp.sectors.forEach(sec => {
+                sec.missions.forEach(m => {
+                    if (m.boss) m.boss.forEach(b => storyIds.add(b));
+                    const checkDialogues = (dialogues) => {
+                        if (!dialogues) return;
+                        dialogues.forEach(d => {
+                            const name = d.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '').trim();
+                            const char = CHARACTERS.find(c => c.name === name) || CHARACTERS.find(c => c.name.includes(name));
+                            if (char) storyIds.add(char.id);
+                        });
+                    }
+                    checkDialogues(m.dialogue);
+                    checkDialogues(m.postDialogue);
+                });
+            });
+            storyIds.add('topolino');
+            return Array.from(storyIds);
         };
 
         const TYPE_STYLES = {
@@ -1889,6 +2205,7 @@
           status: 'lobby', 
           gameMode: 'classica', 
           isCampaignBattle: false,
+          survivalRound: 1, // <--- AGGIUNTO PER LA SOPRAVVIVENZA
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
@@ -1946,10 +2263,17 @@
           const [catalogSearch, setCatalogSearch] = useState('');
           const [shopCharSearch, setShopCharSearch] = useState('');
 
+          const [draftSearch, setDraftSearch] = useState('');
+          const [draftFilterType, setDraftFilterType] = useState('Tutti');
+          const [draftSort, setDraftSort] = useState('default');
+
           const [resolutionDialogues, setResolutionDialogues] = useState([]);
           const [resolutionDialogueIdx, setResolutionDialogueIdx] = useState(0);
 
           const [introCharIdx, setIntroCharIdx] = useState(0);
+
+          const [teamSelectionDialogue, setTeamSelectionDialogue] = useState(null);
+          const selectionDialogueTimerRef = useRef(null);
 
           // Variabili di stato e reference mancanti
           const [systemAlert, setSystemAlert] = useState(null);
@@ -1972,15 +2296,65 @@
           const isCalculatingRef = useRef(false);
           
           // --- STATO CAMPAGNA ---
-          const [campaignState, setCampaignState] = useState(() => {
-              const saved = localStorage.getItem('multiverse_rpg_campaign_save');
+          const [activeCampaignId, setActiveCampaignId] = useState('crisi_varco');
+          
+          const loadCampaign = (campId) => {
+              setActiveCampaignId(campId);
+              
+              let defaultRoster = [];
+              if (campId === 'crisi_varco') {
+                  defaultRoster = ['finn', 'topolino'];
+              } else {
+                  const storyChars = getCampaignStoryCharacters(campId);
+                  defaultRoster = CHARACTERS.filter(c => !c.isSummonOnly && !storyChars.includes(c.id)).map(c => c.id);
+              }
+
+              const defaultStats = {};
+              defaultRoster.forEach(id => {
+                  const c = CHARACTERS.find(x=>x.id===id);
+                  if(c) defaultStats[id] = c.maxHp;
+              });
+
+              const saved = localStorage.getItem(`multiverse_rpg_campaign_save_${campId}`);
               if (saved) {
                   try { 
                       let parsed = JSON.parse(saved);
                       if (parsed.isStarted === undefined) parsed.isStarted = true; // Migrazione vecchi save
-                      // FIX: Sicurezza aggiuntiva per evitare crash da salvataggi corrotti
+                      if (!parsed.roster || (campId === 'torneo_assoluto' && parsed.roster.length <= 2)) parsed.roster = defaultRoster;
+                      if (!parsed.rosterStats || (campId === 'torneo_assoluto' && Object.keys(parsed.rosterStats).length <= 2)) {
+                          parsed.rosterStats = defaultStats;
+                      }
+                      if (parsed.sectorIdx === undefined) parsed.sectorIdx = 0;
+                      if (parsed.missionIdx === undefined) parsed.missionIdx = 0;
+                      if (parsed.coins === undefined) parsed.coins = 50;
+                      setCampaignState(parsed);
+                      return parsed; 
+                  } catch(e){}
+              }
+
+              const freshState = {
+                  isStarted: false,
+                  sectorIdx: 0,
+                  missionIdx: 0,
+                  roster: defaultRoster,
+                  rosterStats: defaultStats,
+                  coins: 50,
+                  difficulty: 'Normal',
+                  currentBossState: null,
+                  protagonist: null
+              };
+              setCampaignState(freshState);
+              return freshState;
+          };
+
+          const [campaignState, setCampaignState] = useState(() => {
+              const saved = localStorage.getItem('multiverse_rpg_campaign_save_crisi_varco');
+              if (saved) {
+                  try { 
+                      let parsed = JSON.parse(saved);
+                      if (parsed.isStarted === undefined) parsed.isStarted = true;
                       if (!parsed.roster) parsed.roster = ['finn', 'topolino'];
-                      if (!parsed.rosterStats) parsed.rosterStats = { 'finn': 100, 'topolino': 100 };
+                      if (!parsed.rosterStats) parsed.rosterStats = { 'finn': 105, 'topolino': 105 };
                       if (parsed.sectorIdx === undefined) parsed.sectorIdx = 0;
                       if (parsed.missionIdx === undefined) parsed.missionIdx = 0;
                       if (parsed.coins === undefined) parsed.coins = 50;
@@ -2000,7 +2374,8 @@
                   },
                   coins: 50,
                   difficulty: 'Normal',
-                  currentBossState: null
+                  currentBossState: null,
+                  protagonist: null
               };
           });
           const [campaignDialogueIdx, setCampaignDialogueIdx] = useState(0);
@@ -2044,7 +2419,8 @@
               reader.readAsDataURL(file);
           };
 
-          const activeSector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
+          const activeCampaign = CAMPAIGNS.find(c => c.id === activeCampaignId) || CAMPAIGNS[0];
+          const activeSector = activeCampaign.sectors[campaignState.sectorIdx] || activeCampaign.sectors[0];
           const activeMission = activeSector.missions[campaignState.missionIdx] || activeSector.missions[0];
 
           // Funzione di avanzamento campagna condivisa
@@ -2055,19 +2431,19 @@
               let nextAppMode = 'campaign_map';
 
               let newAnomalyTargets = null;
-              if (nextSectorIdx === 5 && nextMissionIdx === 2) { 
+              if (activeCampaignId === 'crisi_varco' && nextSectorIdx === 5 && nextMissionIdx === 2) { 
                    const shuffled = [...campaignState.roster].sort(() => 0.5 - Math.random());
                    const maxAnomalyCount = Math.max(1, Math.min(4, campaignState.roster.length - 1));
                    newAnomalyTargets = shuffled.slice(0, maxAnomalyCount);
               }
 
-              if (nextMissionIdx >= CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions.length) {
+              if (nextMissionIdx >= activeCampaign.sectors[campaignState.sectorIdx].missions.length) {
                   nextMissionIdx = 0;
                   nextSectorIdx++;
                   nextAppMode = 'campaign_shop';
               }
 
-              if (nextSectorIdx >= CAMPAIGN_DATA.sectors.length) {
+              if (nextSectorIdx >= activeCampaign.sectors.length) {
                   nextAppMode = 'campaign_ending';
               }
 
@@ -2165,8 +2541,28 @@
                       }
                   });
               }
+
+              // Sostituzione Protagonista e Co-Protagonista in Torneo Assoluto
+              if (activeCampaignId === 'torneo_assoluto') {
+                  const protag = CHARACTERS.find(c => c.id === campaignState.protagonist);
+                  const coProtagId = campaignState.roster.find(id => id !== campaignState.protagonist) || 'finn';
+                  const coProtag = CHARACTERS.find(c => c.id === coProtagId);
+
+                  dialogs = dialogs.map(d => {
+                      let newD = { ...d };
+                      if (protag && newD.s === 'Topolino') {
+                          newD.s = protag.name;
+                          if (newD.t) newD.t = newD.t.replace(/Topolino/g, protag.name).replace(/\b(caro roditore|topo)\b/gi, 'campione');
+                      }
+                      if (coProtag && newD.s === 'Co-Protagonista') {
+                          newD.s = coProtag.name;
+                      }
+                      return newD;
+                  });
+              }
+
               return dialogs;
-          }, [activeMission, campaignState.roster, campaignState.rosterStats, campaignState.anomalyTargets]);
+          }, [activeMission, campaignState.roster, campaignState.rosterStats, campaignState.anomalyTargets, activeCampaignId, campaignState.protagonist]);
 
           const campaignPostDialogueMemo = React.useMemo(() => {
               let dialogs = [...(activeMission.postDialogue || [])];
@@ -2274,17 +2670,37 @@
                   
                   dialogs.unshift({ s: finalSpeaker, t: phrase, isDynamicFaint: true });
               }
+
+              // Sostituzione Protagonista e Co-Protagonista in Torneo Assoluto
+              if (activeCampaignId === 'torneo_assoluto') {
+                  const protag = CHARACTERS.find(c => c.id === campaignState.protagonist);
+                  const coProtagId = campaignState.roster.find(id => id !== campaignState.protagonist) || 'finn';
+                  const coProtag = CHARACTERS.find(c => c.id === coProtagId);
+
+                  dialogs = dialogs.map(d => {
+                      let newD = { ...d };
+                      if (protag && newD.s === 'Topolino') {
+                          newD.s = protag.name;
+                          if (newD.t) newD.t = newD.t.replace(/Topolino/g, protag.name).replace(/\b(caro roditore|topo)\b/gi, 'campione');
+                      }
+                      if (coProtag && newD.s === 'Co-Protagonista') {
+                          newD.s = coProtag.name;
+                      }
+                      return newD;
+                  });
+              }
+
               return dialogs;
-          }, [activeMission, campaignState.lastUnlocked, campaignState.anomalyTargets, campaignState.faintedInLastBattle, campaignState.roster, campaignState.rosterStats]);
+          }, [activeMission, campaignState.lastUnlocked, campaignState.anomalyTargets, campaignState.faintedInLastBattle, campaignState.roster, campaignState.rosterStats, activeCampaignId, campaignState.protagonist]);
           
           // Autosave Campagna
           useEffect(() => {
               if (campaignState.isStarted) {
-                  localStorage.setItem('multiverse_rpg_campaign_save', JSON.stringify(campaignState));
+                  localStorage.setItem(`multiverse_rpg_campaign_save_${activeCampaignId}`, JSON.stringify(campaignState));
               } else {
-                  localStorage.removeItem('multiverse_rpg_campaign_save');
+                  localStorage.removeItem(`multiverse_rpg_campaign_save_${activeCampaignId}`);
               }
-          }, [campaignState]);
+          }, [campaignState, activeCampaignId]);
 
           // Autosave Profilo
           useEffect(() => {
@@ -2352,6 +2768,14 @@
                                   won = true;
                               }
                           }
+                      } else if (gameState.gameMode === 'survival') {
+                          const roundsSurvived = (gameState.survivalRound || 1) - 1;
+                          if (roundsSurvived <= 5) {
+                              coinsToReward = roundsSurvived * 2;
+                          } else {
+                              coinsToReward = 10 + (roundsSurvived - 5);
+                          }
+                          updateLocalStats({ maxSurvivalRound: roundsSurvived });
                       } else {
                           if (gameState.gameMode === 'multipla') {
                                if (gameState.winner && gameState.winner.includes(playerName)) won = true;
@@ -2363,7 +2787,9 @@
                       }
                       
                       const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
-                      coinsToReward += teamSizeBonus;
+                      if (gameState.gameMode !== 'survival') {
+                          coinsToReward += teamSizeBonus;
+                      }
 
                       if (won) {
                            updateLocalStats({ win: true });
@@ -2469,6 +2895,7 @@
                   if (data.coins === undefined) data.coins = 100;
                   if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                   if (data.unlockedChars === undefined) data.unlockedChars = [];
+                  if (data.maxSurvivalRound === undefined) data.maxSurvivalRound = 0;
                   
                   // FIX: Scuse e Regalo di 200 Monete
                   if (!data.apologyGiftReceived) {
@@ -2491,6 +2918,7 @@
                           if (data.coins === undefined) data.coins = 100;
                           if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                           if (data.unlockedChars === undefined) data.unlockedChars = [];
+                          if (data.maxSurvivalRound === undefined) data.maxSurvivalRound = 0;
                           
                           if (!data.apologyGiftReceived) {
                               data.coins += 200;
@@ -2502,7 +2930,7 @@
                   }
               }
 
-              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 300, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true };
+              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 300, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true, maxSurvivalRound: 0 };
           };
 
           const updateLocalStats = (updates) => {
@@ -2531,6 +2959,9 @@
               }
               if (updates.overwriteInventory) {
                   current.inventory = updates.overwriteInventory;
+              }
+              if (updates.maxSurvivalRound !== undefined && updates.maxSurvivalRound > (current.maxSurvivalRound || 0)) {
+                  current.maxSurvivalRound = updates.maxSurvivalRound;
               }
               
               localStorage.setItem(key, JSON.stringify(current));
@@ -2568,7 +2999,10 @@
                               atk: c.atk,
                               def: c.def,
                               spd: c.spd,
-                              statuses: c.statuses
+                              statuses: c.statuses,
+                              isJuggernaut: c.isJuggernaut,
+                              juggHitsRemaining: c.juggHitsRemaining,
+                              juggTurnCount: c.juggTurnCount
                           }));
                       }
                   }
@@ -2780,7 +3214,7 @@
 
           const getRequiredPlayers = (mode, currentSettings) => {
               if (mode === 'classica') return 2;
-              if (mode === 'torneo_punti' || mode === 'battleroyale' || mode === 'juggernaut') return currentSettings ? currentSettings.maxPlayers : 4;
+              if (mode === 'torneo_punti' || mode === 'battleroyale' || mode === 'juggernaut' || mode === 'survival') return currentSettings ? currentSettings.maxPlayers : (mode === 'survival' ? 2 : 4);
               return 4;
           };
           
@@ -2790,8 +3224,8 @@
               if (gameState.gameMode === 'battleroyale') {
                   return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
               }
-              if (gameState.gameMode === 'juggernaut') {
-                  return ['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
+              if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                  return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
               }
               if (gameState.gameMode === 'torneo') {
                   const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
@@ -2822,7 +3256,7 @@
               });
               
               if (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale') return joined >= 2;
-              if (gameState.gameMode === 'juggernaut') return joined === req;
+              if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') return joined === req;
               return joined === req;
           };
 
@@ -2916,6 +3350,24 @@
             setPlayerRole('p1');
             setAppMode('local_room');
           };
+
+          // --- AGGIUNTO: AVVIO MODALITÀ SOPRAVVIVENZA ---
+          const handleSurvivalStart = () => {
+            const state = initialGameState();
+            state.gameMode = 'survival';
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2' }; 
+            state.players.p1 = playerName || "Sopravvissuto";
+            state.playerAvatars.p1 = playerAvatarUrl;
+            state.inventory.p1 = getPlayerData().inventory;
+            state.players.p2 = "Orda Infinita";
+            state.playerAvatars.p2 = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
+            state.isBot.p2 = true;
+            state.inventory.p2 = {}; // Niente cure per l'IA in survival
+            setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
+          };
+          // ----------------------------------------------
 
           const handlePick = (char) => {
             const currentDraft = gameState.draft[playerRole] || [];
@@ -3298,8 +3750,8 @@
                 let enemyTeams = [];
                 if (gameState.gameMode === 'multipla') {
                     enemyTeams = ['p1', 'p2'].includes(cpuPlayer) ? ['p3', 'p4'] : ['p1', 'p2'];
-                } else if (gameState.gameMode === 'juggernaut') {
-                    const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                    const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                     const activeMatchPlayers = getActivePlayers();
                     enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
                 } else if (gameState.gameMode === 'torneo') {
@@ -3377,15 +3829,13 @@
                                     bestAction = { type: 'attack', moveIdx, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
                                 }
                             } else if (move.targetMode === 'ally') {
-                                // Logic per curare alleati
                                 let allyScore = 0;
                                 let bestAlly = null;
-                                
                                 let myTeamPlayers = [cpuPlayer];
                                 if (gameState.gameMode === 'multipla') {
                                     myTeamPlayers = ['p1', 'p2'].includes(cpuPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
-                                } else if (gameState.gameMode === 'juggernaut') {
-                                    const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                    const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                     if (cpuPlayer !== juggPlayer) {
                                         myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                     }
@@ -4113,8 +4563,8 @@
                     let myTeamPlayers = [player];
                     if (gameState.gameMode === 'multipla') {
                         myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                    } else if (gameState.gameMode === 'juggernaut') {
-                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                         if (player !== juggPlayer) {
                             myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                         }
@@ -4177,8 +4627,8 @@
                     let myTeamPlayers = [player];
                     if (gameState.gameMode === 'multipla') {
                         myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                    } else if (gameState.gameMode === 'juggernaut') {
-                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                         if (player !== juggPlayer) {
                             myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                         }
@@ -4269,6 +4719,18 @@
                             didSomething = true;
                             updateStatusUI(targetPlayer, targetIdx);
                         }
+                    }
+                    if (move.statusEffect) {
+                        const existingIdx = target.statuses.findIndex(s => s.type === move.statusEffect.type);
+                        if(existingIdx === -1) {
+                            target.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1, protectorIdx: charTeamIdx });
+                        } else {
+                            target.statuses[existingIdx].turns = move.statusEffect.turns || 1;
+                            target.statuses[existingIdx].protectorIdx = charTeamIdx;
+                        }
+                        updateStatusUI(targetPlayer, targetIdx);
+                        events.push({ type: 'text', text: `${target.name} è in groppa a ${attacker.name}!` });
+                        didSomething = true;
                     }
                     
                     if (!didSomething) {
@@ -4369,8 +4831,8 @@
                     let enemyTeams = [];
                     if (gameState.gameMode === 'multipla') {
                         enemyTeams = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
-                    } else if (gameState.gameMode === 'juggernaut') {
-                        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                         enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
                     } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
                         enemyTeams = [activeMatchPlayers.find(p => p !== player)];
@@ -4445,6 +4907,21 @@
                 for (let t of resolvedTargets) {
                     if (t.char.hp <= 0) continue;
 
+                    // --- REDIRECT LOGIC (SALI SULLA MIA SCHIENA) ---
+                    let isRedirectedDmgReduced = false;
+                    let inGroppaStatus = t.char.statuses.find(s => s.type === 'In_Groppa');
+                    if (inGroppaStatus && inGroppaStatus.protectorIdx !== undefined) {
+                        const protectorChar = workingTeams[t.player]?.[inGroppaStatus.protectorIdx];
+                        if (protectorChar && protectorChar.hp > 0) {
+                            events.push({ type: 'text', text: `🛡️ L'attacco mirato a ${t.char.name} viene deviato su ${protectorChar.name}!` });
+                            t.char = protectorChar;
+                            t.idx = inGroppaStatus.protectorIdx;
+                            t.fieldIdx = workingField[t.player].indexOf(inGroppaStatus.protectorIdx);
+                            isRedirectedDmgReduced = true;
+                        }
+                    }
+                    // --- END REDIRECT LOGIC ---
+
                     let multiplier = getMultiplier(move.type, t.char.types);
                     let isImmuneDueToPassive = false;
 
@@ -4483,6 +4960,7 @@
                         } else {
                             dmg = Math.max(1, Math.floor(t.char.maxHp * move.percentDmgMax));
                         }
+                        if (isRedirectedDmgReduced) dmg = Math.max(1, Math.floor(dmg * 0.5));
                         
                         if (t.char.juggHitsRemaining > 0) {
                             t.char.juggHitsRemaining -= 1;
@@ -4522,6 +5000,7 @@
 
                             let hitDmg = calculateDamage(attacker, t.char, move, multiplier, isFirstAttackOfTurn);
                             if (isMagnetic) hitDmg *= 2;
+                            if (isRedirectedDmgReduced) hitDmg = Math.max(1, Math.floor(hitDmg * 0.5));
                             
                             // --- PROTEZIONI (Protetto / Rashield) ---
                             let isProtected = t.char.statuses.some(s => s.type === 'Protetto' || s.type === 'Rashield');
@@ -4805,10 +5284,49 @@
 
             // --- NUOVA LOGICA: PASSIVE ON_TURN_END ---
             if (char.passive && char.passive.type === 'on_turn_end') {
-                if (char.passive.healPercent && char.hp < char.maxHp) {
-                    const healAmount = Math.max(1, Math.floor(char.maxHp * char.passive.healPercent));
-                    char.hp = Math.min(char.maxHp, char.hp + healAmount);
-                    events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}: recupera ${healAmount} PS!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp });
+                const triggers = char.passive.chance === undefined || Math.random() < char.passive.chance;
+
+                if (triggers) {
+                    if (char.passive.healPercent && char.hp < char.maxHp) {
+                        const healAmount = Math.max(1, Math.floor(char.maxHp * char.passive.healPercent));
+                        char.hp = Math.min(char.maxHp, char.hp + healAmount);
+                        events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}: recupera ${healAmount} PS!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp });
+                    }
+                    if (char.passive.healLowestAllyPercent) {
+                        let myTeamPlayers = [target.player];
+                        if (gameState.gameMode === 'multipla') {
+                            myTeamPlayers = ['p1', 'p2'].includes(target.player) ? ['p1', 'p2'] : ['p3', 'p4'];
+                        } else if (gameState.gameMode === 'juggernaut') {
+                            const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                            if (target.player !== juggPlayer) {
+                                myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                            }
+                        }
+
+                        let lowestAlly = null;
+                        let lowestHpRatio = 1.0;
+
+                        myTeamPlayers.forEach(pAlly => {
+                            if (workingField[pAlly]) {
+                                workingField[pAlly].forEach(idx => {
+                                    const ally = workingTeams[pAlly][idx];
+                                    if (ally && ally.hp > 0 && ally.hp < ally.maxHp) {
+                                        const ratio = ally.hp / ally.maxHp;
+                                        if (ratio < lowestHpRatio) {
+                                            lowestHpRatio = ratio;
+                                            lowestAlly = { p: pAlly, idx: idx, char: ally };
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                        if (lowestAlly) {
+                            const healAmount = Math.max(1, Math.floor(lowestAlly.char.maxHp * char.passive.healLowestAllyPercent));
+                            lowestAlly.char.hp = Math.min(lowestAlly.char.maxHp, lowestAlly.char.hp + healAmount);
+                            events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}! ${lowestAlly.char.name} recupera ${healAmount} PS!`, targetPlayer: lowestAlly.p, targetIdx: lowestAlly.idx, newHp: lowestAlly.char.hp });
+                        }
+                    }
                 }
             }
 
@@ -4849,6 +5367,12 @@
             let protIdx = char.statuses.findIndex(s => s.type === 'Protetto');
             if (protIdx !== -1) {
                 char.statuses.splice(protIdx, 1);
+                updateStatusUI(target.player, target.charTeamIdx);
+            }
+
+            let groppaIdx = char.statuses.findIndex(s => s.type === 'In_Groppa');
+            if (groppaIdx !== -1) {
+                char.statuses.splice(groppaIdx, 1);
                 updateStatusUI(target.player, target.charTeamIdx);
             }
 
@@ -4948,6 +5472,7 @@
         let winner = null;
         let tResults = { ...gameState.tournamentResults };
         let newScores = { ...gameState.playerScores };
+        let currentSurvivalRound = gameState.survivalRound || 1; // <--- AGGIUNTO
 
         if (gameState.gameMode === 'multipla') {
             const team1Alive = workingTeams.p1.some(c=>c.hp>0) || workingTeams.p2.some(c=>c.hp>0);
@@ -4963,6 +5488,67 @@
             else if (!p1Alive) { nextStatus = 'gameover'; winner = gameState.players.p2; }
             else if (!p2Alive) { nextStatus = 'gameover'; winner = gameState.players.p1; }
         }
+        // --- AGGIUNTO: LOGICA INFINITA SOPRAVVIVENZA ---
+        else if (gameState.gameMode === 'survival') {
+            const juggPlayer = gameState.settings.juggernautPlayer || 'p2';
+            const hordeAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0);
+            
+            const activeMatchPlayers = getActivePlayers();
+            const humansPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+            const humansAlive = humansPlayers.some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0));
+
+            if (!humansAlive) { 
+                nextStatus = 'gameover'; 
+                winner = gameState.players[juggPlayer]; 
+            }
+            else if (!hordeAlive) {
+                // Il nemico è morto! Creiamo un nuovo nemico invece di finire il gioco
+                currentSurvivalRound++;
+                
+                const draftable = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                const nextEnemyBase = draftable[Math.floor(Math.random() * draftable.length)];
+                
+                // Scala la potenza del nemico in base al round (+5% stats ogni round)
+                const scale = 1 + (currentSurvivalRound * 0.05);
+
+                let nextEnemy = {
+                    ...JSON.parse(JSON.stringify(nextEnemyBase)),
+                    hp: Math.floor(nextEnemyBase.maxHp * scale),
+                    maxHp: Math.floor(nextEnemyBase.maxHp * scale),
+                    atk: Math.floor(nextEnemyBase.atk * scale),
+                    baseAtk: Math.floor(nextEnemyBase.atk * scale),
+                    def: Math.floor(nextEnemyBase.def * scale),
+                    baseDef: Math.floor(nextEnemyBase.def * scale),
+                    statuses: [],
+                    consecutiveProtect: 0,
+                    revealed: true,
+                    moves: nextEnemyBase.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                };
+
+                // Rigenera il team della CPU con il nuovo nemico
+                workingTeams[juggPlayer] = [nextEnemy];
+                workingField[juggPlayer] = [0]; 
+                
+                // Cura i personaggi dei giocatori in campo del 20% come premio
+                humansPlayers.forEach(p => {
+                    if (workingField[p]) {
+                        workingField[p].forEach(idx => {
+                            let char = workingTeams[p][idx];
+                            if (char && char.hp > 0) {
+                                const heal = Math.floor(char.maxHp * 0.2);
+                                char.hp = Math.min(char.maxHp, char.hp + heal);
+                            }
+                        });
+                    }
+                });
+
+                events.push({ type: 'text', text: `🌟 Round ${currentSurvivalRound - 1} superato! La squadra in campo recupera il 20% dei PS!` });
+                events.push({ type: 'text', text: `⚠️ Un nuovo sfidante appare: ${nextEnemy.name} (Livello ${currentSurvivalRound})!` });
+
+                nextStatus = 'battling'; // Continua la lotta!
+            }
+        }
+        // -----------------------------------------------
         else if (gameState.gameMode === 'juggernaut') {
             const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
             const juggAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0);
@@ -5059,6 +5645,7 @@
           status: 'executing', 
           postExecStatus: nextStatus,
           winner,
+          survivalRound: currentSurvivalRound, // <--- AGGIUNTO AL SALVATAGGIO STATO
           teams: workingTeams,
           field: workingField,
           startOfTurnTeams: startOfTurnTeams, // Mantiene i dati intatti per la suspense!
@@ -5371,6 +5958,8 @@
 
     const renderView = () => {
         if (appMode === 'menu') {
+            const playerData = getPlayerData();
+
             return (
                 <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <button onClick={() => { if(!playerName.trim()) setSystemAlert("Inserisci prima il tuo nome per vedere gli altri!"); else setShowOnlinePlayers(true); }} className="absolute top-4 right-4 bg-slate-900/80 hover:bg-slate-800 border border-cyan-500/50 text-cyan-400 font-bold py-2 px-4 rounded-xl flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-sm z-20 hover:-translate-y-0.5">
@@ -5421,17 +6010,25 @@
 
                     <div className="pt-4 border-t border-slate-800">
                          <button onClick={() => {
-                             if (campaignState.isStarted) {
-                                 setAppMode('campaign_map');
-                             } else {
-                                 setAppMode('campaign_intro');
-                             }
+                             setAppMode('campaign_select');
                          }} className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 mb-3">
-                             <BookOpen size={20}/> Campagna: Crisi del Varco
+                             <BookOpen size={20}/> Modalità Campagne
                          </button>
                          <button onClick={handleVsCpuStart} className="w-full mb-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
                              <Target size={20}/> Gioca vs CPU (Bot IA)
                         </button>
+                        
+                        {/* --- AGGIUNTO IL PULSANTE SOPRAVVIVENZA --- */}
+                         <button onClick={handleSurvivalStart} className="relative w-full mb-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
+                             <Shield size={20}/> Modalità Sopravvivenza (Infinita)
+                             {playerData.maxSurvivalRound > 0 && (
+                                 <div className="absolute right-4 text-xs font-black bg-black/40 border border-violet-400/50 px-2 py-1 rounded-lg text-violet-200 shadow-inner">
+                                     Max: {playerData.maxSurvivalRound}
+                                 </div>
+                             )}
+                        </button>
+                        {/* ------------------------------------------ */}
+
                          <button onClick={handleLocalStart} className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5">
                              <Users size={20}/> Gioca in Locale (Stesso PC)
                         </button>
@@ -5457,19 +6054,57 @@
         );
     }
     
+    if (appMode === 'campaign_select') {
+        return (
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-black pointer-events-none opacity-60"></div>
+                 <button onClick={() => setAppMode('menu')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
+                     <ArrowLeft size={20} /> Torna al Menu
+                </button>
+                <h1 className="text-5xl font-black mb-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center z-10 drop-shadow-md">Scegli la tua Avventura</h1>
+                
+                <div className="flex flex-col md:flex-row gap-8 max-w-5xl w-full z-10">
+                    {CAMPAIGNS.map(camp => {
+                        const saved = localStorage.getItem(`multiverse_rpg_campaign_save_${camp.id}`);
+                        const isInProgress = !!saved;
+                        return (
+                            <div key={camp.id} className={`flex-1 rounded-3xl p-8 border border-slate-700/50 relative overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform shadow-2xl bg-gradient-to-br ${camp.bg}`}
+                                onClick={() => {
+                                    const state = loadCampaign(camp.id);
+                                    if (state.isStarted) {
+                                        setAppMode('campaign_map');
+                                    } else {
+                                        setAppMode('campaign_intro');
+                                    }
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                                <div className="relative z-10 flex flex-col h-full text-center items-center">
+                                    <span className="text-sm font-bold uppercase tracking-widest text-emerald-400 mb-2">{camp.shortTitle}</span>
+                                    <h2 className="text-3xl font-black text-white mb-4">{camp.title}</h2>
+                                    <p className="text-slate-300 mb-8 flex-1">{camp.description}</p>
+                                    <button className="bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full backdrop-blur-sm border border-white/20 transition-colors w-full uppercase tracking-widest shadow-lg mt-auto">
+                                        {isInProgress ? 'Continua Partita' : 'Nuova Partita'}
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    }
+
     if (appMode === 'campaign_intro') {
+        const introData = activeCampaign.intro;
         return (
             <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
                  <div className="bg-slate-900/80 p-8 rounded-3xl max-w-2xl text-center border border-emerald-500/30 z-10 shadow-2xl">
-                      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4">La Crisi del Varco Corrotto</h1>
-                      <h2 className="text-xl text-emerald-400 font-bold mb-6">Prologo: L'Eclissi di Cell</h2>
-                      <p className="text-slate-300 mb-4 text-left leading-relaxed">
-                          Un'entità proveniente da un futuro distorto, Cell Perfetto (Corrotto), ha utilizzato una tecnologia rubata per fondere le dimensioni.
-                      </p>
-                      <p className="text-slate-300 mb-8 text-left leading-relaxed">
-                          Ha emesso una "Frequenza di Sottomissione" che ha lavato il cervello al 90% degli eroi, trasformandoli nei suoi Burattini Perfetti. Solo Finn l'Umano e Topolino sono sfuggiti. Ora devono formare la Resistenza Finale!
-                      </p>
+                      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4">{introData.title}</h1>
+                      <h2 className="text-xl text-emerald-400 font-bold mb-6">{introData.subtitle}</h2>
+                      <p className="text-slate-300 mb-4 text-left leading-relaxed">{introData.p1}</p>
+                      <p className="text-slate-300 mb-8 text-left leading-relaxed">{introData.p2}</p>
                       
                       <div className="flex justify-center gap-4 mb-8">
                           <button onClick={() => setCampaignState(p => ({...p, difficulty: 'Normal'}))} className={`px-6 py-3 rounded-xl font-bold border-2 transition-all ${campaignState.difficulty === 'Normal' ? 'border-blue-500 bg-blue-500/20 text-blue-400' : 'border-slate-700 text-slate-500'}`}>Normale</button>
@@ -5477,17 +6112,56 @@
                       </div>
                       
                       <button onClick={() => {
-                          setCampaignState(p => ({...p, isStarted: true}));
-                          setAppMode('campaign_map');
-                      }} className="bg-gradient-to-r from-emerald-500 to-teal-600 px-10 py-4 rounded-full font-black text-xl hover:scale-105 transition-transform">Inizia Avventura</button>
+                          if (activeCampaignId === 'torneo_assoluto' && !campaignState.protagonist) {
+                              setAppMode('campaign_select_protagonist');
+                          } else {
+                              setCampaignState(p => ({...p, isStarted: true}));
+                              setAppMode('campaign_map');
+                          }
+                      }} className="bg-gradient-to-r from-emerald-500 to-teal-600 px-10 py-4 rounded-full font-black text-xl hover:scale-105 transition-transform shadow-lg">Inizia Avventura</button>
                  </div>
             </div>
         );
     }
 
+    if (appMode === 'campaign_select_protagonist') {
+        const storyChars = getCampaignStoryCharacters('torneo_assoluto');
+        const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && !storyChars.includes(c.id));
+        return (
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 relative overflow-hidden items-center justify-center">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
+                <div className="relative z-10 w-full max-w-6xl">
+                    <h2 className="text-4xl md:text-5xl font-black mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 drop-shadow-md">
+                        Scegli il tuo Protagonista
+                    </h2>
+                    <p className="text-center text-slate-300 mb-10 text-lg">Guiderai l'alleanza prendendo il posto di Topolino.<br/><span className="text-sm text-amber-400">Nota: I personaggi che fanno già parte della storia del Torneo non possono essere scelti.</span></p>
+                    
+                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 overflow-y-auto custom-scrollbar max-h-[60vh] p-2">
+                        {draftableChars.map(char => (
+                            <div key={char.id} onClick={() => {
+                                let newRoster = [...campaignState.roster];
+                                newRoster = newRoster.filter(id => id !== 'topolino');
+                                if (newRoster.includes(char.id)) {
+                                    newRoster = newRoster.filter(id => id !== char.id);
+                                }
+                                newRoster.unshift(char.id);
+                                
+                                setCampaignState(p => ({...p, protagonist: char.id, roster: newRoster, isStarted: true}));
+                                setAppMode('campaign_map');
+                            }} className="bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border border-slate-700/50 hover:border-amber-400 hover:bg-slate-800 cursor-pointer text-center hover:scale-105 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(245,158,11,0.2)] transition-all group">
+                                <img src={char.img} className="w-20 h-20 rounded-full mx-auto mb-3 object-cover border-2 border-slate-600 group-hover:border-amber-400 shadow-md"/>
+                                <div className="font-bold text-xs truncate text-slate-100">{char.name}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (appMode === 'campaign_map') {
-        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
-        const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
+        const sector = activeSector;
+        const mission = activeMission;
         
         // Calcolo per l'avviso salute
         const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
@@ -5500,19 +6174,11 @@
                      <ArrowLeft size={20} /> Abbandona Campagna
                 </button>
                 <button onClick={() => { 
-                    const finn = CHARACTERS.find(c=>c.id==='finn');
-                    const topo = CHARACTERS.find(c=>c.id==='topolino');
                     setCampaignSelectedTeam([]); // FIX: Svuota la squadra
-                    setCampaignState({
-                        isStarted: false,
-                        sectorIdx: 0,
-                        missionIdx: 0,
-                        roster: ['finn', 'topolino'],
-                        rosterStats: { 'finn': finn ? finn.maxHp : 100, 'topolino': topo ? topo.maxHp : 100 },
-                        coins: 50,
-                        difficulty: 'Normal',
-                        currentBossState: null
-                    });
+                    const freshState = loadCampaign(activeCampaignId);
+                    freshState.isStarted = false;
+                    setCampaignState(freshState);
+                    localStorage.removeItem(`multiverse_rpg_campaign_save_${activeCampaignId}`);
                     setAppMode('menu'); 
                 }} className="absolute top-6 right-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 text-sm font-bold shadow-lg">
                      Resetta Progressi
@@ -5625,6 +6291,24 @@
             if (dialogue && campaignDialogueIdx < fullDialogue.length - 1) {
                 setCampaignDialogueIdx(p => p + 1);
             } else {
+                const isSecondCampaign = activeCampaignId === 'torneo_assoluto';
+                const isFinalRaid = activeCampaignId === 'crisi_varco' && campaignState.sectorIdx >= activeCampaign.sectors.length - 1;
+                let maxTeamSize = 4;
+                if (isFinalRaid) maxTeamSize = 20;
+                if (isSecondCampaign) maxTeamSize = 8;
+                
+                if (isSecondCampaign) {
+                    if (campaignState.roster.length <= maxTeamSize) {
+                        const alive = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+                        setCampaignSelectedTeam(alive);
+                    } else if (campaignState.protagonist) {
+                        setCampaignSelectedTeam([campaignState.protagonist]);
+                    }
+                } else if (campaignState.roster.length <= maxTeamSize) {
+                    const alive = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
+                    setCampaignSelectedTeam(alive);
+                }
+                
                 setAppMode('campaign_team_select');
             }
         };
@@ -5799,11 +6483,214 @@
     }
 
     if (appMode === 'campaign_team_select') {
-        const isFinalRaid = campaignState.sectorIdx >= CAMPAIGN_DATA.sectors.length - 1;
-        const maxTeamSize = isFinalRaid ? 20 : 4;
-        const sector = CAMPAIGN_DATA.sectors[campaignState.sectorIdx] || CAMPAIGN_DATA.sectors[0];
+        const isSecondCampaign = activeCampaignId === 'torneo_assoluto';
+        const isFinalRaid = activeCampaignId === 'crisi_varco' && campaignState.sectorIdx >= activeCampaign.sectors.length - 1;
+        
+        // MODIFICA TEAM SIZE: 8 per il Torneo Assoluto, 20 per il Final Raid della prima, 4 normale
+        let maxTeamSize = 4;
+        if (isFinalRaid) maxTeamSize = 20;
+        if (isSecondCampaign) maxTeamSize = 8;
+        
+        const sector = activeCampaign.sectors[campaignState.sectorIdx] || activeCampaign.sectors[0];
         const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
         const activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+
+        const showSelectionDialogue = (charId, isDeselect = false) => {
+            const TEAM_SELECTION_QUOTES = {
+                // Eroi classici & Cartoon Network
+                'finn': "Matematico! La mia spada è pronta per il torneo!",
+                'jake': "Mi allungherò fino alla vittoria, fratello!",
+                'topolino': "Ah-ah! Insieme siamo una squadra imbattibile!",
+                'spongebob': "Sono pronto! Sono pronto! Vinceremo la coppa!",
+                'patrick': "Posso usare la maionese come arma in questo torneo?",
+                'mario': "Mamma mia! Let's-a go! Salteremo in testa a tutti!",
+                'luigi': "O-okey dokey... spero non ci siano fantasmi sul ring.",
+                'crash': "Whoa! *Gira su se stesso e fa pollice in su*",
+                'rainbowdash': "Sarà tutto fatto in 10 secondi netti! Più figo del 20%!",
+                'darwin': "Andiamo a spaccare tutto, amico!",
+                'po': "Skadoosh! Il Guerriero Dragone è in campo!",
+
+                // Anime & Shonen
+                'goku': "Evvai! Non vedo l'ora di sfidare tipi fortissimi!",
+                'natsu': "Sono tutto un fuoco! Spacchiamo tutto!",
+                'zatchbell': "Zaker! Dimostrerò di essere un re valoroso!",
+                'zuko': "Ripristinerò il mio onore su questo ring. Non fallirò.",
+                'aang': "Manterremo l'equilibrio. Yip yip, andiamo!",
+                'katara': "Vi coprirò le spalle con il potere dell'acqua curativa.",
+                'laxus': "Fatevi da parte. Ci penserà il mio fulmine a spazzarli via.",
+                'sanemi': "Tsk. Levatevi di mezzo, li farò a fette in un secondo.",
+                'shinobu': "Ara ara~ Li avvelenerò con estrema dolcezza.",
+                'juvia': "Juvia combatterà con la forza del suo amore!",
+                'brago': "Schiaccerò i miei nemici con la pura gravità.",
+                'ponygon': "Meru meru meee!",
+                'penny': "Amore mio, vincerò per te! Akur!",
+                'yusei': "La nostra accelerazione supererà ogni limite!",
+                'astral': "Formuliamo la tattica vincente. Osservazione: vinceremo.",
+
+                // Supereroi & Maghetti
+                'ladybug': "Miraculous! La fortuna è dalla nostra parte.",
+                'chatnoir': "Pronto a graffiare, M'lady! Sarà un gioco da gatti.",
+                'cyborg': "Booyah! Sistemi tattici e cannoni sonici operativi!",
+                'corvina': "Basta che ci sbrighiamo. Ho un libro da finire.",
+                'robin': "Titani, uniti! Sincronizziamo gli attacchi e vinceremo.",
+                'stellarubia': "Amici! Che gioia meravigliosa lottare insieme a voi!",
+                'nightwing': "Ottima scelta. Colpiremo dai punti ciechi.",
+                'bumblebee': "Pronta a pungere! Non vi deluderò!",
+                'bloom': "La Fiamma del Drago brucia per la nostra squadra!",
+                'iris': "Cristallo di Ephedia! Sono pronta!",
+                'charmcaster': "Vi aiuterò io. Evidentemente avete un disperato bisogno di magia vera.",
+
+                // Villain & Antieroi
+                'kratos': "Hmph. Le mie lame non conoscono pietà. Nessuno sopravviverà.",
+                'bowser': "BWAHAHAH! Ridurrò in cenere gli altri team! Il Re è qui!",
+                'wario': "Wah! Se vinciamo, il montepremi in monete d'oro è tutto MIO!",
+                'plankton': "Userò i soldi del premio per rubare la ricetta segreta! Ahahah!",
+                'cell': "Vi mostrerò cosa significa affrontare la vera Perfezione.",
+                'trigon': "Schiaccerò questi vermi mortali per te... ma solo per stavolta.",
+                'gaston': "Nessuno combatte, colpisce o vince in un torneo come Gaston!",
+                'shego': "Ugh, va bene. Ma se perdiamo vi friggo col plasma.",
+                'hannibal': "Un banchetto eccellente. Spero che i nostri avversari siano... saporiti.",
+                'zazan': "Una Regina merita solo la vittoria assoluta. Inchinatevi!",
+                'barry': "AHAHAH! Li farò a fettine magiche!",
+                'juri': "Hehehe... facciamoli a pezzi e divertiamoci un po'.",
+                'reboo': "BWAHAHAH! Intrappolerò tutti nei miei quadri!",
+                'metalsonic': "Obiettivo: Annientamento totale.",
+                'ursula': "Oh, tesoro! Siete venuti dalla strega del mare giusta!",
+                'strega': "Le mie magie oscure e i miei servitori vi saranno utili.",
+
+                // Magia, Fantasy e Mostri
+                'marceline': "Ottima scelta. Facciamo un po' di rumore con il basso!",
+                'reghiaccio': "Evviva! Se vinciamo mi regalate una Principessa in premio?!",
+                'elsa': "Il freddo non mi ha mai disturbata. Congelerò l'arena.",
+                'pyra': "L'Egida brucerà per la nostra alleanza. Contate su di me.",
+                'dannyphantom': "Diventerò fantasma e non sapranno nemmeno cosa li ha colpiti!",
+                'godzilla': "*RUGGITO ASSORDANTE CHE FA TREMARE L'INTERA ARENA!*",
+                'sdentato': "*Soffia un po' di plasma felice e scodinzola pronto alla lotta*",
+                'spyro': "Pronto a scaldare l'atmosfera! Lasciateli a me!",
+                'ryuk': "Hehehe... va bene combattere, ma dopo mi compri delle mele succose?",
+                'jackfrost': "Pronto a portare un po' di gelo in questa festa!",
+                'yukionna': "Li congelerò con la mia bellezza e il mio alito di ghiaccio.",
+                'zabuza': "La nebbia della morte li avvolgerà, e poi colpirò.",
+                'nito': "Tutti finiranno nella tomba, prima o poi. Vi mostrerò la via.",
+                'zergling': "*Stridio di battaglia acutissimo e feroce!*",
+                'polterpup': "*Abbaia felicemente e lecca lo schermo!*",
+
+                // Supporti, Robot e Bizzarri
+                'sage': "Dimostrerò di non essere solo una guaritrice!",
+                'ariana': "YUH!",
+                'stewie': "La vittoria è calcolata al 100%. Le mie armi sono pronte.",
+                'carlos': "Ricevuto. Armi cariche. Coprirò le vostre spalle.",
+                'bulma': "Lasciate fare ai miei gadget! La tecnologia Capsule Corp vince sempre!",
+                'peridot': "Ahah! Siete fortunati ad avere una mente superiore e certificata come la mia!",
+                'snorlax': "Zzz... mh? Devo alzarmi? Va bene... ma dopo si mangia!",
+                'groot': "Io sono Groot!",
+                'miku': "La mia voce vi guiderà alla vittoria! One, two, tre, let's go!",
+                'maxcaulfield': "Pronta! E se le cose vanno male... beh, riavvolgerò il tempo.",
+                'chloeprice': "Hella yes! Andiamo a spaccare qualche muso là fuori!",
+                'gaster': "I... n... t... e... r... e... s... s... a... n... t... e...",
+                'utopia': "Luce della Speranza, guidaci alla vittoria!",
+                'cosmo': "Speriamo di non trasformare nessuno in un budino al cioccolato!",
+                'mantide': "Velocità e precisione. Non mi vedranno arrivare.",
+                'yugo': "Uso i miei portali per portarvi la vittoria in un lampo!",
+                'spike': "*Agita un cactus felice verso di voi*",
+                'whisper': "Il mio Yo-kai Pad dice che abbiamo il 100% di probabilità di vittoria!",
+                'leslie': "Cercherò di non fare appassire nessuno! Sono delicato!",
+                'roserade': "*Si esibisce in un inchino elegante spargendo petali*",
+                'dolli': "Un sorriso luminoso e spacchiamo tutto!",
+                'kevin': "Vi mostrerò la vera durezza della roccia, a suon di pugni.",
+                'cuoredipietra': "Schiaccerò l'imperfezione in mille pezzi!",
+                'shifu': "La pace interiore guiderà i nostri colpi verso il trionfo.",
+                'gardevoir': "Proteggerò i miei alleati a costo della mia stessa vita.",
+                'jakedc': "Ho preso un lanciafiamme! Andiamo!",
+
+                'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
+            };
+
+            const DESELECT_QUOTES = {
+                // Eroi
+                'goku': "Ah, va bene. Vado a fare un po' di flessioni in panchina!",
+                'spongebob': "Ok! Aspetterò qui e preparerò dei Krabby Patty per la squadra!",
+                'mario': "Mamma mia... farò il tifo-a per voi da qui!",
+                'natsu': "Eh?! Ma io voglio combattere!! Uffa, che noia!",
+                'crash': "Aww... *Fa una faccia triste e si siede*",
+                'ladybug': "Nessun problema, vi fornirò supporto strategico da fuori.",
+                'aang': "D'accordo, mediterò per inviarvi energie positive.",
+                'darwin': "Oh... okay. Farò il tifo per voi dagli spalti.",
+                'po': "Ottimo! Vado a mangiarmi dei ravioli al vapore. Avvisatemi se serve!",
+                'sage': "Tornerò a concentrarmi sulle cure, allora.",
+                'ariana': "Thank u, next.",
+
+                // Cattivi / Antieroi
+                'bowser': "COSA?! Come osi mettere da parte il potente Re dei Koopa?!",
+                'kratos': "Come desideri. Ma la mia ira dovrà essere sfogata prima o poi.",
+                'wario': "Wah?! Pesciferi! Spero perdiate così tengo io i soldi di consolazione!",
+                'cell': "Tsk. Sciocchi imperfetti. Vi pentirete di non aver usato il mio potere.",
+                'stewie': "Scelta deplorevole. Ma mi gusterò lo spettacolo della vostra disfatta.",
+                'sanemi': "Tsk. Peggio per voi. Mi limiterò a guardare le vostre facce da perdenti.",
+                'gaston': "Pazzesco! Lasciare Gaston in panchina?! Siete ciechi?!",
+                'barry': "Tsk, non sapete cosa vi perdete. Andrò ad affettare qualcosa.",
+                'reboo': "Grrr! La pagherete per avermi escluso!",
+                'metalsonic': "Modalità standby attivata. In attesa.",
+                'ursula': "Poveri, infelici sventurati! Rimpiangerete questa scelta!",
+                'strega': "Tsk. Peggio per voi, stolti. La mia magia mi terrà compagnia.",
+
+                // Altri
+                'snorlax': "Zzz... meglio così... torno a dormire... Zzz...",
+                'groot': "*Sguardo tristissimo* Io... sono Groot...",
+                'reghiaccio': "Cosa?! E la mia Principessa?! Uff, vado a parlare con Gunter.",
+                'chloeprice': "Che palla. Vado a farmi un giro dietro gli spalti allora.",
+                'ryuk': "Peccato. Niente lotte, niente mele. Che noia il mondo degli umani.",
+                'leslie': "Oh, bene. Vado a farmi innaffiare da qualche parte.",
+                'roserade': "*Si gira sdegnata e se ne va spargendo foglie secche*",
+                'juvia': "Juvia è così triste di essere esclusa... pioverà per giorni.",
+                'dolli': "Uff, vado a rifarmi il trucco allora.",
+                'kevin': "Vabbè. Ritorno a essere un normale pezzo di strada.",
+                'cuoredipietra': "La mia roccia attenderà il suo momento.",
+                'utopia': "Compreso. Ritorno nell'Extra Deck.",
+                'cosmo': "Evviva! Torno da Wanda a mangiare i cereali!",
+                'mantide': "La pazienza è la virtù del guerriero. Aspetterò nell'ombra.",
+                'garnet': "Rispetto la tua scelta. Ritornerò al Tempio.",
+                'lapis': "Torno a volare da sola. È più tranquillo.",
+                'yugo': "Okay, vado a salutare Amalia e gli altri nel frattempo.",
+                'spike': "*Si siede triste a terra pungendo un palloncino*",
+                'nito': "Il riposo eterno attende me e le mie ossa.",
+                'jackfrost': "Che noiosi. Vado a fare a palle di neve con qualcun altro.",
+                'yukionna': "Il mio cuore di ghiaccio si spezza un po' di più...",
+                'zabuza': "Come vuoi. La mia mannaia riposa.",
+                'polterpup': "*Guaisce mestamente e scompare attraverso un muro*",
+                'rias': "Peccato. Tornerò a bere del tè con i miei servitori.",
+                'zergling': "*Ringhia sommessamente e si rintana nel terreno*",
+                'whisper': "Come?! Il mio Pad diceva che ero il membro più indispensabile!",
+                'astral': "Comprendo. Ritorno nella Chiave dell'Imperatore in meditazione.",
+                'yusei': "Il motore è spento, per ora. Sono ai box se vi servo.",
+                'juri': "Che noia, volevo proprio spaccare qualche osso oggi.",
+                'iris': "Vado a fare le prove con le Lolirock, allora! Ciao!",
+                'bumblebee': "Beh, fatemi sapere se vi serve una scossa di energia.",
+                'penny': "Uffa! Io volevo combattere insieme al mio amato Zatch!",
+                'brago': "Hmph. Patetico scartare la vera forza.",
+                'ponygon': "Meru... :(",
+                'shifu': "Mediterò sul vostro futuro e forse sul vostro fallimento.",
+                'gardevoir': "*Fa un inchino profondamente rispettoso e svanisce nel nulla*",
+                'jakedc': "Vado a fare battute altrove, gente senza umorismo.",
+
+                'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
+            };
+
+            const char = CHARACTERS.find(c => c.id === charId);
+            if (char) {
+                const text = isDeselect ? (DESELECT_QUOTES[charId] || DESELECT_QUOTES['default']) : (TEAM_SELECTION_QUOTES[charId] || TEAM_SELECTION_QUOTES['default']);
+                setTeamSelectionDialogue({
+                    name: char.name,
+                    img: char.img,
+                    text: text
+                });
+                
+                if (selectionDialogueTimerRef.current) clearTimeout(selectionDialogueTimerRef.current);
+                selectionDialogueTimerRef.current = setTimeout(() => {
+                    setTeamSelectionDialogue(null);
+                }, 3500); // Nasconde il popup dopo 3.5 secondi
+            }
+        };
 
         const toggleChar = (id) => {
             const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
@@ -5812,17 +6699,54 @@
                 return;
             }
 
+            if (activeCampaignId === 'torneo_assoluto' && id === campaignState.protagonist && campaignState.roster.length > 8) {
+                setSystemAlert("Il tuo protagonista deve guidare l'alleanza, non puoi rimuoverlo dalla selezione base!");
+                return;
+            }
+
             if (campaignSelectedTeam.includes(id)) {
                 setCampaignSelectedTeam(campaignSelectedTeam.filter(c => c !== id));
+                if (activeCampaignId === 'torneo_assoluto') {
+                    showSelectionDialogue(id, true);
+                }
             } else {
-                if (campaignSelectedTeam.length < maxTeamSize) setCampaignSelectedTeam([...campaignSelectedTeam, id]);
+                if (campaignSelectedTeam.length < maxTeamSize) {
+                    setCampaignSelectedTeam([...campaignSelectedTeam, id]);
+                    if (activeCampaignId === 'torneo_assoluto') {
+                        showSelectionDialogue(id, false);
+                    }
+                }
             }
         };
         
         const handleStartCampaignBattle = () => {
+            const aliveCount = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).length;
+            const requiredCount = Math.min(maxTeamSize, aliveCount);
+
             if (campaignSelectedTeam.length === 0) return setSystemAlert("Seleziona almeno un personaggio!");
             
-            const activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
+            if (activeCampaignId === 'torneo_assoluto') {
+                if (campaignState.roster.length > maxTeamSize && campaignSelectedTeam.length !== maxTeamSize) {
+                    return setSystemAlert(`Devi formare un'alleanza di esattamente ${maxTeamSize} campioni!`);
+                }
+                if (campaignState.roster.length <= maxTeamSize && campaignSelectedTeam.length !== requiredCount) {
+                    return setSystemAlert(`Devi schierare tutti i tuoi ${requiredCount} campioni in vita!`);
+                }
+            }
+            
+            // Fissa l'Alleanza nel Torneo Assoluto alla prima battaglia
+            if (activeCampaignId === 'torneo_assoluto' && campaignState.roster.length > maxTeamSize) {
+                const newRosterStats = {};
+                campaignSelectedTeam.forEach(id => {
+                    newRosterStats[id] = campaignState.rosterStats[id] || CHARACTERS.find(c=>c.id===id).maxHp;
+                });
+                
+                setCampaignState(p => ({
+                    ...p,
+                    roster: [...campaignSelectedTeam],
+                    rosterStats: newRosterStats
+                }));
+            }
             
             const p1Team = campaignSelectedTeam.map(id => {
                 const baseChar = CHARACTERS.find(c => c.id === id);
@@ -5866,12 +6790,29 @@
                         baseSpd: savedC.spd,
                         moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
                     };
+                    
+                    charInst.isSummonOnly = false; // FIX: I boss della campagna sono sempre considerati combattenti principali
 
                     // Riassegna il filtro immagine
-                    if (!isFinalRaid) {
-                         charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                    if (activeCampaignId === 'crisi_varco') {
+                        if (!isFinalRaid) {
+                             charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                        } else {
+                             charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; 
+                        }
                     } else {
-                         charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; 
+                        charInst.imageFilter = baseChar.imageFilter || 'none';
+                    }
+                    
+                    // RIPRISTINO ABILITA' DA SUPER-BOSS (JUGGERNAUT, SCUDO E PURIFICAZIONE PASSIVA)
+                    if (savedC.isJuggernaut || (isFinalRaid && (charInst.id === 'trigon' || charInst.id === 'gaster'))) {
+                         charInst.isJuggernaut = true;
+                         charInst.juggTurnCount = savedC.juggTurnCount || 0;
+                         charInst.juggHitsRemaining = savedC.juggHitsRemaining || 0;
+                         charInst.shieldGrantedHits = 15;
+                         
+                         const hpRatio = charInst.hp / charInst.maxHp;
+                         charInst.juggShieldHpThresholds = [0.75, 0.50, 0.25].filter(t => t < hpRatio);
                     }
 
                     return charInst;
@@ -5899,6 +6840,8 @@
                         baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
                         moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
                     };
+
+                    charInst.isSummonOnly = false; // FIX: I boss della campagna sono sempre considerati combattenti principali
                     
                     // Buff Alle Statistiche (Attacco e Difesa scalano in base al settore)
                     if (!isFinalRaid) {
@@ -5906,17 +6849,25 @@
                          charInst.baseAtk = charInst.atk;
                          charInst.def = Math.floor(charInst.def * (1 + (campaignState.sectorIdx * 0.03)));
                          charInst.baseDef = charInst.def;
-                         if (baseChar.imageFilter) {
-                             charInst.imageFilter = baseChar.imageFilter; // Mantieni il colore base per i Cell Jr
+                         if (activeCampaignId === 'crisi_varco') {
+                             if (baseChar.imageFilter) {
+                                 charInst.imageFilter = baseChar.imageFilter; // Mantieni il colore base per i Cell Jr
+                             } else {
+                                 charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                             }
                          } else {
-                             charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
+                             charInst.imageFilter = baseChar.imageFilter || 'none';
                          }
                     } else {
                          charInst.atk = Math.floor(charInst.atk * 1.5); // Final raid buff
                          charInst.baseAtk = charInst.atk;
                          charInst.def = Math.floor(charInst.def * 1.2);
                          charInst.baseDef = charInst.def;
-                         charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
+                         if (activeCampaignId === 'crisi_varco') {
+                             charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
+                         } else {
+                             charInst.imageFilter = baseChar.imageFilter || 'none';
+                         }
                     }
 
                     if (campaignState.difficulty === 'Insane' || isFinalRaid) {
@@ -5948,8 +6899,16 @@
             const state = initialGameState();
             state.gameMode = 'classica';
             state.isCampaignBattle = true;
-            let fSize = Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length));
-            if (mission.forceFieldSize) fSize = mission.forceFieldSize;
+            
+            // MODIFICA REGOLE ARENA: Se è il torneo assoluto, forza 2 in campo (2vs2). Altrimenti logica standard.
+            let fSize = 1;
+            if (activeCampaignId === 'torneo_assoluto') {
+                fSize = 2;
+            } else {
+                fSize = Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length));
+                if (mission.forceFieldSize) fSize = mission.forceFieldSize;
+            }
+            
             state.settings = { teamSize: p1Team.length, fieldSize: fSize };
             
             state.players.p1 = playerName || "Resistenza";
@@ -5980,8 +6939,26 @@
 
         return (
             <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
+                
+                {/* TOAST MINIDIALOGHI SELEZIONE TORNEO */}
+                {teamSelectionDialogue && (
+                    <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-slate-900/95 border-2 border-indigo-500 p-4 rounded-2xl max-w-xl w-[90%] z-50 shadow-[0_0_30px_rgba(99,102,241,0.5)] animate-bounce-in flex items-center gap-4 transition-all">
+                        <img src={teamSelectionDialogue.img} className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-indigo-400 shrink-0 shadow-lg" alt={teamSelectionDialogue.name} />
+                        <div>
+                            <div className="text-indigo-400 font-black text-xs uppercase tracking-widest mb-0.5">{teamSelectionDialogue.name}</div>
+                            <div className="text-white italic text-sm md:text-base font-medium">"{teamSelectionDialogue.text}"</div>
+                        </div>
+                    </div>
+                )}
+
                 <div className="flex-1 flex flex-col items-center justify-center mt-6 w-full z-10">
-                    <h2 className="text-4xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">Seleziona la tua Resistenza ({campaignSelectedTeam.length}/{maxTeamSize})</h2>
+                    <h2 className="text-4xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">
+                        {activeCampaignId === 'torneo_assoluto' && campaignState.roster.length <= maxTeamSize 
+                            ? `Schiera i tuoi Campioni (${campaignSelectedTeam.length}/${Math.min(maxTeamSize, campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).length)})` 
+                            : `Seleziona la tua Resistenza (${campaignSelectedTeam.length}/${maxTeamSize})`
+                        }
+                        {activeCampaignId === 'torneo_assoluto' && campaignState.roster.length > maxTeamSize && <span className="block text-sm text-indigo-400 mt-2">Forma l'Alleanza fissa da 8 (5 Membri + 3 Riserve)</span>}
+                    </h2>
                     
                     {/* HINT TIPI NEMICI NELLA SELEZIONE */}
                     <div className="mb-6 bg-slate-900/80 px-6 py-2 rounded-full border border-rose-500/30 flex items-center gap-3 backdrop-blur-md shadow-lg">
@@ -6001,54 +6978,95 @@
                             })()}
                         </div>
                     </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
-                    {campaignState.roster.map(id => {
-                        const char = CHARACTERS.find(c => c.id === id);
-                        if (!char) return null;
-                        
-                        const hp = campaignState.rosterStats[id] || 0;
-                        const isDead = hp <= 0;
-                        const isSelected = campaignSelectedTeam.includes(id);
-                        const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
 
-                        return (
-                            <div 
-                                key={id} 
-                                onClick={() => {
-                                    if (isDead) {
-                                        setSystemAlert("Questo personaggio è esausto! Curarlo all'accampamento prima di poterlo schierare in battaglia.");
-                                        return;
-                                    }
-                                    toggleChar(id);
-                                }}
-                                className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isDead ? 'opacity-50 grayscale border-rose-900 cursor-not-allowed' : isAnomalyTarget ? 'border-fuchsia-500 opacity-50 cursor-not-allowed' : isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
-                            >
-                                <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
-                                <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
-                                <div className="flex flex-wrap gap-1 justify-center mb-3">
-                                    {char.types.map(t => (
-                                        <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                    ))}
+                <div className="flex flex-wrap gap-4 mb-4 w-full max-w-5xl bg-slate-900/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur-md items-center">
+                    <div className="flex-1 min-w-[150px]">
+                        <input 
+                            type="text" 
+                            placeholder="Cerca campione..." 
+                            value={draftSearch} 
+                            onChange={e => setDraftSearch(e.target.value)} 
+                            className="w-full bg-slate-800 text-white font-bold px-4 py-2 rounded-xl outline-none border border-slate-600 focus:border-cyan-500 placeholder-slate-400 text-sm"
+                        />
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Tipo:</span>
+                        <select value={draftFilterType} onChange={e => setDraftFilterType(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
+                            <option value="Tutti">Tutti</option>
+                            {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                        </select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Ordina:</span>
+                        <select value={draftSort} onChange={e => setDraftSort(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
+                            <option value="default">Predefinito</option>
+                            <option value="alpha">A-Z</option>
+                            <option value="type">Per Tipo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
+                    {(() => {
+                        let rosterChars = campaignState.roster.map(id => CHARACTERS.find(c => c.id === id)).filter(Boolean);
+                        
+                        let filteredRoster = rosterChars.filter(c => {
+                            if (draftFilterType !== 'Tutti' && !c.types.includes(draftFilterType)) return false;
+                            if (draftSearch.trim() !== '' && !c.name.toLowerCase().includes(draftSearch.toLowerCase())) return false;
+                            return true;
+                        });
+
+                        if (draftSort === 'alpha') {
+                            filteredRoster.sort((a, b) => a.name.localeCompare(b.name));
+                        } else if (draftSort === 'type') {
+                            filteredRoster.sort((a, b) => a.types[0].localeCompare(b.types[0]));
+                        }
+
+                        return filteredRoster.map(char => {
+                            const id = char.id;
+                            const hp = campaignState.rosterStats[id] || 0;
+                            const isDead = hp <= 0;
+                            const isSelected = campaignSelectedTeam.includes(id);
+                            const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
+
+                            return (
+                                <div 
+                                    key={id} 
+                                    onClick={() => {
+                                        if (isDead) {
+                                            setSystemAlert("Questo personaggio è esausto! Curarlo all'accampamento prima di poterlo schierare in battaglia.");
+                                            return;
+                                        }
+                                        toggleChar(id);
+                                    }}
+                                    className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isDead ? 'opacity-50 grayscale border-rose-900 cursor-not-allowed' : isAnomalyTarget ? 'border-fuchsia-500 opacity-50 cursor-not-allowed' : isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
+                                >
+                                    <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
+                                    <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
+                                    <div className="flex flex-wrap gap-1 justify-center mb-3">
+                                        {char.types.map(t => (
+                                            <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                        ))}
+                                    </div>
+                                    {renderHealthBar(hp, char.maxHp)}
+                                    
+                                    {isSelected && (
+                                        <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-black text-xs shadow-md">✓</div>
+                                    )}
+                                    {isAnomalyTarget && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-fuchsia-900/80 backdrop-blur-sm z-10">
+                                            <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Infetto</span>
+                                        </div>
+                                    )}
+                                    {isDead && !isAnomalyTarget && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-rose-900/60 backdrop-blur-sm z-10">
+                                            <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Esausto</span>
+                                        </div>
+                                    )}
                                 </div>
-                                {renderHealthBar(hp, char.maxHp)}
-                                
-                                {isSelected && (
-                                    <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-black text-xs shadow-md">✓</div>
-                                )}
-                                {isAnomalyTarget && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-fuchsia-900/80 backdrop-blur-sm z-10">
-                                        <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Infetto</span>
-                                    </div>
-                                )}
-                                {isDead && !isAnomalyTarget && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-rose-900/60 backdrop-blur-sm z-10">
-                                        <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Esausto</span>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
+                            );
+                        });
+                    })()}
                 </div>
                 <button onClick={handleStartCampaignBattle} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 px-12 py-5 rounded-full font-black text-2xl shadow-[0_10px_30px_rgba(59,130,246,0.4)] hover:-translate-y-1 transition-all flex items-center gap-3">
                     <Swords size={28}/> Inizia Battaglia!
@@ -6182,19 +7200,11 @@
                     </div>
                 </div>
                 <button onClick={() => { 
-                    const finn = CHARACTERS.find(c=>c.id==='finn');
-                    const topo = CHARACTERS.find(c=>c.id==='topolino');
                     setCampaignSelectedTeam([]); // FIX: Svuota la squadra
-                    setCampaignState({
-                        isStarted: false,
-                        sectorIdx: 0,
-                        missionIdx: 0,
-                        roster: ['finn', 'topolino'],
-                        rosterStats: { 'finn': finn ? finn.maxHp : 100, 'topolino': topo ? topo.maxHp : 100 },
-                        coins: 50,
-                        difficulty: 'Normal',
-                        currentBossState: null
-                    });
+                    const freshState = loadCampaign(activeCampaignId);
+                    freshState.isStarted = false;
+                    setCampaignState(freshState);
+                    localStorage.removeItem(`multiverse_rpg_campaign_save_${activeCampaignId}`);
                     setAppMode('menu'); 
                 }} className="bg-white text-black px-12 py-5 rounded-full font-black text-xl hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.4)]">Torna al Menu Principale</button>
             </div>
@@ -6376,6 +7386,10 @@
                                 <div className="flex justify-between items-end border-b border-slate-800/50 pb-2">
                                     <span className="text-slate-300 font-medium">Win Rate</span>
                                     <span className="text-2xl font-black text-blue-400">{winRate}%</span>
+                                </div>
+                                <div className="flex justify-between items-end border-b border-slate-800/50 pb-2">
+                                    <span className="text-slate-300 font-medium">Record Sopravvivenza</span>
+                                    <span className="text-2xl font-black text-violet-400">{stats.maxSurvivalRound || 0}</span>
                                 </div>
                                 <div className="flex justify-between items-end">
                                     <span className="text-slate-300 font-medium">Tempo in Battaglia</span>
@@ -6714,15 +7728,43 @@
                                     </select>
                                 </div>
                             )}
-                            {(gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale' || gameState.gameMode === 'juggernaut') && (
+                            {(gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale' || gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && (
                                 <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30 mb-4">
                                     <span className="font-semibold text-slate-300">Numero Giocatori (Max):</span>
-                                    <input type="number" min={gameState.gameMode === 'juggernaut' ? "3" : "2"} max={gameState.gameMode === 'juggernaut' ? "5" : "8"} value={gameState.settings.maxPlayers} onChange={e => updateState({ settings: { ...gameState.settings, maxPlayers: Math.min(gameState.gameMode === 'juggernaut' ? 5 : 8, Math.max(gameState.gameMode === 'juggernaut' ? 3 : 2, parseInt(e.target.value) || 2)) } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
+                                    <input type="number" 
+                                        min={gameState.gameMode === 'juggernaut' ? "3" : "2"} 
+                                        max={gameState.gameMode === 'juggernaut' ? "5" : (gameState.gameMode === 'survival' ? "4" : "8")} 
+                                        value={gameState.settings.maxPlayers} 
+                                        onChange={e => {
+                                            let newVal = parseInt(e.target.value) || 2;
+                                            if (gameState.gameMode === 'juggernaut') newVal = Math.min(5, Math.max(3, newVal));
+                                            else if (gameState.gameMode === 'survival') newVal = Math.min(4, Math.max(2, newVal));
+                                            else newVal = Math.min(8, Math.max(2, newVal));
+
+                                            if (gameState.gameMode === 'survival') {
+                                                const oldHorde = gameState.settings.juggernautPlayer || 'p2';
+                                                const newHorde = 'p' + newVal;
+                                                if (oldHorde !== newHorde) {
+                                                    updateState({
+                                                        settings: { ...gameState.settings, maxPlayers: newVal, juggernautPlayer: newHorde },
+                                                        [`players.${oldHorde}`]: null,
+                                                        [`playerAvatars.${oldHorde}`]: '',
+                                                        [`isBot.${oldHorde}`]: false,
+                                                        [`players.${newHorde}`]: "Orda Infinita",
+                                                        [`playerAvatars.${newHorde}`]: 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617',
+                                                        [`isBot.${newHorde}`]: true,
+                                                        [`inventory.${newHorde}`]: {}
+                                                    });
+                                                }
+                                            } else {
+                                                updateState({ settings: { ...gameState.settings, maxPlayers: newVal } });
+                                            }
+                                        }} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
                                 </div>
                             )}
                             <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30">
                                 <span className="font-semibold text-slate-300">Dimensione Squadra:</span>
-                                <input type="number" min="1" max="10" value={gameState.settings.teamSize} onChange={e => updateState({ settings: { ...gameState.settings, teamSize: parseInt(e.target.value) || 1 } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
+                                <input type="number" min="1" max="10" value={gameState.settings.teamSize} onChange={e => updateState({ settings: { ...gameState.settings, teamSize: Math.min(10, Math.max(1, parseInt(e.target.value) || 1)) } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
                             </div>
                             <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30">
                                 <span className="font-semibold text-slate-300">Personaggi in Campo:</span>
@@ -6738,13 +7780,14 @@
                                 const draftable = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                 const newDraft = { ...gameState.draft };
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
-                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                 
                                 ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).forEach(p => {
                                     if (gameState.isBot[p]) {
                                         const cpuDraft = [];
                                         const shuffled = [...draftable].sort(() => 0.5 - Math.random());
-                                        const cpuTeamSize = (gameState.gameMode === 'juggernaut' && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                                        let cpuTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                                        
                                         for(let i=0; i<cpuTeamSize; i++) {
                                             let c = {...shuffled[i], statuses: [], consecutiveProtect: 0, baseAtk: shuffled[i].atk, baseDef: shuffled[i].def, baseSpd: shuffled[i].spd, moves: shuffled[i].moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))};
                                             cpuDraft.push(c);
@@ -6788,17 +7831,19 @@
 
         const activeReqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const activePlayersList = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
-        const draftLimitToCheck = (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'juggernaut') ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
+        const draftLimitToCheck = (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
         
-        const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
         const myDraft = gameState.draft[playerRole] || [];
-        const myTeamSize = (gameState.gameMode === 'juggernaut' && playerRole === juggPlayer) ? 1 : gameState.settings.teamSize;
+        const myTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && playerRole === juggPlayer) ? 1 : gameState.settings.teamSize;
         const isReady = myDraft.length === myTeamSize;
         
         let allReady = true;
         let readyCount = 0;
         draftLimitToCheck.forEach(p => {
-                const limit = (gameState.gameMode === 'juggernaut' && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                let limit = gameState.settings.teamSize;
+                if ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) limit = 1;
+
                 if (gameState.draft[p] && gameState.draft[p].length === limit) readyCount++;
                 else allReady = false;
         });
@@ -6807,12 +7852,24 @@
         const myUnlocked = getPlayerData().unlockedChars || [];
         const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && ((!c.price && !c.isSecretUnlock) || myUnlocked.includes(c.id)));
 
+        let filteredDraftableChars = draftableChars.filter(c => {
+            if (draftFilterType !== 'Tutti' && !c.types.includes(draftFilterType)) return false;
+            if (draftSearch.trim() !== '' && !c.name.toLowerCase().includes(draftSearch.toLowerCase())) return false;
+            return true;
+        });
+
+        if (draftSort === 'alpha') {
+            filteredDraftableChars.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (draftSort === 'type') {
+            filteredDraftableChars.sort((a, b) => a.types[0].localeCompare(b.types[0]));
+        }
+
         return (
             <div className="min-h-screen bg-slate-900 text-white p-6 flex flex-col relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black pointer-events-none opacity-40"></div>
                 
                 <div className="flex justify-between items-center mb-6 z-10">
-                    <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Scegli la tua Squadra ({myDraft.length}/{myTeamSize}) {gameState.gameMode === 'juggernaut' && playerRole === juggPlayer && <span className="text-rose-500 text-sm align-middle block mt-1">Sei il Juggernaut! Scegli 1 solo campione.</span>}</h2>
+                    <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Scegli la tua Squadra ({myDraft.length}/{myTeamSize}) {(gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && playerRole === juggPlayer && <span className="text-rose-500 text-sm align-middle block mt-1">Sei il Nemico! Scegli 1 solo campione.</span>}</h2>
                     <div className="text-slate-300 bg-slate-950/80 px-6 py-3 rounded-xl border border-slate-700/50 shadow-inner font-bold flex items-center gap-3">
                          {appMode === 'vs_cpu' ? (
                              <span>Scegli il tuo Team!</span>
@@ -6860,82 +7917,101 @@
                          )}
                     </div>
                 ) : (
-                    <div className="flex-1 bg-slate-950/60 rounded-3xl p-8 overflow-y-auto border border-slate-800/50 z-10 custom-scrollbar">
-                        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
-                            {draftableChars.map(char => {
-                                const isSelected = myDraft.some(c => c.id === char.id);
-                                return (
-                                    <div 
-                                        key={char.id} 
-                                        onMouseEnter={() => setDraftHoverInfo(char.id)}
-                                        onMouseLeave={() => { setDraftHoverInfo(null); draftLongPressRef.current = false; }}
-                                        onTouchStart={() => {
-                                            draftLongPressRef.current = false;
-                                            draftPressTimerRef.current = setTimeout(() => {
-                                                draftLongPressRef.current = true;
-                                                setDraftHoverInfo(char.id);
-                                            }, 400); 
-                                        }}
-                                        onTouchEnd={() => {
-                                            clearTimeout(draftPressTimerRef.current);
-                                            if (draftLongPressRef.current) {
-                                                setDraftHoverInfo(null);
-                                            }
-                                        }}
-                                        onTouchMove={() => {
-                                            clearTimeout(draftPressTimerRef.current);
-                                            setDraftHoverInfo(null);
-                                        }}
-                                        onClick={() => {
-                                            if (draftLongPressRef.current) {
+                    <div className="flex-1 flex flex-col bg-slate-950/60 rounded-3xl p-6 overflow-hidden border border-slate-800/50 z-10">
+                        <div className="flex flex-wrap gap-4 mb-4 bg-slate-900/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur-md items-center shrink-0">
+                            <div className="flex-1 min-w-[150px]">
+                                <input 
+                                    type="text" 
+                                    placeholder="Cerca campione..." 
+                                    value={draftSearch} 
+                                    onChange={e => setDraftSearch(e.target.value)} 
+                                    className="w-full bg-slate-800 text-white font-bold px-4 py-2 rounded-xl outline-none border border-slate-600 focus:border-cyan-500 placeholder-slate-400 text-sm"
+                                />
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Tipo:</span>
+                                <select value={draftFilterType} onChange={e => setDraftFilterType(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
+                                    <option value="Tutti">Tutti</option>
+                                    {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                                </select>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Ordina:</span>
+                                <select value={draftSort} onChange={e => setDraftSort(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
+                                    <option value="default">Predefinito</option>
+                                    <option value="alpha">A-Z</option>
+                                    <option value="type">Per Tipo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
+                                {filteredDraftableChars.map(char => {
+                                    const isSelected = myDraft.some(c => c.id === char.id);
+                                    return (
+                                        <div 
+                                            key={char.id} 
+                                            onClick={() => !isSelected && handlePick(char)}
+                                            onMouseEnter={() => setDraftHoverInfo(char.id)}
+                                            onMouseLeave={() => setDraftHoverInfo(null)}
+                                            onTouchStart={(e) => {
                                                 draftLongPressRef.current = false;
-                                                return; // Impedisce di selezionare il char se stavi solo tenendo premuto
-                                            }
-                                            handlePick(char);
-                                        }}
-                                        className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-4 text-center cursor-pointer transition-all duration-300 ${isSelected ? 'opacity-30 grayscale scale-95 border-slate-800' : 'hover:bg-slate-800 hover:border-cyan-500/50 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(6,182,212,0.15)] shadow-lg'}`}>
-                                        
-                                        <img src={char.img} alt={char.name} className="w-20 h-20 rounded-full object-cover mx-auto mb-4 border-2 border-slate-600/50 relative z-10" />
-                                        <h4 className="font-bold text-sm mb-3 truncate text-slate-100 relative z-10">{char.name}</h4>
-                                        <div className="flex flex-wrap gap-1.5 justify-center relative z-10">
-                                            {char.types.map(t => (
-                                                <span key={t} className={`text-[9px] font-black px-2 py-0.5 rounded-md uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                            ))}
-                                        </div>
-                                        
-                                        {draftHoverInfo === char.id && (
-                                            <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
-                                                <div className="w-full grid grid-cols-2 gap-2 text-xs font-mono bg-slate-950/50 p-3 rounded-xl mb-4 border border-slate-800">
-                                                    <div className="text-emerald-400">HP: {char.maxHp}</div>
-                                                    <div className="text-rose-400">ATK: {char.atk}</div>
-                                                    <div className="text-blue-400">DEF: {char.def}</div>
-                                                    <div className="text-amber-400">SPD: {char.spd}</div>
-                                                </div>
-                                                <div className="w-full space-y-2">
-                                                    {char.passive && (
-                                                        <div className="text-[10px] bg-amber-900/40 p-2 rounded border border-amber-500/50 flex flex-col gap-1 shadow-inner">
-                                                            <div className="flex justify-between items-center">
-                                                                <span className="font-bold text-amber-400 flex items-center gap-1">✨ Passiva: {char.passive.name}</span>
-                                                                <span className="text-[8px] text-amber-200/70">{char.passive.maxUses ? `Usi max: ${char.passive.maxUses}` : 'Infinito'}</span>
-                                                            </div>
-                                                            <span className="text-[8px] text-amber-100/80 leading-tight">{char.passive.desc}</span>
-                                                        </div>
-                                                    )}
-                                                    {char.moves.filter(Boolean).map((m, i) => (
-                                                        <div key={i} className="text-[10px] bg-slate-800 p-2 rounded border border-slate-700 flex flex-col gap-1">
-                                                            <div className="flex justify-between items-center">
-                                                                <span className="font-bold text-gray-300">{m.name}</span>
-                                                                <span className={`${TYPE_STYLES[m.type]} px-1 py-0.5 rounded text-[8px]`}>{m.type}</span>
-                                                            </div>
-                                                            <span className="text-[8px] text-slate-400 leading-tight">{m.desc}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
+                                                draftPressTimerRef.current = setTimeout(() => {
+                                                    draftLongPressRef.current = true;
+                                                    setDraftHoverInfo(char.id);
+                                                }, 400); 
+                                            }}
+                                            onTouchEnd={(e) => {
+                                                clearTimeout(draftPressTimerRef.current);
+                                                if (draftLongPressRef.current) {
+                                                    e.preventDefault();
+                                                    setDraftHoverInfo(null);
+                                                }
+                                            }}
+                                            onTouchMove={() => {
+                                                clearTimeout(draftPressTimerRef.current);
+                                                setDraftHoverInfo(null);
+                                            }}
+                                            className={`relative bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border transition-all duration-300 ${isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)] opacity-50 cursor-not-allowed' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer hover:shadow-lg'}`}
+                                        >
+                                            <img src={char.img} alt={char.name} className="w-20 h-20 rounded-full object-cover mx-auto mb-4 border-2 border-slate-600/50 relative z-10" />
+                                            <h4 className="font-bold text-sm mb-3 truncate text-slate-100 relative z-10">{char.name}</h4>
+                                            <div className="flex flex-wrap gap-1.5 justify-center relative z-10">
+                                                {char.types.map(t => (
+                                                    <span key={t} className={`text-[9px] font-black px-2 py-0.5 rounded-md uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                                ))}
                                             </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
+                                            
+                                            {draftHoverInfo === char.id && (
+                                                <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <span className="font-bold text-amber-400">Statistiche</span>
+                                                        <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">HP: {char.maxHp}</span>
+                                                    </div>
+                                                    <div className="grid grid-cols-3 gap-1 text-[10px] text-center mb-3">
+                                                        <div className="bg-slate-800/50 p-1 rounded border border-rose-900/50"><div className="text-rose-400 font-bold">ATK</div><div>{char.atk}</div></div>
+                                                        <div className="bg-slate-800/50 p-1 rounded border border-blue-900/50"><div className="text-blue-400 font-bold">DEF</div><div>{char.def}</div></div>
+                                                        <div className="bg-slate-800/50 p-1 rounded border border-amber-900/50"><div className="text-amber-400 font-bold">SPD</div><div>{char.spd}</div></div>
+                                                    </div>
+                                                    <div className="font-bold text-amber-400 mb-1 text-xs">Mosse</div>
+                                                    <div className="space-y-1.5 overflow-y-auto custom-scrollbar flex-1 pr-1">
+                                                        {char.moves.filter(Boolean).map((m, i) => (
+                                                            <div key={i} className="text-[9px] bg-slate-800/50 p-1.5 rounded border border-slate-700/50">
+                                                                <div className="flex justify-between items-center mb-0.5">
+                                                                    <span className="font-bold text-slate-200">{m.name}</span>
+                                                                    <span className={`px-1 rounded text-[8px] ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
+                                                                </div>
+                                                                <p className="text-slate-400 italic leading-tight line-clamp-2">{m.desc}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -7051,8 +8127,8 @@
                 if (isSpectatorState) { bottomPlayers = ['p1', 'p2']; topPlayers = ['p3', 'p4']; }
                 else if (playerRole === 'p1' || playerRole === 'p2') { bottomPlayers = ['p1', 'p2']; topPlayers = ['p3', 'p4']; }
                 else { bottomPlayers = ['p3', 'p4']; topPlayers = ['p1', 'p2']; }
-        } else if (gameState.gameMode === 'juggernaut') {
-                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+        } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 topPlayers = [juggPlayer]; 
                 bottomPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
         } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
@@ -7120,7 +8196,7 @@
             return (
                 <div className="flex gap-1 justify-center mt-1 flex-wrap">
                     {statuses.map((s, i) => {
-                        const colors = { 'Confuso': 'bg-fuchsia-500 text-white', 'Protetto': 'bg-sky-400 text-black', 'Riflesso': 'bg-gray-300 text-black', 'Scudo Team': 'bg-teal-400 text-black', 'Stordito': 'bg-amber-600 text-white', 'Infatuato': 'bg-pink-400', 'Elettrizzato': 'bg-yellow-400 text-black', 'Scottato': 'bg-red-500', 'Avvelenato': 'bg-purple-500', 'Congelato': 'bg-cyan-400 text-black', 'Addormentato': 'bg-slate-400', 'Indebolito': 'bg-stone-500 text-white', 'Ricarica': 'bg-orange-500 text-white', 'Magnetico': 'bg-indigo-500 text-white', 'Rashield': 'bg-yellow-200 text-black', 'Shudoruku': 'bg-orange-600 text-white', 'Dioemuru': 'bg-red-600 text-white' };
+                        const colors = { 'Confuso': 'bg-fuchsia-500 text-white', 'Protetto': 'bg-sky-400 text-black', 'Riflesso': 'bg-gray-300 text-black', 'Scudo Team': 'bg-teal-400 text-black', 'Stordito': 'bg-amber-600 text-white', 'Infatuato': 'bg-pink-400', 'Elettrizzato': 'bg-yellow-400 text-black', 'Scottato': 'bg-red-500', 'Avvelenato': 'bg-purple-500', 'Congelato': 'bg-cyan-400 text-black', 'Addormentato': 'bg-slate-400', 'Indebolito': 'bg-stone-500 text-white', 'Ricarica': 'bg-orange-500 text-white', 'Magnetico': 'bg-indigo-500 text-white', 'Rashield': 'bg-yellow-200 text-black', 'Shudoruku': 'bg-orange-600 text-white', 'Dioemuru': 'bg-red-600 text-white', 'In_Groppa': 'bg-emerald-600 text-white' };
                         return <span key={i} className={`text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm uppercase ${colors[s.type] || 'bg-gray-500'}`}>{s.type.substring(0, 3)}</span>;
                     })}
                 </div>
@@ -7140,15 +8216,15 @@
                             let myTeamPlayers = [playerRole];
                             if (gameState.gameMode === 'multipla') {
                                 myTeamPlayers = ['p1', 'p2'].includes(playerRole) ? ['p1', 'p2'] : ['p3', 'p4'];
-                            } else if (gameState.gameMode === 'juggernaut') {
-                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                            } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                 if (playerRole !== juggPlayer) {
                                     myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                 }
                             }
                             isTargetable = myTeamPlayers.includes(teamPlayer);
-                    } else if (gameState.gameMode === 'juggernaut') {
-                            const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                            const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                             const myTeam = playerRole === juggPlayer ? [juggPlayer] : activeMatchPlayers.filter(p => p !== juggPlayer);
                             isTargetable = !myTeam.includes(teamPlayer);
                     } else {
@@ -7160,7 +8236,7 @@
             }
 
             const isBeingCommanded = isMyTurn && teamPlayer === playerRole && fieldIdx === commandingIdx;
-            const isJuggernaut = char.isJuggernaut;
+            const isJuggernaut = char.isJuggernaut || ((gameState.gameMode === 'survival' || gameState.gameMode === 'juggernaut') && teamPlayer === (gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1')));
             
             const targetIndex = selectedMultiTargets.findIndex(t => t.player === teamPlayer && t.fieldIdx === fieldIdx);
             const isTargetedNow = targetIndex !== -1;
@@ -7315,6 +8391,14 @@
                                 BATTLE ROYALE
                          </div>
                     )}
+
+                    {/* --- AGGIUNTO INDICATORE ROUND SOPRAVVIVENZA --- */}
+                    {gameState.gameMode === 'survival' && (
+                         <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full border border-violet-500/50 shadow-lg text-violet-400 font-black tracking-widest uppercase text-xs sm:text-sm">
+                                ROUND {gameState.survivalRound || 1}
+                         </div>
+                    )}
+                    {/* ------------------------------------------------ */}
 
                     {/* --- BARRA DELL'INIZIATIVA (ATB) VERTICALE DESTRA --- */}
                     <div className="absolute top-1/2 right-4 -translate-y-1/2 z-30 flex flex-col items-center gap-1 md:gap-2 bg-slate-900/90 backdrop-blur-md px-1.5 md:px-2 py-3 md:py-4 rounded-full border border-slate-700/50 shadow-[0_0_20px_rgba(0,0,0,0.6)] max-h-[80vh] overflow-y-auto custom-scrollbar" title="L'ordine di attacco stimato. Le mosse con priorità alta (es. Protezione) agiranno comunque per prime!">
@@ -7498,8 +8582,8 @@
                                                                             let enemyTeams = [];
                                                                             if (gameState.gameMode === 'multipla') {
                                                                                 enemyTeams = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
-                                                                            } else if (gameState.gameMode === 'juggernaut') {
-                                                                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                                                            } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                                                                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                                                                 enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
                                                                             } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
                                                                                 enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
@@ -7670,7 +8754,7 @@
                                         });
                                     }
                                     
-                                    const mission = CAMPAIGN_DATA.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
+                                    const mission = activeCampaign.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
                                     const newRoster = [...campaignState.roster];
                                     let unlockedThisTime = [];
 
@@ -7772,7 +8856,10 @@
                                                 atk: c.atk,
                                                 def: c.def,
                                                 spd: c.spd,
-                                                statuses: c.statuses
+                                                statuses: c.statuses,
+                                                isJuggernaut: c.isJuggernaut,
+                                                juggHitsRemaining: c.juggHitsRemaining,
+                                                juggTurnCount: c.juggTurnCount
                                             }));
                                         }
                                     }
@@ -7812,6 +8899,16 @@
                     else if (tr.bronze && tr.bronze.winner === myKey) { coins = 70; rankText = "3° Posto nel Torneo!"; }
                     else if (tr.bronze && tr.bronze.loser === myKey) { coins = 50; rankText = "4° Posto nel Torneo!"; }
                     else { coins = 50; }
+                } else if (gameState.gameMode === 'survival') {
+                    // --- PREMI SPECIFICI SOPRAVVIVENZA ---
+                    const roundsSurvived = (gameState.survivalRound || 1) - 1;
+                    rankText = `Sei sopravvissuto a ${roundsSurvived} Round!`;
+                    if (roundsSurvived <= 5) {
+                        coins = roundsSurvived * 2;
+                    } else {
+                        coins = 10 + (roundsSurvived - 5);
+                    }
+                    if (roundsSurvived > 0) rewardText = `+${coins} Monete ricevute!`;
                 } else {
                     let won = false;
                     if (gameState.gameMode === 'multipla') {
@@ -7826,9 +8923,13 @@
                 // CALCOLO BONUS TEAM SIZE
                 const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
                 if (coins > 0) {
-                    coins += teamSizeBonus;
-                    if (teamSizeBonus > 0) {
-                        rewardText = `+${coins} Monete ricevute! (+${teamSizeBonus} Bonus Squadra)`;
+                    if (gameState.gameMode !== 'survival') {
+                        coins += teamSizeBonus;
+                        if (teamSizeBonus > 0) {
+                            rewardText = `+${coins} Monete ricevute! (+${teamSizeBonus} Bonus Squadra)`;
+                        } else {
+                            rewardText = `+${coins} Monete ricevute!`;
+                        }
                     } else {
                         rewardText = `+${coins} Monete ricevute!`;
                     }
