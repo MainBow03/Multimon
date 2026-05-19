@@ -3288,8 +3288,13 @@
             let assignedRole = null;
             const req = getRequiredPlayers(data.gameMode, data.settings);
             
-            // Trova primo slot libero o occupato da un Bot
-            ['p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req - 1).forEach(slot => {
+            // Trova primo slot libero o occupato da un Bot (non sovrascrivere l'Orda in survival)
+            let slotsToCheck = ['p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req - 1);
+            if (data.gameMode === 'survival') {
+                slotsToCheck = slotsToCheck.filter(slot => slot !== data.settings.juggernautPlayer);
+            }
+
+            slotsToCheck.forEach(slot => {
                  if (!assignedRole && (!data.players[slot] || data.isBot[slot])) {
                       assignedRole = slot;
                  }
@@ -7655,10 +7660,33 @@
                     {isHost && (
                          <div className="mb-6 bg-slate-950/50 p-4 rounded-xl border border-slate-700/30 flex justify-between items-center">
                                  <span className="font-semibold text-slate-300">Modalità Gioco:</span>
-                                 <select value={gameState.gameMode} onChange={e => updateState({ gameMode: e.target.value })} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500">
+                                 <select value={gameState.gameMode} onChange={e => {
+                                     const newMode = e.target.value;
+                                     let updates = { gameMode: newMode };
+                                     if (newMode === 'survival') {
+                                         const maxP = Math.min(4, Math.max(2, gameState.settings.maxPlayers));
+                                         const newHorde = 'p' + maxP;
+                                         updates.settings = { ...gameState.settings, maxPlayers: maxP, juggernautPlayer: newHorde };
+                                         updates[`players.${newHorde}`] = "Orda Infinita";
+                                         updates[`playerAvatars.${newHorde}`] = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
+                                         updates[`isBot.${newHorde}`] = true;
+                                         updates[`inventory.${newHorde}`] = {};
+                                         updates.survivalRound = 1;
+                                     } else if (gameState.gameMode === 'survival') {
+                                         const oldHorde = gameState.settings.juggernautPlayer || 'p2';
+                                         if (gameState.players[oldHorde] === "Orda Infinita") {
+                                              updates[`players.${oldHorde}`] = null;
+                                              updates[`playerAvatars.${oldHorde}`] = '';
+                                              updates[`isBot.${oldHorde}`] = false;
+                                              updates[`inventory.${oldHorde}`] = {};
+                                         }
+                                     }
+                                     updateState(updates);
+                                 }} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500">
                                          <option value="classica">Sfida Classica (1v1)</option>
                                          <option value="multipla">Multipla (2v2)</option>
                                          <option value="juggernaut">Juggernaut (1 vs Tutti)</option>
+                                         <option value="survival">Sopravvivenza (Infinita)</option>
                                          <option value="battleroyale">Battle Royale (Tutti vs Tutti)</option>
                                          <option value="torneo">Torneo (4 Giocatori)</option>
                                          <option value="torneo_punti">Torneo a Punti (Tutti vs Tutti)</option>
@@ -7680,7 +7708,7 @@
                                          <div className="font-bold text-lg text-white text-center w-full truncate px-2 flex items-center justify-center gap-2">
                                              {gameState.players[slot]} {gameState.isBot[slot] && <span className="bg-rose-600 text-white text-[10px] px-1.5 py-0.5 rounded-md">BOT</span>}
                                          </div>
-                                         {isHost && (
+                                         {isHost && !(gameState.gameMode === 'survival' && slot === gameState.settings.juggernautPlayer) && (
                                              <button onClick={() => handleRemovePlayer(slot)} className="text-xs text-rose-400 hover:text-rose-300 mt-2 transition-colors">
                                                  Rimuovi
                                              </button>
