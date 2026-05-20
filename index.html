@@ -768,17 +768,7 @@
           'Nyop-nyop': { name: 'Nyop-nyop', type: 'Drago', power: 40, drain: 0.5, statusEffect: { type: 'Elettrizzato', chance: 1.0 }, desc: 'Afferra il nemico con la lingua! Recupera il 50% dei danni inflitti e paralizza al 100% per il trauma.' },
           'Uovo boomerang': { name: 'Uovo boomerang', type: 'Normale', power: 20, multiHit: { min: 2, max: 5 }, desc: 'Lancia uova a ripetizione. Colpisce da 2 a 5 volte.' },
           'Sali sulla mia schiena': { name: 'Sali sulla mia schiena', type: 'Normale', power: 0, priority: 2, targetMode: 'ally', statusEffect: { type: 'In_Groppa', turns: 1 }, desc: 'Prende in groppa un alleato! Gli attacchi rivolti a lui colpiranno Yoshi, che subirà il 50% dei danni in meno (Priorità +2, più veloce di attacchi rapidi).' },
-          'Colpo salterino': { name: 'Colpo salterino', type: 'Drago', power: 80, desc: 'Un balzo potentissimo seguito da uno schianto sul nemico.' },
-
-          // NUOVE MOSSE BLACK CANARY E MELODY
-          'Urlo del Canarino': { name: 'Urlo del Canarino', type: 'Suono', power: 90, targetCount: 4, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Un grido ultrasonico devastante. Colpisce tutti i nemici e ha il 30% di stordirli.' },
-          'Combo Marziale': { name: 'Combo Marziale', type: 'Lotta', power: 25, multiHit: { min: 3, max: 4 }, desc: 'Una sequenza letale di arti marziali corpo a corpo. Colpisce da 3 a 4 volte.' },
-          'Frequenza Infranta': { name: 'Frequenza Infranta', type: 'Suono', power: 0, targetStatDebuff: { def: 0.6 }, desc: 'Emette un suono acutissimo che frantuma le difese nemiche, riducendole drasticamente del 40%.' },
-          
-          'Canto dell\'Abisso': { name: 'Canto dell\'Abisso', type: 'Buio', power: 80, drain: 0.4, desc: 'Una canzone oscura che drena l\'energia vitale nemica. Cura Melody del 40% dei danni inflitti.' },
-          'Melodia Oscura': { name: 'Melodia Oscura', type: 'Suono', power: 0, statusEffect: { type: 'Addormentato', chance: 0.6 }, targetStatDebuff: { atk: 0.8 }, desc: 'Canta una melodia inquietante. Ha il 60% di addormentare e riduce l\'Attacco bersaglio del 20%.' },
-          'Eco Tenebroso': { name: 'Eco Tenebroso', type: 'Buio', power: 85, targetCount: 2, desc: 'Scaglia onde sonore intrise di energia oscura che colpiscono fino a 2 bersagli.' },
-          'Sinfonia Inquieta': { name: 'Sinfonia Inquieta', type: 'Suono', power: 110, recharge: true, desc: 'Un concerto assordante e spaventoso. Danni molto elevati ma richiede un turno di ricarica.' }
+          'Colpo salterino': { name: 'Colpo salterino', type: 'Drago', power: 80, desc: 'Un balzo potentissimo seguito da uno schianto sul nemico.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -836,12 +826,12 @@
           { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i.pinimg.com/1200x/7f/2a/f8/7f2af80ef1d08f7d8d433aef9be18421.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
           { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga']] },
           { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
-          { id: 'laxus', name: 'Laxus', types: ['Elettro'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
+          { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
           { id: 'strega', name: 'Strega', types: ['Oscuro', 'Psico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', passive: { name: 'Corteo Oscuro', type: 'on_enter', isSummon: ['scheletro', 'carta_guardia'], maxUses: 1, desc: 'Appena scende in campo, evoca immediatamente uno Scheletro e una Carta Guardia al suo fianco. (Si attiva 1 sola volta per battaglia)' }, moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
           { id: 'garnet', name: 'Garnet', types: ['Lotta', 'Roccia'], hp: 110, maxHp: 110, atk: 115, def: 100, spd: 75, img: 'https://i.pinimg.com/1200x/df/77/0f/df770ffb5866a4773afcd2f05d6fcd60.jpg', moves: [MOVES_DB['Pugno Razzo'], MOVES_DB['Visione del Futuro'], MOVES_DB['Schianto Sismico'], MOVES_DB['Forza dell\'Amore']] },
           { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 95, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', moves: [MOVES_DB['Mano d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Ali Liquide']] },
           { id: 'aang', name: 'Aang', types: ['Aria', 'Psico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', passive: { name: 'Respiro dell\'Avatar', type: 'aura', immuneToType: 'Aria', boostMoveType: { type: 'Aria', multiplier: 1.2 }, desc: 'Garantisce immunità totale agli attacchi di tipo Aria e aumenta del 20% la potenza delle proprie mosse di tipo Aria.' }, moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
-          { id: 'yugo', name: 'Yugo', types: ['Psico'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Fratellanza del Tofu']] },
+          { id: 'yugo', name: 'Yugo', types: ['Psico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Fratellanza del Tofu']] },
           { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 85, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
           { id: 'ariana', name: 'Ariana Grande', types: ['Magico', 'Normale'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 100, img: 'https://i.pinimg.com/736x/1f/74/fa/1f74faeae0ec93a8288ab2e8bee3ffe7.jpg', passive: { name: 'Grido da Popstar', type: 'on_enter', maxUses: 1, teamStatBuff: { atk: 1.3 }, enemyStatDebuff: { spd: 0.7 }, desc: 'Appena schierata, aumenta l\'Attacco del tuo team e riduce la Velocità dei nemici in campo (30%).' }, moves: [MOVES_DB['YUH!'], MOVES_DB['Potere ariana grande'], MOVES_DB['Into You'], MOVES_DB['Bang Bang']] },
           { id: 'mario', name: 'Mario', types: ['Normale', 'Fuoco'], hp: 100, maxHp: 100, atk: 110, def: 85, spd: 90, img: 'https://i.pinimg.com/736x/f0/48/65/f04865769239ed667f302d6f19b8595e.jpg', moves: [MOVES_DB['Salto Idraulico'], MOVES_DB['Palla di Fuoco'], MOVES_DB['Martellata'], MOVES_DB['Super Fungo'], MOVES_DB['Fratelli Bros']] },
@@ -883,7 +873,7 @@
           { id: 'iris', name: 'Iris', types: ['Magico'], hp: 90, maxHp: 90, atk: 120, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/73/97/82/7397829809c9e0cfef827e17b4b97967.jpg', moves: [MOVES_DB['Cristallo di Ephedia'], MOVES_DB['Scudo Cristallino'], MOVES_DB['Voce della Principessa'], MOVES_DB['Trasformazione Shanila']] },
           { id: 'stellarubia', name: 'Stellarubia', types: ['Fuoco', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/33/a3/49/33a3490d7dee9b8c2d4187ca1f503573.jpg', moves: [MOVES_DB['Starbolts'], MOVES_DB['Volo Supersonico'], MOVES_DB['Furia Tamaraniana'], MOVES_DB['Raggio Oculare']] },
           { id: 'bumblebee', name: 'Bumblebee', types: ['Elettro', 'Insetto'], hp: 85, maxHp: 85, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/03/d0/b7/03d0b7b67992985d3d18e7171e645680.jpg', passive: { name: 'Punge come un\'ape', type: 'first_strike_bonus', damageBonus: 1.05, desc: 'Se è la prima ad attaccare nel turno, infligge il 5% di danni extra.' }, moves: [MOVES_DB['Pungiglione Elettrico'], MOVES_DB['Pungiglione'], MOVES_DB['Raffica Sonica'], MOVES_DB['Raggio Esplosivo']] },
-          { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', passive: { name: 'Ultima Risorsa', type: 'on_turn_end', hpThreshold: 0.25, isSummon: 'golem_pietra_supremo', maxUses: 1, desc: 'Alla fine del turno, se la salute scende al 25% o meno, evoca un Golem di Pietra Supremo. (1 utilizzo)' }, moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
+          { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
           { id: 'shego', name: 'Shego', types: ['Lotta', 'Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 110, img: 'https://i.pinimg.com/1200x/c6/01/cd/c601cd6606acb917e8a0507a671bee5c.jpg', moves: [MOVES_DB['Artigli di Plasma'], MOVES_DB['Calcio Acrobatico'], MOVES_DB['Sfera di Fuoco Verde'], MOVES_DB['Rigenerazione Cellulare']] },
           { id: 'hannibal', name: 'Hannibal', types: ['Oscuro', 'Normale'], hp: 105, maxHp: 105, atk: 110, def: 80, spd: 85, img: 'https://i.pinimg.com/1200x/01/ca/db/01cadbc63ec87dcfcb6e8cfe85e37f50.jpg', moves: [MOVES_DB['Banchetto Macabro'], MOVES_DB['Analisi Psicologica'], MOVES_DB['Colpo di Scalpello'], MOVES_DB['Buone Maniere']] },
           { id: 'po', name: 'Po', types: ['Lotta', 'Psico'], hp: 130, maxHp: 130, atk: 115, def: 100, spd: 60, img: 'https://i.pinimg.com/736x/10/7e/7e/107e7e6950aa24fb10c0428eb4d2b63b.jpg', moves: [MOVES_DB['Pancia Rimbalzante'], MOVES_DB['Presa del Dito Wuxi'], MOVES_DB['Maestro del Chi'], MOVES_DB['Rotolamento Furioso']] },
@@ -910,12 +900,9 @@
           { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']], isSecretUnlock: true },
           { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']], isSecretUnlock: true },
           
-          { id: 'nightwing', name: 'Nightwing', types: ['Buio'], hp: 105, maxHp: 105, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/fa/f0/7e/faf07eceb881811e8788b7c5ff539c90.jpg', moves: [MOVES_DB['Trappola d\'ombra'], MOVES_DB['Ala della notte'], MOVES_DB['Colpo mirato'], MOVES_DB['Fendente notturno']] },
+          { id: 'nightwing', name: 'Nightwing', types: ['Buio', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/fa/f0/7e/faf07eceb881811e8788b7c5ff539c90.jpg', moves: [MOVES_DB['Trappola d\'ombra'], MOVES_DB['Ala della notte'], MOVES_DB['Colpo mirato'], MOVES_DB['Fendente notturno']] },
 
           { id: 'jakedc', name: 'Jake (DC)', types: ['Normale', 'Fuoco'], hp: 90, maxHp: 90, atk: 90, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/28/3b/2d/283b2d85ccb4762668e7d6138c6684f9.jpg', moves: [MOVES_DB['Battuta Fuori Luogo'], MOVES_DB['Sguardo Omosessuale'], MOVES_DB['Tom difendimi!'], MOVES_DB['Lanciafiamme Rubato']] },
-
-          { id: 'blackcanary', name: 'Black Canary', types: ['Suono', 'Lotta'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 125, img: 'https://i1-e.pinimg.com/1200x/f1/bb/f7/f1bbf7c5a79fe4482532889547733374.jpg', passive: { name: 'Frequenza Devastante', type: 'on_attack_hit', requiredMoveType: 'Suono', targetStatDebuff: { spd: 0.8 }, desc: 'Quando colpisce con una mossa di tipo Suono, riduce permanentemente la Velocità del bersaglio.' }, moves: [MOVES_DB['Urlo del Canarino'], MOVES_DB['Combo Marziale'], MOVES_DB['Frequenza Infranta'], MOVES_DB['Calcio Acrobatico']] },
-          { id: 'melody', name: 'Melody', types: ['Suono', 'Buio'], hp: 85, maxHp: 85, atk: 120, def: 65, spd: 105, img: 'https://i.pinimg.com/736x/08/3e/72/083e72b633eab7f609f5e04d1494780c.jpg', moves: [MOVES_DB['Canto dell\'Abisso'], MOVES_DB['Melodia Oscura'], MOVES_DB['Eco Tenebroso'], MOVES_DB['Sinfonia Inquieta']] },
 
           { id: 'maxcaulfield', name: 'Max Caulfield', types: ['Normale'], hp: 95, maxHp: 95, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay'], MOVES_DB['Love is Strange']] },
           { id: 'chloeprice', name: 'Chloe Price', types: ['Suono', 'Normale'], hp: 100, maxHp: 100, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/c0/95/1a/c0951ab8f88e25c6cf1f076f3f26dcbb.jpg', passive: { name: 'Sfortuna Cronica', type: 'on_enter', maxUses: 3, randomStatDebuffToRandomEnemy: { chance: 0.5, multiplier: 0.7 }, desc: 'Appena scende in campo, la sua sfiga colpisce un nemico casuale: c\'è il 50% di probabilità per ogni statistica (Attacco, Difesa, Velocità) di essere ridotta del 30%.' }, moves: [MOVES_DB['Riff Ribelle'], MOVES_DB['Caos Punk'], MOVES_DB['Testa Calda'], MOVES_DB['Ride Or Die'], MOVES_DB['Love is Strange']] },
@@ -937,7 +924,6 @@
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 70, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
           { id: 'golem_pietra', name: 'Golem di Pietra', types: ['Roccia'], hp: 60, maxHp: 60, atk: 50, def: 90, spd: 20, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Golem&backgroundColor=4b5563', moves: [MOVES_DB['Sassata'], MOVES_DB['Protezione']], isSummonOnly: true },
-          { id: 'golem_pietra_supremo', name: 'Golem di Pietra Supremo', types: ['Roccia', 'Magico'], hp: 120, maxHp: 120, atk: 110, def: 130, spd: 40, img: 'https://i1-e.pinimg.com/1200x/d4/c8/51/d4c851d270e96a7b2a8013dd769aaae0.jpg', moves: [MOVES_DB['Pugno di Macigno'], MOVES_DB['Protezione'], MOVES_DB['Frana Impattante']], isSummonOnly: true },
           { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://i.pinimg.com/736x/30/d0/fb/30d0fb1c737910c1a6448b25bf6077f0.jpg', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
@@ -967,7 +953,7 @@
 
         const CHAR_PRICES = {
             'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
-            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'blackcanary': 250, 'melody': 250,
+            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250,
             'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
         };
@@ -2784,435 +2770,628 @@
                           }
                       } else if (gameState.gameMode === 'survival') {
                           const roundsSurvived = (gameState.survivalRound || 1) - 1;
-                          coinsToReward = roundsSurvived * 10; // 10 monete extra per ogni round superato
+                          if (roundsSurvived <= 5) {
+                              coinsToReward = roundsSurvived * 2;
+                          } else {
+                              coinsToReward = 10 + (roundsSurvived - 5);
+                          }
                           updateLocalStats({ maxSurvivalRound: roundsSurvived });
                       } else {
                           if (gameState.gameMode === 'multipla') {
-                              if (gameState.winner && gameState.winner.includes(playerName)) won = true;
+                               if (gameState.winner && gameState.winner.includes(playerName)) won = true;
                           } else if (gameState.winner === playerName) {
-                              won = true;
+                               won = true;
                           }
                           coinsToReward = won ? 100 : 50;
                           if (gameState.winner === 'Pareggio') coinsToReward = 50;
                       }
-
+                      
                       const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
-                          if (coinsToReward > 0 && gameState.gameMode !== 'survival') {
-                              coinsToReward += teamSizeBonus;
-                          }
+                      if (gameState.gameMode !== 'survival') {
+                          coinsToReward += teamSizeBonus;
+                      }
 
-                          updateLocalStats({ addCoins: coinsToReward, win: won, match: true });
+                      if (won) {
+                           updateLocalStats({ win: true });
+                      }
+                      if (coinsToReward > 0) {
+                           updateLocalStats({ addCoins: coinsToReward });
                       }
                   }
-          }, [gameState.status, gameState.winner, playerName, gameState.inventory]);
+              }
+          }, [gameState.status, hasRewarded, playerName, gameState.winner, gameState.gameMode, gameState.tournamentResults, gameState.settings.teamSize, gameState.inventory, gameState.players, gameState.isCampaignBattle]);
 
-          const updateState = async (updates) => {
-              setGameState(prev => {
-                  let next = { ...prev };
-                  for (let key in updates) {
-                      if (key.includes('.')) {
-                          const parts = key.split('.');
-                          let curr = next;
-                          for (let i = 0; i < parts.length - 1; i++) {
-                              curr[parts[i]] = { ...curr[parts[i]] };
-                              curr = curr[parts[i]];
-                          }
-                          curr[parts[parts.length - 1]] = updates[key];
+          useEffect(() => {
+              const saveableModes = ['local_room', 'online_room'];
+              if (saveableModes.includes(appMode)) {
+                  localStorage.setItem('multiverse_rpg_session', JSON.stringify({
+                      appMode,
+                      roomId,
+                      playerRole,
+                      gameState: appMode === 'local_room' ? gameState : null
+                  }));
+              } else if (appMode === 'menu') {
+                  localStorage.removeItem('multiverse_rpg_session');
+              }
+          }, [appMode, roomId, playerRole, gameState]);
+          
+          // --- FIX: INIZIALIZZAZIONE AUTENTICAZIONE FIREBASE ---
+          useEffect(() => {
+              const initAuth = async () => {
+                  try {
+                      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                          await signInWithCustomToken(auth, __initial_auth_token);
                       } else {
-                          next[key] = updates[key];
+                          // Su GitHub Pages userà questo accesso anonimo
+                          await signInAnonymously(auth);
                       }
+                  } catch (error) {
+                      console.error("Errore Auth Firebase:", error);
                   }
-                  
-                  if (appMode === 'online_room' && roomId) {
-                      updateDoc(doc(db, 'rooms', roomId), { gameState: next }).catch(e => console.error("Firebase update error:", e));
-                  } else {
-                      sessionRef.current = { appMode, roomId, playerRole, gameState: next };
-                      localStorage.setItem('multiverse_rpg_session', JSON.stringify(sessionRef.current));
-                  }
-                  
-                  return next;
+              };
+              initAuth();
+
+              const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+                  setUser(currentUser);
               });
-              return Promise.resolve();
+              
+              return () => unsubscribe();
+          }, []);
+
+          // --- PRESENZA ONLINE ---
+          useEffect(() => {
+              if (!user || !playerName.trim()) return;
+              const updatePresence = async () => {
+                  try {
+                      const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'online_users', sessionId);
+                      await setDoc(userRef, {
+                          uid: user.uid,
+                          sessionId: sessionId,
+                          name: playerName,
+                          avatar: playerAvatarUrl,
+                          status: (appMode === 'online_room' && roomId) ? 'In Partita' : 'Nel Menu',
+                          roomId: appMode === 'online_room' ? roomId : null,
+                          timestamp: Date.now()
+                      });
+                  } catch (err) {
+                      console.error("Errore aggiornamento presenza:", err);
+                  }
+              };
+              updatePresence();
+              const interval = setInterval(updatePresence, 30000); 
+              return () => clearInterval(interval);
+          }, [user, playerName, playerAvatarUrl, appMode, roomId, sessionId]);
+
+          useEffect(() => {
+              if (!user || !showOnlinePlayers) return;
+              const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'online_users');
+              const unsubscribe = onSnapshot(usersRef, (snapshot) => {
+                  const now = Date.now();
+                  const active = [];
+                  snapshot.forEach(d => {
+                      const data = d.data();
+                      // Tolleranza di 4 ore (14400000ms) per evitare problemi di orologi sfasati sui tablet
+                      if (Math.abs(now - data.timestamp) < 14400000 && data.sessionId !== sessionId) {
+                          active.push(data);
+                      }
+                  });
+                  setOnlineUsers(active);
+              }, (err) => console.error(err));
+              return () => unsubscribe();
+          }, [user, showOnlinePlayers, sessionId]);
+
+          const handleObserve = (targetRoomId) => {
+              setShowOnlinePlayers(false);
+              setRoomId(targetRoomId);
+              setPlayerRole('spectator');
+              setAppMode('online_room');
           };
 
           const getPlayerData = () => {
-              try {
-                  const data = localStorage.getItem('multiverse_rpg_player_data');
-                  if (data) return JSON.parse(data);
-              } catch(e) {}
-              return { coins: 100, unlockedChars: ['finn', 'topolino', 'jake', 'spongebob', 'mario'], inventory: { 'pozione': 5, 'cura_totale': 2, 'resurrezione': 1 }, matches: 0, wins: 0, maxSurvivalRound: 0, playtime: 0, chars: {}, moves: {} };
+              const key = `multiverse_rpg_global_profile`;
+              const raw = localStorage.getItem(key);
+              if (raw) {
+                  let data = JSON.parse(raw);
+                  if (data.coins === undefined) data.coins = 100;
+                  if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
+                  if (data.unlockedChars === undefined) data.unlockedChars = [];
+                  if (data.maxSurvivalRound === undefined) data.maxSurvivalRound = 0;
+                  
+                  // FIX: Scuse e Regalo di 200 Monete
+                  if (!data.apologyGiftReceived) {
+                      data.coins += 200;
+                      data.apologyGiftReceived = true;
+                      localStorage.setItem(key, JSON.stringify(data));
+                  }
+                  
+                  return data;
+              }
+
+              // Migrazione dal vecchio salvataggio (basato sul nome) se esiste
+              for (let i = 0; i < localStorage.length; i++) {
+                  const k = localStorage.key(i);
+                  if (k && k.startsWith('multiverse_rpg_stats_')) {
+                      const oldRaw = localStorage.getItem(k);
+                      if (oldRaw) {
+                          localStorage.setItem(key, oldRaw);
+                          let data = JSON.parse(oldRaw);
+                          if (data.coins === undefined) data.coins = 100;
+                          if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
+                          if (data.unlockedChars === undefined) data.unlockedChars = [];
+                          if (data.maxSurvivalRound === undefined) data.maxSurvivalRound = 0;
+                          
+                          if (!data.apologyGiftReceived) {
+                              data.coins += 200;
+                              data.apologyGiftReceived = true;
+                              localStorage.setItem(key, JSON.stringify(data));
+                          }
+                          return data;
+                      }
+                  }
+              }
+
+              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 300, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true, maxSurvivalRound: 0 };
           };
 
           const updateLocalStats = (updates) => {
-              const prev = getPlayerData();
-              let next = { ...prev };
-              if (updates.addCoins) next.coins += updates.addCoins;
-              if (updates.spendCoins) next.coins = Math.max(0, next.coins - updates.spendCoins);
-              if (updates.win) next.wins += 1;
-              if (updates.playtime) next.playtime += updates.playtime;
-              if (updates.maxSurvivalRound && updates.maxSurvivalRound > next.maxSurvivalRound) next.maxSurvivalRound = updates.maxSurvivalRound;
-              if (updates.unlockChar) {
-                  if (!next.unlockedChars.includes(updates.unlockChar)) next.unlockedChars.push(updates.unlockChar);
-              }
-              if (updates.buyItem) {
-                  next.inventory[updates.buyItem] = (next.inventory[updates.buyItem] || 0) + 1;
-              }
-              if (updates.overwriteInventory) {
-                  next.inventory = updates.overwriteInventory;
+              const key = `multiverse_rpg_global_profile`;
+              let current = getPlayerData();
+
+              if (updates.match) current.matches++;
+              if (updates.win) current.wins++;
+              if (updates.playtime) current.playtime += updates.playtime;
+              if (updates.char) {
+                  current.chars[updates.char] = (current.chars[updates.char] || 0) + 1;
               }
               if (updates.move) {
-                  next.moves[updates.move] = (next.moves[updates.move] || 0) + 1;
+                  current.moves[updates.move] = (current.moves[updates.move] || 0) + 1;
               }
-              if (updates.match) next.matches += 1;
-              localStorage.setItem('multiverse_rpg_player_data', JSON.stringify(next));
+              if (updates.addCoins) current.coins += updates.addCoins;
+              if (updates.spendCoins) current.coins -= updates.spendCoins;
+              if (updates.buyItem) {
+                  current.inventory[updates.buyItem] = (current.inventory[updates.buyItem] || 0) + 1;
+              }
+              if (updates.unlockChar) {
+                  if (!current.unlockedChars) current.unlockedChars = [];
+                  if (!current.unlockedChars.includes(updates.unlockChar)) {
+                      current.unlockedChars.push(updates.unlockChar);
+                  }
+              }
+              if (updates.overwriteInventory) {
+                  current.inventory = updates.overwriteInventory;
+              }
+              if (updates.maxSurvivalRound !== undefined && updates.maxSurvivalRound > (current.maxSurvivalRound || 0)) {
+                  current.maxSurvivalRound = updates.maxSurvivalRound;
+              }
+              
+              localStorage.setItem(key, JSON.stringify(current));
           };
 
-          const getActivePlayers = () => {
-              return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+          const leaveRoom = () => {
+            localStorage.removeItem('multiverse_rpg_session');
+            setAppMode('menu');
+            setRoomId(null);
+            setPlayerRole(null);
+            setGameState(initialGameState());
           };
 
-          const getRequiredPlayers = (mode, settings) => {
-              if (mode === 'multipla' || mode === 'torneo') return 4;
+          const handleConfirmLeave = async () => {
+              setShowLeaveConfirm(false);
+              const inBattleStates = ['battling', 'executing', 'switching_phase', 'pre_battle', 'intermission'];
+
+              if (gameState.isCampaignBattle) {
+                  // Ritiro in campagna: Fallimento automatico, salva HP del team e dei boss
+                  const newRosterStats = { ...campaignState.rosterStats };
+                  if (gameState.teams && gameState.teams.p1) {
+                      gameState.teams.p1.forEach(c => {
+                          if (!c.isSummonOnly) newRosterStats[c.id] = c.hp;
+                      });
+                  }
+
+                  let currentEnemyState = null;
+                  if (gameState.teams && gameState.teams.p2) {
+                      const aliveEnemies = gameState.teams.p2.filter(c => c.hp > 0);
+                      if (aliveEnemies.length > 0) {
+                          currentEnemyState = aliveEnemies.map(c => ({
+                              id: c.id,
+                              hp: c.hp,
+                              maxHp: c.maxHp,
+                              atk: c.atk,
+                              def: c.def,
+                              spd: c.spd,
+                              statuses: c.statuses,
+                              isJuggernaut: c.isJuggernaut,
+                              juggHitsRemaining: c.juggHitsRemaining,
+                              juggTurnCount: c.juggTurnCount
+                          }));
+                      }
+                  }
+
+                  // Prevenzione Soft-lock: se muoiono TUTTI i pg del roster, li cura al 30% per riprovare
+                  const aliveCount = campaignState.roster.filter(id => newRosterStats[id] > 0).length;
+                  if (aliveCount === 0) {
+                      campaignState.roster.forEach(id => {
+                          const baseChar = CHARACTERS.find(c=>c.id===id);
+                          newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
+                      });
+                  }
+
+                  setCampaignSelectedTeam([]); // FIX: Svuota la squadra selezionata per poter riprovare senza blocchi
+                  setCampaignState(p => ({...p, rosterStats: newRosterStats, currentBossState: currentEnemyState}));
+                  leaveRoom();
+                  setAppMode('campaign_map');
+                  return;
+              }
+
+              if (inBattleStates.includes(gameState.status) && appMode === 'online_room') {
+                  // FORFAIT ONLINE: Uccide l'intero team per concedere la vittoria agli altri
+                  let newTeams = JSON.parse(JSON.stringify(gameState.teams));
+                  if (newTeams[playerRole]) {
+                      newTeams[playerRole].forEach(c => c.hp = 0);
+                  }
+                  
+                  // Manda un'azione fittizia per assicurarsi che il server registri il turno se bloccato
+                  let newActions = JSON.parse(JSON.stringify(gameState.actions));
+                  newActions[playerRole] = { forfeit: true };
+                  
+                  await updateState({ 
+                      teams: newTeams, 
+                      actions: newActions,
+                      [`players.${playerRole}`]: `${gameState.players[playerRole]} (Arreso)`
+                  });
+              }
+              
+              leaveRoom();
+          };
+
+          const renderHealthBar = (hp, maxHp) => {
+              const percentage = (hp / maxHp) * 100;
+              let color = 'bg-green-500'; if (percentage < 50) color = 'bg-yellow-400'; if (percentage < 20) color = 'bg-red-500';
+              return (
+                  <div className="w-full bg-gray-900 rounded-full h-4 mt-1 relative overflow-hidden border border-gray-950">
+                      <div className={`${color} h-full transition-all duration-1000 ease-in-out`} style={{ width: `${percentage}%` }}></div>
+                      <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] z-10">
+                              {Math.ceil(percentage)}%
+                      </span>
+                  </div>
+              );
+          };
+
+          useEffect(() => {
+            if (!isPlayingEvents && gameState.status === 'battling' && gameState.teams.p1) {
+              setDisplayTeams(JSON.parse(JSON.stringify(gameState.teams)));
+              setDisplayField(JSON.parse(JSON.stringify(gameState.field)));
+            }
+          }, [gameState.teams, gameState.field, isPlayingEvents, gameState.status]);
+
+          useEffect(() => {
+            if (appMode === 'online_room' && roomId && user) {
+              const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
+              const unsubscribe = onSnapshot(roomRef, (snapshot) => {
+                if (snapshot.exists()) {
+                  const data = snapshot.data();
+                  setGameState(data);
+                }
+              }, (err) => console.error(err));
+              return () => unsubscribe();
+            }
+          }, [appMode, roomId, user]);
+
+          // Listener per sbloccare il turno quando arrivano i dati o i bot calcolano
+          useEffect(() => {
+              const isHostOrLocal = (appMode === 'online_room' && playerRole === 'p1') || appMode === 'local_room' || appMode === 'vs_cpu';
+
+              if (isHostOrLocal && gameState.status === 'battling') {
+                  const activePlayers = getActivePlayers();
+                  let humansReady = true;
+
+                  activePlayers.forEach(p => {
+                      if (!gameState.isBot[p]) {
+                          // Conta solo i personaggi ancora vivi sul campo
+                          const aliveFieldCount = gameState.field[p]?.filter(idx => gameState.teams[p] && gameState.teams[p][idx] && gameState.teams[p][idx].hp > 0).length || 0;
+                          
+                          // Conta le azioni solo per i personaggi ancora vivi
+                          let submittedAliveActions = 0;
+                          Object.keys(gameState.actions[p] || {}).forEach(idxStr => {
+                              const cIdx = parseInt(idxStr);
+                              if (gameState.teams[p] && gameState.teams[p][cIdx] && gameState.teams[p][cIdx].hp > 0) {
+                                  submittedAliveActions++;
+                              }
+                          });
+
+                          if (submittedAliveActions < aliveFieldCount) {
+                              humansReady = false;
+                          }
+                      }
+                  });
+
+                  if (humansReady && !isCalculatingRef.current) {
+                      isCalculatingRef.current = true;
+                      let finalActions = { ...gameState.actions };
+                      activePlayers.forEach(p => {
+                          if (gameState.isBot[p]) {
+                               finalActions[p] = generateCPUActionsForPlayer(p, finalActions);
+                          }
+                      });
+                      // Aggiunto ritardo di sicurezza per evitare blocchi del main thread
+                      setTimeout(() => calculateTurn(finalActions), 50);
+                  }
+              } else {
+                  isCalculatingRef.current = false;
+              }
+          // Aggiunte dipendenze fondamentali per prevenire stale closures
+          }, [gameState.actions, gameState.status, appMode, playerRole, gameState.field, gameState.teams, gameState.isBot]);
+
+          useEffect(() => {
+            if (!isPlayingEvents && gameState.teams.p1) {
+              setDisplayTeams(JSON.parse(JSON.stringify(gameState.teams)));
+              setDisplayField(JSON.parse(JSON.stringify(gameState.field)));
+            }
+          }, [gameState.teams, gameState.field, isPlayingEvents]);
+
+          useEffect(() => {
+              if (gameState.status === 'pre_battle') {
+                  setIntroCharIdx(0);
+                  // Aumentato l'intervallo per dare il giusto ritmo di suspense alla comparsa dei personaggi
+                  const interval = setInterval(() => {
+                      setIntroCharIdx(prev => prev + 1);
+                  }, 400);
+
+                  let timeout;
+                  if (appMode === 'local_room' || playerRole === 'p1') {
+                      // Aumentato il tempo totale della schermata per permettere la visione delle squadre (6 secondi)
+                      timeout = setTimeout(() => {
+                          if (gameState.events && gameState.events.length > 0) {
+                              updateState({ status: 'executing', postExecStatus: 'battling' });
+                          } else {
+                              updateState({ status: 'battling' });
+                          }
+                          if (appMode === 'local_room') {
+                              setPlayerRole('p1');
+                              setCommandingIdx(0);
+                          }
+                      }, 6000); 
+                  }
+
+                  return () => {
+                      clearInterval(interval);
+                      if (timeout) clearTimeout(timeout);
+                  };
+              }
+          }, [gameState.status, appMode, playerRole, gameState.events]);
+
+          // --- FIX CRITICO: Sblocco turno iniziale e ricollegamenti per i client Online ---
+          useEffect(() => {
+              if (gameState.status === 'battling' && !isPlayingEvents && appMode === 'online_room' && !gameState.isBot[playerRole]) {
+                  const myField = gameState.field[playerRole] || [];
+                  const myActions = gameState.actions[playerRole] || {};
+                  
+                  // Se non abbiamo un bersaglio attivo (-1) e abbiamo personaggi in campo senza un'azione assegnata
+                  if (commandingIdx === -1 && myField.length > 0 && Object.keys(myActions).length < myField.length) {
+                      // Cerca il primo personaggio in campo che non ha ancora agito e che non è andato KO
+                      let nextIdx = -1;
+                      for (let i = 0; i < myField.length; i++) {
+                          const cIdx = myField[i];
+                          if (!myActions[cIdx] && gameState.teams[playerRole][cIdx]?.hp > 0) {
+                              nextIdx = i;
+                              break;
+                          }
+                      }
+                      
+                      if (nextIdx !== -1) {
+                          setCommandingIdx(nextIdx);
+                          setActionMenuMode('moves');
+                      }
+                  }
+              }
+          }, [gameState.status, isPlayingEvents, appMode, playerRole, gameState.field, gameState.actions, commandingIdx, gameState.isBot, gameState.teams]);
+
+          const updateState = async (newState) => {
+            if (appMode === 'local_room') {
+              setGameState(prev => {
+                const nextState = { ...prev };
+                Object.keys(newState).forEach(key => {
+                  if (key.includes('.')) {
+                    const parts = key.split('.');
+                    let current = nextState;
+                    for (let i = 0; i < parts.length - 1; i++) {
+                      current[parts[i]] = { ...current[parts[i]] }; 
+                      current = current[parts[i]];
+                    }
+                    current[parts[parts.length - 1]] = newState[key];
+                  } else {
+                    nextState[key] = newState[key];
+                  }
+                });
+                return nextState;
+              });
+              return Promise.resolve();
+            } else if (appMode === 'online_room' && roomId) {
+              const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
+              await updateDoc(roomRef, newState);
+            }
+          };
+
+          const getRequiredPlayers = (mode, currentSettings) => {
               if (mode === 'classica') return 2;
-              return settings.maxPlayers;
+              if (mode === 'torneo_punti' || mode === 'battleroyale' || mode === 'juggernaut' || mode === 'survival') return currentSettings ? currentSettings.maxPlayers : (mode === 'survival' ? 2 : 4);
+              return 4;
+          };
+          
+          const getActivePlayers = () => {
+              if (gameState.gameMode === 'classica') return ['p1', 'p2'];
+              if (gameState.gameMode === 'multipla') return ['p1', 'p2', 'p3', 'p4'];
+              if (gameState.gameMode === 'battleroyale') {
+                  return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+              }
+              if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                  return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
+              }
+              if (gameState.gameMode === 'torneo') {
+                  const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+                  if (gameState.tournamentMatch === 'semi1') return [bracket[0], bracket[1]];
+                  if (gameState.tournamentMatch === 'semi2') return [bracket[2], bracket[3]];
+                  if (gameState.tournamentMatch === 'bronze' && gameState.tournamentResults.semi1 && gameState.tournamentResults.semi2) 
+                      return [gameState.tournamentResults.semi1.loser, gameState.tournamentResults.semi2.loser];
+                  if (gameState.tournamentMatch === 'final' && gameState.tournamentResults.semi1 && gameState.tournamentResults.semi2) 
+                      return [gameState.tournamentResults.semi1.winner, gameState.tournamentResults.semi2.winner];
+                  return [bracket[0], bracket[1]]; 
+              }
+              if (gameState.gameMode === 'torneo_punti') {
+                  if (gameState.roundRobinMatches && gameState.roundRobinMatches.length > 0) {
+                      const match = gameState.roundRobinMatches[gameState.currentMatchIdx];
+                      return [match.pA, match.pB];
+                  }
+                  return ['p1', 'p2'];
+              }
+              return ['p1', 'p2'];
           };
 
           const isAllPlayersJoined = () => {
               const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
-              return getActivePlayers().length >= req;
-          };
-
-          const leaveRoom = () => {
-              setAppMode('menu');
-              setRoomId(null);
-              setPlayerRole(null);
-              setGameState(initialGameState());
-              sessionRef.current = null;
-              localStorage.removeItem('multiverse_rpg_session');
-          };
-
-          const handleConfirmLeave = () => {
-              if (appMode === 'online_room' && playerRole !== 'spectator') {
-                  updateState({ status: 'gameover', winner: playerRole === 'p1' ? 'p2' : 'p1' });
-              }
-              setShowLeaveConfirm(false);
-              leaveRoom();
+              let joined = 0;
+              const slots = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req);
+              slots.forEach(slot => {
+                  if (gameState.players[slot]) joined++;
+              });
+              
+              if (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale') return joined >= 2;
+              if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') return joined === req;
+              return joined === req;
           };
 
           const handleCreateRoom = async () => {
-              if (!playerName.trim()) { setSystemAlert("Inserisci il tuo nome!"); return; }
-              const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
-              const state = initialGameState();
-              state.players.p1 = playerName;
-              state.playerAvatars.p1 = playerAvatarUrl;
-              state.inventory.p1 = getPlayerData().inventory;
-              
-              setRoomId(newRoomId);
-              setPlayerRole('p1');
-              setGameState(state);
-              setAppMode('online_room');
-              
-              await setDoc(doc(db, 'rooms', newRoomId), {
-                  createdAt: new Date().toISOString(),
-                  gameState: state
-              });
+            if (!playerName.trim()) return setSystemAlert("Inserisci il tuo nome!");
+            if (!user) return setSystemAlert("Connessione ai server in corso, riprova tra un istante.");
+            const newRoomId = Math.random().toString(36).substring(2, 7).toUpperCase();
+            const state = initialGameState();
+            state.players.p1 = playerName;
+            state.playerAvatars.p1 = playerAvatarUrl;
+            state.inventory.p1 = getPlayerData().inventory;
+            
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', newRoomId);
+            await setDoc(roomRef, state);
+            
+            setRoomId(newRoomId);
+            setPlayerRole('p1');
+            setAppMode('online_room');
           };
 
           const handleJoinRoom = async () => {
-              if (!playerName.trim()) { setSystemAlert("Inserisci il tuo nome!"); return; }
-              if (!roomIdInput.trim()) { setSystemAlert("Inserisci un codice stanza!"); return; }
-              
-              const roomRef = doc(db, 'rooms', roomIdInput.toUpperCase());
-              const docSnap = await getDoc(roomRef);
-              
-              if (docSnap.exists()) {
-                  const data = docSnap.data();
-                  const state = data.gameState;
-                  
-                  if (state.status !== 'lobby') {
-                      setSystemAlert("Partita già iniziata!");
-                      return;
-                  }
-                  
-                  const active = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => state.players[p]);
-                  const req = getRequiredPlayers(state.gameMode, state.settings);
-                  
-                  if (active.length >= req) {
-                      setSystemAlert("Stanza piena!");
-                      return;
-                  }
-                  
-                  const emptySlot = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].find(p => !state.players[p]);
-                  if (emptySlot) {
-                      state.players[emptySlot] = playerName;
-                      state.playerAvatars[emptySlot] = playerAvatarUrl;
-                      state.inventory[emptySlot] = getPlayerData().inventory;
-                      
-                      await updateDoc(roomRef, { gameState: state });
-                      setRoomId(roomIdInput.toUpperCase());
-                      setPlayerRole(emptySlot);
-                      setGameState(state);
-                      setAppMode('online_room');
-                  }
-              } else {
-                  setSystemAlert("Stanza non trovata!");
-              }
-          };
+            if (!playerName.trim() || !roomIdInput.trim()) return setSystemAlert("Inserisci nome e codice stanza!");
+            if (!user) return setSystemAlert("Connessione in corso...");
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomIdInput.toUpperCase());
+            const snap = await getDoc(roomRef);
+            if (!snap.exists()) return setSystemAlert("Stanza non trovata!");
+            
+            const data = snap.data();
+            let assignedRole = null;
+            const req = getRequiredPlayers(data.gameMode, data.settings);
+            
+            // Trova primo slot libero o occupato da un Bot (non sovrascrivere l'Orda in survival)
+            let slotsToCheck = ['p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req - 1);
+            if (data.gameMode === 'survival') {
+                slotsToCheck = slotsToCheck.filter(slot => slot !== data.settings.juggernautPlayer);
+            }
 
-          const handleLocalStart = () => {
-              const state = initialGameState();
-              state.players.p1 = "Gioc. 1";
-              state.playerAvatars.p1 = getDefaultAvatar("Gioc. 1");
-              state.inventory.p1 = getPlayerData().inventory;
-              state.players.p2 = "Gioc. 2";
-              state.playerAvatars.p2 = getDefaultAvatar("Gioc. 2");
-              state.inventory.p2 = getPlayerData().inventory;
-              
-              setPlayerRole('p1');
-              setGameState(state);
-              setAppMode('local_room');
-          };
+            slotsToCheck.forEach(slot => {
+                 if (!assignedRole && (!data.players[slot] || data.isBot[slot])) {
+                      assignedRole = slot;
+                 }
+            });
 
-          const handleVsCpuStart = () => {
-              const state = initialGameState();
-              state.players.p1 = playerName || "Player";
-              state.playerAvatars.p1 = playerAvatarUrl || getDefaultAvatar(playerName);
-              state.inventory.p1 = getPlayerData().inventory;
-              
-              state.players.p2 = "CPU Bot";
-              state.playerAvatars.p2 = 'https://api.dicebear.com/7.x/bottts/svg?seed=CPU&backgroundColor=020617';
-              state.isBot.p2 = true;
-              state.inventory.p2 = {};
-              
-              setPlayerRole('p1');
-              setGameState(state);
-              setAppMode('vs_cpu');
-          };
+            if (!assignedRole) return setSystemAlert("Stanza piena o partita in corso!");
 
-          const handleSurvivalStart = () => {
-              const state = initialGameState();
-              state.gameMode = 'survival';
-              state.settings.maxPlayers = 2;
-              state.settings.juggernautPlayer = 'p2';
-              
-              state.players.p1 = playerName || "Eroe";
-              state.playerAvatars.p1 = playerAvatarUrl || getDefaultAvatar(playerName);
-              state.inventory.p1 = getPlayerData().inventory;
-              
-              state.players.p2 = "Orda Infinita";
-              state.playerAvatars.p2 = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
-              state.isBot.p2 = true;
-              state.inventory.p2 = {};
-              state.survivalRound = 1;
-              
-              setPlayerRole('p1');
-              setGameState(state);
-              setAppMode('vs_cpu');
+            await updateDoc(roomRef, { 
+                [`players.${assignedRole}`]: playerName,
+                [`playerAvatars.${assignedRole}`]: playerAvatarUrl,
+                [`isBot.${assignedRole}`]: false,
+                [`inventory.${assignedRole}`]: getPlayerData().inventory
+            });
+            setRoomId(roomIdInput.toUpperCase());
+            setPlayerRole(assignedRole);
+            setAppMode('online_room');
           };
 
           const handleAddBot = (slot) => {
-              updateState({
-                  [`players.${slot}`]: `CPU ${slot}`,
-                  [`playerAvatars.${slot}`]: `https://api.dicebear.com/7.x/bottts/svg?seed=CPU${slot}&backgroundColor=020617`,
-                  [`isBot.${slot}`]: true,
-                  [`inventory.${slot}`]: {}
-              });
+            const botNum = Object.values(gameState.isBot).filter(Boolean).length + 1;
+            updateState({
+                [`players.${slot}`]: `CPU Bot ${botNum}`,
+                [`playerAvatars.${slot}`]: `https://api.dicebear.com/7.x/bottts/svg?seed=CpuBot${botNum}&backgroundColor=020617`,
+                [`isBot.${slot}`]: true,
+                [`inventory.${slot}`]: { cura_totale: 1 }
+            });
           };
 
           const handleRemovePlayer = (slot) => {
-              updateState({
-                  [`players.${slot}`]: null,
-                  [`playerAvatars.${slot}`]: '',
-                  [`isBot.${slot}`]: false,
-                  [`inventory.${slot}`]: {}
-              });
+            updateState({
+                [`players.${slot}`]: null,
+                [`playerAvatars.${slot}`]: '',
+                [`isBot.${slot}`]: false,
+                [`inventory.${slot}`]: {}
+            });
           };
 
-          const startBattle = () => {
-              let initialTeams = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
-              let initialField = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
-              
-              const activeMatchPlayers = getActivePlayers();
-              activeMatchPlayers.forEach(p => {
-                  initialTeams[p] = (gameState.draft[p] || []).map(c => JSON.parse(JSON.stringify(c)));
-                  
-                  let fSize = gameState.settings.fieldSize;
-                  if (gameState.gameMode === 'multipla') fSize = 1;
-                  
-                  initialField[p] = initialTeams[p].slice(0, fSize).map((_, i) => i);
-                  initialField[p].forEach(idx => { if (initialTeams[p][idx]) initialTeams[p][idx].revealed = true; });
-              });
-
-              if (gameState.gameMode === 'torneo') {
-                  const p1 = activeMatchPlayers[0];
-                  const p2 = activeMatchPlayers[1];
-                  const p3 = activeMatchPlayers[2];
-                  const p4 = activeMatchPlayers[3];
-                  
-                  updateState({
-                      status: 'pre_battle',
-                      teams: initialTeams,
-                      tournamentBracket: [p1, p2, p3, p4],
-                      tournamentMatch: 'semi1',
-                      field: {
-                          [p1]: initialField[p1], [p2]: initialField[p2],
-                          [p3]: [], [p4]: [], p5: [], p6: [], p7: [], p8: []
-                      }
-                  });
-              } else if (gameState.gameMode === 'torneo_punti') {
-                  let matches = [];
-                  for (let i = 0; i < activeMatchPlayers.length; i++) {
-                      for (let j = i + 1; j < activeMatchPlayers.length; j++) {
-                          matches.push({ pA: activeMatchPlayers[i], pB: activeMatchPlayers[j] });
-                      }
-                  }
-                  
-                  updateState({
-                      status: 'pre_battle',
-                      teams: initialTeams,
-                      roundRobinMatches: matches,
-                      currentMatchIdx: 0,
-                      field: {
-                          [matches[0].pA]: initialField[matches[0].pA],
-                          [matches[0].pB]: initialField[matches[0].pB]
-                      }
-                  });
-              } else {
-                  updateState({
-                      status: 'pre_battle',
-                      teams: initialTeams,
-                      field: initialField
-                  });
-              }
-              
-              setCommandingIdx(0);
+          const handleLocalStart = () => {
+            const state = initialGameState();
+            state.players.p1 = playerName || "Gioc. 1";
+            state.playerAvatars.p1 = playerAvatarUrl;
+            state.inventory.p1 = getPlayerData().inventory;
+            setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
           };
+
+          const handleVsCpuStart = () => {
+            const state = initialGameState();
+            state.players.p1 = playerName || "Giocatore";
+            state.playerAvatars.p1 = playerAvatarUrl;
+            state.inventory.p1 = getPlayerData().inventory;
+            state.players.p2 = "Bot Supremo";
+            state.playerAvatars.p2 = 'https://api.dicebear.com/7.x/bottts/svg?seed=CpuBot&backgroundColor=020617';
+            state.isBot.p2 = true;
+            state.inventory.p2 = { cura_totale: 1, pozione: 2 };
+            setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
+          };
+
+          // --- AGGIUNTO: AVVIO MODALITÀ SOPRAVVIVENZA ---
+          const handleSurvivalStart = () => {
+            const state = initialGameState();
+            state.gameMode = 'survival';
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2' }; 
+            state.players.p1 = playerName || "Sopravvissuto";
+            state.playerAvatars.p1 = playerAvatarUrl;
+            state.inventory.p1 = getPlayerData().inventory;
+            state.players.p2 = "Orda Infinita";
+            state.playerAvatars.p2 = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
+            state.isBot.p2 = true;
+            state.inventory.p2 = {}; // Niente cure per l'IA in survival
+            setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
+          };
+          // ----------------------------------------------
 
           const handlePick = (char) => {
-              const activeMatchPlayers = getActivePlayers();
-              const myDraft = gameState.draft[playerRole] || [];
-              const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-              const myTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && playerRole === juggPlayer) ? 1 : gameState.settings.teamSize;
+            const currentDraft = gameState.draft[playerRole] || [];
+            if (currentDraft.length >= gameState.settings.teamSize) return;
+            
+            const charInstance = { 
+                ...char, 
+                statuses: [],
+                consecutiveProtect: 0,
+                baseAtk: char.atk,
+                baseDef: char.def,
+                baseSpd: char.spd,
+                moves: char.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+            };
 
-              if (myDraft.length < myTeamSize) {
-                  let c = { ...char, statuses: [], consecutiveProtect: 0, baseAtk: char.atk, baseDef: char.def, baseSpd: char.spd, moves: char.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
-                  updateState({ [`draft.${playerRole}`]: [...myDraft, c] });
-              }
+            updateState({ [`draft.${playerRole}`]: [...currentDraft, charInstance] });
           };
 
-          const applyOnEnterPassive = (char, player, idx, teamsRef, fieldRef, eventsRef, mode, settings, isCampaign) => {
-              if (char.passive.statBuff) {
-                  let statTexts = [];
-                  if (char.passive.statBuff.atk) { char.atk = Math.floor(char.atk * char.passive.statBuff.atk); statTexts.push("Attacco"); }
-                  if (char.passive.statBuff.def) { char.def = Math.floor(char.def * char.passive.statBuff.def); statTexts.push("Difesa"); }
-                  if (char.passive.statBuff.spd) { char.spd = Math.floor(char.spd * char.passive.statBuff.spd); statTexts.push("Velocità"); }
-                  eventsRef.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: ${statTexts.join(" e ")} aumenta!` });
-              }
-              if (char.passive.selfStatBuff) {
-                  let statTexts = [];
-                  if (char.passive.selfStatBuff.atk) { char.atk = Math.floor(char.atk * char.passive.selfStatBuff.atk); statTexts.push("Attacco"); }
-                  if (char.passive.selfStatBuff.def) { char.def = Math.floor(char.def * char.passive.selfStatBuff.def); statTexts.push("Difesa"); }
-                  if (char.passive.selfStatBuff.spd) { char.spd = Math.floor(char.spd * char.passive.selfStatBuff.spd); statTexts.push("Velocità"); }
-                  eventsRef.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: ${statTexts.join(" e ")} aumenta!` });
-              }
-              if (char.passive.teamStatBuff) {
-                  let myTeamPlayers = [player];
-                  if (mode === 'multipla') myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                  else if (mode === 'juggernaut' || mode === 'survival') {
-                      const juggPlayer = settings.juggernautPlayer || (mode === 'survival' ? 'p2' : 'p1');
-                      if (player !== juggPlayer) myTeamPlayers = getActivePlayers().filter(p => p !== juggPlayer);
-                  }
-                  
-                  let statTexts = [];
-                  myTeamPlayers.forEach(pAlly => {
-                      if (fieldRef[pAlly]) fieldRef[pAlly].forEach(cIdx => {
-                          const ally = teamsRef[pAlly][cIdx];
-                          if (ally && ally.hp > 0) {
-                              if (char.passive.teamStatBuff.atk) ally.atk = Math.floor(ally.atk * char.passive.teamStatBuff.atk);
-                              if (char.passive.teamStatBuff.def) ally.def = Math.floor(ally.def * char.passive.teamStatBuff.def);
-                              if (char.passive.teamStatBuff.spd) ally.spd = Math.floor(ally.spd * char.passive.teamStatBuff.spd);
-                          }
-                      });
-                  });
-                  if (char.passive.teamStatBuff.atk) statTexts.push("Attacco");
-                  if (char.passive.teamStatBuff.def) statTexts.push("Difesa");
-                  if (char.passive.teamStatBuff.spd) statTexts.push("Velocità");
-                  eventsRef.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: il team guadagna ${statTexts.join(" e ")}!` });
-              }
-              if (char.passive.enemyStatDebuff) {
-                  let enemyPlayers = [];
-                  if (mode === 'multipla') enemyPlayers = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
-                  else if (mode === 'juggernaut' || mode === 'survival') {
-                      const juggPlayer = settings.juggernautPlayer || (mode === 'survival' ? 'p2' : 'p1');
-                      enemyPlayers = player === juggPlayer ? getActivePlayers().filter(p => p !== juggPlayer) : [juggPlayer];
-                  } else enemyPlayers = [player === 'p1' ? 'p2' : 'p1'];
-
-                  let statTexts = [];
-                  enemyPlayers.forEach(pEnemy => {
-                      if (fieldRef[pEnemy]) fieldRef[pEnemy].forEach(cIdx => {
-                          const enemy = teamsRef[pEnemy][cIdx];
-                          if (enemy && enemy.hp > 0) {
-                              if (char.passive.enemyStatDebuff.atk) enemy.atk = Math.floor(enemy.atk * char.passive.enemyStatDebuff.atk);
-                              if (char.passive.enemyStatDebuff.def) enemy.def = Math.floor(enemy.def * char.passive.enemyStatDebuff.def);
-                              if (char.passive.enemyStatDebuff.spd) enemy.spd = Math.floor(enemy.spd * char.passive.enemyStatDebuff.spd);
-                          }
-                      });
-                  });
-                  if (char.passive.enemyStatDebuff.atk) statTexts.push("Attacco");
-                  if (char.passive.enemyStatDebuff.def) statTexts.push("Difesa");
-                  if (char.passive.enemyStatDebuff.spd) statTexts.push("Velocità");
-                  eventsRef.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: i nemici perdono ${statTexts.join(" e ")}!` });
-              }
-              if (char.passive.applyStatusToRandomEnemy) {
-                  let enemyPlayers = [];
-                  if (mode === 'multipla') enemyPlayers = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
-                  else if (mode === 'juggernaut' || mode === 'survival') {
-                      const juggPlayer = settings.juggernautPlayer || (mode === 'survival' ? 'p2' : 'p1');
-                      enemyPlayers = player === juggPlayer ? getActivePlayers().filter(p => p !== juggPlayer) : [juggPlayer];
-                  } else enemyPlayers = [player === 'p1' ? 'p2' : 'p1'];
-
-                  let possibleTargets = [];
-                  enemyPlayers.forEach(pEnemy => {
-                      if (fieldRef[pEnemy]) fieldRef[pEnemy].forEach(cIdx => {
-                          const enemy = teamsRef[pEnemy][cIdx];
-                          if (enemy && enemy.hp > 0) possibleTargets.push({ p: pEnemy, idx: cIdx, char: enemy });
-                      });
-                  });
-
-                  if (possibleTargets.length > 0) {
-                      const target = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
-                      target.char.statuses.push({ type: char.passive.applyStatusToRandomEnemy.type, turns: char.passive.applyStatusToRandomEnemy.turns });
-                      eventsRef.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}! ${target.char.name} ottiene lo status ${char.passive.applyStatusToRandomEnemy.type}!` });
-                      eventsRef.push({ type: 'status_update', targetPlayer: target.p, targetIdx: target.idx, statuses: JSON.parse(JSON.stringify(target.char.statuses)) });
-                  }
-              }
-              if (char.passive.randomStatDebuffToRandomEnemy) {
-                  let enemyPlayers = [];
-                  if (mode === 'multipla') enemyPlayers = ['p1', 'p2'].includes(player) ? ['p3', 'p4'] : ['p1', 'p2'];
-                  else if (mode === 'juggernaut' || mode === 'survival') {
-                      const juggPlayer = settings.juggernautPlayer || (mode === 'survival' ? 'p2' : 'p1');
-                      enemyPlayers = player === juggPlayer ? getActivePlayers().filter(p => p !== juggPlayer) : [juggPlayer];
-                  } else enemyPlayers = [player === 'p1' ? 'p2' : 'p1'];
-
-                  let possibleTargets = [];
-                  enemyPlayers.forEach(pEnemy => {
-                      if (fieldRef[pEnemy]) fieldRef[pEnemy].forEach(cIdx => {
-                          const enemy = teamsRef[pEnemy][cIdx];
-                          if (enemy && enemy.hp > 0) possibleTargets.push({ p: pEnemy, idx: cIdx, char: enemy });
-                      });
-                  });
-
-                  if (possibleTargets.length > 0) {
-                      const target = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
-                      let statTexts = [];
-                      if (Math.random() < char.passive.randomStatDebuffToRandomEnemy.chance) { target.char.atk = Math.floor(target.char.atk * char.passive.randomStatDebuffToRandomEnemy.multiplier); statTexts.push("Attacco"); }
-                      if (Math.random() < char.passive.randomStatDebuffToRandomEnemy.chance) { target.char.def = Math.floor(target.char.def * char.passive.randomStatDebuffToRandomEnemy.multiplier); statTexts.push("Difesa"); }
-                      if (Math.random() < char.passive.randomStatDebuffToRandomEnemy.chance) { target.char.spd = Math.floor(target.char.spd * char.passive.randomStatDebuffToRandomEnemy.multiplier); statTexts.push("Velocità"); }
-                      if (statTexts.length > 0) {
-                          eventsRef.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}! ${target.char.name} perde ${statTexts.join(", ")}!` });
-                      }
-                  }
-              }
+          const applyOnEnterPassive = (char, p, idx, workingTeams, workingField, eventsArr, gameMode, settings, isCampaign) => {
               if (char.passive.isSummon) {
                   const summonIds = Array.isArray(char.passive.isSummon) ? char.passive.isSummon : [char.passive.isSummon];
                   let summonedNames = [];
@@ -3221,488 +3400,1272 @@
                       if (baseChar) {
                           const newSummon = {
                               ...JSON.parse(JSON.stringify(baseChar)), statuses: [], consecutiveProtect: 0,
-                              baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                              moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                              baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd, revealed: true
                           };
-                          teamsRef[player].push(newSummon);
-                          const newCharTeamIdx = teamsRef[player].length - 1;
-                          fieldRef[player].push(newCharTeamIdx);
-                          summonedNames.push(newSummon.name);
-                          eventsRef.push({ type: 'summon', text: `✨ ${char.name} attiva ${char.passive.name} e chiama in aiuto ${newSummon.name}!`, player: player, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx, putOnField: true });
-                      }
-                  });
-                  if (summonedNames.length > 1) {
-                      eventsRef[eventsRef.length - 1].text = `✨ ${char.name} attiva ${char.passive.name} e chiama in aiuto ${summonedNames.join(' e ')}!`;
-                  }
-              }
-          };
-
-          const calculateBotAction = (cpuPlayer, currentActions) => {
-              if (gameState.status !== 'battling') return {};
-
-              let cpuActions = { ...currentActions[cpuPlayer] };
-              let cpuTeam = gameState.teams[cpuPlayer];
-              
-              gameState.field[cpuPlayer].forEach(charTeamIdx => {
-                  if (cpuActions[charTeamIdx]) return;
-                  const cpuChar = cpuTeam[charTeamIdx];
-                  if (!cpuChar || cpuChar.hp <= 0) return;
-                  
-                  let availableMoves = [];
-                  cpuChar.moves.forEach((m, idx) => {
-                      if (m && (m.remainingUses === null || m.remainingUses > 0) && (!m.currentCooldown || m.currentCooldown <= 0)) {
-                          let canUse = true;
-                          if (m.requireSummonsDead && gameState.teams[cpuPlayer].some(c => m.requireSummonsDead.includes(c.id) && c.hp > 0)) canUse = false;
-                          if (m.requiredStatus && !cpuChar.statuses.some(s => s.type === m.requiredStatus)) canUse = false;
-                          if (canUse) availableMoves.push({ move: m, idx });
-                      }
-                  });
-                  
-                  if (availableMoves.length === 0) availableMoves.push({ move: cpuChar.moves[0], idx: 0 });
-
-                  let bestAction = null;
-                  let bestScore = -9999;
-                  
-                  const activeMatchPlayers = getActivePlayers();
-                  let myTeamPlayers = [cpuPlayer];
-                  
-                  if (gameState.gameMode === 'multipla') {
-                      myTeamPlayers = ['p1', 'p2'].includes(cpuPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
-                  } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
-                      const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                      if (cpuPlayer !== juggPlayer) {
-                          myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
-                      }
-                  }
-
-                  let enemyPlayers = activeMatchPlayers.filter(p => !myTeamPlayers.includes(p));
-                  
-                  const chosenMoveObj = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-                  const chosenMove = chosenMoveObj.move;
-                  const chosenMoveIdx = chosenMoveObj.idx;
-                  
-                  if (chosenMove.target === 'self' || chosenMove.isSummon || chosenMove.targetMode === 'team_smart_heal' || chosenMove.targetMode === 'team' || chosenMove.targetMode === 'revive') {
-                      cpuActions[charTeamIdx] = { type: 'attack', moveIdx: chosenMoveIdx, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
-                  } else if (chosenMove.targetMode === 'ally') {
-                      const validAllies = [];
-                      myTeamPlayers.forEach(p => {
-                          if (gameState.field[p]) {
-                              gameState.field[p].forEach(idx => {
-                                  if (gameState.teams[p][idx].hp > 0) validAllies.push({ p, idx });
-                              });
-                          }
-                      });
-                      const target = validAllies[Math.floor(Math.random() * validAllies.length)] || { p: cpuPlayer, idx: charTeamIdx };
-                      cpuActions[charTeamIdx] = { type: 'attack', moveIdx: chosenMoveIdx, targetPlayer: target.p, targetIdx: target.idx, targetFieldIdx: gameState.field[target.p].indexOf(target.idx) };
-                  } else {
-                      const validEnemies = [];
-                      enemyPlayers.forEach(p => {
-                          if (gameState.field[p]) {
-                              gameState.field[p].forEach(idx => {
-                                  if (gameState.teams[p][idx].hp > 0) validEnemies.push({ p, idx });
-                              });
-                          }
-                      });
-                      const target = validEnemies[Math.floor(Math.random() * validEnemies.length)];
-                      if (target) {
-                          cpuActions[charTeamIdx] = { type: 'attack', moveIdx: chosenMoveIdx, targetPlayer: target.p, targetIdx: target.idx, targetFieldIdx: gameState.field[target.p].indexOf(target.idx) };
-                      } else {
-                          cpuActions[charTeamIdx] = { type: 'attack', moveIdx: chosenMoveIdx, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
-                      }
-                  }
-              });
-              return cpuActions;
-          };
-
-          const handleSelectMoveTarget = (tPlayer, tFieldIdx) => {
-              if (targetingMoveIdx === null) return;
-              const move = activeCommandChar.moves[targetingMoveIdx];
-              const tIdx = gameState.field[tPlayer][tFieldIdx];
-
-              if (move.targetCount && move.targetCount > 1 && move.targetCount < 4) {
-                  let newTargets = [...selectedMultiTargets];
-                  const existingIdx = newTargets.findIndex(t => t.player === tPlayer && t.fieldIdx === tFieldIdx);
-                  
-                  if (existingIdx !== -1) newTargets.splice(existingIdx, 1);
-                  else newTargets.push({ player: tPlayer, idx: tIdx, fieldIdx: tFieldIdx });
-                  
-                  setSelectedMultiTargets(newTargets);
-
-                  let activeTargetCount = 0;
-                  const activeMatchPlayers = getActivePlayers();
-                  let enemyPlayers = [];
-                  if (gameState.gameMode === 'multipla') {
-                      enemyPlayers = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
-                  } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
-                      const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                      enemyPlayers = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                  } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
-                      enemyPlayers = [activeMatchPlayers.find(p => p !== playerRole)];
-                  } else if (gameState.gameMode === 'battleroyale') {
-                      enemyPlayers = activeMatchPlayers.filter(p => p !== playerRole);
-                  } else {
-                      enemyPlayers = [playerRole === 'p1' ? 'p2' : 'p1'];
-                  }
-                  
-                  enemyPlayers.forEach(ep => {
-                      if (ep && gameState.field[ep]) {
-                          gameState.field[ep].forEach(cIdx => {
-                              if (gameState.teams[ep][cIdx] && gameState.teams[ep][cIdx].hp > 0) activeTargetCount++;
-                          });
-                      }
-                  });
-
-                  if (newTargets.length === move.targetCount || newTargets.length >= activeTargetCount) {
-                      commitAction({
-                          type: 'attack',
-                          moveIdx: targetingMoveIdx,
-                          selectedTargets: newTargets
-                      });
-                  }
-              } else {
-                  commitAction({
-                      type: 'attack',
-                      moveIdx: targetingMoveIdx,
-                      targetPlayer: tPlayer,
-                      targetIdx: tIdx,
-                      targetFieldIdx: tFieldIdx
-                  });
-              }
-          };
-
-          const commitAction = (action) => {
-              if (gameState.status !== 'battling') return;
-
-              const activeMatchPlayers = getActivePlayers();
-              let updatedActions = { ...gameState.actions };
-              
-              if (!updatedActions[playerRole]) updatedActions[playerRole] = {};
-              updatedActions[playerRole][gameState.field[playerRole][commandingIdx]] = action;
-
-              activeMatchPlayers.forEach(p => {
-                  if (gameState.isBot[p]) {
-                      updatedActions[p] = calculateBotAction(p, updatedActions);
-                  }
-              });
-
-              let allReady = true;
-              activeMatchPlayers.forEach(p => {
-                  if (gameState.field[p]) {
-                      gameState.field[p].forEach(idx => {
-                          if (gameState.teams[p][idx] && gameState.teams[p][idx].hp > 0 && !gameState.teams[p][idx].isSummonOnly) {
-                              if (!updatedActions[p] || !updatedActions[p][idx]) allReady = false;
-                          }
-                      });
-                  }
-              });
-
-              if (allReady) {
-                  resolveTurn(updatedActions);
-              } else {
-                  if (appMode === 'local_room') {
-                      let nextP = playerRole;
-                      let nextCIdx = commandingIdx + 1;
-                      
-                      while (true) {
-                          if (gameState.field[nextP] && nextCIdx < gameState.field[nextP].length && gameState.teams[nextP][gameState.field[nextP][nextCIdx]] && gameState.teams[nextP][gameState.field[nextP][nextCIdx]].hp > 0 && !gameState.teams[nextP][gameState.field[nextP][nextCIdx]].isSummonOnly) {
-                              break;
-                          }
-                          nextCIdx = 0;
-                          const pIdx = activeMatchPlayers.indexOf(nextP);
-                          nextP = activeMatchPlayers[(pIdx + 1) % activeMatchPlayers.length];
-                          if (nextP === playerRole && nextCIdx === 0) break;
-                          if (gameState.isBot[nextP]) {
-                              nextCIdx = gameState.field[nextP] ? gameState.field[nextP].length : 0;
-                          }
-                      }
-                      
-                      updateState({ actions: updatedActions }).then(() => {
-                          setPlayerRole(nextP);
-                          setCommandingIdx(nextCIdx);
-                          setActionMenuMode('moves');
-                          setTargetingMoveIdx(null);
-                          setSelectedMultiTargets([]);
-                      });
-                  } else {
-                      let nextCIdx = commandingIdx + 1;
-                      while (nextCIdx < gameState.field[playerRole].length && (!gameState.teams[playerRole][gameState.field[playerRole][nextCIdx]] || gameState.teams[playerRole][gameState.field[playerRole][nextCIdx]].hp <= 0 || gameState.teams[playerRole][gameState.field[playerRole][nextCIdx]].isSummonOnly)) {
-                          nextCIdx++;
-                      }
-                      updateState({ actions: updatedActions }).then(() => {
-                          if (nextCIdx < gameState.field[playerRole].length) {
-                              setCommandingIdx(nextCIdx);
-                              setActionMenuMode('moves');
-                              setTargetingMoveIdx(null);
-                              setSelectedMultiTargets([]);
-                          } else {
-                              setCommandingIdx(-1);
-                          }
-                      });
-                  }
-              }
-          };
-
-          const calculateDamage = (attacker, defender, move, multiplier, isFirstAttack) => {
-              if (move.power === 0) return 0;
-              let atk = attacker.atk;
-              let def = defender.def;
-              
-              if (move.ignoreDefBuffs && defender.def > defender.baseDef) {
-                  def = defender.baseDef;
-              }
-              
-              let baseDmg = ((2 * 50 / 5 + 2) * move.power * (atk / def)) / 50 + 2;
-              
-              if (move.speedScaling) {
-                  baseDmg += (attacker.spd * 0.3);
-              }
-              
-              let damage = Math.floor(baseDmg * multiplier * (Math.random() * 0.15 + 0.85));
-              
-              if (attacker.passive && attacker.passive.type === 'first_strike_bonus' && isFirstAttack) {
-                  damage = Math.floor(damage * attacker.passive.damageBonus);
-              }
-              
-              return Math.max(1, damage);
-          };
-
-          const applyDamage = (char, damage, player, charIdx, text) => {
-              char.hp = Math.max(0, char.hp - damage);
-              char.damageTakenThisTurn = (char.damageTakenThisTurn || 0) + damage;
-              
-              if (char.passive && char.passive.type === 'survive_ko' && char.hp === 0 && (char.passiveUses || 0) < char.passive.maxUses) {
-                  char.hp = 1;
-                  char.passiveUses = (char.passiveUses || 0) + 1;
-                  text += ` Ma ${char.name} resiste con 1 PS grazie a ${char.passive.name}!`;
-              } else if (char.passive && char.passive.type === 'on_faint' && char.hp === 0 && (char.passiveUses || 0) < char.passive.maxUses) {
-                  const heal = Math.floor(char.maxHp * char.passive.reviveHpPercent);
-                  char.hp = heal;
-                  char.passiveUses = (char.passiveUses || 0) + 1;
-                  text += ` ${char.name} va K.O. ma rinasce con ${heal} PS grazie a ${char.passive.name}!`;
-              } else if (char.passive && char.passive.type === 'on_hp_threshold' && char.hp > 0 && char.hp <= char.maxHp * char.passive.threshold && (char.passiveUses || 0) < char.passive.maxUses) {
-                  char.passiveUses = (char.passiveUses || 0) + 1;
-                  if (char.passive.statBuff) {
-                      if (char.passive.statBuff.atk) char.atk = Math.floor(char.atk * char.passive.statBuff.atk);
-                      if (char.passive.statBuff.spd) char.spd = Math.floor(char.spd * char.passive.statBuff.spd);
-                      if (char.passive.statBuff.def) char.def = Math.floor(char.def * char.passive.statBuff.def);
-                  }
-                  if (char.passive.resetEnemyBuffs) {
-                      const activeMatchPlayers = getActivePlayers();
-                      activeMatchPlayers.forEach(p => {
-                          if (p !== player && workingField[p]) {
-                              workingField[p].forEach(idx => {
-                                  let c = workingTeams[p][idx];
-                                  if (c && c.hp > 0) {
-                                      if (c.atk > c.baseAtk) c.atk = c.baseAtk;
-                                      if (c.def > c.baseDef) c.def = c.baseDef;
-                                      if (c.spd > c.baseSpd) c.spd = c.baseSpd;
-                                  }
-                              });
-                          }
-                      });
-                  }
-                  text += ` ${char.passive.desc}`;
-              }
-              
-              events.push({ type: 'damage', text, targetPlayer: player, targetIdx: charIdx, newHp: char.hp });
-          };
-
-          const updateStatusUI = (player, idx) => {
-              events.push({ type: 'status_update', targetPlayer: player, targetIdx: idx, statuses: JSON.parse(JSON.stringify(workingTeams[player][idx].statuses)) });
-          };
-
-          let workingTeams, workingField, workingInventory, events, startOfTurnTeams, startOfTurnField;
-
-          const resolveTurn = (turnActions) => {
-              workingTeams = JSON.parse(JSON.stringify(gameState.teams));
-              workingField = JSON.parse(JSON.stringify(gameState.field));
-              workingInventory = JSON.parse(JSON.stringify(gameState.inventory));
-              startOfTurnTeams = JSON.parse(JSON.stringify(gameState.teams));
-              startOfTurnField = JSON.parse(JSON.stringify(gameState.field));
-              events = [];
-
-              let actionQueue = [];
-              const activeMatchPlayers = getActivePlayers();
-              
-              activeMatchPlayers.forEach(p => {
-                  if (turnActions[p]) {
-                      Object.keys(turnActions[p]).forEach(charTeamIdxStr => {
-                          const charTeamIdx = parseInt(charTeamIdxStr);
-                          const action = turnActions[p][charTeamIdxStr];
-                          const char = workingTeams[p][charTeamIdx];
-                          if (char && char.hp > 0) {
-                              let effSpd = char.spd;
-                              if (char.statuses && char.statuses.some(s => s.type === 'Elettrizzato')) effSpd = Math.floor(effSpd / 2);
-                              
-                              let priority = 0;
-                              if (action.type === 'switch') priority = 6;
-                              if (action.type === 'use_item') priority = 6;
-                              if (action.type === 'attack') {
-                                  const move = char.moves[action.moveIdx];
-                                  if (move && move.priority) priority = move.priority;
-                              }
-                              
-                              actionQueue.push({ player: p, charTeamIdx, action, char, priority, spd: effSpd });
-                          }
-                      });
-                  }
-              });
-
-              actionQueue.sort((a, b) => {
-                  if (a.priority !== b.priority) return b.priority - a.priority;
-                  return b.spd - a.spd;
-              });
-
-              let isFirstAttackOfTurn = true;
-
-              for (let actObj of actionQueue) {
-                  const { player, charTeamIdx, action } = actObj;
-                  const attacker = workingTeams[player][charTeamIdx];
-                  if (!attacker || attacker.hp <= 0 && action.type !== 'switch') continue;
-
-                  if (action.type === 'use_item') {
-                      const item = ITEMS_DB[action.itemId];
-                      const target = workingTeams[player][action.targetIdx];
-                      
-                      if (workingInventory[player][action.itemId] > 0 && target) {
-                          workingInventory[player][action.itemId] -= 1;
-                          events.push({ type: 'text', text: `${gameState.players[player]} usa ${item.name} su ${target.name}!` });
+                          newSummon.moves.forEach(m => { if (m.maxUses !== undefined) m.remainingUses = m.maxUses; });
                           
-                          if (item.type === 'heal') {
-                              if (target.hp > 0) {
-                                  const healAmount = Math.floor(target.maxHp * item.value);
-                                  target.hp = Math.min(target.maxHp, target.hp + healAmount);
-                                  events.push({ type: 'damage', text: `${target.name} recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: action.targetIdx, newHp: target.hp });
+                          // --- POTENZIAMENTO EVOCAZIONI JUGGERNAUT / CAMPAGNA BOSS ---
+                          if (gameMode === 'juggernaut' && settings && p === (settings.juggernautPlayer || 'p1')) {
+                              const numOpp = Object.keys(workingField).filter(k => workingTeams[k] && workingTeams[k].length > 0).length - 1;
+                              if (numOpp > 0) {
+                                  newSummon.maxHp = Math.floor(newSummon.maxHp * (1 + numOpp * 0.8));
+                                  newSummon.hp = newSummon.maxHp;
+                                  newSummon.atk = Math.floor(newSummon.atk * (1 + numOpp * 0.3));
+                                  newSummon.def = Math.floor(newSummon.def * (1 + numOpp * 0.3));
+                                  newSummon.baseAtk = newSummon.atk;
+                                  newSummon.baseDef = newSummon.def;
+                                  newSummon.imageFilter = 'drop-shadow(0 0 15px rgba(220,38,38,0.8))';
                               }
-                          } else if (item.type === 'revive') {
-                              if (target.hp <= 0) {
-                                  target.hp = Math.floor(target.maxHp * item.value);
-                                  events.push({ type: 'damage', text: `${target.name} viene rianimato con ${target.hp} HP!`, targetPlayer: player, targetIdx: action.targetIdx, newHp: target.hp });
-                                  events.push({ type: 'revive_to_field', player: player, targetIdx: action.targetIdx });
+                          } else if (isCampaign && p === 'p2') {
+                              const summonerBase = CHARACTERS.find(c => c.id === char.id);
+                              if (summonerBase) {
+                                  const hpRatio = char.maxHp / summonerBase.maxHp;
+                                  const statRatio = char.baseAtk / summonerBase.atk;
+                                  newSummon.maxHp = Math.floor(newSummon.maxHp * hpRatio);
+                                  newSummon.hp = newSummon.maxHp;
+                                  newSummon.atk = Math.floor(newSummon.atk * statRatio);
+                                  newSummon.def = Math.floor(newSummon.def * statRatio);
+                                  newSummon.baseAtk = newSummon.atk;
+                                  newSummon.baseDef = newSummon.def;
+                                  if (char.imageFilter) newSummon.imageFilter = char.imageFilter;
                               }
-                          } else if (item.type === 'heal_status') {
-                              target.statuses = [];
-                              updateStatusUI(player, action.targetIdx);
-                              events.push({ type: 'text', text: `${target.name} viene curato da tutte le alterazioni di stato!` });
                           }
+
+                          workingTeams[p].push(newSummon);
+                          workingField[p].push(workingTeams[p].length - 1);
+                          summonedNames.push(newSummon.name);
                       }
-                      continue;
+                  });
+                  if (summonedNames.length > 0) {
+                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name} ed evoca ${summonedNames.join(' e ')}!` });
+                  }
+              }
+              
+              if (char.passive.teamStatBuff) {
+                  let myTeamPlayers = [p];
+                  if (gameMode === 'multipla') {
+                      myTeamPlayers = ['p1', 'p2'].includes(p) ? ['p1', 'p2'] : ['p3', 'p4'];
+                  } else if (gameMode === 'juggernaut') {
+                      const juggPlayer = settings?.juggernautPlayer || 'p1';
+                      if (p !== juggPlayer) {
+                          const allPlayers = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'];
+                          myTeamPlayers = allPlayers.filter(ap => ap !== juggPlayer && workingField[ap]);
+                      }
                   }
 
-                  let move = null;
-                  if (action.type === 'attack') move = attacker.moves[action.moveIdx];
-
-                  if (action.type === 'switch') {
-                      const fieldPos = workingField[player].indexOf(charTeamIdx);
-                      workingField[player][fieldPos] = action.toIdx;
-                      events.push({ type: 'switch', text: `${gameState.players[player]} ritira ${attacker.name} e manda in campo ${workingTeams[player][action.toIdx].name}!`, player: player, pos: fieldPos, newIdx: action.toIdx });
-                      
-                      const newChar = workingTeams[player][action.toIdx];
-                      newChar.revealed = true;
-                      if (newChar && newChar.passive && newChar.passive.type === 'on_enter' && (newChar.passiveUses || 0) < (newChar.passive.maxUses || 1)) {
-                          newChar.passiveUses = (newChar.passiveUses || 0) + 1;
-                          applyOnEnterPassive(newChar, player, action.toIdx, workingTeams, workingField, events, gameState.gameMode, gameState.settings, gameState.isCampaignBattle);
-                      }
-                      continue;
-                  }
-
-                  if (move.targetMode === 'team_smart_heal') {
-                      let myTeamPlayers = [player];
-                      if (gameState.gameMode === 'multipla') myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                      else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
-                          const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                          if (player !== juggPlayer) myTeamPlayers = getActivePlayers().filter(p => p !== juggPlayer);
-                      }
-
-                      let aliveAllies = [];
-                      myTeamPlayers.forEach(pAlly => {
-                          if (workingField[pAlly]) {
-                              workingField[pAlly].forEach(idx => {
-                                  if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
-                                      aliveAllies.push({ p: pAlly, idx: idx });
-                                  }
-                              });
-                          }
-                      });
-
-                      if (aliveAllies.length > 1) {
-                          for (let aObj of aliveAllies) {
-                              let allyPlayer = aObj.p;
-                              let aIdx = aObj.idx;
-                              let ally = workingTeams[allyPlayer][aIdx];
-                              const healAmount = Math.floor(ally.maxHp * move.healTeam);
-                              ally.hp = Math.min(ally.maxHp, ally.hp + healAmount);
-                              events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e cura ${ally.name} di ${healAmount} HP!`, targetPlayer: allyPlayer, targetIdx: aIdx, newHp: ally.hp });
-                          }
-                      } else {
-                          const healAmount = Math.floor(attacker.maxHp * move.healAlone);
-                          attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                          events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
-                      }
-                      if (move.removeNegativeStatuses) {
-                          aliveAllies.forEach(aObj => {
-                              let ally = workingTeams[aObj.p][aObj.idx];
-                              const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
-                              const filtered = ally.statuses.filter(s => !negatives.includes(s.type));
-                              if (filtered.length < ally.statuses.length) {
-                                  ally.statuses = filtered;
-                                  updateStatusUI(aObj.p, aObj.idx);
-                                  events.push({ type: 'text', text: `Gli status negativi di ${ally.name} svaniscono!` });
+                  myTeamPlayers.forEach(pAlly => {
+                      if (workingField[pAlly]) {
+                          workingField[pAlly].forEach(aIdx => {
+                              const ally = workingTeams[pAlly][aIdx];
+                              if (ally && ally.hp > 0) {
+                                  if (char.passive.teamStatBuff.atk) ally.atk = Math.floor(ally.atk * char.passive.teamStatBuff.atk);
+                                  if (char.passive.teamStatBuff.def) ally.def = Math.floor(ally.def * char.passive.teamStatBuff.def);
+                                  if (char.passive.teamStatBuff.spd) ally.spd = Math.floor(ally.spd * char.passive.teamStatBuff.spd);
                               }
                           });
                       }
-                      continue;
+                  });
+                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche del tuo team aumentano!` });
+              }
+              
+              if (char.passive.selfStatBuff) {
+                  if (char.passive.selfStatBuff.atk) char.atk = Math.floor(char.atk * char.passive.selfStatBuff.atk);
+                  if (char.passive.selfStatBuff.def) char.def = Math.floor(char.def * char.passive.selfStatBuff.def);
+                  if (char.passive.selfStatBuff.spd) char.spd = Math.floor(char.spd * char.passive.selfStatBuff.spd);
+                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le proprie statistiche aumentano!` });
+              }
+              
+              if (char.passive.enemyStatDebuff || char.passive.revealStrongestEnemyMove || char.passive.applyStatusToRandomEnemy || char.passive.randomStatDebuffToRandomEnemy) {
+                  const allPlayers = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'];
+                  let enemyPlayers = [];
+                  if (gameMode === 'multipla') {
+                      enemyPlayers = ['p1', 'p2'].includes(p) ? ['p3', 'p4'] : ['p1', 'p2'];
+                  } else if (gameMode === 'juggernaut') {
+                      const juggPlayer = settings?.juggernautPlayer || 'p1';
+                      enemyPlayers = p === juggPlayer ? allPlayers.filter(ap => ap !== juggPlayer && workingField[ap]) : [juggPlayer];
+                  } else {
+                      const pKeys = Object.keys(workingField).filter(k => workingField[k].length > 0);
+                      enemyPlayers = pKeys.filter(k => k !== p);
                   }
-
-                  if (move.targetMode === 'team') {
-                      let myTeamPlayers = [player];
-                      if (gameState.gameMode === 'multipla') myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                      else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
-                          const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                          if (player !== juggPlayer) myTeamPlayers = getActivePlayers().filter(p => p !== juggPlayer);
-                      }
-
-                      myTeamPlayers.forEach(pAlly => {
-                          if (workingField[pAlly]) {
-                              workingField[pAlly].forEach(idx => {
-                                  let ally = workingTeams[pAlly][idx];
-                                  if (ally && ally.hp > 0) {
-                                      if (move.targetStatBuff) {
-                                          let statTexts = [];
-                                          if (move.targetStatBuff.atk) { ally.atk = Math.floor(ally.atk * move.targetStatBuff.atk); statTexts.push("Attacco"); }
-                                          if (move.targetStatBuff.def) { ally.def = Math.floor(ally.def * move.targetStatBuff.def); statTexts.push("Difesa"); }
-                                          if (move.targetStatBuff.spd) { ally.spd = Math.floor(ally.spd * move.targetStatBuff.spd); statTexts.push("Velocità"); }
-                                          events.push({ type: 'text', text: `${attacker.name} usa ${move.name}! ${statTexts.join(" e ")} di ${ally.name} aumenta!` });
-                                      }
-                                      if (move.statusEffect) {
-                                          const existingIdx = ally.statuses.findIndex(s => s.type === move.statusEffect.type);
-                                          if(existingIdx === -1) {
-                                              ally.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
-                                          } else {
-                                              ally.statuses[existingIdx].turns = move.statusEffect.turns || 1;
-                                          }
-                                          updateStatusUI(pAlly, idx);
-                                          if (move.statusEffect.type === 'Scudo Team') {
-                                              events.push({ type: 'text', text: `Lo Scudo Team protegge ${ally.name}!` });
-                                          } else if (move.statusEffect.type === 'Protetto') {
-                                              events.push({ type: 'text', text: `🛡️ ${ally.name} si protegge!` });
-                                          }
-                                      }
-                                      if (move.removeNegativeStatuses) {
-                                          const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
-                                          const filtered = ally.statuses.filter(s => !negatives.includes(s.type));
-                                          if (filtered.length < ally.statuses.length) {
-                                              ally.statuses = filtered;
-                                              updateStatusUI(pAlly, idx);
-                                              events.push({ type: 'text', text: `Gli status negativi di ${ally.name} svaniscono!` });
-                                          }
-                                      }
+                  
+                  if (char.passive.enemyStatDebuff) {
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      if (char.passive.enemyStatDebuff.atk) enemy.atk = Math.floor(enemy.atk * char.passive.enemyStatDebuff.atk);
+                                      if (char.passive.enemyStatDebuff.def) enemy.def = Math.floor(enemy.def * char.passive.enemyStatDebuff.def);
+                                      if (char.passive.enemyStatDebuff.spd) enemy.spd = Math.floor(enemy.spd * char.passive.enemyStatDebuff.spd);
                                   }
                               });
                           }
                       });
-                      continue;
+                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche dei nemici in campo diminuiscono!` });
                   }
+                  
+                  if (char.passive.revealStrongestEnemyMove) {
+                      let strongestMove = null;
+                      let strongestPower = -1;
+                      let enemyName = '';
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      enemy.moves.forEach(m => {
+                                          if (m && m.power > strongestPower) {
+                                              strongestPower = m.power;
+                                              strongestMove = m;
+                                              enemyName = enemy.name;
+                                          }
+                                      });
+                                  }
+                              });
+                          }
+                      });
+                      if (strongestMove) {
+                          eventsArr.push({ type: 'text', text: `👁️ ${char.passive.name}! ${char.name} analizza e svela la mossa più potente: ${strongestMove.name} di ${enemyName} (Potenza: ${strongestPower})!` });
+                      }
+                  }
+                  
+                  if (char.passive.applyStatusToRandomEnemy) {
+                      let possibleTargets = [];
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      possibleTargets.push({ player: ep, idx: eIdx, char: enemy });
+                                  }
+                              });
+                          }
+                      });
+                      if (possibleTargets.length > 0) {
+                          const rTarget = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+                          const sType = char.passive.applyStatusToRandomEnemy.type;
+                          
+                          const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(sType);
+                          if (isNegative && rTarget.char.passive && rTarget.char.passive.immuneToNegativeStatuses) {
+                              eventsArr.push({ type: 'text', text: `🛡️ ${char.name} attiva ${char.passive.name}, ma ${rTarget.char.name} è immune a ${sType} grazie a ${rTarget.char.passive.name}!` });
+                          } else {
+                              const existingIdx = rTarget.char.statuses.findIndex(s => s.type === sType);
+                              if (existingIdx === -1) {
+                                  rTarget.char.statuses.push({ type: sType, turns: char.passive.applyStatusToRandomEnemy.turns || 1 });
+                              } else {
+                                  rTarget.char.statuses[existingIdx].turns = char.passive.applyStatusToRandomEnemy.turns || 1;
+                              }
+                              eventsArr.push({ type: 'text', text: `🔥 ${char.name} attiva ${char.passive.name}! ${rTarget.char.name} subisce lo status ${sType}!` });
+                              eventsArr.push({ type: 'status_update', targetPlayer: rTarget.player, targetIdx: rTarget.idx, statuses: JSON.parse(JSON.stringify(rTarget.char.statuses)) });
+                          }
+                      }
+                  }
+                  
+                  if (char.passive.randomStatDebuffToRandomEnemy) {
+                      let possibleTargets = [];
+                      enemyPlayers.forEach(ep => {
+                          if (workingField[ep]) {
+                              workingField[ep].forEach(eIdx => {
+                                  const enemy = workingTeams[ep][eIdx];
+                                  if (enemy && enemy.hp > 0) {
+                                      possibleTargets.push({ player: ep, idx: eIdx, char: enemy });
+                                  }
+                              });
+                          }
+                      });
+                      if (possibleTargets.length > 0) {
+                          const rTarget = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+                          const chance = char.passive.randomStatDebuffToRandomEnemy.chance || 0.5;
+                          const mult = char.passive.randomStatDebuffToRandomEnemy.multiplier || 0.7;
+                          let debuffedStats = [];
+                          
+                          if (Math.random() < chance) { rTarget.char.atk = Math.floor(rTarget.char.atk * mult); debuffedStats.push("Attacco"); }
+                          if (Math.random() < chance) { rTarget.char.def = Math.floor(rTarget.char.def * mult); debuffedStats.push("Difesa"); }
+                          if (Math.random() < chance) { rTarget.char.spd = Math.floor(rTarget.char.spd * mult); debuffedStats.push("Velocità"); }
+                          
+                          if (debuffedStats.length > 0) {
+                              eventsArr.push({ type: 'text', text: `🌪️ ${char.name} attiva ${char.passive.name}! La sfortuna colpisce ${rTarget.char.name}, riducendo: ${debuffedStats.join(", ")} (-30%)!` });
+                          } else {
+                              eventsArr.push({ type: 'text', text: `🌪️ ${char.name} attiva ${char.passive.name}... ma la sfortuna risparmia i nemici stavolta!` });
+                          }
+                      }
+                  }
+              }
+          };
+
+          const startBattle = () => {
+            const teams = JSON.parse(JSON.stringify(gameState.draft));
+            let fieldSize = gameState.settings.fieldSize;
+            if (gameState.gameMode === 'multipla') fieldSize = 1; 
+            
+            let field = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
+            
+            // GESTIONE SHUFFLE GIOCATORI NEL TORNEO
+            let bracket = ['p1', 'p2', 'p3', 'p4'];
+            let rrMatches = [];
+            let scores = { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 };
+
+            if (gameState.gameMode === 'torneo') {
+                for (let i = bracket.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [bracket[i], bracket[j]] = [bracket[j], bracket[i]];
+                }
+                ['p1', 'p2', 'p3', 'p4'].forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
+            } else if (gameState.gameMode === 'torneo_punti') {
+                const joinedPlayers = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+                for (let i = 0; i < joinedPlayers.length; i++) {
+                    for (let j = i + 1; j < joinedPlayers.length; j++) {
+                        rrMatches.push({ pA: joinedPlayers[i], pB: joinedPlayers[j] });
+                    }
+                }
+                rrMatches.sort(() => Math.random() - 0.5); // Mescola le partite
+                
+                // Manda in campo solo i due giocatori della prima partita
+                [rrMatches[0].pA, rrMatches[0].pB].forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
+            } else if (gameState.gameMode === 'battleroyale') {
+                const activeBR = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
+                activeBR.forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
+            } else if (gameState.gameMode === 'juggernaut') {
+                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                const activeJugg = ['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
+                activeJugg.forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, p === juggPlayer ? 1 : fieldSize).map((_, i) => i);
+                    }
+                });
+
+                // --- APPLICAZIONE BUFF JUGGERNAUT ---
+                if (teams[juggPlayer] && teams[juggPlayer][0]) {
+                    const numOpponents = Math.max(1, activeJugg.length - 1); // FIX: Assicura un valore valido
+                    const jugg = teams[juggPlayer][0];
+                    // Moltiplica enormemente HP per sopravvivere all'assalto combinato
+                    jugg.maxHp = Math.floor(jugg.maxHp * numOpponents * 1.5); 
+                    jugg.hp = jugg.maxHp;
+                    // Aumenta attacco e difesa del +40% per ogni avversario extra
+                    jugg.atk = Math.floor(jugg.atk * (1 + (numOpponents * 0.4)));
+                    jugg.def = Math.floor(jugg.def * (1 + (numOpponents * 0.4)));
+                    jugg.baseAtk = jugg.atk;
+                    jugg.baseDef = jugg.def;
+                    jugg.imageFilter = 'drop-shadow(0 0 30px rgba(220,38,38,1)) contrast(1.3) saturate(1.2)'; // Aura speciale potenziata
+                    jugg.isJuggernaut = true; // Flag per UI e logiche boss
+                    jugg.juggShieldHpThresholds = [0.75, 0.50, 0.25]; // Soglie scudo
+                    jugg.juggHitsRemaining = 0; // Contatore scudo
+                    jugg.shieldGrantedHits = 4; // Il Juggernaut riceve uno scudo da 4 colpi
+                    jugg.juggTurnCount = 0; // Contatore turni per la purificazione passiva
+
+                    // Aggiunta mossa esclusiva "Furia del Boss"
+                    jugg.moves.push({
+                        name: 'Furia del Boss',
+                        type: 'Oscuro',
+                        power: 40,
+                        targetCount: 4,
+                        cooldown: 3, // Sistema di ricarica
+                        currentCooldown: 0,
+                        desc: 'Un attacco esplosivo che colpisce tutti gli avversari in campo. Ricarica: 3 turni.'
+                    });
+                }
+            } else {
+                ['p1', 'p2', 'p3', 'p4'].forEach(p => {
+                    if (teams[p] && teams[p].length > 0) {
+                        field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
+                    }
+                });
+            }
+
+            let initialEvents = [];
+
+            // Imposta come "rivelati" i personaggi che entrano in campo per la prima volta
+            Object.keys(field).forEach(p => {
+                if (field[p]) {
+                    const initialField = [...field[p]]; // Copia per non iterare sulle evocazioni appena aggiunte
+                    initialField.forEach(idx => {
+                        if (teams[p][idx]) {
+                            teams[p][idx].revealed = true;
+                            
+                            // GESTIONE ABILITÀ PASSIVE 'on_enter' (Allo start della battaglia)
+                            const char = teams[p][idx];
+                            if (char.passive && char.passive.type === 'on_enter' && (char.passiveUses || 0) < (char.passive.maxUses || 1)) {
+                                char.passiveUses = (char.passiveUses || 0) + 1;
+                                applyOnEnterPassive(char, p, idx, teams, field, initialEvents, gameState.gameMode, gameState.settings, gameState.isCampaignBattle);
+                            }
+                        }
+                    });
+                }
+            });
+
+            let nextState = {
+              status: 'pre_battle', 
+              teams: teams,
+              field: field,
+              events: initialEvents,
+              actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+              pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
+              switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+              tournamentMatch: gameState.gameMode === 'torneo' ? 'semi1' : null,
+              tournamentBracket: bracket,
+              roundRobinMatches: rrMatches,
+              currentMatchIdx: 0,
+              playerScores: scores
+            };
+
+            updateState(nextState);
+
+            // AGGIORNAMENTO STATISTICHE: Partita e Personaggi scelti
+            if (playerName.trim()) {
+                updateLocalStats({ match: true });
+                const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
+                if (myKey && teams[myKey]) {
+                    teams[myKey].forEach(c => updateLocalStats({ char: c.name }));
+                }
+            }
+            matchStartTimeRef.current = Date.now();
+
+            if (appMode === 'local_room' || appMode === 'vs_cpu') {
+                let active = [];
+                if (gameState.gameMode === 'torneo') active = [bracket[0], bracket[1]];
+                else if (gameState.gameMode === 'torneo_punti') active = [rrMatches[0].pA, rrMatches[0].pB];
+                else active = ['p1', 'p2', 'p3', 'p4'].slice(0, getRequiredPlayers(gameState.gameMode, gameState.settings));
+                
+                const humans = active.filter(p => !gameState.isBot[p]);
+                if (humans.length > 0) {
+                    setPlayerRole(humans[0]);
+                } else {
+                    setPlayerRole(active[0]);
+                }
+                setCommandingIdx(0);
+            }
+          };
+
+          // --- INTELLIGENZA ARTIFICIALE CPU (Migliorata per Tutti i Bot) ---
+          const generateCPUActionsForPlayer = (cpuPlayer, currentActions) => {
+                let cpuActions = {};
+                
+                let enemyTeams = [];
+                if (gameState.gameMode === 'multipla') {
+                    enemyTeams = ['p1', 'p2'].includes(cpuPlayer) ? ['p3', 'p4'] : ['p1', 'p2'];
+                } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                    const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                    const activeMatchPlayers = getActivePlayers();
+                    enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+                } else if (gameState.gameMode === 'torneo') {
+                    const activeMatchPlayers = getActivePlayers();
+                    enemyTeams = [activeMatchPlayers.find(p => p !== cpuPlayer)];
+                } else if (gameState.gameMode === 'battleroyale') {
+                    const activeMatchPlayers = getActivePlayers();
+                    enemyTeams = activeMatchPlayers.filter(p => p !== cpuPlayer);
+                } else {
+                    enemyTeams = [cpuPlayer === 'p1' ? 'p2' : 'p1'];
+                }
+
+                let possibleEnemies = [];
+                enemyTeams.forEach(ePlayer => {
+                    if(ePlayer && gameState.field[ePlayer]) {
+                        gameState.field[ePlayer].forEach((fIdx, arrIdx) => {
+                            let eChar = gameState.teams[ePlayer]?.[fIdx];
+                            if (eChar && eChar.hp > 0) {
+                                possibleEnemies.push({ player: ePlayer, idx: fIdx, fieldIdx: arrIdx, char: eChar });
+                            }
+                        });
+                    }
+                });
+
+                gameState.field[cpuPlayer].forEach((charTeamIdx, fieldIdx) => {
+                    const cpuChar = gameState.teams[cpuPlayer]?.[charTeamIdx];
+                    if (!cpuChar || cpuChar.hp <= 0) return; // FIX: Sicurezza aggiuntiva contro morti in tempo reale
+
+                    let bestAction = null;
+                    let bestScore = -1;
+
+                    // 1. Priorità Cure se in fin di vita
+                    if (gameState.inventory[cpuPlayer].cura_totale > 0 && cpuChar.hp < (cpuChar.maxHp * 0.30)) {
+                        bestAction = { type: 'use_item', itemId: 'cura_totale', targetIdx: charTeamIdx };
+                        bestScore = 10000;
+                    } else if (gameState.inventory[cpuPlayer].pozione > 0 && cpuChar.hp < (cpuChar.maxHp * 0.50)) {
+                        bestAction = { type: 'use_item', itemId: 'pozione', targetIdx: charTeamIdx };
+                        bestScore = 8000;
+                    }
+
+                    // 2. Valutazione Mosse Strategiche
+                    if (!bestAction) {
+                        cpuChar.moves.forEach((move, moveIdx) => {
+                            if (move.remainingUses === 0) return;
+                            if (move.currentCooldown && move.currentCooldown > 0) return; // IA ignora le mosse in cooldown
+                            if (move.requireSummonsDead && gameState.teams[cpuPlayer].some(c => move.requireSummonsDead.includes(c.id) && c.hp > 0)) return;
+                            if (move.requiredStatus && !cpuChar.statuses.some(s => s.type === move.requiredStatus)) return; // IA ignora se manca status
+
+                            if (move.isCombo) {
+                                const myFieldChars = gameState.field[cpuPlayer].map(idx => gameState.teams[cpuPlayer][idx]).filter(c => c.hp > 0);
+                                const myFieldIds = myFieldChars.map(c => c.id);
+                                if (!move.isCombo.every(id => myFieldIds.includes(id))) return;
+                            }
+
+                            if (move.target === 'self' || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.isProtect || move.isSummon || move.randomSummon) {
+                                // Mosse di Supporto
+                                let score = 0; 
+                                if (move.heal || move.healAlone || move.healLastTurnDamage) {
+                                    if (cpuChar.hp < cpuChar.maxHp * 0.5) score += 150;
+                                } else if (move.isProtect) {
+                                    if ((cpuChar.consecutiveProtect || 0) > 0) score += 0;
+                                    else score += 50;
+                                } else if (move.statBuff || move.targetStatBuff) {
+                                    score += 40;
+                                } else if (move.isSummon || move.randomSummon) {
+                                    score += 80;
+                                } else {
+                                    score += 30;
+                                }
+
+                                if (score > 0) score += Math.random() * 30; 
+                                
+                                if (score > bestScore) {
+                                    bestScore = score;
+                                    bestAction = { type: 'attack', moveIdx, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
+                                }
+                            } else if (move.targetMode === 'ally') {
+                                let allyScore = 0;
+                                let bestAlly = null;
+                                let myTeamPlayers = [cpuPlayer];
+                                if (gameState.gameMode === 'multipla') {
+                                    myTeamPlayers = ['p1', 'p2'].includes(cpuPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
+                                } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                    const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                                    if (cpuPlayer !== juggPlayer) {
+                                        myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                                    }
+                                }
+                                
+                                myTeamPlayers.forEach(allyPlayer => {
+                                     gameState.field[allyPlayer]?.forEach((aIdx, aFieldIdx) => {
+                                          const aChar = gameState.teams[allyPlayer][aIdx];
+                                          if (aChar && aChar.hp > 0 && aChar.hp < aChar.maxHp * 0.5) {
+                                              allyScore = 150 + Math.random() * 20;
+                                              bestAlly = { p: allyPlayer, i: aIdx, fi: aFieldIdx };
+                                          }
+                                     });
+                                });
+                                
+                                if (bestAlly && allyScore > bestScore) {
+                                    bestScore = allyScore;
+                                    bestAction = { type: 'attack', moveIdx, targetPlayer: bestAlly.p, targetIdx: bestAlly.i, targetFieldIdx: bestAlly.fi };
+                                }
+                            } else if (move.targetCount && move.targetCount > 1 && move.targetCount < 4) {
+                                // Mosse di Attacco a bersagli multipli (es. 2 bersagli)
+                                let targets = [...possibleEnemies].sort(() => 0.5 - Math.random()).slice(0, move.targetCount);
+                                if (targets.length > 0) {
+                                    let score = 50 + (targets.length * 20) + Math.random() * 20; 
+                                    if (score > bestScore) {
+                                        bestScore = score;
+                                        bestAction = { 
+                                            type: 'attack', 
+                                            moveIdx, 
+                                            selectedTargets: targets.map(t => ({ player: t.player, idx: t.idx, fieldIdx: t.fieldIdx }))
+                                        };
+                                    }
+                                }
+                            } else {
+                                // Mosse di Attacco contro Nemici
+                                possibleEnemies.forEach(target => {
+                                    let score = 30;
+                                    if (move.power > 0) {
+                                        const mult = getMultiplier(move.type, target.char.types);
+                                        const dmgEst = (move.power * mult * (cpuChar.atk / Math.max(1, target.char.def))) / 2;
+                                        score += dmgEst;
+                                        if (dmgEst >= target.char.hp) score += 5000; 
+                                        if (mult > 1) score += 100;
+                                    }
+                                    if (move.statusEffect) score += 60; 
+                                    if (move.drain && cpuChar.hp < cpuChar.maxHp) score += 80;
+
+                                    score += Math.random() * 15; 
+
+                                    if (score > bestScore) {
+                                        bestScore = score;
+                                        bestAction = { type: 'attack', moveIdx, targetPlayer: target.player, targetIdx: target.idx, targetFieldIdx: target.fieldIdx };
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    if (!bestAction && possibleEnemies.length > 0) {
+                        bestAction = { type: 'attack', moveIdx: 0, targetPlayer: possibleEnemies[0].player, targetIdx: possibleEnemies[0].idx, targetFieldIdx: possibleEnemies[0].fieldIdx };
+                    } else if (!bestAction) {
+                        bestAction = { type: 'attack', moveIdx: 0, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
+                    }
+
+                    if (bestAction) {
+                        cpuActions[charTeamIdx] = bestAction;
+                        if (bestAction.type === 'attack' && bestAction.moveIdx !== undefined) {
+                             const selectedMove = cpuChar.moves[bestAction.moveIdx];
+                             if (selectedMove && selectedMove.isCombo) {
+                                 const partnerIds = selectedMove.isCombo.filter(id => id !== cpuChar.id);
+                                 partnerIds.forEach(pId => {
+                                     const pIdx = gameState.field[cpuPlayer].find(idx => gameState.teams[cpuPlayer][idx].id === pId && gameState.teams[cpuPlayer][idx].hp > 0);
+                                     if (pIdx !== undefined) {
+                                         cpuActions[pIdx] = { type: 'combo_assist' };
+                                     }
+                                 });
+                             }
+                        }
+                    }
+                });
+
+                return cpuActions;
+          };
+
+          const commitAction = (actionDetails) => {
+            const activeCharTeamIdx = gameState.field[playerRole]?.[commandingIdx];
+            if (activeCharTeamIdx === undefined) return; // FIX: Controllo di sicurezza transizioni
+            const activeCommandChar = gameState.teams[playerRole]?.[activeCharTeamIdx];
+            if (!activeCommandChar) return; // FIX: Controllo di sicurezza
+            
+            setSelectedMultiTargets([]);
+
+            let myNewActions = { ...(gameState.actions[playerRole] || {}) };
+            myNewActions[activeCharTeamIdx] = actionDetails;
+
+            if (actionDetails.type === 'attack') {
+                const move = activeCommandChar.moves[actionDetails.moveIdx];
+                if (move && move.isCombo) {
+                    const partnerIds = move.isCombo.filter(id => id !== activeCommandChar.id);
+                    partnerIds.forEach(pId => {
+                        const partnerTeamIdx = gameState.field[playerRole].find(idx => gameState.teams[playerRole][idx].id === pId && gameState.teams[playerRole][idx].hp > 0);
+                        if (partnerTeamIdx !== undefined) {
+                            myNewActions[partnerTeamIdx] = { type: 'combo_assist' };
+                        }
+                    });
+                }
+            }
+
+            updateState({ [`actions.${playerRole}`]: myNewActions }).then(() => {
+              setTargetingMoveIdx(null);
+              
+              let nextIdx = commandingIdx + 1;
+              while (nextIdx < gameState.field[playerRole].length) {
+                  const cIdx = gameState.field[playerRole][nextIdx];
+                  if (!myNewActions[cIdx] && gameState.teams[playerRole][cIdx].hp > 0) {
+                      break;
+                  }
+                  nextIdx++;
+              }
+
+              if (nextIdx < gameState.field[playerRole].length) {
+                setCommandingIdx(nextIdx);
+              } else {
+                if (appMode === 'local_room') {
+                    const active = getActivePlayers().filter(p => !gameState.isBot[p] && gameState.field[p] && gameState.field[p].length > 0);
+                    const currIdx = active.indexOf(playerRole);
+                    if (currIdx !== -1 && currIdx < active.length - 1) {
+                        setPlayerRole(active[currIdx + 1]);
+                        setCommandingIdx(0);
+                    } else {
+                        setCommandingIdx(-1);
+                    }
+                } else {
+                  setCommandingIdx(-1);
+                }
+              }
+            });
+          };
+
+          const handleSelectMoveTarget = (targetPlayer, targetFieldIdx) => {
+            const activeCharTeamIdx = gameState.field[playerRole]?.[commandingIdx];
+            if (activeCharTeamIdx === undefined) return;
+            const activeCommandChar = gameState.teams[playerRole]?.[activeCharTeamIdx];
+            if (!activeCommandChar) return;
+            
+            const move = activeCommandChar.moves[targetingMoveIdx];
+            if (!move) return;
+            
+            const targetCount = move.targetCount || 1;
+            
+            if (targetCount === 1) {
+                // SELEZIONE SINGOLA CLASSICA
+                commitAction({
+                    type: 'attack',
+                    moveIdx: targetingMoveIdx,
+                    targetPlayer,
+                    targetIdx: gameState.field[targetPlayer][targetFieldIdx],
+                    targetFieldIdx: targetFieldIdx
+                });
+                return;
+            }
+
+            // SELEZIONE MULTIPLA MANUALE (2 o 3 bersagli)
+            const isAlreadySelected = selectedMultiTargets.some(t => t.player === targetPlayer && t.fieldIdx === targetFieldIdx);
+            if (isAlreadySelected) return; // Ignora doppio click sullo stesso
+
+            const newTarget = {
+                player: targetPlayer,
+                fieldIdx: targetFieldIdx,
+                idx: gameState.field[targetPlayer][targetFieldIdx]
+            };
+
+            const updatedTargets = [...selectedMultiTargets, newTarget];
+
+            // Conta nemici vivi per sapere quando fermarsi
+            const activeMatchPlayers = getActivePlayers();
+            let enemyTeams = [];
+            if (gameState.gameMode === 'multipla') {
+                enemyTeams = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
+            } else if (gameState.gameMode === 'juggernaut') {
+                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+            } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
+            } else if (gameState.gameMode === 'battleroyale') {
+                enemyTeams = activeMatchPlayers.filter(p => p !== playerRole);
+            } else {
+                enemyTeams = [playerRole === 'p1' ? 'p2' : 'p1'];
+            }
+
+            let aliveEnemies = 0;
+            enemyTeams.forEach(ep => {
+                if (ep && gameState.field[ep]) {
+                    gameState.field[ep].forEach(idx => {
+                        if (gameState.teams[ep][idx].hp > 0) aliveEnemies++;
+                    });
+                }
+            });
+
+            const neededTargets = Math.min(targetCount, aliveEnemies);
+
+            if (updatedTargets.length >= neededTargets) {
+                commitAction({
+                    type: 'attack',
+                    moveIdx: targetingMoveIdx,
+                    selectedTargets: updatedTargets
+                });
+            } else {
+                setSelectedMultiTargets(updatedTargets);
+            }
+          };
+
+          const checkTurnReady = (currentActions) => {
+            if (appMode === 'online_room' && playerRole !== 'p1') return; 
+            
+            const activePlayers = getActivePlayers();
+            let allReady = true;
+            activePlayers.forEach(p => {
+                const fieldCount = gameState.field[p].length;
+                if (Object.keys(currentActions[p]).length < fieldCount) allReady = false;
+            });
+
+            if (allReady) {
+              calculateTurn(currentActions);
+            }
+          };
+
+          const calculateDamage = (attacker, defender, move, multiplier, isFirstAttackOfTurn = false) => {
+            let pwr = move.power;
+            if (move.speedScaling) pwr += Math.floor(attacker.spd / 3);
+            
+            // --- GESTIONE PASSIVE: POTENZIAMENTO MOSSE ---
+            if (attacker.passive && attacker.passive.boostMoveType && attacker.passive.boostMoveType.type === move.type) {
+                pwr = Math.floor(pwr * attacker.passive.boostMoveType.multiplier);
+            }
+            if (attacker.passive && attacker.passive.type === 'first_strike_bonus' && isFirstAttackOfTurn) {
+                pwr = Math.floor(pwr * attacker.passive.damageBonus);
+            }
+            // ---------------------------------------------
+            
+            let defValue = move.ignoreDefBuffs && defender.def > defender.baseDef ? defender.baseDef : defender.def;
+            
+            // FORMULA BILANCIATA: Divisore aumentato da 50 a 85 per ridurre i danni globali del ~40%
+            // In questo modo si evitano i "one-shot" e gli scontri diventano più lunghi e strategici
+            const baseDamage = ((2 * 50 / 5 + 2) * pwr * (attacker.atk / defValue)) / 85 + 2;
+            const randomFactor = (Math.floor(Math.random() * 16) + 85) / 100;
+            const weakenFactor = attacker.statuses?.some(s => s.type === 'Indebolito') ? 0.75 : 1;
+            const teamDefFactor = defender.statuses?.some(s => s.type === 'Scudo Team') ? 0.33 : 1;
+
+            // STAB (Same-Type Attack Bonus): Danno aumentato del 50% se il tipo mossa coincide con il tipo attaccante
+            const stabFactor = attacker.types.includes(move.type) ? 1.5 : 1;
+
+            return Math.max(1, Math.floor(baseDamage * randomFactor * multiplier * weakenFactor * teamDefFactor * stabFactor));
+          };
+
+          const calculateTurn = (currentActions) => {
+            let events = [];
+            // Salvataggio stato d'inizio turno per garantire la suspense visiva
+            const startOfTurnTeams = JSON.parse(JSON.stringify(gameState.teams));
+            const startOfTurnField = JSON.parse(JSON.stringify(gameState.field));
+            
+            let workingTeams = JSON.parse(JSON.stringify(gameState.teams));
+            let workingField = JSON.parse(JSON.stringify(gameState.field));
+            let workingInventory = JSON.parse(JSON.stringify(gameState.inventory));
+            const activeMatchPlayers = getActivePlayers();
+
+            const handleFaint = (targetPlayer, targetIdx) => {
+              const char = workingTeams[targetPlayer]?.[targetIdx];
+              if (!char) return; // FIX: Se è già stato rimosso per errore evita il crash
+              events.push({ text: `${char.name} è esausto!`, type: 'faint' });
+              
+              char.atk = char.baseAtk;
+              char.def = char.baseDef;
+              char.spd = char.baseSpd;
+              char.consecutiveProtect = 0;
+              char.statuses = [];
+              
+              const deadFieldPos = workingField[targetPlayer].indexOf(targetIdx);
+              if (deadFieldPos !== -1) {
+                  // Rimuove il personaggio morto dal campo. Verrà innescata la fase di Sostituzione Manuale a fine turno
+                  workingField[targetPlayer].splice(deadFieldPos, 1);
+                  events.push({ type: 'remove', player: targetPlayer, pos: deadFieldPos });
+              }
+            };
+
+            const applyDamage = (target, dmg, targetPlayer, targetIdx, text) => {
+                let willSurvive = false;
+                
+                // --- NUOVA LOGICA: PASSIVA SOPRAVVIVENZA KO (Es. Carlos, Cuore di Pietra) ---
+                if (target.hp - dmg <= 0 && target.passive && target.passive.type === 'survive_ko' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
+                    target.passiveUses = (target.passiveUses || 0) + 1;
+                    target.hp = 1;
+                    willSurvive = true;
+                } else {
+                    target.hp = Math.max(0, target.hp - dmg);
+                }
+                
+                target.damageTakenThisTurn = (target.damageTakenThisTurn || 0) + dmg;
+                events.push({ type: 'damage', text: text, targetPlayer, targetIdx, newHp: target.hp });
+                
+                if (willSurvive) {
+                    events.push({ type: 'text', text: `🛡️ ${target.name} stringe i denti! Resiste al colpo fatale grazie a "${target.passive.name}" e resta con 1 PS!` });
+                }
+                
+                if (target.juggShieldHpThresholds && target.juggShieldHpThresholds.length > 0) {
+                    let thresholdTriggered = false;
+                    while (target.juggShieldHpThresholds.length > 0 && (target.hp / target.maxHp) <= target.juggShieldHpThresholds[0]) {
+                        target.juggShieldHpThresholds.shift();
+                        thresholdTriggered = true;
+                    }
+                    if (thresholdTriggered) {
+                        const hitsToGrant = target.shieldGrantedHits || 4;
+                        target.juggHitsRemaining = hitsToGrant;
+                        events.push({ type: 'text', text: `💥 ${target.name} si infuria! Uno Scudo Assoluto assorbirà i prossimi ${hitsToGrant} colpi! 💥` });
+                    }
+                }
+
+                // --- NUOVA LOGICA: RESURREZIONE CELL JR ---
+                if (target.id === 'cell' && target.hp > 0 && target.hp <= target.maxHp * 0.25 && !target.cellJrResurrected && gameState.isCampaignBattle) {
+                    target.cellJrResurrected = true;
+                    events.push({ type: 'text', text: `✨ Cell: "Maledetti! Pensavate fosse finita?! Risorgete, figli miei!"` });
+                    
+                    workingTeams[targetPlayer].forEach((c, idx) => {
+                        if (c.id.startsWith('celljr_')) {
+                            if (c.hp <= 0) {
+                                c.hp = c.maxHp;
+                                c.statuses = [];
+                                events.push({ type: 'damage', text: `${c.name} viene rigenerato dalla forza vitale di Cell!`, targetPlayer: targetPlayer, targetIdx: idx, newHp: c.hp });
+                                
+                                if (!workingField[targetPlayer].includes(idx)) {
+                                    workingField[targetPlayer].push(idx);
+                                    events.push({ type: 'revive_to_field', player: targetPlayer, targetIdx: idx });
+                                }
+                            }
+                        }
+                    });
+                }
+                // ------------------------------------------
+
+                // --- GESTIONE PASSIVE: SOTTO SOGLIA HP (es. Barry, Chat Noir) ---
+                if (target.hp > 0 && target.passive && target.passive.type === 'on_hp_threshold' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
+                    if ((target.hp / target.maxHp) <= target.passive.threshold) {
+                        target.passiveUses = (target.passiveUses || 0) + 1;
+                        
+                        if (target.passive.statBuff) {
+                            let statTexts = [];
+                            if (target.passive.statBuff.atk) { target.atk = Math.floor(target.atk * target.passive.statBuff.atk); statTexts.push("Attacco"); }
+                            if (target.passive.statBuff.def) { target.def = Math.floor(target.def * target.passive.statBuff.def); statTexts.push("Difesa"); }
+                            if (target.passive.statBuff.spd) { target.spd = Math.floor(target.spd * target.passive.statBuff.spd); statTexts.push("Velocità"); }
+                            events.push({ type: 'text', text: `🔥 ${target.name} attiva ${target.passive.name}! Aumenta ${statTexts.join(" e ")}!` });
+                        }
+
+                        if (target.passive.resetEnemyBuffs) {
+                            events.push({ type: 'text', text: `🐾 ${target.name} attiva ${target.passive.name}! I potenziamenti degli avversari in campo vengono azzerati!` });
+                            
+                            let enemyPlayers = [];
+                            if (gameState.gameMode === 'multipla') {
+                                enemyPlayers = ['p1', 'p2'].includes(targetPlayer) ? ['p3', 'p4'] : ['p1', 'p2'];
+                            } else if (gameState.gameMode === 'juggernaut') {
+                                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                                enemyPlayers = targetPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
+                            } else {
+                                const pKeys = Object.keys(workingField).filter(k => workingField[k].length > 0);
+                                enemyPlayers = pKeys.filter(k => k !== targetPlayer);
+                            }
+
+                            enemyPlayers.forEach(ep => {
+                                if (workingField[ep]) {
+                                    workingField[ep].forEach(eIdx => {
+                                        const enemy = workingTeams[ep][eIdx];
+                                        if (enemy && enemy.hp > 0) {
+                                            if (enemy.atk > enemy.baseAtk) enemy.atk = enemy.baseAtk;
+                                            if (enemy.def > enemy.baseDef) enemy.def = enemy.baseDef;
+                                            if (enemy.spd > enemy.baseSpd) enemy.spd = enemy.baseSpd;
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+
+                // --- GESTIONE PASSIVE: ALLA SCONFITTA (es. Bloom) ---
+                if (target.hp === 0 && target.passive && target.passive.type === 'on_faint' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
+                    target.passiveUses = (target.passiveUses || 0) + 1;
+                    target.hp = Math.max(1, Math.floor(target.maxHp * target.passive.reviveHpPercent));
+                    target.statuses = []; // Rimuove status negativi alla rinascita
+                    events.push({ type: 'damage', text: `✨ ${target.name} attiva ${target.passive.name} e rinasce dalle proprie ceneri!`, targetPlayer, targetIdx, newHp: target.hp });
+                }
+
+                if (target.hp === 0) handleFaint(targetPlayer, targetIdx);
+            };
+
+            const updateStatusUI = (player, idx) => {
+                events.push({ type: 'status_update', targetPlayer: player, targetIdx: idx, statuses: JSON.parse(JSON.stringify(workingTeams[player][idx].statuses)) });
+            };
+
+            let turnQueue = [];
+            activeMatchPlayers.forEach(player => {
+              workingTeams[player].forEach(char => { if (!char.statuses) char.statuses = []; });
+              Object.keys(currentActions[player] || {}).forEach(charTeamIdxStr => {
+                const charTeamIdx = parseInt(charTeamIdxStr);
+                const char = workingTeams[player]?.[charTeamIdx];
+                if (!char) return; // FIX: Safety Check 
+                
+                const action = currentActions[player][charTeamIdxStr];
+                
+                let effSpd = char.spd;
+                if (char.statuses.some(s => s.type === 'Elettrizzato')) effSpd = Math.floor(effSpd / 2);
+                
+                const move = action.type === 'attack' ? char.moves[action.moveIdx] : null;
+                const priority = (action.type === 'switch' || action.type === 'use_item') ? 6 : (move ? (move.priority || 0) : 0);
+
+                turnQueue.push({ player, charTeamIdx, char, effSpd, action, priority, move });
+              });
+            });
+
+            turnQueue.sort((a, b) => b.priority - a.priority || b.effSpd - a.effSpd);
+
+            let isFirstAttackOfTurn = true;
+
+            for (let order of turnQueue) {
+              const { player, charTeamIdx, action, move } = order;
+              if (action.type === 'combo_assist') continue;
+              
+              const attacker = workingTeams[player]?.[charTeamIdx];
+              
+              if (!attacker || (attacker.hp <= 0 && action.type !== 'use_item')) continue; // FIX: Protezione Null
+
+              // AGGIORNAMENTO STATISTICHE: Mossa usata
+              if (gameState.players[player] === playerName && action.type === 'attack' && move) {
+                  updateLocalStats({ move: move.name });
+              }
+
+              if (action.type === 'use_item') {
+                  const itemId = action.itemId;
+                  const itemDef = ITEMS_DB[itemId];
+                  
+                  if (workingInventory[player][itemId] > 0) {
+                      workingInventory[player][itemId] -= 1;
+                      
+                      if (itemDef.type === 'revive') {
+                          // Trova il primo alleato morto
+                          const deadAllyIdx = workingTeams[player].findIndex(c => c.hp <= 0 && !c.isSummonOnly);
+                          if (deadAllyIdx !== -1) {
+                              let ally = workingTeams[player][deadAllyIdx];
+                              const healAmount = Math.floor(ally.maxHp * itemDef.value);
+                              ally.hp = healAmount;
+                              ally.statuses = [];
+                              events.push({ type: 'damage', text: `${gameState.players[player]} usa ${itemDef.name}! ${ally.name} è tornato in vita!`, targetPlayer: player, targetIdx: deadAllyIdx, newHp: ally.hp });
+                          } else {
+                              events.push({ type: 'text', text: `${gameState.players[player]} prova a usare ${itemDef.name}, ma non ci sono alleati da rianimare! (L'oggetto è stato consumato)` });
+                          }
+                      } else {
+                          // Oggetti che bersagliano il personaggio attivo
+                          if (attacker.hp <= 0) {
+                              events.push({ type: 'text', text: `${gameState.players[player]} prova a usare ${itemDef.name}, ma ${attacker.name} è esausto!` });
+                              continue;
+                          }
+                          
+                          if (itemDef.type === 'heal') {
+                              const healAmount = Math.floor(attacker.maxHp * itemDef.value);
+                              attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                              events.push({ type: 'damage', text: `${gameState.players[player]} usa ${itemDef.name} su ${attacker.name}! Recupera PS.`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                          } else if (itemDef.type === 'buff') {
+                              if (itemDef.stat === 'atk') attacker.atk = Math.floor(attacker.atk * itemDef.value);
+                              if (itemDef.stat === 'def') attacker.def = Math.floor(attacker.def * itemDef.value);
+                              if (itemDef.stat === 'spd') attacker.spd = Math.floor(attacker.spd * itemDef.value);
+                              events.push({ type: 'text', text: `${gameState.players[player]} usa ${itemDef.name}! Le statistiche di ${attacker.name} aumentano.` });
+                          } else if (itemDef.type === 'heal_status') {
+                              const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
+                              attacker.statuses = attacker.statuses.filter(s => !negatives.includes(s.type));
+                              updateStatusUI(player, charTeamIdx);
+                              events.push({ type: 'text', text: `${gameState.players[player]} usa ${itemDef.name}! Gli status di ${attacker.name} sono curati.` });
+                          }
+                      }
+                  }
+                  continue;
+              }
+
+              if (action.type === 'switch') {
+                  const fieldPos = workingField[player].indexOf(charTeamIdx);
+                  if (fieldPos !== -1) {
+                      attacker.atk = attacker.baseAtk;
+                      attacker.def = attacker.baseDef;
+                      attacker.spd = attacker.baseSpd;
+                      attacker.consecutiveProtect = 0;
+
+                      workingField[player][fieldPos] = action.toIdx;
+                      workingTeams[player][action.toIdx].revealed = true; // Segna come rivelato!
+                      events.push({ type: 'switch', player, pos: fieldPos, newIdx: action.toIdx, text: `${gameState.players[player]} ritira ${attacker.name} e manda in campo ${workingTeams[player][action.toIdx].name}!` });
+                  }
+                  continue;
+              }
+
+              let canAttack = true;
+
+              let stunIdx = attacker.statuses.findIndex(s => s.type === 'Stordito');
+              if (stunIdx !== -1) {
+                  attacker.statuses[stunIdx].turns -= 1;
+                  events.push({ type: 'text', text: `${attacker.name} è stordito e salta il turno!` });
+                  if (attacker.statuses[stunIdx].turns <= 0) {
+                      attacker.statuses.splice(stunIdx, 1);
+                  }
+                  updateStatusUI(player, charTeamIdx);
+                  canAttack = false;
+              }
+
+              if (!canAttack) continue;
+
+              let ricIdx = attacker.statuses.findIndex(s => s.type === 'Ricarica');
+              if (ricIdx !== -1) {
+                  events.push({ type: 'text', text: `${attacker.name} deve ricaricarsi dopo l'ultimo attacco!` });
+                  attacker.statuses.splice(ricIdx, 1);
+                  updateStatusUI(player, charTeamIdx);
+                  canAttack = false;
+              }
+
+              if (!canAttack) continue;
+
+              let sleepIdx = attacker.statuses.findIndex(s => s.type === 'Addormentato');
+              if (sleepIdx !== -1) {
+                  attacker.statuses[sleepIdx].turns -= 1;
+                  if (attacker.statuses[sleepIdx].turns > 0) {
+                      events.push({ type: 'text', text: `${attacker.name} dorme profondamente e non può attaccare...` });
+                      updateStatusUI(player, charTeamIdx);
+                      canAttack = false;
+                  } else {
+                      events.push({ type: 'text', text: `${attacker.name} si è svegliato!` });
+                      attacker.statuses.splice(sleepIdx, 1);
+                      updateStatusUI(player, charTeamIdx);
+                  }
+              }
+
+              if (!canAttack) continue;
+
+              let frozenIdx = attacker.statuses.findIndex(s => s.type === 'Congelato');
+              if (frozenIdx !== -1) {
+                  if (Math.random() < 0.5) {
+                      applyDamage(attacker, 3, player, charTeamIdx, `${attacker.name} è congelato! Subisce 3 danni dal freddo.`);
+                      canAttack = false;
+                  } else {
+                      events.push({ type: 'text', text: `${attacker.name} rompe il ghiaccio e si libera!` });
+                      attacker.statuses.splice(frozenIdx, 1);
+                      updateStatusUI(player, charTeamIdx);
+                  }
+              }
+
+              if (!canAttack || attacker.hp <= 0) continue;
+
+              if (attacker.statuses.some(s => s.type === 'Elettrizzato')) {
+                  if (Math.random() < 0.3) {
+                      events.push({ type: 'text', text: `${attacker.name} è paralizzato dall'elettricità!` });
+                      canAttack = false;
+                  }
+              }
+
+              if (!canAttack) continue;
+
+              let infatIdx = attacker.statuses.findIndex(s => s.type === 'Infatuato');
+              if (infatIdx !== -1) {
+                  attacker.statuses[infatIdx].turns -= 1;
+                  if (attacker.statuses[infatIdx].turns > 0) {
+                      if (Math.random() < 0.5) {
+                          events.push({ type: 'text', text: `${attacker.name} è troppo infatuato e salta il turno!` });
+                          canAttack = false; 
+                      }
+                  } else {
+                      events.push({ type: 'text', text: `${attacker.name} ha ripreso il controllo e non è più infatuato!` });
+                      attacker.statuses.splice(infatIdx, 1);
+                      updateStatusUI(player, charTeamIdx);
+                  }
+              }
+
+              if (!canAttack) continue;
+
+              let confIdx = attacker.statuses.findIndex(s => s.type === 'Confuso');
+              if (confIdx !== -1) {
+                  if (Math.random() < 0.25) {
+                      events.push({ type: 'text', text: `${attacker.name} non è più confuso!` });
+                      attacker.statuses.splice(confIdx, 1);
+                      updateStatusUI(player, charTeamIdx);
+                  } else {
+                      events.push({ type: 'text', text: `${attacker.name} è confuso!` });
+                      if (Math.random() < 0.4) {
+                          const pwr = (move && move.power > 0) ? move.power : 40;
+                          const baseDmg = ((2 * 50 / 5 + 2) * pwr * (attacker.atk / attacker.def)) / 50 + 2;
+                          const selfDmg = Math.max(1, Math.floor(baseDmg * 0.25));
+                          
+                          applyDamage(attacker, selfDmg, player, charTeamIdx, `${attacker.name} si colpisce da solo nella confusione! Infligge ${selfDmg} danni a se stesso.`);
+                          canAttack = false;
+                      }
+                  }
+              }
+
+              if (!canAttack || attacker.hp <= 0) continue;
+
+              if (action.type === 'attack' && move) {
+                if (move.remainingUses !== null && move.remainingUses !== undefined) {
+                    move.remainingUses -= 1;
+                }
+                
+                // Attiva il Cooldown della mossa appena usata
+                if (move.cooldown !== undefined) {
+                    move.currentCooldown = move.cooldown;
+                }
+                
+                if (move.isCombo) {
+                    const partnerIds = move.isCombo.filter(id => id !== attacker.id);
+                    partnerIds.forEach(pId => {
+                        const partnerTeamIdx = workingField[player].find(idx => workingTeams[player][idx].id === pId && workingTeams[player][idx].hp > 0);
+                        if (partnerTeamIdx !== undefined) {
+                            const partner = workingTeams[player][partnerTeamIdx];
+                            const partnerMove = partner.moves.find(m => m.name === move.name);
+                            if (partnerMove && partnerMove.remainingUses !== null && partnerMove.remainingUses !== undefined) {
+                                partnerMove.remainingUses -= 1;
+                            }
+                        }
+                    });
+                }
+
+                if (move.isProtect) {
+                    let consec = attacker.consecutiveProtect || 0;
+                    let successChance = 1 / Math.pow(2, consec); 
+                    if (Math.random() < successChance) {
+                        let pStatus = move.protectStatus || 'Protetto';
+                        attacker.statuses.push({ type: pStatus, turns: 1 });
+                        events.push({ type: 'text', text: `${attacker.name} assume una posizione difensiva e si protegge!` });
+                        updateStatusUI(player, charTeamIdx);
+                        attacker.consecutiveProtect = consec + 1;
+                    } else {
+                        events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma la protezione fallisce!` });
+                        attacker.consecutiveProtect = 0;
+                    }
+                    continue;
+                } else {
+                    attacker.consecutiveProtect = 0; 
+                }
+
+                if (move.isSummon) {
+                    const summonIds = Array.isArray(move.isSummon) ? move.isSummon : [move.isSummon];
+                    let summonedNames = [];
+                    
+                    summonIds.forEach(summonId => {
+                        const baseChar = CHARACTERS.find(c => c.id === summonId);
+                        if (baseChar) {
+                            const newSummon = {
+                                ...JSON.parse(JSON.stringify(baseChar)), 
+                                statuses: [],
+                                consecutiveProtect: 0,
+                                baseAtk: baseChar.atk,
+                                baseDef: baseChar.def,
+                                baseSpd: baseChar.spd
+                            };
+                            newSummon.moves.forEach(m => {
+                                if (m.maxUses !== undefined) m.remainingUses = m.maxUses;
+                            });
+
+                            workingTeams[player].push(newSummon);
+                            const newCharTeamIdx = workingTeams[player].length - 1;
+                            workingField[player].push(newCharTeamIdx);
+                            
+                            summonedNames.push(newSummon.name);
+                            events.push({ type: 'summon', text: `${attacker.name} ha evocato ${newSummon.name}!`, player: player, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx });
+                        }
+                    });
+                    
+                    if (summonedNames.length > 1) {
+                         // Modifica il testo se sono state fatte evocazioni multiple per renderlo più leggibile
+                         events[events.length - 1].text = `${attacker.name} ha evocato ${summonedNames.join(' e ')}!`;
+                    }
+                    continue;
+                }
+
+                if (move.accuracy && Math.random() > move.accuracy) {
+                    events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma manca clamorosamente il bersaglio!` });
+                    continue;
+                }
+
+                if (move.target === 'self') {
+                    let text = `${attacker.name} usa ${move.name}!`;
+                    let didSomething = false;
+                    
+                    if (move.heal) {
+                        const healAmount = Math.floor(attacker.maxHp * move.heal);
+                        attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                        text += ` Recupera ${healAmount} HP!`;
+                        events.push({ type: 'damage', text, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                        didSomething = true;
+                    } 
+                    if (move.statBuff || move.targetStatBuff) {
+                        const buff = move.statBuff || move.targetStatBuff;
+                        let statTexts = [];
+                        let debuffTexts = [];
+                        if (buff.atk) { attacker.atk = Math.floor(attacker.atk * buff.atk); if(buff.atk > 1) statTexts.push("Attacco"); else debuffTexts.push("Attacco"); }
+                        if (buff.def) { attacker.def = Math.floor(attacker.def * buff.def); if(buff.def > 1) statTexts.push("Difesa"); else debuffTexts.push("Difesa"); }
+                        if (buff.spd) { attacker.spd = Math.floor(attacker.spd * buff.spd); if(buff.spd > 1) statTexts.push("Velocità"); else debuffTexts.push("Velocità"); }
+                        if (statTexts.length > 0) {
+                            text += ` Aumenta ${statTexts.join(" e ")}!`;
+                        }
+                        if (debuffTexts.length > 0) {
+                            text += ` Diminuisce ${debuffTexts.join(" e ")}!`;
+                        }
+                        if (statTexts.length > 0 || debuffTexts.length > 0) {
+                            events.push({ type: 'text', text });
+                            didSomething = true;
+                        }
+                    }
+                    if (move.statusEffect) {
+                        const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(move.statusEffect.type);
+                        if (isNegative && attacker.passive && attacker.passive.immuneToNegativeStatuses) {
+                            events.push({ type: 'text', text: `🛡️ ${attacker.name} resiste a ${move.statusEffect.type} grazie a ${attacker.passive.name}!` });
+                        } else {
+                            attacker.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
+                            updateStatusUI(player, charTeamIdx);
+                            events.push({ type: 'text', text: `${attacker.name} ottiene lo status ${move.statusEffect.type}!` });
+                            didSomething = true;
+                        }
+                    }
+                    if (!didSomething) events.push({ type: 'text', text });
+                    continue;
+                }
+
+                if (move.targetMode === 'team') {
+                    let myTeamPlayers = [player];
+                    if (gameState.gameMode === 'multipla') {
+                        myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                        if (player !== juggPlayer) {
+                            myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                        }
+                    }
+                    
+                    let aliveAllies = [];
+                    myTeamPlayers.forEach(pAlly => {
+                        if (workingField[pAlly]) {
+                            workingField[pAlly].forEach(idx => {
+                                if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
+                                    aliveAllies.push({ p: pAlly, idx: idx });
+                                }
+                            });
+                        }
+                    });
+
+                    events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su tutto il team!` });
+                    for (let aObj of aliveAllies) {
+                        let allyPlayer = aObj.p;
+                        let aIdx = aObj.idx;
+                        let ally = workingTeams[allyPlayer][aIdx];
+                        let didSomething = false;
+                        
+                        if (move.statusEffect) {
+                            const existingIdx = ally.statuses.findIndex(s => s.type === move.statusEffect.type);
+                            if(existingIdx === -1) {
+                                ally.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
+                            } else {
+                                ally.statuses[existingIdx].turns = move.statusEffect.turns || 1;
+                            }
+                            updateStatusUI(allyPlayer, aIdx);
+                            events.push({ type: 'text', text: `${ally.name} ottiene lo status ${move.statusEffect.type}!` });
+                            didSomething = true;
+                        }
+                        if (move.removeNegativeStatuses) {
+                            const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
+                            const filtered = ally.statuses.filter(s => !negatives.includes(s.type));
+                            if (filtered.length < ally.statuses.length) {
+                                ally.statuses = filtered;
+                                updateStatusUI(allyPlayer, aIdx);
+                                events.push({ type: 'text', text: `Gli status negativi di ${ally.name} svaniscono!` });
+                                didSomething = true;
+                            }
+                        }
+                        if (move.targetStatBuff) {
+                            let statTexts = [];
+                            if (move.targetStatBuff.atk) { ally.atk = Math.floor(ally.atk * move.targetStatBuff.atk); statTexts.push("Attacco"); }
+                            if (move.targetStatBuff.def) { ally.def = Math.floor(ally.def * move.targetStatBuff.def); statTexts.push("Difesa"); }
+                            if (move.targetStatBuff.spd) { ally.spd = Math.floor(ally.spd * move.targetStatBuff.spd); statTexts.push("Velocità"); }
+                            if (statTexts.length > 0) {
+                                events.push({ type: 'text', text: `Aumenta ${statTexts.join(" e ")} di ${ally.name}!` });
+                                didSomething = true;
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                if (move.targetMode === 'team_smart_heal') {
+                    let myTeamPlayers = [player];
+                    if (gameState.gameMode === 'multipla') {
+                        myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                        if (player !== juggPlayer) {
+                            myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                        }
+                    }
+
+                    let aliveAllies = [];
+                    myTeamPlayers.forEach(pAlly => {
+                        if (workingField[pAlly]) {
+                            workingField[pAlly].forEach(idx => {
+                                if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
+                                    aliveAllies.push({ p: pAlly, idx: idx });
+                                }
+                            });
+                        }
+                    });
+
+                    if (aliveAllies.length > 1) {
+                        for (let aObj of aliveAllies) {
+                            let allyPlayer = aObj.p;
+                            let aIdx = aObj.idx;
+                            let ally = workingTeams[allyPlayer][aIdx];
+                            const healAmount = Math.floor(ally.maxHp * move.healTeam);
+                            ally.hp = Math.min(ally.maxHp, ally.hp + healAmount);
+                            events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e cura ${ally.name} di ${healAmount} HP!`, targetPlayer: allyPlayer, targetIdx: aIdx, newHp: ally.hp });
+                        }
+                    } else {
+                        const healAmount = Math.floor(attacker.maxHp * move.healAlone);
+                        attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                        events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                    }
+                    continue;
+                }
 
                 if (move.targetMode === 'ally') {
                     let targetPlayer = action.targetPlayer;
@@ -4178,20 +5141,6 @@
                         }
                     }
 
-                    // --- NUOVA LOGICA: PASSIVE ON_ATTACK_HIT ---
-                    if (t.char.hp > 0 && attackSucceeded && attacker.passive && attacker.passive.type === 'on_attack_hit') {
-                        let triggers = true;
-                        if (attacker.passive.requiredMoveType && move.type !== attacker.passive.requiredMoveType) triggers = false;
-                        
-                        if (triggers && attacker.passive.targetStatDebuff) {
-                            let statTexts = [];
-                            if (attacker.passive.targetStatDebuff.atk) { t.char.atk = Math.floor(t.char.atk * attacker.passive.targetStatDebuff.atk); statTexts.push("Attacco"); }
-                            if (attacker.passive.targetStatDebuff.def) { t.char.def = Math.floor(t.char.def * attacker.passive.targetStatDebuff.def); statTexts.push("Difesa"); }
-                            if (attacker.passive.targetStatDebuff.spd) { t.char.spd = Math.floor(t.char.spd * attacker.passive.targetStatDebuff.spd); statTexts.push("Velocità"); }
-                            events.push({ type: 'text', text: `✨ ${attacker.name} attiva ${attacker.passive.name}: ${statTexts.join(" e ")} di ${t.char.name} diminuisce!` });
-                        }
-                    }
-
                     if (t.char.hp > 0) {
                         let effects = move.statusEffects || (move.statusEffect ? [move.statusEffect] : []);
                         for (let effect of effects) {
@@ -4326,7 +5275,8 @@
                 }
 
                 isFirstAttackOfTurn = false;
-            } // Fine ciclo coda dei turni
+            }
+        } // Fine ciclo coda dei turni
 
         let eotTargets = [];
         activeMatchPlayers.forEach(p => {
@@ -4380,32 +5330,6 @@
                             const healAmount = Math.max(1, Math.floor(lowestAlly.char.maxHp * char.passive.healLowestAllyPercent));
                             lowestAlly.char.hp = Math.min(lowestAlly.char.maxHp, lowestAlly.char.hp + healAmount);
                             events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}! ${lowestAlly.char.name} recupera ${healAmount} PS!`, targetPlayer: lowestAlly.p, targetIdx: lowestAlly.idx, newHp: lowestAlly.char.hp });
-                        }
-                    }
-                }
-
-                if (char.passive.hpThreshold && char.hp <= char.maxHp * char.passive.hpThreshold && (char.passiveUses || 0) < (char.passive.maxUses || 1)) {
-                    char.passiveUses = (char.passiveUses || 0) + 1;
-                    if (char.passive.isSummon) {
-                        const summonIds = Array.isArray(char.passive.isSummon) ? char.passive.isSummon : [char.passive.isSummon];
-                        let summonedNames = [];
-                        summonIds.forEach(summonId => {
-                            const baseChar = CHARACTERS.find(c => c.id === summonId);
-                            if (baseChar) {
-                                const newSummon = {
-                                    ...JSON.parse(JSON.stringify(baseChar)), statuses: [], consecutiveProtect: 0,
-                                    baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                                    moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
-                                };
-                                workingTeams[target.player].push(newSummon);
-                                const newCharTeamIdx = workingTeams[target.player].length - 1;
-                                workingField[target.player].push(newCharTeamIdx);
-                                summonedNames.push(newSummon.name);
-                                events.push({ type: 'summon', text: `✨ ${char.name} attiva ${char.passive.name} e chiama in aiuto ${newSummon.name}!`, player: target.player, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx });
-                            }
-                        });
-                        if (summonedNames.length > 1) {
-                             events[events.length - 1].text = `✨ ${char.name} attiva ${char.passive.name} e chiama in aiuto ${summonedNames.join(' e ')}!`;
                         }
                     }
                 }
@@ -5683,8 +6607,6 @@
                 'shifu': "La pace interiore guiderà i nostri colpi verso il trionfo.",
                 'gardevoir': "Proteggerò i miei alleati a costo della mia stessa vita.",
                 'jakedc': "Ho preso un lanciafiamme! Andiamo!",
-                'blackcanary': "Il mio Urlo del Canarino vi aprirà la strada!",
-                'melody': "Ascoltate la melodia che proviene dall'oscurità...",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -5755,8 +6677,6 @@
                 'shifu': "Mediterò sul vostro futuro e forse sul vostro fallimento.",
                 'gardevoir': "*Fa un inchino profondamente rispettoso e svanisce nel nulla*",
                 'jakedc': "Vado a fare battute altrove, gente senza umorismo.",
-                'blackcanary': "D'accordo, risparmierò la voce per la prossima volta.",
-                'melody': "La mia canzone attenderà nel silenzio dell'abisso.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -8011,7 +8931,11 @@
                     // --- PREMI SPECIFICI SOPRAVVIVENZA ---
                     const roundsSurvived = (gameState.survivalRound || 1) - 1;
                     rankText = `Sei sopravvissuto a ${roundsSurvived} Round!`;
-                    coins = roundsSurvived * 10; // 10 monete extra per ogni round superato
+                    if (roundsSurvived <= 5) {
+                        coins = roundsSurvived * 2;
+                    } else {
+                        coins = 10 + (roundsSurvived - 5);
+                    }
                     if (roundsSurvived > 0) rewardText = `+${coins} Monete ricevute!`;
                 } else {
                     let won = false;
