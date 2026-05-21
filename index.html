@@ -417,7 +417,7 @@
           'Raggio Wakfu': { name: 'Raggio Wakfu', type: 'Magico', power: 85, desc: 'Spara un potente raggio di pura energia Wakfu.' },
           'Riflesso del Portale': { name: 'Riflesso del Portale', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 4, desc: 'Apre un portale che assorbe l\'attacco e ne riflette il 25% al mittente.' },
           'Assalto Dimensionale': { name: 'Assalto Dimensionale', type: 'Magico', power: 75, ignoreDefBuffs: true, desc: 'Colpisce uscendo da un portale alle spalle del nemico, ignorandone le difese.' },
-          'Fratellanza del Tofu': { name: 'Fratellanza del Tofu', type: 'Normale', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.4, desc: 'Cura il team in campo del 40%, o se stesso del 50% se è rimasto solo.' },
+          'Danza Eliatrope': { name: 'Danza Eliatrope', type: 'Lotta', power: 30, multiHit: { min: 2, max: 3 }, hitStatDebuff: { def: 0.8, chance: 0.20 }, desc: 'Combo di calci rapidi potenziati dal Wakfu. Colpisce 2-3 volte, ogni colpo ha il 20% di probabilità di ridurre la Difesa.' },
 
           // NUOVE MOSSE SAGE E ARIANA GRANDE
           'Muro Protettivo': { name: 'Muro Protettivo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Alza un muro che difende tutti i compagni in campo per un turno. (1 utilizzo)' },
@@ -838,7 +838,7 @@
           { id: 'garnet', name: 'Garnet', types: ['Lotta', 'Roccia'], hp: 110, maxHp: 110, atk: 115, def: 100, spd: 75, img: 'https://i.pinimg.com/1200x/df/77/0f/df770ffb5866a4773afcd2f05d6fcd60.jpg', moves: [MOVES_DB['Pugno Razzo'], MOVES_DB['Visione del Futuro'], MOVES_DB['Schianto Sismico'], MOVES_DB['Forza dell\'Amore']] },
           { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 95, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', moves: [MOVES_DB['Mano d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Ali Liquide']] },
           { id: 'aang', name: 'Aang', types: ['Aria', 'Psico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', passive: { name: 'Respiro dell\'Avatar', type: 'aura', immuneToType: 'Aria', boostMoveType: { type: 'Aria', multiplier: 1.2 }, desc: 'Garantisce immunità totale agli attacchi di tipo Aria e aumenta del 20% la potenza delle proprie mosse di tipo Aria.' }, moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
-          { id: 'yugo', name: 'Yugo', types: ['Psico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Fratellanza del Tofu']] },
+          { id: 'yugo', name: 'Yugo', types: ['Psico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Danza Eliatrope']] },
           { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 95, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
           { id: 'ariana', name: 'Ariana Grande', types: ['Magico', 'Normale'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 100, img: 'https://i.pinimg.com/736x/1f/74/fa/1f74faeae0ec93a8288ab2e8bee3ffe7.jpg', passive: { name: 'Grido da Popstar', type: 'on_enter', maxUses: 1, teamStatBuff: { atk: 1.3 }, enemyStatDebuff: { spd: 0.7 }, desc: 'Appena schierata, aumenta l\'Attacco del tuo team e riduce la Velocità dei nemici in campo (30%).' }, moves: [MOVES_DB['YUH!'], MOVES_DB['Potere ariana grande'], MOVES_DB['Into You'], MOVES_DB['Bang Bang']] },
           { id: 'mario', name: 'Mario', types: ['Normale', 'Fuoco'], hp: 100, maxHp: 100, atk: 110, def: 85, spd: 90, img: 'https://i.pinimg.com/736x/f0/48/65/f04865769239ed667f302d6f19b8595e.jpg', moves: [MOVES_DB['Salto Idraulico'], MOVES_DB['Palla di Fuoco'], MOVES_DB['Martellata'], MOVES_DB['Super Fungo'], MOVES_DB['Fratelli Bros']] },
@@ -2310,6 +2310,9 @@
           const pressTimerRef = useRef(null);
           const isCalculatingRef = useRef(false);
           
+          // NUOVO: Ref per bloccare i doppi click veloci
+          const isSubmittingActionRef = useRef(false);
+          
           // Auto-scroll per il registro battaglia
           useEffect(() => {
               if (isLogOpen && logEndRef.current) {
@@ -2925,6 +2928,13 @@
                       data.apologyGiftReceived = true;
                       localStorage.setItem(key, JSON.stringify(data));
                   }
+
+                  // NUOVO FIX: Ricompensa bug di ulteriori 200 monete per tutti i giocatori
+                  if (!data.bugFixCompensation200) {
+                      data.coins += 200;
+                      data.bugFixCompensation200 = true;
+                      localStorage.setItem(key, JSON.stringify(data));
+                  }
                   
                   return data;
               }
@@ -2945,14 +2955,18 @@
                           if (!data.apologyGiftReceived) {
                               data.coins += 200;
                               data.apologyGiftReceived = true;
-                              localStorage.setItem(key, JSON.stringify(data));
                           }
+                          if (!data.bugFixCompensation200) {
+                              data.coins += 200;
+                              data.bugFixCompensation200 = true;
+                          }
+                          localStorage.setItem(key, JSON.stringify(data));
                           return data;
                       }
                   }
               }
 
-              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 300, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true, maxSurvivalRound: 0 };
+              return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 500, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true, bugFixCompensation200: true, maxSurvivalRound: 0 };
           };
 
           const updateLocalStats = (updates) => {
@@ -3791,7 +3805,7 @@
                     const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                     const activeMatchPlayers = getActivePlayers();
                     enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                } else if (gameState.gameMode === 'torneo') {
+                } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
                     const activeMatchPlayers = getActivePlayers();
                     enemyTeams = [activeMatchPlayers.find(p => p !== cpuPlayer)];
                 } else if (gameState.gameMode === 'battleroyale') {
@@ -3814,6 +3828,8 @@
                 });
 
                 gameState.field[cpuPlayer].forEach((charTeamIdx, fieldIdx) => {
+                    if (cpuActions[charTeamIdx]) return; // FIX: Se ha già un'azione (es. combo_assist del compagno), salta la valutazione
+                    
                     const cpuChar = gameState.teams[cpuPlayer]?.[charTeamIdx];
                     if (!cpuChar || cpuChar.hp <= 0) return; // FIX: Sicurezza aggiuntiva contro morti in tempo reale
 
@@ -3864,6 +3880,18 @@
                                 if (score > bestScore) {
                                     bestScore = score;
                                     bestAction = { type: 'attack', moveIdx, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
+                                }
+                            } else if (move.targetMode === 'revive') {
+                                let deadAllyIdx = -1;
+                                gameState.teams[cpuPlayer].forEach((c, idx) => {
+                                    if (c.hp <= 0 && !c.isSummonOnly) deadAllyIdx = idx;
+                                });
+                                if (deadAllyIdx !== -1) {
+                                    let score = 200 + Math.random() * 50;
+                                    if (score > bestScore) {
+                                        bestScore = score;
+                                        bestAction = { type: 'attack', moveIdx, targetPlayer: cpuPlayer, targetIdx: deadAllyIdx };
+                                    }
                                 }
                             } else if (move.targetMode === 'ally') {
                                 let allyScore = 0;
@@ -3958,10 +3986,19 @@
           };
 
           const commitAction = (actionDetails) => {
+            if (isSubmittingActionRef.current) return; // FIX: Evita che i doppi click sovrascrivano le azioni precedenti!
+            isSubmittingActionRef.current = true;
+
             const activeCharTeamIdx = gameState.field[playerRole]?.[commandingIdx];
-            if (activeCharTeamIdx === undefined) return; // FIX: Controllo di sicurezza transizioni
+            if (activeCharTeamIdx === undefined) {
+                isSubmittingActionRef.current = false;
+                return;
+            }
             const activeCommandChar = gameState.teams[playerRole]?.[activeCharTeamIdx];
-            if (!activeCommandChar) return; // FIX: Controllo di sicurezza
+            if (!activeCommandChar) {
+                isSubmittingActionRef.current = false;
+                return;
+            }
             
             setSelectedMultiTargets([]);
 
@@ -3983,6 +4020,7 @@
 
             updateState({ [`actions.${playerRole}`]: myNewActions }).then(() => {
               setTargetingMoveIdx(null);
+              setActionMenuMode('moves');
               
               let nextIdx = commandingIdx + 1;
               while (nextIdx < gameState.field[playerRole].length) {
@@ -4009,6 +4047,8 @@
                   setCommandingIdx(-1);
                 }
               }
+              
+              isSubmittingActionRef.current = false; // Sblocca per il prossimo personaggio
             });
           };
 
@@ -4320,7 +4360,7 @@
                 const action = currentActions[player][charTeamIdxStr];
                 
                 let effSpd = char.spd;
-                if (char.statuses.some(s => s.type === 'Elettrizzato')) effSpd = Math.floor(effSpd / 2);
+                if (char.statuses && char.statuses.some(s => s.type === 'Elettrizzato')) effSpd = Math.floor(effSpd / 2);
                 
                 const move = action.type === 'attack' ? char.moves[action.moveIdx] : null;
                 const priority = (action.type === 'switch' || action.type === 'use_item') ? 6 : (move ? (move.priority || 0) : 0);
@@ -4823,6 +4863,25 @@
                     continue;
                 }
 
+                if (move.targetMode === 'revive') {
+                    let targetPlayer = action.targetPlayer;
+                    let targetIdx = action.targetIdx;
+                    let target = workingTeams[targetPlayer]?.[targetIdx];
+
+                    if (!target || target.hp > 0 || target.isSummonOnly) {
+                        events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma il bersaglio non è valido!` });
+                        continue;
+                    }
+
+                    let text = `${attacker.name} usa ${move.name} su ${target.name}!`;
+                    const healAmount = Math.floor(target.maxHp * (move.heal || 0.5));
+                    target.hp = healAmount;
+                    target.statuses = [];
+                    
+                    events.push({ type: 'damage', text: `${text} ${target.name} è tornato in vita con ${healAmount} HP!`, targetPlayer, targetIdx, newHp: target.hp });
+                    continue;
+                }
+
                 if (move.isSummon || move.randomSummon) {
                     let summonIds = [];
                     if (move.randomSummon) {
@@ -5211,6 +5270,13 @@
                             totalDmg += hitDmg;
                             actualHits++;
                             
+                            if (move.hitStatDebuff && Math.random() < move.hitStatDebuff.chance) {
+                                if (move.hitStatDebuff.def) t.char.def = Math.floor(t.char.def * move.hitStatDebuff.def);
+                                if (move.hitStatDebuff.atk) t.char.atk = Math.floor(t.char.atk * move.hitStatDebuff.atk);
+                                if (move.hitStatDebuff.spd) t.char.spd = Math.floor(t.char.spd * move.hitStatDebuff.spd);
+                                events.push({ type: 'text', text: `Il colpo riduce la Difesa di ${t.char.name}!` });
+                            }
+
                             if (t.char.juggShieldHpThresholds && t.char.juggShieldHpThresholds.length > 0) {
                                 let thresholdTriggered = false;
                                 while (t.char.juggShieldHpThresholds.length > 0 && ((t.char.hp - totalDmg) / t.char.maxHp) <= t.char.juggShieldHpThresholds[0]) {
@@ -8757,7 +8823,9 @@
                                  <div className="flex gap-3 justify-center mb-2 z-10">
                                          <button onClick={() => setActionMenuMode('moves')} className={`px-5 py-1.5 rounded-full text-xs font-black tracking-widest uppercase transition-all ${actionMenuMode === 'moves' ? 'bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.5)]' : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'}`}>Mosse</button>
                                          <button onClick={() => setActionMenuMode('items')} className={`px-5 py-1.5 rounded-full text-xs font-black tracking-widest uppercase transition-all ${actionMenuMode === 'items' ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.5)]' : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'}`}>Zaino</button>
-                                         <button onClick={() => setActionMenuMode('switch')} className={`px-5 py-1.5 rounded-full text-xs font-black tracking-widest uppercase transition-all ${actionMenuMode === 'switch' ? 'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'}`}>Cambia (Squadra)</button>
+                                         {!activeCommandChar.isSummonOnly && (
+                                            <button onClick={() => setActionMenuMode('switch')} className={`px-5 py-1.5 rounded-full text-xs font-black tracking-widest uppercase transition-all ${actionMenuMode === 'switch' ? 'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'}`}>Cambia (Squadra)</button>
+                                         )}
                                  </div>
                          )}
 
@@ -8781,9 +8849,11 @@
                                     {!isPlayingEvents && isMyTurn && activeCommandChar && (
                                         targetingMoveIdx === null 
                                             ? (actionMenuMode === 'moves' ? `Cosa deve fare ${activeCommandChar.name}?` : (actionMenuMode === 'items' ? 'Seleziona un oggetto da usare' : 'Seleziona un compagno da mandare in campo'))
-                                            : (activeCommandChar.moves[targetingMoveIdx].targetCount && activeCommandChar.moves[targetingMoveIdx].targetCount > 1 && activeCommandChar.moves[targetingMoveIdx].targetCount < 4
-                                                ? `Seleziona i bersagli per ${activeCommandChar.moves[targetingMoveIdx].name}! (${selectedMultiTargets.length}/${activeCommandChar.moves[targetingMoveIdx].targetCount})`
-                                                : `Seleziona il bersaglio per ${activeCommandChar.moves[targetingMoveIdx].name}!`)
+                                            : (activeCommandChar.moves[targetingMoveIdx].targetMode === 'revive'
+                                                ? `Chi vuoi rianimare con ${activeCommandChar.moves[targetingMoveIdx].name}?`
+                                                : (activeCommandChar.moves[targetingMoveIdx].targetCount && activeCommandChar.moves[targetingMoveIdx].targetCount > 1 && activeCommandChar.moves[targetingMoveIdx].targetCount < 4
+                                                    ? `Seleziona i bersagli per ${activeCommandChar.moves[targetingMoveIdx].name}! (${selectedMultiTargets.length}/${activeCommandChar.moves[targetingMoveIdx].targetCount})`
+                                                    : `Seleziona il bersaglio per ${activeCommandChar.moves[targetingMoveIdx].name}!`))
                                     )}
                                 </h3>
                          )}
@@ -8859,7 +8929,7 @@
                                                                             return; 
                                                                     }
                                                                     
-                                                                    if (move.target === 'self' || move.isSummon || move.targetMode === 'team_smart_heal' || move.targetMode === 'team' || move.targetMode === 'revive') {
+                                                                    if (move.target === 'self' || move.isSummon || move.targetMode === 'team_smart_heal' || move.targetMode === 'team') {
                                                                             commitAction({
                                                                                     type: 'attack',
                                                                                     moveIdx: idx,
@@ -8999,9 +9069,37 @@
                                         })()}
                                     </>
                                 ) : (
-                                    <button onClick={() => { setTargetingMoveIdx(null); setSelectedMultiTargets([]); }} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
-                                         Annulla Selezione
-                                    </button>
+                                    <div className="w-full">
+                                        {activeCommandChar.moves[targetingMoveIdx].targetMode === 'revive' && (
+                                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                                {gameState.teams[playerRole].map((char, i) => {
+                                                    if (char.hp > 0 || char.isSummonOnly) return null;
+                                                    return (
+                                                        <button key={i} onClick={() => {
+                                                            commitAction({
+                                                                type: 'attack',
+                                                                moveIdx: targetingMoveIdx,
+                                                                targetPlayer: playerRole,
+                                                                targetIdx: i
+                                                            });
+                                                        }} className="bg-slate-800/80 p-3 rounded-xl border border-amber-500/50 flex items-center gap-3 hover:bg-slate-700 hover:border-amber-400 transition-all shadow-md group text-left">
+                                                            <img src={char.img} className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-amber-500/30 group-hover:border-amber-400 shrink-0 grayscale" />
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="font-bold text-sm truncate text-white mb-1">{char.name}</div>
+                                                                <div className="text-[10px] text-rose-400 font-bold uppercase tracking-widest">Esausto</div>
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                })}
+                                                {gameState.teams[playerRole].every(c => c.hp > 0 || c.isSummonOnly) && (
+                                                    <div className="col-span-2 text-center text-slate-400 font-bold py-4">Nessun alleato da rianimare!</div>
+                                                )}
+                                            </div>
+                                        )}
+                                        <button onClick={() => { setTargetingMoveIdx(null); setSelectedMultiTargets([]); }} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
+                                             Annulla Selezione
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         ) : (!isPlayingEvents && !isMyTurn) && (
