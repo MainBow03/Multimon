@@ -46,6 +46,7 @@
         const RotateCcw = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>;
         const Users = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
         const Target = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>;
+        const ScrollText = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h12a2 2 0 0 0 2-2v-14a2 2 0 0 0-2-2h-12a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path><path d="M8 7h12"></path><path d="M8 11h12"></path><path d="M8 15h8"></path><path d="M4 17v2a2 2 0 0 0 2 2h2"></path><path d="M4 13v-8a2 2 0 0 1 2-2h2"></path></svg>;
         const Loader2 = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>;
         const Wifi = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>;
         const Trophy = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>;
@@ -194,9 +195,9 @@
           'Fotosintesi clorofiliana': { name: 'Fotosintesi clorofiliana', type: 'Erba', power: 0, maxUses: 2, targetMode: 'team_smart_heal', healAlone: 1.0, healTeam: 0.5, desc: 'Se è sola si cura del 100% dei PS. Se ha alleati, cura tutto il team in campo del 50% dei PS.' },
           'L ho fatta nel vaso': { name: 'L ho fatta nel vaso', type: 'Erba', power: 0, target: 'self', heal: 0.25, statBuff: { def: 1.5 }, desc: 'Si sistema comodamente: recupera il 25% dei PS e aumenta la propria Difesa del 50%.' },
 
-          'Bolla Turbo': { name: 'Bolla Turbo', type: 'Acqua', power: 40, targetCount: 4, selfStatBuff: { spd: 1.5 }, desc: 'Attacco rapido d\'acqua che colpisce più bersagli possibili e aumenta la Velocità di chi la usa.' },
+          'Bolla Turbo': { name: 'Bolla Turbo', type: 'Acqua', power: 45, targetCount: 4, selfStatBuff: { spd: 1.5 }, desc: 'Attacco rapido d\'acqua che colpisce più bersagli possibili e aumenta la Velocità di chi la usa.' },
           'Onda Amica': { name: 'Onda Amica', type: 'Acqua', power: 0, targetMode: 'ally', heal: 0.4, removeNegativeStatuses: true, desc: 'Una dolce onda curativa che guarisce il 40% dei PS a un alleato (o a se stesso) e rimuove gli status negativi.' },
-          'Spruzzo Caotico': { name: 'Spruzzo Caotico', type: 'Acqua', power: 70, statusEffect: { type: 'Confuso', chance: 0.4 }, desc: 'Un potente getto irregolare con il 40% di probabilità di confondere il nemico.' },
+          'Brutto, brutto e cattivo!': { name: 'Brutto, brutto e cattivo!', type: 'Normale', power: 60, multiHit: { min: 1, max: 2 }, desc: 'Un attacco da capriccio esplosivo! Può colpire da 1 a 2 volte il bersaglio.' },
           'Onda Travolgente': { name: 'Onda Travolgente', type: 'Acqua', power: 80, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Un\'onda violenta che travolge il nemico. 20% di probabilità di stordire.' },
 
           'Tempesta emotiva': { name: 'Tempesta emotiva', type: 'Aria', power: 110, targetCount: 2, maxUses: 5, desc: 'Un ciclone di emozioni e vento. Colpisce fino a due bersagli contemporaneamente.' },
@@ -640,6 +641,9 @@
           'Shin Shudoruku': { name: 'Shin Shudoruku', type: 'Fuoco', power: 150, requiredStatus: 'Dioemuru', desc: 'Carica suprema. (Utilizzabile solo se Dioemuru Shudoruku è attivo).' },
           'Ondata di calore': { name: 'Ondata di calore', type: 'Fuoco', power: 60, targetCount: 4, desc: 'Emana calore estremo colpendo tutti gli avversari in campo.' },
 
+          // NUOVA MOSSA COMBINATA ZATCH BELL & PONYGON
+          'Carica del Re Fulmine': { name: 'Carica del Re Fulmine', type: 'Elettro', power: 220, maxUses: 1, isCombo: ['zatchbell', 'ponygon'], specificComboEffects: { 'zatchbell': { selfHeal: -0.15, statBuff: { atk: 1.5 } }, 'ponygon': { selfHeal: -0.15, statBuff: { spd: 2.0, def: 1.5 } } }, desc: 'Mossa Combinata: Danni devastanti (220). Zatch monta in sella a Ponygon in un assalto di fiamme e fulmini! Costa il 15% dei PS a entrambi, ma potenzia Zatch (+50% Atk) e Ponygon (+100% Spd, +50% Def).' },
+
           // NUOVE MOSSE TRIGON E GASTER
           'Inferno demoniaco': { name: 'Inferno demoniaco', type: 'Fuoco', power: 100, targetCount: 4, statusEffect: { type: 'Scottato', chance: 0.5 }, desc: 'Fiamme infernali che colpiscono tutti i bersagli. 50% di probabilità di scottare i nemici.' },
           'Sguardo dell\'abisso': { name: 'Sguardo dell\'abisso', type: 'Oscuro', power: 0, targetStatDebuff: { atk: 0.5 }, desc: 'Uno sguardo terrificante che terrorizza il nemico, dimezzandone permanentemente l\'Attacco (diminuisce di 2 stage).' },
@@ -807,15 +811,15 @@
           { id: 'bowser', name: 'Bowser', types: ['Fuoco', 'Drago'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 40, img: 'https://i.pinimg.com/736x/cf/3f/ec/cf3fec1f6b9334e0255065f150fa97a9.jpg', passive: { name: 'Fiamma del Re Koopa', type: 'on_enter', maxUses: 1, applyStatusToRandomEnemy: { type: 'Scottato', turns: 1 }, desc: 'Appena scende in campo, scotta immediatamente un nemico casuale. (1 sola volta per battaglia)' }, moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Rolla-Guscio'], MOVES_DB['Ruggito del re koopa'], MOVES_DB['Dragartigli']] },
           { id: 'leslie', name: 'Leslie', types: ['Erba'], hp: 120, maxHp: 120, atk: 90, def: 110, spd: 65, img: 'https://i.pinimg.com/736x/27/9b/52/279b527b56263fab8939f6597633a51b.jpg', moves: [MOVES_DB['Polline fastidioso'], MOVES_DB['Foglia Danzerina'], MOVES_DB['Fotosintesi clorofiliana'], MOVES_DB['L ho fatta nel vaso']] },
           { id: 'roserade', name: 'Roserade', types: ['Erba', 'Veleno'], hp: 80, maxHp: 80, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/67/88/49/678849c01d18a4e0b90038bc069642ce.jpg', moves: [MOVES_DB['Tossina'], MOVES_DB['Gigassorbimento'], MOVES_DB['Fangobomba'], MOVES_DB['Protezione']] },
-          { id: 'darwin', name: 'Darwin', types: ['Acqua', 'Normale'], hp: 95, maxHp: 95, atk: 85, def: 80, spd: 100, img: 'https://i.pinimg.com/1200x/5a/cf/9c/5acf9c886678411963046b04051e610e.jpg', moves: [MOVES_DB['Bolla Turbo'], MOVES_DB['Onda Amica'], MOVES_DB['Spruzzo Caotico'], MOVES_DB['Onda Travolgente']] },
+          { id: 'darwin', name: 'Darwin', types: ['Acqua', 'Normale'], hp: 95, maxHp: 95, atk: 85, def: 80, spd: 100, img: 'https://i.pinimg.com/1200x/5a/cf/9c/5acf9c886678411963046b04051e610e.jpg', moves: [MOVES_DB['Bolla Turbo'], MOVES_DB['Onda Amica'], MOVES_DB['Brutto, brutto e cattivo!'], MOVES_DB['Onda Travolgente']] },
           { id: 'juvia', name: 'Juvia', types: ['Acqua'], hp: 90, maxHp: 90, atk: 100, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/5b/ba/7c/5bba7c154e41cf9d8a3905ca7020ac3b.jpg', moves: [MOVES_DB['Tempesta emotiva'], MOVES_DB['Colpo impetuoso'], MOVES_DB['Amore devoto'], MOVES_DB['Flirt']] },
           { id: 'sanemi', name: 'Sanemi', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/54/49/7f/54497f3c2cfb1a3467f996f942c4f812.jpg', moves: [MOVES_DB['Primo Kata'], MOVES_DB['Terzo Kata'], MOVES_DB['Settimo Kata'], MOVES_DB['Colpo Karate']] },
-          { id: 'dolli', name: 'Dolli', types: ['Aria', 'Acqua'], hp: 90, maxHp: 90, atk: 85, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/5c/dd/8d/5cdd8d89ce9d32e38f97c50ccece9933.jpg', moves: [MOVES_DB['Riflesso Team'], MOVES_DB['Sorriso Luminoso'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
+          { id: 'dolli', name: 'Dolli', types: ['Aria', 'Acqua'], hp: 90, maxHp: 90, atk: 85, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/5c/dd/8d/5cdd8d89ce9d32e38f97c50ccece9933.jpg', passive: { name: 'Bambola di Pezza', type: 'on_faint', maxUses: 1, applyStatusToTeam: { type: 'Scudo Team', turns: 3 }, desc: 'Quando viene sconfitta, applica Scudo Team (Difesa x3) agli alleati in campo per 3 turni.' }, moves: [MOVES_DB['Riflesso Team'], MOVES_DB['Sorriso Luminoso'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
           { id: 'kevin', name: 'Kevin', types: ['Normale', 'Roccia'], hp: 110, maxHp: 110, atk: 90, def: 100, spd: 50, img: 'https://i.pinimg.com/736x/a6/c1/a5/a6c1a5535bcc84e78886d6e6f29a560a.jpg', moves: [MOVES_DB['Pugno Minerale'], MOVES_DB['Frana Impattante'], MOVES_DB['Assorbimento grezzo'], MOVES_DB['Carica selvaggia']] },
           { id: 'cuoredipietra', name: 'Cuore di Pietra', types: ['Roccia'], hp: 120, maxHp: 120, atk: 105, def: 130, spd: 30, img: 'https://i.pinimg.com/736x/3d/91/a9/3d91a9f4d2e605b15a70289b5e0045e7.jpg', passive: { name: 'Vigore', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Ruggito di Pietra'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Scaglie di Roccia'], MOVES_DB['Presa Schiacciante']] },
           { id: 'elsa', name: 'Elsa', types: ['Ghiaccio'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/4d/fa/e0/4dfae0259d23b33d9a4b90f7848f9ed8.jpg', moves: [MOVES_DB['Gelo Eterno'], MOVES_DB['Frammenti di Neve'], MOVES_DB['Canto dell Inverno'], MOVES_DB['Luce Cristallina']] },
           { id: 'reghiaccio', name: 'Re Ghiaccio', types: ['Ghiaccio', 'Magico'], hp: 95, maxHp: 95, atk: 90, def: 75, spd: 70, img: 'https://i.pinimg.com/736x/63/11/d2/6311d2bddf8b2672df70a957bea7a93d.jpg', moves: [MOVES_DB['Raggio Congelante'], MOVES_DB['Vai Gunter!'], MOVES_DB['Prigione di Ghiaccio'], MOVES_DB['Follia della Corona']] },
-          { id: 'cyborg', name: 'Cyborg', types: ['Robot', 'Elettro'], hp: 110, maxHp: 110, atk: 100, def: 95, spd: 65, img: 'https://i.pinimg.com/736x/a7/45/42/a74542534570c959bced77c025e13427.jpg', moves: [MOVES_DB['Cannone Sonico'], MOVES_DB['Booyah!'], MOVES_DB['Missile a Ricerca'], MOVES_DB['Riparazione Automatica']] },
+          { id: 'cyborg', name: 'Cyborg', types: ['Robot', 'Elettro'], hp: 110, maxHp: 110, atk: 100, def: 95, spd: 65, img: 'https://i.pinimg.com/736x/a7/45/42/a74542534570c959bced77c025e13427.jpg', passive: { name: 'Malfunzionamento', type: 'on_hp_threshold', threshold: 0.5, maxUses: 1, aoeDamagePercentMaxHp: 0.10, desc: 'Quando i PS scendono al 50% o meno, esplode infliggendo a tutti gli avversari il 10% dei loro PS massimi.' }, moves: [MOVES_DB['Cannone Sonico'], MOVES_DB['Booyah!'], MOVES_DB['Missile a Ricerca'], MOVES_DB['Riparazione Automatica']] },
           { id: 'utopia', name: 'N°39 Utopia', types: ['Robot'], hp: 100, maxHp: 100, atk: 120, def: 100, spd: 80, img: 'https://i.pinimg.com/736x/6c/d6/61/6cd66102405d6a3b0a9105dfff36b040.jpg', moves: [MOVES_DB['Taglio della Speranza'], MOVES_DB['Scudo Ala di Luce'], MOVES_DB['Doppio o Niente!'], MOVES_DB['Raggio Vittoria']] },
           { id: 'sdentato', name: 'Sdentato', types: ['Drago'], hp: 90, maxHp: 90, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/64/e6/9d/64e69d5a9d5b7506d42b7080b2349fb6.jpg', moves: [MOVES_DB['Fuoco al Plasma'], MOVES_DB['Volo Furtivo'], MOVES_DB['Ruggito Alfa'], MOVES_DB['Tuffo in Picchiata']] },
           { id: 'spyro', name: 'Spyro', types: ['Fuoco', 'Drago'], hp: 85, maxHp: 85, atk: 95, def: 70, spd: 95, img: 'https://i.pinimg.com/736x/d3/86/d6/d386d682180fba073899e91eea331a82.jpg', moves: [MOVES_DB['Soffio di Fuoco'], MOVES_DB['Carica a Cornate'], MOVES_DB['L\'aiuto di Sparx'], MOVES_DB['Pioggia di Gemme']] },
@@ -823,8 +827,8 @@
           { id: 'corvina', name: 'Corvina', types: ['Oscuro', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', passive: { name: 'Libera dall\'oscurità', type: 'on_turn_end', chance: 0.20, healLowestAllyPercent: 0.20, desc: 'Alla fine di ogni turno, ha il 20% di probabilità di curare l\'alleato in campo con meno PS del 20%.' }, moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']] },
           { id: 'poisonivy', name: 'Poison Ivy', types: ['Veleno', 'Erba'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 75, img: 'https://i.pinimg.com/736x/d4/6d/c1/d46dc1e0c93db1696dbe77af5903bb50.jpg', moves: [MOVES_DB['Bacio Tossico'], MOVES_DB['Radici Avvolgenti'], MOVES_DB['Spore Soporifere'], MOVES_DB['Fascino Botanico']] },
           { id: 'mantide', name: 'Mantide', types: ['Insetto'], hp: 70, maxHp: 70, atk: 110, def: 60, spd: 115, img: 'https://i.pinimg.com/736x/ec/13/e7/ec13e73634b743dda5723d1fbe45c5e4.jpg', moves: [MOVES_DB['Colpo della Mantide'], MOVES_DB['Agopuntura'], MOVES_DB['Raffica di Pugni'], MOVES_DB['Schivata Acrobatica']] },
-          { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i.pinimg.com/1200x/7f/2a/f8/7f2af80ef1d08f7d8d433aef9be18421.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
-          { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga']] },
+          { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i.cl/7f/2a/f8/7f2af80ef1d08f7d8d433aef9be18421.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
+          { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Carica del Re Fulmine']] },
           { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
           { id: 'strega', name: 'Strega', types: ['Oscuro', 'Psico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', passive: { name: 'Corteo Oscuro', type: 'on_enter', isSummon: ['scheletro', 'carta_guardia'], maxUses: 1, desc: 'Appena scende in campo, evoca immediatamente uno Scheletro e una Carta Guardia al suo fianco. (Si attiva 1 sola volta per battaglia)' }, moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
@@ -854,7 +858,7 @@
           { id: 'katara', name: 'Katara', types: ['Acqua', 'Ghiaccio'], hp: 85, maxHp: 85, atk: 105, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/53/24/92/532492c3c0137235f02d86ffa0b933b1.jpg', moves: [MOVES_DB['Frusta d\'Acqua'], MOVES_DB['Onda Guaritrice'], MOVES_DB['Dominio del Sangue'], MOVES_DB['Gabbia di Ghiaccio']] },
           { id: 'zabuza', name: 'Zabuza', types: ['Acqua', 'Buio'], hp: 110, maxHp: 110, atk: 115, def: 85, spd: 95, img: 'https://i.pinimg.com/736x/73/01/8b/73018bd605e624d68f3cd45900f4499c.jpg', moves: [MOVES_DB['Velo di Nebbia'], MOVES_DB['Mannaia Tagliateste'], MOVES_DB['Drago Acquatico'], MOVES_DB['Omicidio Silenzioso']] },
           { id: 'stewie', name: 'Stewie', types: ['Robot', 'Elettro'], hp: 80, maxHp: 80, atk: 115, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/72/98/97/729897013a80e2f47d32fa0f790811eb.jpg', moves: [MOVES_DB['Pistola Laser'], MOVES_DB['Macchina del Tempo'], MOVES_DB['Granata EMP'], MOVES_DB['Controllo Mentale']] },
-          { id: 'dannyphantom', name: 'Danny Phantom', types: ['Spettro', 'Elettro'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/0b/75/5d/0b755da4ccc07381fb6ba32991b35135.jpg', moves: [MOVES_DB['Raggio Ectoplasmatico'], MOVES_DB['Urlo Spettrale'], MOVES_DB['Intangibilità'], MOVES_DB['Pugno Ghiacciato']] },
+          { id: 'dannyphantom', name: 'Danny Phantom', types: ['Spettro', 'Elettro'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/0b/75/5d/0b755da4ccc07381fb6ba32991b35135.jpg', passive: { name: 'Phantom mode : activate!', type: 'damage_reduction_on_move', moveName: 'Urlo Spettrale', reduction: 0.25, desc: 'Quando utilizza Urlo Spettrale, riceve il 25% di danni in meno per quel turno.' }, moves: [MOVES_DB['Raggio Ectoplasmatico'], MOVES_DB['Urlo Spettrale'], MOVES_DB['Intangibilità'], MOVES_DB['Pugno Ghiacciato']] },
           { id: 'reboo', name: 'Re Boo', types: ['Spettro', 'Psico'], hp: 130, maxHp: 130, atk: 95, def: 110, spd: 50, img: 'https://i.pinimg.com/736x/e4/32/5d/e4325df5bb0d6bac82d57332f1262f33.jpg', moves: [MOVES_DB['Trappola nel Quadro'], MOVES_DB['Illusione Spettrale'], MOVES_DB['Lingua Gigante'], MOVES_DB['Potere della Corona']] },
           { id: 'ryuk', name: 'Ryuk', types: ['Oscuro', 'Aria'], hp: 100, maxHp: 100, atk: 120, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/5f/e5/ee/5fe5ee520cfc60bc417670fb536d1dd7.jpg', moves: [MOVES_DB['Quaderno della Morte'], MOVES_DB['Mela Rossa'], MOVES_DB['Sguardo Shinigami'], MOVES_DB['Ali Nere']] },
           { id: 'polterpup', name: 'Polterpup', types: ['Spettro', 'Normale'], hp: 95, maxHp: 95, atk: 80, def: 95, spd: 130, img: 'https://i.pinimg.com/736x/94/14/01/941401a8a6cc3d7693a9a93275616f1a.jpg', moves: [MOVES_DB['Leccata Festosa'], MOVES_DB['Ruba-Chiavi'], MOVES_DB['Buon Cagnolino'], MOVES_DB['Nascondino']] },
@@ -885,7 +889,7 @@
           
           { id: 'penny', name: 'Penny', types: ['Acqua'], hp: 90, maxHp: 90, atk: 105, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/36/a1/68/36a168060154d2cb3d496213de3a99a2.jpg', moves: [MOVES_DB['Akur!'], MOVES_DB['guarda il mio faccino!'], MOVES_DB['Akur Kiro!'], MOVES_DB['Sou Giakuru!']] },
           { id: 'brago', name: 'Brago', types: ['Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/dc/e7/52/dce7525b5b8f5b0bf5cae38d6f795967.jpg', passive: { name: 'Un re gentile è un re debole!', type: 'on_ko', statBuff: { atk: 1.3 }, desc: 'Se manda K.O. un avversario, il suo Attacco aumenta del 30%.' }, moves: [MOVES_DB['Gravirei'], MOVES_DB['Oruga Reis'], MOVES_DB['Dioga Gravidon'], MOVES_DB['Nyoborotsu Ma Gravirei']] },
-          { id: 'ponygon', name: 'Ponygon', types: ['Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/53/e4/fb/53e4fb1c1f8964ca949c4e72663edd8f.jpg', moves: [MOVES_DB['Shudoruku'], MOVES_DB['Dioemuru Shudoruku'], MOVES_DB['Shin Shudoruku'], MOVES_DB['Ondata di calore']] },
+          { id: 'ponygon', name: 'Ponygon', types: ['Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/53/e4/fb/53e4fb1c1f8964ca949c4e72663edd8f.jpg', moves: [MOVES_DB['Shudoruku'], MOVES_DB['Dioemuru Shudoruku'], MOVES_DB['Shin Shudoruku'], MOVES_DB['Ondata di calore'], MOVES_DB['Carica del Re Fulmine']] },
 
           { id: 'peridot', name: 'Peridot', types: ['Robot', 'Psico'], hp: 95, maxHp: 95, atk: 100, def: 110, spd: 115, img: 'https://i.pinimg.com/736x/fa/81/bc/fa81bc97d2694dc7b9821b1ce3bdf4bb.jpg', passive: { name: 'Tablet Alieno', type: 'on_enter', maxUses: 1, selfStatBuff: { spd: 1.5, def: 1.3 }, desc: 'Consulta il tablet aggiornando le difese. Aumenta Velocità (+50%) e Difesa (+30%) all\'ingresso in campo.' }, moves: [MOVES_DB['Dita Laser'], MOVES_DB['Ferrocinesi'], MOVES_DB['Campo Magnetico'], MOVES_DB['Siete dei Clod!']] },
           { id: 'shinobu', name: 'Shinobu', types: ['Veleno', 'Insetto'], hp: 85, maxHp: 85, atk: 120, def: 65, spd: 135, img: 'https://i.pinimg.com/736x/8b/71/a5/8b71a53282f08aea93f83852a01e4e44.jpg', passive: { name: 'Leggerezza Piumata', type: 'first_strike_bonus', damageBonus: 1.20, desc: 'Agilissima, colpisce con più slancio. Se attacca per prima nel turno, infligge il 20% di danni extra.' }, moves: [MOVES_DB['Danza della Farfalla'], MOVES_DB['Estrazione del Veleno'], MOVES_DB['Pungiglione Letale'], MOVES_DB['Medicina del Glicine']] },
@@ -2253,6 +2257,7 @@
           const [displayField, setDisplayField] = useState({ p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] });
           const [isPlayingEvents, setIsPlayingEvents] = useState(false);
           const [eventPlaybackText, setEventPlaybackText] = useState('');
+          const [eventPlaybackPassive, setEventPlaybackPassive] = useState(null);
 
           const [commandingIdx, setCommandingIdx] = useState(-1);
           const [targetingMoveIdx, setTargetingMoveIdx] = useState(null);
@@ -2275,9 +2280,15 @@
           const [teamSelectionDialogue, setTeamSelectionDialogue] = useState(null);
           const selectionDialogueTimerRef = useRef(null);
 
+          // Variabili Registro Battaglia
+          const [combatLog, setCombatLog] = useState([]);
+          const [isLogOpen, setIsLogOpen] = useState(false);
+          const logEndRef = useRef(null);
+
           // Variabili di stato e reference mancanti
           const [systemAlert, setSystemAlert] = useState(null);
           const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+          const [passiveInfoPopup, setPassiveInfoPopup] = useState(null);
           const [shopTab, setShopTab] = useState('items');
           const [draftHoverInfo, setDraftHoverInfo] = useState(null);
           const [actionMenuMode, setActionMenuMode] = useState('moves');
@@ -2295,6 +2306,13 @@
           const pressTimerRef = useRef(null);
           const isCalculatingRef = useRef(false);
           
+          // Auto-scroll per il registro battaglia
+          useEffect(() => {
+              if (isLogOpen && logEndRef.current) {
+                  logEndRef.current.scrollIntoView({ behavior: 'smooth' });
+              }
+          }, [combatLog, isLogOpen]);
+
           // --- STATO CAMPAGNA ---
           const [activeCampaignId, setActiveCampaignId] = useState('crisi_varco');
           
@@ -2973,6 +2991,8 @@
             setRoomId(null);
             setPlayerRole(null);
             setGameState(initialGameState());
+            setCombatLog([]);
+            setIsLogOpen(false);
           };
 
           const handleConfirmLeave = async () => {
@@ -3437,7 +3457,7 @@
                       }
                   });
                   if (summonedNames.length > 0) {
-                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name} ed evoca ${summonedNames.join(' e ')}!` });
+                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name} ed evoca ${summonedNames.join(' e ')}!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                   }
               }
               
@@ -3465,14 +3485,14 @@
                           });
                       }
                   });
-                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche del tuo team aumentano!` });
+                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche del tuo team aumentano!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
               }
               
               if (char.passive.selfStatBuff) {
                   if (char.passive.selfStatBuff.atk) char.atk = Math.floor(char.atk * char.passive.selfStatBuff.atk);
                   if (char.passive.selfStatBuff.def) char.def = Math.floor(char.def * char.passive.selfStatBuff.def);
                   if (char.passive.selfStatBuff.spd) char.spd = Math.floor(char.spd * char.passive.selfStatBuff.spd);
-                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le proprie statistiche aumentano!` });
+                  eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le proprie statistiche aumentano!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
               }
               
               if (char.passive.enemyStatDebuff || char.passive.revealStrongestEnemyMove || char.passive.applyStatusToRandomEnemy || char.passive.randomStatDebuffToRandomEnemy) {
@@ -3501,7 +3521,7 @@
                               });
                           }
                       });
-                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche dei nemici in campo diminuiscono!` });
+                      eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}: le statistiche dei nemici in campo diminuiscono!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                   }
                   
                   if (char.passive.revealStrongestEnemyMove) {
@@ -3525,7 +3545,7 @@
                           }
                       });
                       if (strongestMove) {
-                          eventsArr.push({ type: 'text', text: `👁️ ${char.passive.name}! ${char.name} analizza e svela la mossa più potente: ${strongestMove.name} di ${enemyName} (Potenza: ${strongestPower})!` });
+                          eventsArr.push({ type: 'text', text: `👁️ ${char.passive.name}! ${char.name} analizza e svela la mossa più potente: ${strongestMove.name} di ${enemyName} (Potenza: ${strongestPower})!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                       }
                   }
                   
@@ -3547,7 +3567,7 @@
                           
                           const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(sType);
                           if (isNegative && rTarget.char.passive && rTarget.char.passive.immuneToNegativeStatuses) {
-                              eventsArr.push({ type: 'text', text: `🛡️ ${char.name} attiva ${char.passive.name}, ma ${rTarget.char.name} è immune a ${sType} grazie a ${rTarget.char.passive.name}!` });
+                              eventsArr.push({ type: 'text', text: `🛡️ ${char.name} attiva ${char.passive.name}, ma ${rTarget.char.name} è immune a ${sType} grazie a ${rTarget.char.passive.name}!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                           } else {
                               const existingIdx = rTarget.char.statuses.findIndex(s => s.type === sType);
                               if (existingIdx === -1) {
@@ -3555,7 +3575,7 @@
                               } else {
                                   rTarget.char.statuses[existingIdx].turns = char.passive.applyStatusToRandomEnemy.turns || 1;
                               }
-                              eventsArr.push({ type: 'text', text: `🔥 ${char.name} attiva ${char.passive.name}! ${rTarget.char.name} subisce lo status ${sType}!` });
+                              eventsArr.push({ type: 'text', text: `🔥 ${char.name} attiva ${char.passive.name}! ${rTarget.char.name} subisce lo status ${sType}!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                               eventsArr.push({ type: 'status_update', targetPlayer: rTarget.player, targetIdx: rTarget.idx, statuses: JSON.parse(JSON.stringify(rTarget.char.statuses)) });
                           }
                       }
@@ -3582,11 +3602,8 @@
                           if (Math.random() < chance) { rTarget.char.atk = Math.floor(rTarget.char.atk * mult); debuffedStats.push("Attacco"); }
                           if (Math.random() < chance) { rTarget.char.def = Math.floor(rTarget.char.def * mult); debuffedStats.push("Difesa"); }
                           if (Math.random() < chance) { rTarget.char.spd = Math.floor(rTarget.char.spd * mult); debuffedStats.push("Velocità"); }
-                          
                           if (debuffedStats.length > 0) {
-                              eventsArr.push({ type: 'text', text: `🌪️ ${char.name} attiva ${char.passive.name}! La sfortuna colpisce ${rTarget.char.name}, riducendo: ${debuffedStats.join(", ")} (-30%)!` });
-                          } else {
-                              eventsArr.push({ type: 'text', text: `🌪️ ${char.name} attiva ${char.passive.name}... ma la sfortuna risparmia i nemici stavolta!` });
+                              eventsArr.push({ type: 'text', text: `✨ ${char.name} attiva ${char.passive.name}! Le seguenti statistiche di ${rTarget.char.name} diminuiscono: ${debuffedStats.join(", ")}!`, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                           }
                       }
                   }
@@ -3719,6 +3736,9 @@
               currentMatchIdx: 0,
               playerScores: scores
             };
+
+            setCombatLog([]);
+            setIsLogOpen(false);
 
             updateState(nextState);
 
@@ -4142,7 +4162,7 @@
                 events.push({ type: 'damage', text: text, targetPlayer, targetIdx, newHp: target.hp });
                 
                 if (willSurvive) {
-                    events.push({ type: 'text', text: `🛡️ ${target.name} stringe i denti! Resiste al colpo fatale grazie a "${target.passive.name}" e resta con 1 PS!` });
+                    events.push({ type: 'text', text: `🛡️ ${target.name} stringe i denti! Resiste al colpo fatale grazie a "${target.passive.name}" e resta con 1 PS!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
                 }
                 
                 if (target.juggShieldHpThresholds && target.juggShieldHpThresholds.length > 0) {
@@ -4190,11 +4210,11 @@
                             if (target.passive.statBuff.atk) { target.atk = Math.floor(target.atk * target.passive.statBuff.atk); statTexts.push("Attacco"); }
                             if (target.passive.statBuff.def) { target.def = Math.floor(target.def * target.passive.statBuff.def); statTexts.push("Difesa"); }
                             if (target.passive.statBuff.spd) { target.spd = Math.floor(target.spd * target.passive.statBuff.spd); statTexts.push("Velocità"); }
-                            events.push({ type: 'text', text: `🔥 ${target.name} attiva ${target.passive.name}! Aumenta ${statTexts.join(" e ")}!` });
+                            events.push({ type: 'text', text: `🔥 ${target.name} attiva ${target.passive.name}! Aumenta ${statTexts.join(" e ")}!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
                         }
 
                         if (target.passive.resetEnemyBuffs) {
-                            events.push({ type: 'text', text: `🐾 ${target.name} attiva ${target.passive.name}! I potenziamenti degli avversari in campo vengono azzerati!` });
+                            events.push({ type: 'text', text: `🐾 ${target.name} attiva ${target.passive.name}! I potenziamenti degli avversari in campo vengono azzerati!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
                             
                             let enemyPlayers = [];
                             if (gameState.gameMode === 'multipla') {
@@ -4223,12 +4243,51 @@
                     }
                 }
 
-                // --- GESTIONE PASSIVE: ALLA SCONFITTA (es. Bloom) ---
+                // --- GESTIONE PASSIVE: ALLA SCONFITTA (es. Bloom, Dolli) ---
                 if (target.hp === 0 && target.passive && target.passive.type === 'on_faint' && (target.passiveUses || 0) < (target.passive.maxUses || 1)) {
                     target.passiveUses = (target.passiveUses || 0) + 1;
-                    target.hp = Math.max(1, Math.floor(target.maxHp * target.passive.reviveHpPercent));
-                    target.statuses = []; // Rimuove status negativi alla rinascita
-                    events.push({ type: 'damage', text: `✨ ${target.name} attiva ${target.passive.name} e rinasce dalle proprie ceneri!`, targetPlayer, targetIdx, newHp: target.hp });
+                    
+                    if (target.passive.reviveHpPercent) {
+                        target.hp = Math.max(1, Math.floor(target.maxHp * target.passive.reviveHpPercent));
+                        target.statuses = []; // Rimuove status negativi alla rinascita
+                        events.push({ type: 'damage', text: `✨ ${target.name} attiva ${target.passive.name} e rinasce dalle proprie ceneri!`, targetPlayer, targetIdx, newHp: target.hp, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
+                    }
+                    
+                    if (target.passive.applyStatusToTeam) {
+                        let myTeamPlayers = [targetPlayer];
+                        if (gameState.gameMode === 'multipla') {
+                            myTeamPlayers = ['p1', 'p2'].includes(targetPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
+                        } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                            const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                            if (targetPlayer !== juggPlayer) {
+                                myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                            }
+                        }
+                        
+                        let applied = false;
+                        myTeamPlayers.forEach(pAlly => {
+                            if (workingField[pAlly]) {
+                                workingField[pAlly].forEach(aIdx => {
+                                    const ally = workingTeams[pAlly][aIdx];
+                                    if (ally && ally.hp > 0 && !(pAlly === targetPlayer && aIdx === targetIdx)) {
+                                        const sType = target.passive.applyStatusToTeam.type;
+                                        const existingIdx = ally.statuses.findIndex(s => s.type === sType);
+                                        if (existingIdx === -1) {
+                                            ally.statuses.push({ type: sType, turns: target.passive.applyStatusToTeam.turns });
+                                        } else {
+                                            ally.statuses[existingIdx].turns = target.passive.applyStatusToTeam.turns;
+                                        }
+                                        updateStatusUI(pAlly, aIdx);
+                                        applied = true;
+                                    }
+                                });
+                            }
+                        });
+                        
+                        if (applied) {
+                            events.push({ type: 'text', text: `🎀 ${target.name} viene sconfitta, ma attiva ${target.passive.name}! Il team riceve ${target.passive.applyStatusToTeam.type}!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
+                        }
+                    }
                 }
 
                 if (target.hp === 0) handleFaint(targetPlayer, targetIdx);
@@ -4552,7 +4611,7 @@
                     if (move.statusEffect) {
                         const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(move.statusEffect.type);
                         if (isNegative && attacker.passive && attacker.passive.immuneToNegativeStatuses) {
-                            events.push({ type: 'text', text: `🛡️ ${attacker.name} resiste a ${move.statusEffect.type} grazie a ${attacker.passive.name}!` });
+                            events.push({ type: 'text', text: `🛡️ ${attacker.name} resiste a ${move.statusEffect.type} grazie a ${attacker.passive.name}!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
                         } else {
                             attacker.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
                             updateStatusUI(player, charTeamIdx);
@@ -4670,10 +4729,18 @@
                 if (move.targetMode === 'ally') {
                     let targetPlayer = action.targetPlayer;
                     let targetIdx = action.targetIdx;
+                    
+                    if (action.targetFieldIdx !== undefined) {
+                        const currentIdxAtPos = workingField[targetPlayer]?.[action.targetFieldIdx];
+                        if (currentIdxAtPos !== undefined && workingTeams[targetPlayer]?.[currentIdxAtPos]?.hp > 0) {
+                            targetIdx = currentIdxAtPos;
+                        }
+                    }
+
                     let target = workingTeams[targetPlayer]?.[targetIdx];
 
-                    if (!target || target.hp <= 0) {
-                       events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma il bersaglio non c'è più!` });
+                    if (!target || target.hp <= 0 || !workingField[targetPlayer]?.includes(targetIdx)) {
+                       events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma il bersaglio non è più in campo!` });
                        continue;
                     }
 
@@ -4864,32 +4931,59 @@
                 } else if (action.selectedTargets) {
                     // Attacco a bersagli multipli selezionati manualmente
                     action.selectedTargets.forEach(t => {
-                        const tgtChar = workingTeams[t.player]?.[t.idx];
-                        if (tgtChar) {
-                            resolvedTargets.push({
-                                player: t.player,
-                                idx: t.idx,
-                                fieldIdx: t.fieldIdx,
-                                char: tgtChar
-                            });
+                        let finalIdx = t.idx;
+                        if (t.fieldIdx !== undefined) {
+                            const currentIdxAtPos = workingField[t.player]?.[t.fieldIdx];
+                            if (currentIdxAtPos !== undefined && workingTeams[t.player]?.[currentIdxAtPos]?.hp > 0) {
+                                finalIdx = currentIdxAtPos;
+                            } else {
+                                const anyAlive = (workingField[t.player] || []).filter(i => workingTeams[t.player]?.[i]?.hp > 0);
+                                if (anyAlive.length > 0) finalIdx = anyAlive[0];
+                                else finalIdx = null;
+                            }
+                        }
+                        
+                        if (finalIdx !== null) {
+                            const tgtChar = workingTeams[t.player]?.[finalIdx];
+                            if (tgtChar) {
+                                // Evita duplicati
+                                if (!resolvedTargets.some(rt => rt.player === t.player && rt.idx === finalIdx)) {
+                                    resolvedTargets.push({
+                                        player: t.player,
+                                        idx: finalIdx,
+                                        fieldIdx: workingField[t.player].indexOf(finalIdx),
+                                        char: tgtChar
+                                    });
+                                }
+                            }
                         }
                     });
                 } else {
                     let finalTargetIdx = action.targetIdx;
                     
-                    // Se il bersaglio originale è morto, cerca chi ha preso il suo posto (stesso fieldIdx)
-                    const originalTarget = workingTeams[action.targetPlayer]?.[action.targetIdx];
-                    if (originalTarget && originalTarget.hp <= 0) {
+                    if (action.targetFieldIdx !== undefined) {
                         const currentIdxAtPos = workingField[action.targetPlayer]?.[action.targetFieldIdx];
                         if (currentIdxAtPos !== undefined && workingTeams[action.targetPlayer]?.[currentIdxAtPos]?.hp > 0) {
-                            finalTargetIdx = currentIdxAtPos; // Colpisce chi è subentrato
+                            // Colpisce chiunque si trovi ORA nello slot mirato originariamente
+                            finalTargetIdx = currentIdxAtPos;
                         } else {
-                            // Se lo slot è vuoto (es. morto prima del colpo), mira al primo vivo disponibile
+                            // Se lo slot è vuoto o chi c'è è morto, cerca il primo vivo disponibile
                             const anyAlive = (workingField[action.targetPlayer] || []).filter(i => workingTeams[action.targetPlayer]?.[i]?.hp > 0);
                             if (anyAlive.length > 0) {
                                 finalTargetIdx = anyAlive[0];
                             } else {
                                 finalTargetIdx = null; // Nessuno in campo!
+                            }
+                        }
+                    } else {
+                        // Fallback se targetFieldIdx non è presente (vecchie azioni o IA)
+                        const originalTarget = workingTeams[action.targetPlayer]?.[action.targetIdx];
+                        if (originalTarget && (originalTarget.hp <= 0 || !workingField[action.targetPlayer]?.includes(action.targetIdx))) {
+                            const anyAlive = (workingField[action.targetPlayer] || []).filter(i => workingTeams[action.targetPlayer]?.[i]?.hp > 0);
+                            if (anyAlive.length > 0) {
+                                finalTargetIdx = anyAlive[0];
+                            } else {
+                                finalTargetIdx = null;
                             }
                         }
                     }
@@ -4967,6 +5061,19 @@
                         }
                         if (isRedirectedDmgReduced) dmg = Math.max(1, Math.floor(dmg * 0.5));
                         
+                        // --- PASSIVA RIDUZIONE DANNO IN BASE ALLA MOSSA SCELTA ---
+                        if (t.char.passive && t.char.passive.type === 'damage_reduction_on_move') {
+                            const targetAction = currentActions[t.player]?.[t.idx];
+                            if (targetAction && targetAction.type === 'attack' && t.char.moves[targetAction.moveIdx]) {
+                                const targetMove = t.char.moves[targetAction.moveIdx];
+                                if (targetMove.name === t.char.passive.moveName) {
+                                    dmg = Math.max(1, Math.floor(dmg * (1 - t.char.passive.reduction)));
+                                    events.push({ type: 'text', text: `👻 ${t.char.name} attiva ${t.char.passive.name}! Danni ridotti!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
+                                }
+                            }
+                        }
+                        // -----------------------------------------------------------
+                        
                         if (t.char.juggHitsRemaining > 0) {
                             t.char.juggHitsRemaining -= 1;
                             if (t.char.juggHitsRemaining === 0) {
@@ -5006,6 +5113,21 @@
                             let hitDmg = calculateDamage(attacker, t.char, move, multiplier, isFirstAttackOfTurn);
                             if (isMagnetic) hitDmg *= 2;
                             if (isRedirectedDmgReduced) hitDmg = Math.max(1, Math.floor(hitDmg * 0.5));
+                            
+                            // --- PASSIVA RIDUZIONE DANNO IN BASE ALLA MOSSA SCELTA ---
+                            if (t.char.passive && t.char.passive.type === 'damage_reduction_on_move') {
+                                const targetAction = currentActions[t.player]?.[t.idx];
+                                if (targetAction && targetAction.type === 'attack' && t.char.moves[targetAction.moveIdx]) {
+                                    const targetMove = t.char.moves[targetAction.moveIdx];
+                                    if (targetMove.name === t.char.passive.moveName) {
+                                        hitDmg = Math.max(1, Math.floor(hitDmg * (1 - t.char.passive.reduction)));
+                                        if (i === 0) {
+                                            events.push({ type: 'text', text: `👻 ${t.char.name} attiva ${t.char.passive.name}! Danni ridotti!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
+                                        }
+                                    }
+                                }
+                            }
+                            // -----------------------------------------------------------
                             
                             // --- PROTEZIONI (Protetto / Rashield) ---
                             let isProtected = t.char.statuses.some(s => s.type === 'Protetto' || s.type === 'Rashield');
@@ -5137,7 +5259,7 @@
                             if (attacker.passive.statBuff.atk) { attacker.atk = Math.floor(attacker.atk * attacker.passive.statBuff.atk); statTexts.push("Attacco"); }
                             if (attacker.passive.statBuff.def) { attacker.def = Math.floor(attacker.def * attacker.passive.statBuff.def); statTexts.push("Difesa"); }
                             if (attacker.passive.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * attacker.passive.statBuff.spd); statTexts.push("Velocità"); }
-                            events.push({ type: 'text', text: `👑 ${attacker.name} ha mandato K.O. un nemico! Attiva la passiva "${attacker.passive.name}": ${statTexts.join(" e ")} aumenta!` });
+                            events.push({ type: 'text', text: `👑 ${attacker.name} ha mandato K.O. un nemico! Attiva la passiva "${attacker.passive.name}": ${statTexts.join(" e ")} aumenta!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
                         }
                     }
 
@@ -5148,7 +5270,7 @@
                             
                             if (isNegative && t.char.passive && t.char.passive.immuneToNegativeStatuses) {
                                 if (Math.random() < effect.chance) {
-                                    events.push({ type: 'text', text: `🛡️ ${t.char.name} resiste a ${effect.type} grazie a ${t.char.passive.name}!` });
+                                    events.push({ type: 'text', text: `🛡️ ${t.char.name} resiste a ${effect.type} grazie a ${t.char.passive.name}!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
                                 }
                                 continue;
                             }
@@ -5295,7 +5417,7 @@
                     if (char.passive.healPercent && char.hp < char.maxHp) {
                         const healAmount = Math.max(1, Math.floor(char.maxHp * char.passive.healPercent));
                         char.hp = Math.min(char.maxHp, char.hp + healAmount);
-                        events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}: recupera ${healAmount} PS!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp });
+                        events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}: recupera ${healAmount} PS!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                     }
                     if (char.passive.healLowestAllyPercent) {
                         let myTeamPlayers = [target.player];
@@ -5329,7 +5451,7 @@
                         if (lowestAlly) {
                             const healAmount = Math.max(1, Math.floor(lowestAlly.char.maxHp * char.passive.healLowestAllyPercent));
                             lowestAlly.char.hp = Math.min(lowestAlly.char.maxHp, lowestAlly.char.hp + healAmount);
-                            events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}! ${lowestAlly.char.name} recupera ${healAmount} PS!`, targetPlayer: lowestAlly.p, targetIdx: lowestAlly.idx, newHp: lowestAlly.char.hp });
+                            events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}! ${lowestAlly.char.name} recupera ${healAmount} PS!`, targetPlayer: lowestAlly.p, targetIdx: lowestAlly.idx, newHp: lowestAlly.char.hp, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                         }
                     }
                 }
@@ -5720,6 +5842,9 @@
         else if (gameState.tournamentMatch === 'semi2') nextMatch = 'bronze';
         else if (gameState.tournamentMatch === 'bronze') nextMatch = 'final';
 
+        setCombatLog([]);
+        setIsLogOpen(false);
+
         let newField = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
         let activeNext = [];
         const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
@@ -5774,7 +5899,24 @@
             setDisplayField(currentDisplayField);
 
             for (let evt of gameState.events) {
-                if (evt.text) setEventPlaybackText(evt.text);
+                if (evt.text) {
+                    setEventPlaybackText(evt.text);
+                    
+                    // Aggiungi al registro battaglia con classificazione colori
+                    let logType = 'normal';
+                    if (evt.isPassive) logType = 'passive';
+                    else if (evt.type === 'faint' || evt.text.toLowerCase().includes('esausto')) logType = 'faint';
+                    else if (evt.text.toLowerCase().includes('recupera') || evt.text.toLowerCase().includes('cura ') || evt.text.toLowerCase().includes('curato')) logType = 'heal';
+                    else if (evt.text.toLowerCase().includes('danni')) logType = 'damage';
+                    
+                    setCombatLog(prev => [...prev, { text: evt.text, type: logType }]);
+                }
+                if (evt.isPassive) {
+                    setEventPlaybackPassive({ char: evt.passiveChar, name: evt.passiveName });
+                } else {
+                    setEventPlaybackPassive(null);
+                }
+                
                 if (evt.type === 'summon') {
                    if(currentDisplay[evt.player]) currentDisplay[evt.player].push(evt.newChar);
                    if(currentDisplayField[evt.player]) currentDisplayField[evt.player].push(evt.fieldIdx);
@@ -5802,14 +5944,19 @@
                        setDisplayField({ ...currentDisplayField });
                    }
                 }
-                await new Promise(r => setTimeout(r, 1600)); 
+                
+                let delay = 1600;
+                if (evt.isPassive) delay = 2200; // Tempo extra per far leggere la passiva
+                await new Promise(r => setTimeout(r, delay)); 
             }
 
             setEventPlaybackText('Turno concluso.');
+            setEventPlaybackPassive(null);
             await new Promise(r => setTimeout(r, 1000));
         } catch (error) {
             console.error("Errore critico recuperato durante le animazioni:", error);
             setEventPlaybackText('Errore grafico superato.');
+            setEventPlaybackPassive(null);
             await new Promise(r => setTimeout(r, 1000));
         } finally {
             setIsPlayingEvents(false);
@@ -6937,6 +7084,9 @@
             state.field.p2.forEach(idx => { if(state.teams.p2[idx]) state.teams.p2[idx].revealed = true; });
             state.status = 'pre_battle';
             
+            setCombatLog([]);
+            setIsLogOpen(false);
+
             setGameState(state);
             setPlayerRole('p1');
             setAppMode('local_room');
@@ -8300,7 +8450,13 @@
             }
             
             return (
-                <div key={`${teamPlayer}-${charTeamIdx}`} className={`flex flex-col items-center ${isJuggernaut ? 'w-56' : 'w-36'} transition-all ${isDead ? 'opacity-0 scale-0 absolute' : 'opacity-100'}`} onClick={() => isTargetable && handleSelectMoveTarget(teamPlayer, fieldIdx)}>
+                <div key={`${teamPlayer}-${charTeamIdx}`} className={`flex flex-col items-center cursor-pointer ${isJuggernaut ? 'w-56' : 'w-36'} transition-all ${isDead ? 'opacity-0 scale-0 absolute' : 'opacity-100'}`} onClick={() => {
+                    if (isTargetable) {
+                        handleSelectMoveTarget(teamPlayer, fieldIdx);
+                    } else {
+                        setPassiveInfoPopup({ name: char.name, passive: char.passive });
+                    }
+                }}>
                     <div className="bg-slate-800/80 p-2 rounded-lg w-full mb-2 backdrop-blur-sm text-center shadow-lg z-10">
                         <div className="font-bold text-xs truncate text-gray-400 uppercase tracking-widest">{gameState.players[teamPlayer]}</div>
                         <div className="font-bold text-sm truncate text-gray-100 mb-1">{char.name} {isJuggernaut && <span className="text-[10px] text-rose-500">(BOSS)</span>}</div>
@@ -8391,9 +8547,19 @@
                 
                 {/* EVENT PLAYBACK OVERLAY */}
                 {isPlayingEvents && (
-                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-50 pointer-events-none flex items-center justify-center transition-all duration-300">
-                        <div className="bg-black/85 w-full py-5 border-y-4 border-yellow-500/60 shadow-[0_0_40px_rgba(0,0,0,0.8)] text-center">
-                             <h2 className="text-3xl md:text-4xl font-black italic text-yellow-400 drop-shadow-[0_3px_3px_rgba(0,0,0,1)] tracking-wider px-4">
+                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-50 pointer-events-none flex flex-col items-center justify-center transition-all duration-300">
+                        {eventPlaybackPassive && (
+                            <div className="mb-4 animate-bounce-in flex flex-col items-center">
+                                <span className="bg-amber-500 text-black px-4 py-1 rounded-full font-black text-lg md:text-xl uppercase tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.8)] border-2 border-white">
+                                    ⚡ PASSIVA ATTIVATA ⚡
+                                </span>
+                                <span className="text-2xl md:text-3xl font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,1)] mt-2 bg-black/80 px-6 py-2 rounded-xl border border-amber-500/50 text-center">
+                                    {eventPlaybackPassive.char}: <span className="text-amber-400">{eventPlaybackPassive.name}</span>
+                                </span>
+                            </div>
+                        )}
+                        <div className={`w-full py-5 border-y-4 shadow-[0_0_40px_rgba(0,0,0,0.8)] text-center transition-colors duration-300 ${eventPlaybackPassive ? 'bg-amber-950/95 border-amber-500' : 'bg-black/85 border-yellow-500/60'}`}>
+                             <h2 className={`text-3xl md:text-4xl font-black italic drop-shadow-[0_3px_3px_rgba(0,0,0,1)] tracking-wider px-4 transition-colors duration-300 ${eventPlaybackPassive ? 'text-white' : 'text-yellow-400'}`}>
                                     {eventPlaybackText}
                              </h2>
                         </div>
@@ -8406,6 +8572,39 @@
                     <button onClick={() => playerRole === 'spectator' ? leaveRoom() : setShowLeaveConfirm(true)} className="absolute top-4 left-4 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-rose-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
                          <LogOut size={16} /> {playerRole === 'spectator' ? 'Esci' : 'Resa'}
                     </button>
+
+                    {/* PULSANTE TOGGLE REGISTRO BATTAGLIA */}
+                    <button onClick={() => setIsLogOpen(true)} className="absolute top-16 left-4 flex items-center gap-2 text-cyan-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-cyan-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
+                         <ScrollText size={16} /> Registro
+                    </button>
+
+                    {/* SIDEBAR REGISTRO BATTAGLIA */}
+                    <div className={`fixed top-0 left-0 h-full w-72 md:w-80 bg-slate-900/95 backdrop-blur-xl border-r border-cyan-500/50 z-[100] transform transition-transform duration-300 ease-in-out flex flex-col shadow-[20px_0_50px_rgba(0,0,0,0.8)] ${isLogOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                        <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-950 shrink-0">
+                            <h3 className="font-black text-cyan-400 flex items-center gap-2 uppercase tracking-widest text-sm"><ScrollText size={18}/> Registro</h3>
+                            <button onClick={() => setIsLogOpen(false)} className="text-slate-500 hover:text-white transition-colors"><XIcon size={24}/></button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar space-y-3 bg-slate-950/50">
+                            {combatLog.length === 0 ? (
+                                <div className="text-slate-500 italic text-sm text-center mt-4">Nessun evento ancora registrato in questo scontro.</div>
+                            ) : (
+                                combatLog.map((log, index) => {
+                                    let styleClass = "bg-slate-800/50 border-slate-700 text-slate-300"; // Normal
+                                    if (log.type === 'passive') styleClass = "bg-amber-900/30 border-amber-500/40 text-amber-200";
+                                    else if (log.type === 'faint') styleClass = "bg-rose-900/30 border-rose-500/40 text-rose-200";
+                                    else if (log.type === 'heal') styleClass = "bg-emerald-900/30 border-emerald-500/40 text-emerald-200";
+                                    else if (log.type === 'damage') styleClass = "bg-orange-900/20 border-orange-500/30 text-orange-200";
+
+                                    return (
+                                        <div key={index} className={`text-xs md:text-sm p-2.5 rounded-lg border ${styleClass} shadow-sm font-medium leading-tight`}>
+                                            {log.text}
+                                        </div>
+                                    );
+                                })
+                            )}
+                            <div ref={logEndRef} />
+                        </div>
+                    </div>
 
                     {/* Top Info Bar per Torneo */}
                     {gameState.gameMode === 'torneo' && (
@@ -9211,6 +9410,29 @@
                         <p className="text-slate-300 mb-8 font-medium">{systemAlert}</p>
                         <button onClick={() => setSystemAlert(null)} className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold py-3 px-6 rounded-xl w-full transition-all shadow-lg hover:-translate-y-0.5">
                             Ho capito!
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* MODALE INFO PASSIVA */}
+            {passiveInfoPopup && (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in" onClick={() => setPassiveInfoPopup(null)}>
+                    <div className="bg-slate-900 border border-cyan-500/50 p-6 rounded-3xl max-w-sm w-full text-center shadow-[0_0_50px_rgba(6,182,212,0.2)] relative overflow-hidden" onClick={e => e.stopPropagation()}>
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-500"></div>
+                        <h3 className="text-2xl font-black text-cyan-400 mb-4">Passiva di {passiveInfoPopup.name}</h3>
+                        {passiveInfoPopup.passive ? (
+                            <div className="text-slate-300 font-medium text-sm flex flex-col gap-2 bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                                <span className="font-bold text-white text-lg flex items-center justify-center gap-2">✨ {passiveInfoPopup.passive.name}</span>
+                                <p className="leading-relaxed">{passiveInfoPopup.passive.desc}</p>
+                            </div>
+                        ) : (
+                            <div className="text-slate-400 italic font-medium bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                                Passiva non ancora implementata.
+                            </div>
+                        )}
+                        <button onClick={() => setPassiveInfoPopup(null)} className="mt-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-3 px-6 rounded-xl w-full transition-all shadow-lg hover:-translate-y-0.5">
+                            Chiudi
                         </button>
                     </div>
                 </div>
