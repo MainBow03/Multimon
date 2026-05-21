@@ -3291,11 +3291,7 @@
               const slots = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req);
               slots.forEach(slot => {
                   if (gameState.players[slot]) {
-                      if (appMode === 'online_room' && gameState.players[slot] === "Orda (Giocatore)") {
-                          // Non contare come "unito" online se nessuno l'ha ancora sovrascritto
-                      } else {
-                          joined++;
-                      }
+                      joined++;
                   }
               });
               
@@ -3335,14 +3331,8 @@
             let slotsToCheck = ['p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req - 1);
 
             slotsToCheck.forEach(slot => {
-                 if (!assignedRole) {
-                      if (data.gameMode === 'survival' && slot === data.settings.juggernautPlayer) {
-                           if (!data.isBot[slot] && data.players[slot] === "Orda (Giocatore)") {
-                                assignedRole = slot;
-                           }
-                      } else if (!data.players[slot] || data.isBot[slot]) {
-                           assignedRole = slot;
-                      }
+                 if (!assignedRole && (!data.players[slot] || data.isBot[slot])) {
+                      assignedRole = slot;
                  }
             });
 
@@ -7961,12 +7951,13 @@
                                      let updates = { gameMode: newMode };
                                      if (newMode === 'survival') {
                                          const maxP = Math.min(4, Math.max(2, gameState.settings.maxPlayers));
-                                         const newHorde = 'p' + maxP;
-                                         updates.settings = { ...gameState.settings, maxPlayers: maxP, juggernautPlayer: newHorde };
-                                         updates[`players.${newHorde}`] = "Orda Infinita";
-                                         updates[`playerAvatars.${newHorde}`] = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
-                                         updates[`isBot.${newHorde}`] = true;
-                                         updates[`inventory.${newHorde}`] = {};
+                                         updates.settings = { ...gameState.settings, maxPlayers: maxP, juggernautPlayer: 'p2' };
+                                         if (!gameState.players['p2']) {
+                                             updates[`players.p2`] = "Orda Infinita";
+                                             updates[`playerAvatars.p2`] = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
+                                             updates[`isBot.p2`] = true;
+                                             updates[`inventory.p2`] = {};
+                                         }
                                          updates.survivalRound = 1;
                                      } else if (gameState.gameMode === 'survival') {
                                          const oldHorde = gameState.settings.juggernautPlayer || 'p2';
@@ -8004,7 +7995,7 @@
                                          <div className="font-bold text-lg text-white text-center w-full truncate px-2 flex items-center justify-center gap-2">
                                              {gameState.players[slot]} {gameState.isBot[slot] && <span className="bg-rose-600 text-white text-[10px] px-1.5 py-0.5 rounded-md">BOT</span>}
                                          </div>
-                                         {isHost && !(gameState.gameMode === 'survival' && slot === gameState.settings.juggernautPlayer) && (
+                                         {isHost && (
                                              <button onClick={() => handleRemovePlayer(slot)} className="text-xs text-rose-400 hover:text-rose-300 mt-2 transition-colors">
                                                  Rimuovi
                                              </button>
@@ -8042,30 +8033,13 @@
                     {isHost ? (
                         <div className="space-y-4 text-left">
                             <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Regole</h3>
-                            {gameState.gameMode === 'juggernaut' && (
-                                <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-rose-500/30 mb-4 animate-fade-in shadow-[0_0_10px_rgba(225,29,72,0.1)]">
-                                    <span className="font-bold text-rose-400">Juggernaut (Il Boss):</span>
-                                    <select value={gameState.settings.juggernautPlayer || 'p1'} onChange={e => updateState({ settings: { ...gameState.settings, juggernautPlayer: e.target.value } })} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-rose-500/50 focus:border-rose-400">
-                                        {['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]).map(p => (
+                            {(gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && (
+                                <div className={`flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border ${gameState.gameMode === 'survival' ? 'border-violet-500/30 shadow-[0_0_10px_rgba(139,92,246,0.1)]' : 'border-rose-500/30 shadow-[0_0_10px_rgba(225,29,72,0.1)]'} mb-4 animate-fade-in`}>
+                                    <span className={`font-bold ${gameState.gameMode === 'survival' ? 'text-violet-400' : 'text-rose-400'}`}>{gameState.gameMode === 'survival' ? 'Giocatore Orda (Boss):' : 'Juggernaut (Il Boss):'}</span>
+                                    <select value={gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1')} onChange={e => updateState({ settings: { ...gameState.settings, juggernautPlayer: e.target.value } })} className={`bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border ${gameState.gameMode === 'survival' ? 'border-violet-500/50 focus:border-violet-400' : 'border-rose-500/50 focus:border-rose-400'}`}>
+                                        {['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]).map(p => (
                                             <option key={p} value={p}>{gameState.players[p]}</option>
                                         ))}
-                                    </select>
-                                </div>
-                            )}
-                            {gameState.gameMode === 'survival' && (
-                                <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-violet-500/30 mb-4 animate-fade-in shadow-[0_0_10px_rgba(139,92,246,0.1)]">
-                                    <span className="font-bold text-violet-400">Controllo Orda:</span>
-                                    <select value={gameState.isBot[gameState.settings.juggernautPlayer] ? "cpu" : "umano"} onChange={e => {
-                                        const hordeSlot = gameState.settings.juggernautPlayer;
-                                        const isBot = e.target.value === "cpu";
-                                        updateState({ 
-                                            [`isBot.${hordeSlot}`]: isBot,
-                                            [`players.${hordeSlot}`]: isBot ? "Orda Infinita" : "Orda (Giocatore)",
-                                            [`playerAvatars.${hordeSlot}`]: 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617'
-                                        });
-                                    }} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-violet-500/50 focus:border-violet-400">
-                                        <option value="cpu">CPU (Bot)</option>
-                                        <option value="umano">Giocatore Umano</option>
                                     </select>
                                 </div>
                             )}
@@ -8082,22 +8056,14 @@
                                             else if (gameState.gameMode === 'survival') newVal = Math.min(4, Math.max(2, newVal));
                                             else newVal = Math.min(8, Math.max(2, newVal));
 
-                                            if (gameState.gameMode === 'survival') {
-                                                const oldHorde = gameState.settings.juggernautPlayer || 'p2';
-                                                const newHorde = 'p' + newVal;
-                                                const wasBot = gameState.isBot[oldHorde] !== false;
-                                                if (oldHorde !== newHorde) {
-                                                    updateState({
-                                                        settings: { ...gameState.settings, maxPlayers: newVal, juggernautPlayer: newHorde },
-                                                        [`players.${oldHorde}`]: null,
-                                                        [`playerAvatars.${oldHorde}`]: '',
-                                                        [`isBot.${oldHorde}`]: false,
-                                                        [`players.${newHorde}`]: wasBot ? "Orda Infinita" : "Orda (Giocatore)",
-                                                        [`playerAvatars.${newHorde}`]: 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617',
-                                                        [`isBot.${newHorde}`]: wasBot,
-                                                        [`inventory.${newHorde}`]: {}
-                                                    });
+                                            if (gameState.gameMode === 'survival' || gameState.gameMode === 'juggernaut') {
+                                                let currentJugg = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                                                let juggIndex = parseInt(currentJugg.replace('p', ''));
+                                                let updates = { settings: { ...gameState.settings, maxPlayers: newVal } };
+                                                if (juggIndex > newVal) {
+                                                     updates.settings.juggernautPlayer = 'p' + newVal;
                                                 }
+                                                updateState(updates);
                                             } else {
                                                 updateState({ settings: { ...gameState.settings, maxPlayers: newVal } });
                                             }
