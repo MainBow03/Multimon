@@ -2788,11 +2788,11 @@
                           }
                       } else if (gameState.gameMode === 'survival') {
                           const roundsSurvived = (gameState.survivalRound || 1) - 1;
-                          if (roundsSurvived <= 5) {
-                              coinsToReward = roundsSurvived * 2;
-                          } else {
-                              coinsToReward = 10 + (roundsSurvived - 5);
+                          let calculatedCoins = 0;
+                          for (let i = 1; i <= roundsSurvived; i++) {
+                              calculatedCoins += Math.min(10, i + 2);
                           }
+                          coinsToReward = calculatedCoins;
                           updateLocalStats({ maxSurvivalRound: roundsSurvived });
                       } else {
                           if (gameState.gameMode === 'multipla') {
@@ -9130,11 +9130,11 @@
                     // --- PREMI SPECIFICI SOPRAVVIVENZA ---
                     const roundsSurvived = (gameState.survivalRound || 1) - 1;
                     rankText = `Sei sopravvissuto a ${roundsSurvived} Round!`;
-                    if (roundsSurvived <= 5) {
-                        coins = roundsSurvived * 2;
-                    } else {
-                        coins = 10 + (roundsSurvived - 5);
+                    let calculatedCoins = 0;
+                    for (let i = 1; i <= roundsSurvived; i++) {
+                        calculatedCoins += Math.min(10, i + 2);
                     }
+                    coins = calculatedCoins;
                     if (roundsSurvived > 0) rewardText = `+${coins} Monete ricevute!`;
                 } else {
                     let won = false;
