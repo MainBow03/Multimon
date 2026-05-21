@@ -156,8 +156,8 @@
 
           'Raggio Avvelenato': { name: 'Raggio Avvelenato', type: 'Magico', power: 70, statusEffect: { type: 'Avvelenato', chance: 0.10 }, desc: 'Un raggio oscuro e tossico. 10% di probabilità di avvelenare il bersaglio.' },
           'Evocazione!': { name: 'Evocazione!', type: 'Oscuro', power: 0, isSummon: 'scheletro', maxUses: 3, desc: 'Evoca uno Scheletro in campo che combatterà al tuo fianco! (Fino a 3 evocazioni)' },
-          'Proteggi la mamma!': { name: 'Proteggi la mamma!', type: 'Normale', power: 0, targetMode: 'ally', specificAlly: 'Strega', healFlat: 10, desc: 'Difende e cura la Strega del proprio team di 10 HP. Funziona SOLO sulla Strega!' },
-          'Colpo di spada': { name: 'Colpo di spada', type: 'Normale', power: 20, desc: 'Un colpo di spada sgangherato. Infligge pochi danni.' },
+          'Proteggi la mamma!': { name: 'Proteggi la mamma!', type: 'Normale', power: 0, targetMode: 'ally', specificAlly: 'Strega', heal: 0.3, desc: 'Difende e cura la Strega del proprio team del 30% dei PS massimi. Funziona SOLO sulla Strega!' },
+          'Colpo di spada': { name: 'Colpo di spada', type: 'Normale', power: 40, desc: 'Un colpo di spada sgangherato ma affilato. Infligge danni moderati.' },
 
           // NUOVE MOSSE RAINBOW DASH
           'Sonic Rainboom': { name: 'Sonic Rainboom', type: 'Aria', power: 100, speedScaling: true, desc: 'Un\'esplosione sonica arcobaleno. Il danno aumenta in base alla sua Velocità.' },
@@ -305,7 +305,10 @@
           'Miasma della Morte': { name: 'Miasma della Morte', type: 'Oscuro', power: 40, targetCount: 4, statusEffect: { type: 'Avvelenato', chance: 0.8 }, desc: 'Un gas mortale che colpisce tutti i nemici. 80% di probabilità di avvelenamento grave.' },
           'Spadone del Re Tombale': { name: 'Spadone del Re Tombale', type: 'Roccia', power: 90, ignoreDefBuffs: true, desc: 'Trafigge con una spada colossale ignorando i potenziamenti difensivi dell\'avversario.' },
           'Danza Macabra': { name: 'Danza Macabra', type: 'Spettro', power: 75, drain: 0.5, desc: 'Drena l\'energia vitale. Cura Nito del 50% del danno inflitto.' },
-          'Risveglio dei Morti': { name: 'Risveglio dei Morti', type: 'Oscuro', power: 0, isSummon: ['scheletro', 'scheletro'], maxUses: 2, desc: 'Il Re Tombale evoca ben DUE Scheletri sul campo di battaglia in un solo turno! (2 utilizzi)' },
+          'Risveglio dei Morti': { name: 'Risveglio dei Morti', type: 'Oscuro', power: 0, isSummon: ['mostro_scheletrico', 'mostro_scheletrico'], maxUses: 2, desc: 'Il Re Tombale evoca ben DUE Mostri Scheletrici sul campo di battaglia in un solo turno! (2 utilizzi)' },
+          
+          'Sguardo demoniaco': { name: 'Sguardo demoniaco', type: 'Oscuro', power: 0, targetStatDebuff: { atk: 0.7, def: 0.7 }, desc: 'Uno sguardo agghiacciante che diminuisce l\'Attacco e la Difesa del bersaglio del 30%.' },
+          'Aura spettrale': { name: 'Aura spettrale', type: 'Spettro', power: 60, desc: 'Un attacco con aura spettrale mortale che infligge 60 danni.' },
 
           // NUOVE MOSSE JACK FROST
           'Vento Invernale': { name: 'Vento Invernale', type: 'Ghiaccio', power: 60, selfStatBuff: { spd: 1.5 }, desc: 'Cavalca il vento gelato, infliggendo danni e aumentando la sua Velocità del 50%.' },
@@ -420,7 +423,7 @@
           'Muro Protettivo': { name: 'Muro Protettivo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Alza un muro che difende tutti i compagni in campo per un turno. (1 utilizzo)' },
           'Sfera rallentante': { name: 'Sfera rallentante', type: 'Ghiaccio', power: 0, targetCount: 2, targetStatDebuff: { spd: 0.5 }, desc: 'Lancia una sfera rallentante sotto i piedi di due nemici diminuendone permanentemente la Velocità.' },
           'Non ucciderai i miei alleati!': { name: 'Non ucciderai i miei alleati!', type: 'Magico', power: 0, targetMode: 'revive', heal: 0.5, maxUses: 1, desc: 'Riporta in vita un tuo personaggio sconfitto con il 50% dei PS massimi.' },
-          'Vandal': { name: 'Vandal', type: 'Normale', power: 65, desc: 'Spara con il fucile d\'assalto infliggendo 65 danni.' },
+          'Vandal': { name: 'Vandal', type: 'Normale', power: 80, statusEffect: { type: 'Stordito', chance: 0.15 }, desc: 'Spara con il fucile d\'assalto. 15% di probabilità di stordire il bersaglio (Headshot!).' },
 
           'YUH!': { name: 'YUH!', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5 }, desc: 'Il suo iconico grido di battaglia che aumenta l\'Attacco del 50%.' },
           'Potere ariana grande': { name: 'Potere ariana grande: ATTIVAZIONE!', type: 'Magico', power: 100, targetCount: 2, desc: 'Sprigiona il suo potere infliggendo 100 danni a due bersagli.' },
@@ -827,7 +830,7 @@
           { id: 'corvina', name: 'Corvina', types: ['Oscuro', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', passive: { name: 'Libera dall\'oscurità', type: 'on_turn_end', chance: 0.20, healLowestAllyPercent: 0.20, desc: 'Alla fine di ogni turno, ha il 20% di probabilità di curare l\'alleato in campo con meno PS del 20%.' }, moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']] },
           { id: 'poisonivy', name: 'Poison Ivy', types: ['Veleno', 'Erba'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 75, img: 'https://i.pinimg.com/736x/d4/6d/c1/d46dc1e0c93db1696dbe77af5903bb50.jpg', moves: [MOVES_DB['Bacio Tossico'], MOVES_DB['Radici Avvolgenti'], MOVES_DB['Spore Soporifere'], MOVES_DB['Fascino Botanico']] },
           { id: 'mantide', name: 'Mantide', types: ['Insetto'], hp: 70, maxHp: 70, atk: 110, def: 60, spd: 115, img: 'https://i.pinimg.com/736x/ec/13/e7/ec13e73634b743dda5723d1fbe45c5e4.jpg', moves: [MOVES_DB['Colpo della Mantide'], MOVES_DB['Agopuntura'], MOVES_DB['Raffica di Pugni'], MOVES_DB['Schivata Acrobatica']] },
-          { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i.cl/7f/2a/f8/7f2af80ef1d08f7d8d433aef9be18421.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
+          { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i1-e.pinimg.com/736x/78/73/6c/78736c10dfdeaf9491b5e7a56ac3b880.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
           { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Carica del Re Fulmine']] },
           { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
@@ -836,7 +839,7 @@
           { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 95, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', moves: [MOVES_DB['Mano d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Ali Liquide']] },
           { id: 'aang', name: 'Aang', types: ['Aria', 'Psico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', passive: { name: 'Respiro dell\'Avatar', type: 'aura', immuneToType: 'Aria', boostMoveType: { type: 'Aria', multiplier: 1.2 }, desc: 'Garantisce immunità totale agli attacchi di tipo Aria e aumenta del 20% la potenza delle proprie mosse di tipo Aria.' }, moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
           { id: 'yugo', name: 'Yugo', types: ['Psico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Fratellanza del Tofu']] },
-          { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 85, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
+          { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 95, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
           { id: 'ariana', name: 'Ariana Grande', types: ['Magico', 'Normale'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 100, img: 'https://i.pinimg.com/736x/1f/74/fa/1f74faeae0ec93a8288ab2e8bee3ffe7.jpg', passive: { name: 'Grido da Popstar', type: 'on_enter', maxUses: 1, teamStatBuff: { atk: 1.3 }, enemyStatDebuff: { spd: 0.7 }, desc: 'Appena schierata, aumenta l\'Attacco del tuo team e riduce la Velocità dei nemici in campo (30%).' }, moves: [MOVES_DB['YUH!'], MOVES_DB['Potere ariana grande'], MOVES_DB['Into You'], MOVES_DB['Bang Bang']] },
           { id: 'mario', name: 'Mario', types: ['Normale', 'Fuoco'], hp: 100, maxHp: 100, atk: 110, def: 85, spd: 90, img: 'https://i.pinimg.com/736x/f0/48/65/f04865769239ed667f302d6f19b8595e.jpg', moves: [MOVES_DB['Salto Idraulico'], MOVES_DB['Palla di Fuoco'], MOVES_DB['Martellata'], MOVES_DB['Super Fungo'], MOVES_DB['Fratelli Bros']] },
           { id: 'luigi', name: 'Luigi', types: ['Normale', 'Aria'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/6b/2d/ef/6b2def306298232ad8a40e93e51a413e.jpg', moves: [MOVES_DB['Salto Svolazzante'], MOVES_DB['Poltergust 3000'], MOVES_DB['Sguardo di Luigi'], MOVES_DB['Missile Verde'], MOVES_DB['Fratelli Bros']] },
@@ -925,7 +928,8 @@
           { id: 'discord', name: 'Discord', types: ['Magico', 'Oscuro'], hp: 180, maxHp: 180, atk: 130, def: 100, spd: 120, img: 'https://i.pinimg.com/736x/08/39/1b/08391b40b095f508fabd15bcb2693195.jpg', moves: [MOVES_DB['Schiocco di Dita'], MOVES_DB['Pioggia di Cioccolato'], MOVES_DB['Caos Totale'], MOVES_DB['Trasformazione Bizzarra']], isSecretUnlock: true },
           { id: 'zeno', name: 'Zeno', types: ['Psico', 'Magico'], hp: 250, maxHp: 250, atk: 200, def: 150, spd: 150, img: 'https://i.pinimg.com/736x/aa/41/66/aa4166f77b5a871a426dece71c67d547.jpg', moves: [MOVES_DB['Cancellazione'], MOVES_DB['Giochiamo!'], MOVES_DB['Sguardo Onnipotente'], MOVES_DB['Stato Avatar']], isSecretUnlock: true },
 
-          { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 40, maxHp: 40, atk: 30, def: 30, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
+          { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 60, maxHp: 60, atk: 45, def: 50, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', passive: { name: 'Scudo d\'Ossa', type: 'bodyguard', protectAlly: 'Strega', desc: 'Finché è in campo, intercetta automaticamente tutti gli attacchi mirati alla Strega!' }, moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
+          { id: 'mostro_scheletrico', name: 'Mostro Scheletrico', types: ['Oscuro', 'Spettro'], hp: 80, maxHp: 80, atk: 70, def: 60, spd: 50, img: 'https://i1-e.pinimg.com/736x/48/be/8d/48be8d863481efebe551e64800f74baa.jpg', moves: [MOVES_DB['Sguardo demoniaco'], MOVES_DB['Aura spettrale']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 70, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
           { id: 'golem_pietra', name: 'Golem di Pietra', types: ['Roccia'], hp: 60, maxHp: 60, atk: 50, def: 90, spd: 20, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Golem&backgroundColor=4b5563', moves: [MOVES_DB['Sassata'], MOVES_DB['Protezione']], isSummonOnly: true },
           { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://i.pinimg.com/736x/30/d0/fb/30d0fb1c737910c1a6448b25bf6077f0.jpg', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
@@ -936,23 +940,23 @@
           { id: 'robo_aiutante_1', name: 'Robo Aiutante (Difesa)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/2e/e4/74/2ee4744e03259e47f7005eb9a799b54b.jpg', moves: [MOVES_DB['Difesa al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
           { id: 'robo_aiutante_2', name: 'Robo Aiutante (Attacco)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/3e/8c/64/3e8c64997be28096fd2bc924b3743d39.jpg', moves: [MOVES_DB['Attacco al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
           
-          { id: 'celljr_1', name: 'Cell Jr. (Rosso)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(300deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
-          { id: 'celljr_2', name: 'Cell Jr. (Blu)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(200deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
-          { id: 'celljr_3', name: 'Cell Jr. (Giallo)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(50deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
-          { id: 'celljr_4', name: 'Cell Jr. (Viola)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(270deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true },
+          { id: 'celljr_1', name: 'Cell Jr. (Rosso)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(300deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'celljr_2', name: 'Cell Jr. (Blu)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(200deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'celljr_3', name: 'Cell Jr. (Giallo)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(50deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'celljr_4', name: 'Cell Jr. (Viola)', types: ['Insetto', 'Lotta'], hp: 55, maxHp: 55, atk: 55, def: 45, spd: 65, img: 'https://i.pinimg.com/736x/38/3b/7e/383b7e0d83aaeb98c4d2d3ab582fba33.jpg', imageFilter: 'hue-rotate(270deg) saturate(2) brightness(1.2)', moves: [MOVES_DB['Raggio di Ki Piccolo'], MOVES_DB['Raffica di Calci']], isSecretUnlock: true, isCampaignMonster: true },
           
           // MOSTRI ESCLUSIVI CAMPAGNA
-          { id: 'slime', name: 'Slime', types: ['Acqua', 'Spettro'], hp: 100, maxHp: 100, atk: 70, def: 85, spd: 60, img: 'https://i.pinimg.com/736x/c8/1d/90/c81d90f114fb59defbd2cbab86dc0419.jpg', moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Corposcontro']], isSecretUnlock: true },
-          { id: 'blob', name: 'Blob', types: ['Magico', 'Normale'], hp: 110, maxHp: 110, atk: 95, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/5b/ae/51/5bae51f0859c57935ac843efad17e9d5.jpg', moves: [MOVES_DB['Azione'], MOVES_DB['Tappeto scivoloso']], isSecretUnlock: true },
-          { id: 'worm', name: 'Worm', types: ['Insetto', 'Veleno'], hp: 90, maxHp: 90, atk: 110, def: 65, spd: 105, img: 'https://i.pinimg.com/736x/e7/a7/c9/e7a7c9f0c1900346917ad240c653b040.jpg', moves: [MOVES_DB['Tossina'], MOVES_DB['Morsico']], isSecretUnlock: true },
-          { id: 'melma', name: 'Melma', types: ['Veleno'], hp: 140, maxHp: 140, atk: 60, def: 115, spd: 40, img: 'https://i.pinimg.com/1200x/37/2e/91/372e918950bda6ea563aa49703b1200c.jpg', moves: [MOVES_DB['Onda Melmosa'], MOVES_DB['Fangobomba']], isSecretUnlock: true },
+          { id: 'slime', name: 'Slime', types: ['Acqua', 'Spettro'], hp: 100, maxHp: 100, atk: 70, def: 85, spd: 60, img: 'https://i.pinimg.com/736x/c8/1d/90/c81d90f114fb59defbd2cbab86dc0419.jpg', moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Corposcontro']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'blob', name: 'Blob', types: ['Magico', 'Normale'], hp: 110, maxHp: 110, atk: 95, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/5b/ae/51/5bae51f0859c57935ac843efad17e9d5.jpg', moves: [MOVES_DB['Azione'], MOVES_DB['Tappeto scivoloso']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'worm', name: 'Worm', types: ['Insetto', 'Veleno'], hp: 90, maxHp: 90, atk: 110, def: 65, spd: 105, img: 'https://i.pinimg.com/736x/e7/a7/c9/e7a7c9f0c1900346917ad240c653b040.jpg', moves: [MOVES_DB['Tossina'], MOVES_DB['Morsico']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'melma', name: 'Melma', types: ['Veleno'], hp: 140, maxHp: 140, atk: 60, def: 115, spd: 40, img: 'https://i.pinimg.com/1200x/37/2e/91/372e918950bda6ea563aa49703b1200c.jpg', moves: [MOVES_DB['Onda Melmosa'], MOVES_DB['Fangobomba']], isSecretUnlock: true, isCampaignMonster: true },
           
-          { id: 'piantacarnivora', name: 'Pianta Carnivora', types: ['Erba', 'Veleno'], hp: 110, maxHp: 110, atk: 100, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/51/f6/6a/51f66a8bbd57907536460b11bfc700b8.jpg', moves: [MOVES_DB['Gas velenoso'], MOVES_DB['Morso affilato']], isSecretUnlock: true },
-          { id: 'cespugliomaledetto', name: 'Cespuglio Maledetto', types: ['Erba', 'Oscuro'], hp: 120, maxHp: 120, atk: 90, def: 100, spd: 60, img: 'https://i.pinimg.com/1200x/0f/81/5c/0f815ca2dc8d2507f5d9ee22f3ef9f41.jpg', moves: [MOVES_DB['Nascondino Supremo'], MOVES_DB['Spine maledette']], isSecretUnlock: true },
-          { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSecretUnlock: true },
-          { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true },
+          { id: 'piantacarnivora', name: 'Pianta Carnivora', types: ['Erba', 'Veleno'], hp: 110, maxHp: 110, atk: 100, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/51/f6/6a/51f66a8bbd57907536460b11bfc700b8.jpg', moves: [MOVES_DB['Gas velenoso'], MOVES_DB['Morso affilato']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'cespugliomaledetto', name: 'Cespuglio Maledetto', types: ['Erba', 'Oscuro'], hp: 120, maxHp: 120, atk: 90, def: 100, spd: 60, img: 'https://i.pinimg.com/1200x/0f/81/5c/0f815ca2dc8d2507f5d9ee22f3ef9f41.jpg', moves: [MOVES_DB['Nascondino Supremo'], MOVES_DB['Spine maledette']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true, isCampaignMonster: true },
           
-          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 80, maxHp: 80, atk: 10, def: 80, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true }
+          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 80, maxHp: 80, atk: 10, def: 80, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true, isCampaignMonster: true }
         ];
 
         const CHAR_PRICES = {
@@ -3272,7 +3276,13 @@
               let joined = 0;
               const slots = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req);
               slots.forEach(slot => {
-                  if (gameState.players[slot]) joined++;
+                  if (gameState.players[slot]) {
+                      if (appMode === 'online_room' && gameState.players[slot] === "Orda (Giocatore)") {
+                          // Non contare come "unito" online se nessuno l'ha ancora sovrascritto
+                      } else {
+                          joined++;
+                      }
+                  }
               });
               
               if (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale') return joined >= 2;
@@ -3308,15 +3318,17 @@
             let assignedRole = null;
             const req = getRequiredPlayers(data.gameMode, data.settings);
             
-            // Trova primo slot libero o occupato da un Bot (non sovrascrivere l'Orda in survival)
             let slotsToCheck = ['p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req - 1);
-            if (data.gameMode === 'survival') {
-                slotsToCheck = slotsToCheck.filter(slot => slot !== data.settings.juggernautPlayer);
-            }
 
             slotsToCheck.forEach(slot => {
-                 if (!assignedRole && (!data.players[slot] || data.isBot[slot])) {
-                      assignedRole = slot;
+                 if (!assignedRole) {
+                      if (data.gameMode === 'survival' && slot === data.settings.juggernautPlayer) {
+                           if (!data.isBot[slot] && data.players[slot] === "Orda (Giocatore)") {
+                                assignedRole = slot;
+                           }
+                      } else if (!data.players[slot] || data.isBot[slot]) {
+                           assignedRole = slot;
+                      }
                  }
             });
 
@@ -5020,6 +5032,36 @@
                         }
                     }
                     // --- END REDIRECT LOGIC ---
+
+                    // --- REDIRECT LOGIC (BODYGUARD PASSIVA - Es. Scheletro) ---
+                    if (!move.targetCount || move.targetCount < 4) {
+                        let hasBodyguard = false;
+                        let protectorFieldIdx = -1;
+                        let protectorCharIdx = -1;
+                        
+                        for (let fIdx = 0; fIdx < workingField[t.player].length; fIdx++) {
+                            const possibleProtectorIdx = workingField[t.player][fIdx];
+                            const possibleProtector = workingTeams[t.player]?.[possibleProtectorIdx];
+                            
+                            if (possibleProtector && possibleProtector.hp > 0 && possibleProtector.id !== t.char.id) {
+                                if (possibleProtector.passive && possibleProtector.passive.type === 'bodyguard' && possibleProtector.passive.protectAlly === t.char.name) {
+                                    hasBodyguard = true;
+                                    protectorFieldIdx = fIdx;
+                                    protectorCharIdx = possibleProtectorIdx;
+                                    break; 
+                                }
+                            }
+                        }
+
+                        if (hasBodyguard && protectorCharIdx !== -1) {
+                            const protectorChar = workingTeams[t.player][protectorCharIdx];
+                            events.push({ type: 'text', text: `🛡️ ${protectorChar.name} si lancia per proteggere ${t.char.name}! Intercetta l'attacco!`, isPassive: true, passiveChar: protectorChar.name, passiveName: protectorChar.passive.name });
+                            t.char = protectorChar;
+                            t.idx = protectorCharIdx;
+                            t.fieldIdx = protectorFieldIdx;
+                        }
+                    }
+                    // --- END REDIRECT BODYGUARD LOGIC ---
 
                     let multiplier = getMultiplier(move.type, t.char.types);
                     let isImmuneDueToPassive = false;
@@ -7674,8 +7716,10 @@
         let displayedChars = [...CHARACTERS];
         if (catalogFilter === 'Evocazioni') {
             displayedChars = displayedChars.filter(c => c.isSummonOnly);
+        } else if (catalogFilter === 'Mostri Campagna') {
+            displayedChars = displayedChars.filter(c => c.isCampaignMonster);
         } else {
-            displayedChars = displayedChars.filter(c => !c.isSummonOnly);
+            displayedChars = displayedChars.filter(c => !c.isSummonOnly && !c.isCampaignMonster);
             if (catalogFilter !== 'Tutti') {
                 displayedChars = displayedChars.filter(c => c.types.includes(catalogFilter));
             }
@@ -7718,6 +7762,7 @@
                             <select value={catalogFilter} onChange={e => setCatalogFilter(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500">
                                 <option value="Tutti">Tutti i Tipi</option>
                                 <option value="Evocazioni">Solo Evocazioni</option>
+                                <option value="Mostri Campagna">Mostri Campagna</option>
                                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                             </select>
                         </div>
@@ -7906,6 +7951,23 @@
                                     </select>
                                 </div>
                             )}
+                            {gameState.gameMode === 'survival' && (
+                                <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-violet-500/30 mb-4 animate-fade-in shadow-[0_0_10px_rgba(139,92,246,0.1)]">
+                                    <span className="font-bold text-violet-400">Controllo Orda:</span>
+                                    <select value={gameState.isBot[gameState.settings.juggernautPlayer] ? "cpu" : "umano"} onChange={e => {
+                                        const hordeSlot = gameState.settings.juggernautPlayer;
+                                        const isBot = e.target.value === "cpu";
+                                        updateState({ 
+                                            [`isBot.${hordeSlot}`]: isBot,
+                                            [`players.${hordeSlot}`]: isBot ? "Orda Infinita" : "Orda (Giocatore)",
+                                            [`playerAvatars.${hordeSlot}`]: 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617'
+                                        });
+                                    }} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-violet-500/50 focus:border-violet-400">
+                                        <option value="cpu">CPU (Bot)</option>
+                                        <option value="umano">Giocatore Umano</option>
+                                    </select>
+                                </div>
+                            )}
                             {(gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale' || gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && (
                                 <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30 mb-4">
                                     <span className="font-semibold text-slate-300">Numero Giocatori (Max):</span>
@@ -7922,15 +7984,16 @@
                                             if (gameState.gameMode === 'survival') {
                                                 const oldHorde = gameState.settings.juggernautPlayer || 'p2';
                                                 const newHorde = 'p' + newVal;
+                                                const wasBot = gameState.isBot[oldHorde] !== false;
                                                 if (oldHorde !== newHorde) {
                                                     updateState({
                                                         settings: { ...gameState.settings, maxPlayers: newVal, juggernautPlayer: newHorde },
                                                         [`players.${oldHorde}`]: null,
                                                         [`playerAvatars.${oldHorde}`]: '',
                                                         [`isBot.${oldHorde}`]: false,
-                                                        [`players.${newHorde}`]: "Orda Infinita",
+                                                        [`players.${newHorde}`]: wasBot ? "Orda Infinita" : "Orda (Giocatore)",
                                                         [`playerAvatars.${newHorde}`]: 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617',
-                                                        [`isBot.${newHorde}`]: true,
+                                                        [`isBot.${newHorde}`]: wasBot,
                                                         [`inventory.${newHorde}`]: {}
                                                     });
                                                 }
