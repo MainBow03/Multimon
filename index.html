@@ -422,7 +422,7 @@
           // NUOVE MOSSE SAGE E ARIANA GRANDE
           'Muro Protettivo': { name: 'Muro Protettivo', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Alza un muro che difende tutti i compagni in campo per un turno. (1 utilizzo)' },
           'Sfera rallentante': { name: 'Sfera rallentante', type: 'Ghiaccio', power: 0, targetCount: 2, targetStatDebuff: { spd: 0.5 }, desc: 'Lancia una sfera rallentante sotto i piedi di due nemici diminuendone permanentemente la Velocità.' },
-          'Non ucciderai i miei alleati!': { name: 'Non ucciderai i miei alleati!', type: 'Magico', power: 0, targetMode: 'revive', heal: 0.5, maxUses: 1, desc: 'Riporta in vita un tuo personaggio sconfitto con il 50% dei PS massimi.' },
+          'Non ucciderai i miei alleati!': { name: 'Non ucciderai i miei alleati!', type: 'Magico', power: 0, targetMode: 'revive', heal: 0.5, maxUses: 1, desc: 'Riporta in vita un personaggio sconfitto (tuo o di un compagno di squadra) con il 50% dei PS massimi.' },
           'Vandal': { name: 'Vandal', type: 'Normale', power: 80, statusEffect: { type: 'Stordito', chance: 0.15 }, desc: 'Spara con il fucile d\'assalto. 15% di probabilità di stordire il bersaglio (Headshot!).' },
 
           'YUH!': { name: 'YUH!', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5 }, desc: 'Il suo iconico grido di battaglia che aumenta l\'Attacco del 50%.' },
@@ -3882,15 +3882,31 @@
                                     bestAction = { type: 'attack', moveIdx, targetPlayer: cpuPlayer, targetIdx: charTeamIdx };
                                 }
                             } else if (move.targetMode === 'revive') {
-                                let deadAllyIdx = -1;
-                                gameState.teams[cpuPlayer].forEach((c, idx) => {
-                                    if (c.hp <= 0 && !c.isSummonOnly) deadAllyIdx = idx;
+                                let myTeamPlayers = [cpuPlayer];
+                                if (gameState.gameMode === 'multipla') {
+                                    myTeamPlayers = ['p1', 'p2'].includes(cpuPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
+                                } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                    const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                                    if (cpuPlayer !== juggPlayer) {
+                                        const activeMatchPlayers = getActivePlayers();
+                                        myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                                    }
+                                }
+
+                                let bestDeadAlly = null;
+                                myTeamPlayers.forEach(p => {
+                                    gameState.teams[p]?.forEach((c, idx) => {
+                                        if (c.hp <= 0 && !c.isSummonOnly) {
+                                            bestDeadAlly = { player: p, idx: idx };
+                                        }
+                                    });
                                 });
-                                if (deadAllyIdx !== -1) {
+
+                                if (bestDeadAlly) {
                                     let score = 200 + Math.random() * 50;
                                     if (score > bestScore) {
                                         bestScore = score;
-                                        bestAction = { type: 'attack', moveIdx, targetPlayer: cpuPlayer, targetIdx: deadAllyIdx };
+                                        bestAction = { type: 'attack', moveIdx, targetPlayer: bestDeadAlly.player, targetIdx: bestDeadAlly.idx };
                                     }
                                 }
                             } else if (move.targetMode === 'ally') {
@@ -4394,14 +4410,33 @@
                       workingInventory[player][itemId] -= 1;
                       
                       if (itemDef.type === 'revive') {
-                          // Trova il primo alleato morto
-                          const deadAllyIdx = workingTeams[player].findIndex(c => c.hp <= 0 && !c.isSummonOnly);
-                          if (deadAllyIdx !== -1) {
-                              let ally = workingTeams[player][deadAllyIdx];
+                          // Trova il primo alleato morto in tutta la squadra alleata
+                          let myTeamPlayers = [player];
+                          if (gameState.gameMode === 'multipla') {
+                              myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
+                          } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                              const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                              if (player !== juggPlayer) {
+                                  myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                              }
+                          }
+
+                          let deadAllyPlayer = null;
+                          let deadAllyIdx = -1;
+                          for (let pAlly of myTeamPlayers) {
+                              deadAllyIdx = workingTeams[pAlly].findIndex(c => c.hp <= 0 && !c.isSummonOnly);
+                              if (deadAllyIdx !== -1) {
+                                  deadAllyPlayer = pAlly;
+                                  break;
+                              }
+                          }
+
+                          if (deadAllyPlayer && deadAllyIdx !== -1) {
+                              let ally = workingTeams[deadAllyPlayer][deadAllyIdx];
                               const healAmount = Math.floor(ally.maxHp * itemDef.value);
                               ally.hp = healAmount;
                               ally.statuses = [];
-                              events.push({ type: 'damage', text: `${gameState.players[player]} usa ${itemDef.name}! ${ally.name} è tornato in vita!`, targetPlayer: player, targetIdx: deadAllyIdx, newHp: ally.hp });
+                              events.push({ type: 'damage', text: `${gameState.players[player]} usa ${itemDef.name}! ${ally.name} è tornato in vita!`, targetPlayer: deadAllyPlayer, targetIdx: deadAllyIdx, newHp: ally.hp });
                           } else {
                               events.push({ type: 'text', text: `${gameState.players[player]} prova a usare ${itemDef.name}, ma non ci sono alleati da rianimare! (L'oggetto è stato consumato)` });
                           }
@@ -9015,10 +9050,26 @@
                                                         const itemDef = ITEMS_DB[itemId];
                                                         const qty = myInventory[itemId];
                                                         
-                                                        // Se è un revit, abilita solo se ci sono morti
+                                                        // Se è un revit, abilita solo se ci sono morti in tutta la squadra
                                                         let isUsable = true;
                                                         if (itemDef.type === 'revive') {
-                                                            const hasDead = gameState.teams[playerRole].some(c => c.hp <= 0 && !c.isSummonOnly);
+                                                            let myTeamPlayers = [playerRole];
+                                                            if (gameState.gameMode === 'multipla') {
+                                                                myTeamPlayers = ['p1', 'p2'].includes(playerRole) ? ['p1', 'p2'] : ['p3', 'p4'];
+                                                            } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                                                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                                                                if (playerRole !== juggPlayer) {
+                                                                    const activeMatchPlayers = getActivePlayers();
+                                                                    myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                                                                }
+                                                            }
+                                                            
+                                                            let hasDead = false;
+                                                            myTeamPlayers.forEach(p => {
+                                                                if (gameState.teams[p] && gameState.teams[p].some(c => c.hp <= 0 && !c.isSummonOnly)) {
+                                                                    hasDead = true;
+                                                                }
+                                                            });
                                                             if (!hasDead) isUsable = false;
                                                         } else {
                                                             // Altri oggetti si usano sul pg in campo. Se è morto non può usarli.
@@ -9070,32 +9121,53 @@
                                     </>
                                 ) : (
                                     <div className="w-full">
-                                        {activeCommandChar.moves[targetingMoveIdx].targetMode === 'revive' && (
-                                            <div className="grid grid-cols-2 gap-4 mb-4">
-                                                {gameState.teams[playerRole].map((char, i) => {
-                                                    if (char.hp > 0 || char.isSummonOnly) return null;
-                                                    return (
-                                                        <button key={i} onClick={() => {
+                                        {activeCommandChar.moves[targetingMoveIdx].targetMode === 'revive' && (() => {
+                                            let myTeamPlayers = [playerRole];
+                                            if (gameState.gameMode === 'multipla') {
+                                                myTeamPlayers = ['p1', 'p2'].includes(playerRole) ? ['p1', 'p2'] : ['p3', 'p4'];
+                                            } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                                                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                                                if (playerRole !== juggPlayer) {
+                                                    const activeMatchPlayers = getActivePlayers();
+                                                    myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                                                }
+                                            }
+
+                                            let deadAllies = [];
+                                            myTeamPlayers.forEach(p => {
+                                                if (gameState.teams[p]) {
+                                                    gameState.teams[p].forEach((char, i) => {
+                                                        if (char.hp <= 0 && !char.isSummonOnly) {
+                                                            deadAllies.push({ player: p, idx: i, char: char });
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+                                            return (
+                                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                                    {deadAllies.map((target, keyIdx) => (
+                                                        <button key={keyIdx} onClick={() => {
                                                             commitAction({
                                                                 type: 'attack',
                                                                 moveIdx: targetingMoveIdx,
-                                                                targetPlayer: playerRole,
-                                                                targetIdx: i
+                                                                targetPlayer: target.player,
+                                                                targetIdx: target.idx
                                                             });
                                                         }} className="bg-slate-800/80 p-3 rounded-xl border border-amber-500/50 flex items-center gap-3 hover:bg-slate-700 hover:border-amber-400 transition-all shadow-md group text-left">
-                                                            <img src={char.img} className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-amber-500/30 group-hover:border-amber-400 shrink-0 grayscale" />
+                                                            <img src={target.char.img} className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-amber-500/30 group-hover:border-amber-400 shrink-0 grayscale" />
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="font-bold text-sm truncate text-white mb-1">{char.name}</div>
+                                                                <div className="font-bold text-sm truncate text-white mb-1">{target.char.name} {target.player !== playerRole ? `(${gameState.players[target.player]})` : ''}</div>
                                                                 <div className="text-[10px] text-rose-400 font-bold uppercase tracking-widest">Esausto</div>
                                                             </div>
                                                         </button>
-                                                    );
-                                                })}
-                                                {gameState.teams[playerRole].every(c => c.hp > 0 || c.isSummonOnly) && (
-                                                    <div className="col-span-2 text-center text-slate-400 font-bold py-4">Nessun alleato da rianimare!</div>
-                                                )}
-                                            </div>
-                                        )}
+                                                    ))}
+                                                    {deadAllies.length === 0 && (
+                                                        <div className="col-span-2 text-center text-slate-400 font-bold py-4">Nessun alleato da rianimare!</div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
                                         <button onClick={() => { setTargetingMoveIdx(null); setSelectedMultiTargets([]); }} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
                                              Annulla Selezione
                                         </button>
