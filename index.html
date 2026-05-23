@@ -830,8 +830,8 @@
           { id: 'corvina', name: 'Corvina', types: ['Oscuro', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', passive: { name: 'Libera dall\'oscurità', type: 'on_turn_end', chance: 0.20, healLowestAllyPercent: 0.20, desc: 'Alla fine di ogni turno, ha il 20% di probabilità di curare l\'alleato in campo con meno PS del 20%.' }, moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']] },
           { id: 'poisonivy', name: 'Poison Ivy', types: ['Veleno', 'Erba'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 75, img: 'https://i.pinimg.com/736x/d4/6d/c1/d46dc1e0c93db1696dbe77af5903bb50.jpg', moves: [MOVES_DB['Bacio Tossico'], MOVES_DB['Radici Avvolgenti'], MOVES_DB['Spore Soporifere'], MOVES_DB['Fascino Botanico']] },
           { id: 'mantide', name: 'Mantide', types: ['Insetto'], hp: 70, maxHp: 70, atk: 110, def: 60, spd: 115, img: 'https://i.pinimg.com/736x/ec/13/e7/ec13e73634b743dda5723d1fbe45c5e4.jpg', moves: [MOVES_DB['Colpo della Mantide'], MOVES_DB['Agopuntura'], MOVES_DB['Raffica di Pugni'], MOVES_DB['Schivata Acrobatica']] },
-          { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i1-e.pinimg.com/736x/78/73/6c/78736c10dfdeaf9491b5e7a56ac3b880.jpg', moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
-          { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Carica del Re Fulmine']] },
+          { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i1-e.pinimg.com/736x/78/73/6c/78736c10dfdeaf9491b5e7a56ac3b880.jpg', passive: { name: 'Corazza Mutante', type: 'on_hp_threshold', threshold: 0.3, statBuff: { def: 2.0 }, removeNegativeStatuses: true, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, muta in un mostro orrendo: raddoppia la Difesa e si purifica da tutti gli status negativi.' }, moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
+          { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', passive: { name: 'Voglio diventare un re gentile!', type: 'on_ally_faint', statBuff: { atk: 1.15 }, desc: 'Se un alleato viene mandato K.O., si infiamma per vendicarlo: il suo Attacco aumenta del 15% per ogni compagno caduto (cumulativo).' }, moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Carica del Re Fulmine']] },
           { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Corpo Elettrizzato'], MOVES_DB['Fairy Law']] },
           { id: 'strega', name: 'Strega', types: ['Oscuro', 'Psico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', passive: { name: 'Corteo Oscuro', type: 'on_enter', isSummon: ['scheletro', 'carta_guardia'], maxUses: 1, desc: 'Appena scende in campo, evoca immediatamente uno Scheletro e una Carta Guardia al suo fianco. (Si attiva 1 sola volta per battaglia)' }, moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
@@ -848,7 +848,7 @@
           { id: 'rainbowdash', name: 'Rainbow Dash', types: ['Aria', 'Elettro'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 130, img: 'https://i.pinimg.com/1200x/f2/61/79/f26179f6cfb3f6331d5843fb83d29fdd.jpg', moves: [MOVES_DB['Sonic Rainboom'], MOVES_DB['Barriera di Nuvole'], MOVES_DB['Calcio Fulmineo'], MOVES_DB['Volo Acrobatico']] },
           { id: 'ladybug', name: 'Ladybug', types: ['Insetto', 'Magico'], hp: 95, maxHp: 95, atk: 100, def: 85, spd: 105, img: 'https://i.pinimg.com/736x/3a/f1/51/3af1517371cc28cac5cdb6af420f1da4.jpg', moves: [MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Lucky Charm'], MOVES_DB['Miraculous Ladybug'], MOVES_DB['Mi serve un aiutante!'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'wario', name: 'Wario', types: ['Veleno', 'Lotta'], hp: 120, maxHp: 120, atk: 115, def: 95, spd: 50, img: 'https://i.pinimg.com/736x/07/72/16/07721681614a459938a7f85ec450f957.jpg', moves: [MOVES_DB['Peto Velenoso'], MOVES_DB['Carica di Spalla'], MOVES_DB['Masticata d\'Aglio'], MOVES_DB['Moto da teppista']] },
-          { id: 'zuko', name: 'Zuko', types: ['Fuoco', 'Lotta'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/0a/bf/45/0abf4521f089ae4629e57fb7edd207cb.jpg', moves: [MOVES_DB['Frusta di Fuoco'], MOVES_DB['Danza del Drago'], MOVES_DB['Calcio Infuocato'], MOVES_DB['Deviazione del Fulmine']] },
+          { id: 'zuko', name: 'Zuko', types: ['Fuoco', 'Lotta'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/0a/bf/45/0abf4521f089ae4629e57fb7edd207cb.jpg', passive: { name: 'Parafulmine', type: 'absorb_type', immuneToType: 'Elettro', statBuffOnImmune: { atk: 1.5 }, desc: 'Immunità totale agli attacchi di tipo Elettro. Se colpito da uno di essi, devia il fulmine e il suo Attacco aumenta del 50%.' }, moves: [MOVES_DB['Frusta di Fuoco'], MOVES_DB['Danza del Drago'], MOVES_DB['Calcio Infuocato'], MOVES_DB['Deviazione del Fulmine']] },
           { id: 'spike', name: 'Spike', types: ['Erba', 'Oscuro'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/736x/fe/40/32/fe40323f442d7843df0be4c5b4223e6a.jpg', moves: [MOVES_DB['Sfera di Spine'], MOVES_DB['Campo di Cactus'], MOVES_DB['Abbraccio Oscuro'], MOVES_DB['Fertilizzante']] },
           { id: 'kratos', name: 'Kratos', types: ['Lotta', 'Oscuro'], hp: 130, maxHp: 130, atk: 125, def: 90, spd: 60, img: 'https://i.pinimg.com/736x/a5/f2/fb/a5f2fb9f780595e3266b66c7d625a98a.jpg', passive: { name: 'Volontà Indomabile', type: 'aura', immuneToNegativeStatuses: true, desc: 'La sua determinazione lo rende completamente immune a tutte le alterazioni di stato negative.' }, moves: [MOVES_DB['Lame del Caos'], MOVES_DB['Rabbia di Sparta'], MOVES_DB['Ascia Leviatano'], MOVES_DB['Furia Cieca']] },
           { id: 'goku', name: 'Goku', types: ['Lotta', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/49/7f/b3/497fb342699f4ac700ea00c8bf5e0814.jpg', passive: { name: 'Super Saiyan', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 25%, si trasforma in Super Saiyan aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Kamehameha'], MOVES_DB['Trasmissione Istantanea'], MOVES_DB['Raffica Meteorica'], MOVES_DB['Sfera Genkidama']] },
@@ -859,7 +859,7 @@
           { id: 'yukionna', name: 'Yuki-Onna', types: ['Ghiaccio', 'Spettro'], hp: 90, maxHp: 90, atk: 115, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/b3/d9/97/b3d997af21d0480a83466cf4db87a973.jpg', moves: [MOVES_DB['Alito Congelante'], MOVES_DB['Sguardo Spirituale'], MOVES_DB['Tormenta Spettrale'], MOVES_DB['Fascino Glaciale']] },
           { id: 'pyra', name: 'Pyra', types: ['Fuoco', 'Erba'], hp: 95, maxHp: 95, atk: 120, def: 75, spd: 90, img: 'https://i.pinimg.com/736x/24/8b/a5/248ba5feeae914df8839d61d2743efbb.jpg', moves: [MOVES_DB['Spada dell\'Egida'], MOVES_DB['Sintesi Ardente'], MOVES_DB['Rovi di Fuoco'], MOVES_DB['Lame Scarlatte']] },
           { id: 'katara', name: 'Katara', types: ['Acqua', 'Ghiaccio'], hp: 85, maxHp: 85, atk: 105, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/53/24/92/532492c3c0137235f02d86ffa0b933b1.jpg', moves: [MOVES_DB['Frusta d\'Acqua'], MOVES_DB['Onda Guaritrice'], MOVES_DB['Dominio del Sangue'], MOVES_DB['Gabbia di Ghiaccio']] },
-          { id: 'zabuza', name: 'Zabuza', types: ['Acqua', 'Buio'], hp: 110, maxHp: 110, atk: 115, def: 85, spd: 95, img: 'https://i.pinimg.com/736x/73/01/8b/73018bd605e624d68f3cd45900f4499c.jpg', moves: [MOVES_DB['Velo di Nebbia'], MOVES_DB['Mannaia Tagliateste'], MOVES_DB['Drago Acquatico'], MOVES_DB['Omicidio Silenzioso']] },
+          { id: 'zabuza', name: 'Zabuza', types: ['Acqua', 'Buio'], hp: 110, maxHp: 110, atk: 115, def: 85, spd: 95, img: 'https://i.pinimg.com/736x/73/01/8b/73018bd605e624d68f3cd45900f4499c.jpg', passive: { name: 'Mannaia Rigenerante', type: 'on_ko', healPercent: 0.20, desc: 'La sua spada assorbe il sangue dei nemici sconfitti. Se dà il colpo di grazia a un avversario, recupera il 20% dei PS massimi.' }, moves: [MOVES_DB['Velo di Nebbia'], MOVES_DB['Mannaia Tagliateste'], MOVES_DB['Drago Acquatico'], MOVES_DB['Omicidio Silenzioso']] },
           { id: 'stewie', name: 'Stewie', types: ['Robot', 'Elettro'], hp: 80, maxHp: 80, atk: 115, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/72/98/97/729897013a80e2f47d32fa0f790811eb.jpg', moves: [MOVES_DB['Pistola Laser'], MOVES_DB['Macchina del Tempo'], MOVES_DB['Granata EMP'], MOVES_DB['Controllo Mentale']] },
           { id: 'dannyphantom', name: 'Danny Phantom', types: ['Spettro', 'Elettro'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/0b/75/5d/0b755da4ccc07381fb6ba32991b35135.jpg', passive: { name: 'Phantom mode : activate!', type: 'damage_reduction_on_move', moveName: 'Urlo Spettrale', reduction: 0.25, desc: 'Quando utilizza Urlo Spettrale, riceve il 25% di danni in meno per quel turno.' }, moves: [MOVES_DB['Raggio Ectoplasmatico'], MOVES_DB['Urlo Spettrale'], MOVES_DB['Intangibilità'], MOVES_DB['Pugno Ghiacciato']] },
           { id: 'reboo', name: 'Re Boo', types: ['Spettro', 'Psico'], hp: 130, maxHp: 130, atk: 95, def: 110, spd: 50, img: 'https://i.pinimg.com/736x/e4/32/5d/e4325df5bb0d6bac82d57332f1262f33.jpg', moves: [MOVES_DB['Trappola nel Quadro'], MOVES_DB['Illusione Spettrale'], MOVES_DB['Lingua Gigante'], MOVES_DB['Potere della Corona']] },
@@ -880,12 +880,12 @@
           { id: 'iris', name: 'Iris', types: ['Magico'], hp: 90, maxHp: 90, atk: 120, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/73/97/82/7397829809c9e0cfef827e17b4b97967.jpg', moves: [MOVES_DB['Cristallo di Ephedia'], MOVES_DB['Scudo Cristallino'], MOVES_DB['Voce della Principessa'], MOVES_DB['Trasformazione Shanila']] },
           { id: 'stellarubia', name: 'Stellarubia', types: ['Fuoco', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/33/a3/49/33a3490d7dee9b8c2d4187ca1f503573.jpg', moves: [MOVES_DB['Starbolts'], MOVES_DB['Volo Supersonico'], MOVES_DB['Furia Tamaraniana'], MOVES_DB['Raggio Oculare']] },
           { id: 'bumblebee', name: 'Bumblebee', types: ['Elettro', 'Insetto'], hp: 85, maxHp: 85, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/03/d0/b7/03d0b7b67992985d3d18e7171e645680.jpg', passive: { name: 'Punge come un\'ape', type: 'first_strike_bonus', damageBonus: 1.05, desc: 'Se è la prima ad attaccare nel turno, infligge il 5% di danni extra.' }, moves: [MOVES_DB['Pungiglione Elettrico'], MOVES_DB['Pungiglione'], MOVES_DB['Raffica Sonica'], MOVES_DB['Raggio Esplosivo']] },
-          { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
+          { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', passive: { name: 'Evocazione Suprema', type: 'on_hp_threshold', threshold: 0.25, isSummon: 'golem_pietra_supremo', maxUses: 1, desc: 'Quando i PS scendono al 25% o meno, evoca istantaneamente un Golem Supremo in sua difesa.' }, moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
           { id: 'shego', name: 'Shego', types: ['Lotta', 'Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 110, img: 'https://i.pinimg.com/1200x/c6/01/cd/c601cd6606acb917e8a0507a671bee5c.jpg', moves: [MOVES_DB['Artigli di Plasma'], MOVES_DB['Calcio Acrobatico'], MOVES_DB['Sfera di Fuoco Verde'], MOVES_DB['Rigenerazione Cellulare']] },
           { id: 'hannibal', name: 'Hannibal', types: ['Oscuro', 'Normale'], hp: 105, maxHp: 105, atk: 110, def: 80, spd: 85, img: 'https://i.pinimg.com/1200x/01/ca/db/01cadbc63ec87dcfcb6e8cfe85e37f50.jpg', moves: [MOVES_DB['Banchetto Macabro'], MOVES_DB['Analisi Psicologica'], MOVES_DB['Colpo di Scalpello'], MOVES_DB['Buone Maniere']] },
           { id: 'po', name: 'Po', types: ['Lotta', 'Psico'], hp: 130, maxHp: 130, atk: 115, def: 100, spd: 60, img: 'https://i.pinimg.com/736x/10/7e/7e/107e7e6950aa24fb10c0428eb4d2b63b.jpg', moves: [MOVES_DB['Pancia Rimbalzante'], MOVES_DB['Presa del Dito Wuxi'], MOVES_DB['Maestro del Chi'], MOVES_DB['Rotolamento Furioso']] },
           { id: 'robin', name: 'Robin', types: ['Lotta', 'Buio'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 115, img: 'https://i.pinimg.com/736x/a2/19/05/a219056712e870f76d8eb16e8948297f.jpg', moves: [MOVES_DB['Birdarang'], MOVES_DB['Bo Staff'], MOVES_DB['Bomba Fumogena'], MOVES_DB['Calcio Volante Tattico']] },
-          { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso'], MOVES_DB['A caccia di meduse']] },
+          { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', passive: { name: 'Corpo Spugnoso', type: 'resist_super_effective', reduction: 0.5, desc: 'Il suo corpo morbido assorbe gli urti: riduce del 50% i danni aggiuntivi subiti dalle mosse Superefficaci (il moltiplicatore scende da 2x a 1.5x).' }, moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso'], MOVES_DB['A caccia di meduse']] },
           { id: 'patrick', name: 'Patrick Stella', types: ['Acqua', 'Roccia'], hp: 140, maxHp: 140, atk: 115, def: 110, spd: 40, img: 'https://i.pinimg.com/736x/60/80/69/60806924c9fa74a24fbeb4c4a81c344e.jpg', moves: [MOVES_DB['Schianto Stella'], MOVES_DB['Non sono Rick!'], MOVES_DB['Riposino sotto la Roccia'], MOVES_DB['Lancio del Sasso'], MOVES_DB['A caccia di meduse']] },
           { id: 'plankton', name: 'Plankton', types: ['Insetto', 'Robot'], hp: 60, maxHp: 60, atk: 125, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/af/f1/8b/aff18ba41f798ebe95ae1809410cbec9.jpg', moves: [MOVES_DB['Laser Mentale'], MOVES_DB['Piano Z'], MOVES_DB['Karen, Aiuto!'], MOVES_DB['Furto della Ricetta']] },
           { id: 'marceline', name: 'Marceline', types: ['Spettro', 'Oscuro'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']] },
@@ -902,7 +902,7 @@
           { id: 'ursula', name: 'Ursula', types: ['Acqua', 'Veleno'], hp: 130, maxHp: 130, atk: 100, def: 110, spd: 50, img: 'https://i.pinimg.com/1200x/a2/43/3b/a2433b064caf68f524d68e3cb61eaebe.jpg', moves: [MOVES_DB['Tentacoli Avvolgenti'], MOVES_DB['Canto Ammaliatore'], MOVES_DB['Onda Melmosa'], MOVES_DB['Patto Ingannevole']] },
 
           { id: 'nicole', name: 'Nicole Watterson', types: ['Lotta', 'Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 85, spd: 115, img: 'https://i.pinimg.com/736x/d4/48/49/d44849bc672dc5a88293c048403fea7d.jpg', moves: [MOVES_DB['Sguardo della morte'], MOVES_DB['Zuffa'], MOVES_DB['Pausa Pranzo'], MOVES_DB['VAI A LETTO.']] },
-          { id: 'yoshi', name: 'Yoshi', types: ['Drago', 'Normale'], hp: 105, maxHp: 105, atk: 95, def: 85, spd: 110, img: 'https://i.pinimg.com/736x/e1/f3/ef/e1f3efeeaaedb7f96173a3cd032e7412.jpg', moves: [MOVES_DB['Nyop-nyop'], MOVES_DB['Uovo boomerang'], MOVES_DB['Sali sulla mia schiena'], MOVES_DB['Colpo salterino']] },
+          { id: 'yoshi', name: 'Yoshi', types: ['Drago', 'Normale'], hp: 105, maxHp: 105, atk: 95, def: 85, spd: 110, img: 'https://i.pinimg.com/736x/e1/f3/ef/e1f3efeeaaedb7f96173a3cd032e7412.jpg', passive: { name: 'Compagno di Avventure', type: 'mount_buff', desc: 'Il miglior destriero del mondo! L\'alleato che si trova "In Groppa" a Yoshi è ispirato e infligge il 25% di danni extra con tutti i suoi attacchi.' }, moves: [MOVES_DB['Nyop-nyop'], MOVES_DB['Uovo boomerang'], MOVES_DB['Sali sulla mia schiena'], MOVES_DB['Colpo salterino']] },
 
           { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']], isSecretUnlock: true },
           { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']], isSecretUnlock: true },
@@ -932,6 +932,7 @@
           { id: 'mostro_scheletrico', name: 'Mostro Scheletrico', types: ['Oscuro', 'Spettro'], hp: 80, maxHp: 80, atk: 70, def: 60, spd: 50, img: 'https://i1-e.pinimg.com/736x/48/be/8d/48be8d863481efebe551e64800f74baa.jpg', moves: [MOVES_DB['Sguardo demoniaco'], MOVES_DB['Aura spettrale']], isSummonOnly: true },
           { id: 'clone_corvina', name: 'Corvina (Clone)', types: ['Oscuro', 'Magico'], hp: 30, maxHp: 30, atk: 70, def: 25, spd: 25, img: 'https://i.pinimg.com/736x/fc/e3/30/fce330b50ce9cbf53287e441be15d597.jpg', imageFilter: 'sepia(1) hue-rotate(250deg) saturate(3) brightness(0.5)', moves: [MOVES_DB['Azarath Metrion Zinthos'], MOVES_DB['Scudo d\'Ombra'], MOVES_DB['Telecinesi Oscura'], MOVES_DB['Assorbimento Animico']], isSummonOnly: true },
           { id: 'golem_pietra', name: 'Golem di Pietra', types: ['Roccia'], hp: 60, maxHp: 60, atk: 50, def: 90, spd: 20, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Golem&backgroundColor=4b5563', moves: [MOVES_DB['Sassata'], MOVES_DB['Protezione']], isSummonOnly: true },
+          { id: 'golem_pietra_supremo', name: 'Golem Supremo', types: ['Roccia', 'Oscuro'], hp: 120, maxHp: 120, atk: 85, def: 130, spd: 25, img: 'https://i.pinimg.com/1200x/e6/54/76/e65476371adc941f4cb1c447724f032b.jpg', moves: [MOVES_DB['Terremoto'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Protezione']], isSummonOnly: true },
           { id: 'carta_guardia', name: 'Carta Guardia', types: ['Normale'], hp: 55, maxHp: 55, atk: 60, def: 50, spd: 65, img: 'https://i.pinimg.com/736x/30/d0/fb/30d0fb1c737910c1a6448b25bf6077f0.jpg', moves: [MOVES_DB['Madre, abbiate forza!'], MOVES_DB['Colpo di spada (Guardia)']], isSummonOnly: true },
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
@@ -969,7 +970,7 @@
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
         });
 
-        const CAMPAIGNS = [
+          const CAMPAIGNS = [
           {
             id: 'crisi_varco',
             title: "La Crisi del Varco Corrotto",
@@ -1904,13 +1905,13 @@
             id: 'torneo_assoluto',
             title: "Il Torneo Assoluto: Alleanze",
             shortTitle: "Seconda Campagna",
-            description: "Gli Dei esigono spettacolo! Forma un'Alleanza di 8 campioni e affronta scontri tattici 2vs2 per salvare il tuo universo.",
+            description: "Gli Dei esigono spettacolo! Forma un'Alleanza di 8 campioni e affronta scontri totali 6vs6 per salvare il tuo universo.",
             bg: "from-indigo-900 to-purple-950",
             intro: {
                 title: "Il Torneo Assoluto",
                 subtitle: "Regola d'Oro: Alleanze Multiversali",
                 p1: "Zeno e Discord hanno deciso che le lotte singole sono noiose. Hanno istituito la Regola dell'Alleanza: gli universi devono unirsi in squadre da 8 combattenti!",
-                p2: "Le battaglie si svolgeranno 2 contro 2 sul ring. Scegli i tuoi 8 eroi (5 membri + 3 riserve), vinci il torneo per ottenere il potere delle Super Sfere del Drago e salva il tuo universo dalla cancellazione!"
+                p2: "Le battaglie si svolgeranno in enormi scontri 6 contro 6 sul ring. Scegli i tuoi 8 eroi, vinci il torneo per ottenere il potere delle Super Sfere del Drago e salva il tuo universo dalla cancellazione!"
             },
             sectors: [
             {
@@ -1982,7 +1983,7 @@
                 {
                   id: 'm40_5', title: 'L\'Alleanza dei Titani',
                   dialogue: [
-                    { s: "Cyborg", t: "Analisi olografica della squadra avversaria completata. Robin, le loro statistiche di vittoria in 2vs2 sono dell'88%." },
+                    { s: "Cyborg", t: "Analisi olografica della squadra avversaria completata. Robin, le loro statistiche di vittoria negli scontri 6vs6 sono dell'88%." },
                     { s: "Robin", t: "Perfetto. Titani, abbiamo passato le ultime 48 ore nella Stanza del Pericolo a simulare i loro pattern d'attacco. Sappiamo come neutralizzarli." },
                     { s: "Nightwing", t: "Esatto. Ricordate la regola d'oro: comunicate quando volete dare il cambio. Le sostituzioni sono cruciali in questo campionato." },
                     { s: "Bumblebee", t: "Abbiamo gli occhi di tutta Jump City puntati addosso sugli schermi! Pronta a pungere e a staccare un pass per i Quarti di Finale!" }
@@ -3045,12 +3046,16 @@
                       }
                   }
 
-                  // Prevenzione Soft-lock: se muoiono TUTTI i pg del roster, li cura al 30% per riprovare
+                  // Prevenzione Soft-lock: se muoiono TUTTI i pg del roster (o in Torneo Assoluto), li cura per riprovare
                   const aliveCount = campaignState.roster.filter(id => newRosterStats[id] > 0).length;
-                  if (aliveCount === 0) {
+                  if (aliveCount === 0 || activeCampaignId === 'torneo_assoluto') {
                       campaignState.roster.forEach(id => {
                           const baseChar = CHARACTERS.find(c=>c.id===id);
-                          newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
+                          if (activeCampaignId === 'torneo_assoluto') {
+                              newRosterStats[id] = baseChar ? baseChar.maxHp : 100;
+                          } else {
+                              newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
+                          }
                       });
                   }
 
@@ -3670,8 +3675,8 @@
                         field[p] = teams[p].slice(0, fieldSize).map((_, i) => i);
                     }
                 });
-            } else if (gameState.gameMode === 'juggernaut') {
-                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+            } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 const activeJugg = ['p1', 'p2', 'p3', 'p4', 'p5'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
                 activeJugg.forEach(p => {
                     if (teams[p] && teams[p].length > 0) {
@@ -3679,8 +3684,8 @@
                     }
                 });
 
-                // --- APPLICAZIONE BUFF JUGGERNAUT ---
-                if (teams[juggPlayer] && teams[juggPlayer][0]) {
+                // --- APPLICAZIONE BUFF JUGGERNAUT (Solo Modalità Juggernaut) ---
+                if (gameState.gameMode === 'juggernaut' && teams[juggPlayer] && teams[juggPlayer][0]) {
                     const numOpponents = Math.max(1, activeJugg.length - 1); // FIX: Assicura un valore valido
                     const jugg = teams[juggPlayer][0];
                     // Moltiplica enormemente HP per sopravvivere all'assalto combinato
@@ -3787,19 +3792,17 @@
           // --- INTELLIGENZA ARTIFICIALE CPU (Migliorata per Tutti i Bot) ---
           const generateCPUActionsForPlayer = (cpuPlayer, currentActions) => {
                 let cpuActions = {};
+                const activeMatchPlayers = getActivePlayers(); // FIX: Spostato fuori per evitare ReferenceError
                 
                 let enemyTeams = [];
                 if (gameState.gameMode === 'multipla') {
                     enemyTeams = ['p1', 'p2'].includes(cpuPlayer) ? ['p3', 'p4'] : ['p1', 'p2'];
                 } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                     const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                    const activeMatchPlayers = getActivePlayers();
                     enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
                 } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
-                    const activeMatchPlayers = getActivePlayers();
                     enemyTeams = [activeMatchPlayers.find(p => p !== cpuPlayer)];
                 } else if (gameState.gameMode === 'battleroyale') {
-                    const activeMatchPlayers = getActivePlayers();
                     enemyTeams = activeMatchPlayers.filter(p => p !== cpuPlayer);
                 } else {
                     enemyTeams = [cpuPlayer === 'p1' ? 'p2' : 'p1'];
@@ -3878,7 +3881,6 @@
                                 } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                                     const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                     if (cpuPlayer !== juggPlayer) {
-                                        const activeMatchPlayers = getActivePlayers();
                                         myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                     }
                                 }
@@ -4098,8 +4100,8 @@
             let enemyTeams = [];
             if (gameState.gameMode === 'multipla') {
                 enemyTeams = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
-            } else if (gameState.gameMode === 'juggernaut') {
-                const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+            } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
             } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
                 enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
@@ -4157,6 +4159,11 @@
             if (attacker.passive && attacker.passive.type === 'first_strike_bonus' && isFirstAttackOfTurn) {
                 pwr = Math.floor(pwr * attacker.passive.damageBonus);
             }
+            
+            // PASSIVA YOSHI (Buff In Groppa)
+            if (attacker.statuses?.some(s => s.type === 'In_Groppa')) {
+                pwr = Math.floor(pwr * 1.25);
+            }
             // ---------------------------------------------
             
             let defValue = move.ignoreDefBuffs && defender.def > defender.baseDef ? defender.baseDef : defender.def;
@@ -4202,6 +4209,35 @@
                   workingField[targetPlayer].splice(deadFieldPos, 1);
                   events.push({ type: 'remove', player: targetPlayer, pos: deadFieldPos });
               }
+
+              // --- NUOVA LOGICA: PASSIVA ON_ALLY_FAINT (Es. Zatch Bell) ---
+              let myTeamPlayers = [targetPlayer];
+              if (gameState.gameMode === 'multipla') {
+                  myTeamPlayers = ['p1', 'p2'].includes(targetPlayer) ? ['p1', 'p2'] : ['p3', 'p4'];
+              } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                  const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                  if (targetPlayer !== juggPlayer) {
+                      myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+                  }
+              }
+
+              myTeamPlayers.forEach(pAlly => {
+                  if (workingField[pAlly]) {
+                      workingField[pAlly].forEach(aIdx => {
+                          const ally = workingTeams[pAlly][aIdx];
+                          if (ally && ally.hp > 0 && ally.passive && ally.passive.type === 'on_ally_faint' && !(pAlly === targetPlayer && aIdx === targetIdx)) {
+                              if (ally.passive.statBuff) {
+                                  let statTexts = [];
+                                  if (ally.passive.statBuff.atk) { ally.atk = Math.floor(ally.atk * ally.passive.statBuff.atk); statTexts.push("Attacco"); }
+                                  if (ally.passive.statBuff.def) { ally.def = Math.floor(ally.def * ally.passive.statBuff.def); statTexts.push("Difesa"); }
+                                  if (ally.passive.statBuff.spd) { ally.spd = Math.floor(ally.spd * ally.passive.statBuff.spd); statTexts.push("Velocità"); }
+                                  events.push({ type: 'text', text: `⚡ Il sacrificio di un alleato ispira ${ally.name}! Attiva "${ally.passive.name}": ${statTexts.join(" e ")} aumenta!`, isPassive: true, passiveChar: ally.name, passiveName: ally.passive.name });
+                              }
+                          }
+                      });
+                  }
+              });
+              // ------------------------------------------------------------
             };
 
             const applyDamage = (target, dmg, targetPlayer, targetIdx, text) => {
@@ -4271,6 +4307,18 @@
                             events.push({ type: 'text', text: `🔥 ${target.name} attiva ${target.passive.name}! Aumenta ${statTexts.join(" e ")}!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
                         }
 
+                        // AGGIUNTO: GESTIONE PURIFICAZIONE STATUS (es. Zazan - Corazza Mutante)
+                        if (target.passive.removeNegativeStatuses) {
+                            const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
+                            const originalLength = target.statuses.length;
+                            target.statuses = target.statuses.filter(s => !negatives.includes(s.type));
+                            
+                            if (target.statuses.length < originalLength) {
+                                events.push({ type: 'text', text: `✨ ${target.name} purifica il suo corpo da tutti gli status negativi!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
+                                events.push({ type: 'status_update', targetPlayer: targetPlayer, targetIdx: targetIdx, statuses: JSON.parse(JSON.stringify(target.statuses)) });
+                            }
+                        }
+
                         if (target.passive.resetEnemyBuffs) {
                             events.push({ type: 'text', text: `🐾 ${target.name} attiva ${target.passive.name}! I potenziamenti degli avversari in campo vengono azzerati!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
                             
@@ -4297,6 +4345,30 @@
                                     });
                                 }
                             });
+                        }
+
+                        // AGGIUNTO: GESTIONE EVOCAZIONI SOTTO SOGLIA HP (es. Charmcaster - Evocazione Suprema)
+                        if (target.passive.isSummon) {
+                            const summonIds = Array.isArray(target.passive.isSummon) ? target.passive.isSummon : [target.passive.isSummon];
+                            let summonedNames = [];
+                            summonIds.forEach(summonId => {
+                                const baseChar = CHARACTERS.find(c => c.id === summonId);
+                                if (baseChar) {
+                                    const newSummon = {
+                                        ...JSON.parse(JSON.stringify(baseChar)), statuses: [], consecutiveProtect: 0,
+                                        baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd
+                                    };
+                                    newSummon.moves.forEach(m => { if (m.maxUses !== undefined) m.remainingUses = m.maxUses; });
+                                    workingTeams[targetPlayer].push(newSummon);
+                                    const newCharTeamIdx = workingTeams[targetPlayer].length - 1;
+                                    workingField[targetPlayer].push(newCharTeamIdx);
+                                    summonedNames.push(newSummon.name);
+                                    events.push({ type: 'summon', text: ``, player: targetPlayer, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
+                                }
+                            });
+                            if (summonedNames.length > 0) {
+                                events.push({ type: 'text', text: `✨ ${target.name} attiva ${target.passive.name} ed evoca ${summonedNames.join(' e ')}!`, isPassive: true, passiveChar: target.name, passiveName: target.passive.name });
+                            }
                         }
                     }
                 }
@@ -5150,21 +5222,39 @@
                     let multiplier = getMultiplier(move.type, t.char.types);
                     let isImmuneDueToPassive = false;
 
-                    // --- GESTIONE PASSIVE: IMMUNITÀ ---
+                    // --- GESTIONE PASSIVE: IMMUNITÀ E RESISTENZE ---
                     if (t.char.passive && t.char.passive.immuneToType === move.type) {
                         multiplier = 0;
                         isImmuneDueToPassive = true;
+                    }
+                    
+                    let superEffectiveResisted = false;
+                    if (multiplier > 1 && t.char.passive && t.char.passive.type === 'resist_super_effective') {
+                        multiplier = 1 + ((multiplier - 1) * (1 - t.char.passive.reduction));
+                        superEffectiveResisted = true;
+                        events.push({ type: 'text', text: `🧽 ${t.char.name} attiva ${t.char.passive.name}! L'attacco superefficace viene parzialmente assorbito!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
                     }
                     // ----------------------------------
                     
                     let effectivenessText = "";
                     if (isImmuneDueToPassive) effectivenessText = ` Ma ${t.char.name} ne è immune grazie a ${t.char.passive.name}!`;
+                    else if (superEffectiveResisted) effectivenessText = ` È superefficace! Ma attutito da ${t.char.passive.name}!`;
                     else if (multiplier > 1) effectivenessText = " È superefficace!";
                     else if (multiplier < 1 && multiplier > 0) effectivenessText = " Non è molto efficace...";
                     else if (multiplier === 0) effectivenessText = " Non ha alcun effetto!";
                     
                     if (multiplier === 0) {
                         events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}` });
+                        
+                        // POTENZIAMENTO DOPO AVER ASSORBITO UN ATTACCO PER CUI SI È IMMUNI (Es. Zuko - Parafulmine)
+                        if (isImmuneDueToPassive && t.char.passive.statBuffOnImmune) {
+                            let statTexts = [];
+                            if (t.char.passive.statBuffOnImmune.atk) { t.char.atk = Math.floor(t.char.atk * t.char.passive.statBuffOnImmune.atk); statTexts.push("Attacco"); }
+                            if (t.char.passive.statBuffOnImmune.def) { t.char.def = Math.floor(t.char.def * t.char.passive.statBuffOnImmune.def); statTexts.push("Difesa"); }
+                            if (t.char.passive.statBuffOnImmune.spd) { t.char.spd = Math.floor(t.char.spd * t.char.passive.statBuffOnImmune.spd); statTexts.push("Velocità"); }
+                            events.push({ type: 'text', text: `⚡ ${t.char.name} assorbe l'energia dell'attacco! Aumenta ${statTexts.join(" e ")}!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
+                        }
+                        
                         continue;
                     }
 
@@ -5322,13 +5412,14 @@
 
                         let hitText = actualHits > 1 ? ` Colpisce ${actualHits} volte!` : '';
                         let magText = isMagnetic ? ` Lo stato Magnetico raddoppia i danni!` : '';
+                        let groppaText = attacker.statuses.some(s => s.type === 'In_Groppa') ? ` (Danni +25% in Groppa!)` : '';
 
                         if (juggHitsAbsorbed > 0 && totalDmg === 0) {
                             let absTxt = actualHits > 1 ? `Lo Scudo ha assorbito tutti i ${actualHits} colpi!` : `Lo Scudo ha assorbito l'attacco!`;
                             events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}... ma ${absTxt} (${t.char.juggHitsRemaining} cariche scudo rimaste)` });
                         } else if (totalDmg > 0) {
                             let shieldTxt = juggHitsAbsorbed > 0 ? ` (Lo scudo ha assorbito ${juggHitsAbsorbed} colpi).` : '';
-                            applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}${hitText}${magText} Infligge ${totalDmg} danni.${shieldTxt}`);
+                            applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}${hitText}${magText}${groppaText} Infligge ${totalDmg} danni.${shieldTxt}`);
                         } else {
                             applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText} Infligge ${totalDmg} danni.`);
                         }
@@ -5393,6 +5484,11 @@
                             if (attacker.passive.statBuff.def) { attacker.def = Math.floor(attacker.def * attacker.passive.statBuff.def); statTexts.push("Difesa"); }
                             if (attacker.passive.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * attacker.passive.statBuff.spd); statTexts.push("Velocità"); }
                             events.push({ type: 'text', text: `👑 ${attacker.name} ha mandato K.O. un nemico! Attiva la passiva "${attacker.passive.name}": ${statTexts.join(" e ")} aumenta!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
+                        }
+                        if (attacker.passive.healPercent) {
+                            const healAmount = Math.max(1, Math.floor(attacker.maxHp * attacker.passive.healPercent));
+                            attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                            events.push({ type: 'damage', text: `🩸 ${attacker.name} ha mandato K.O. un nemico! Attiva "${attacker.passive.name}" e recupera ${healAmount} PS!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
                         }
                     }
 
@@ -7185,10 +7281,10 @@
             state.gameMode = 'classica';
             state.isCampaignBattle = true;
             
-            // MODIFICA REGOLE ARENA: Se è il torneo assoluto, forza 2 in campo (2vs2). Altrimenti logica standard.
+            // MODIFICA REGOLE ARENA: Se è il torneo assoluto, forza 6 in campo (6vs6). Altrimenti logica standard.
             let fSize = 1;
             if (activeCampaignId === 'torneo_assoluto') {
-                fSize = 2;
+                fSize = 6;
             } else {
                 fSize = Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length));
                 if (mission.forceFieldSize) fSize = mission.forceFieldSize;
@@ -9170,17 +9266,29 @@
                                     const faintedThisBattle = [];
                                     
                                     if (gameState.teams && gameState.teams.p1) {
-                                        gameState.teams.p1.forEach(c => {
-                                            if (!c.isSummonOnly) {
+                                    gameState.teams.p1.forEach(c => {
+                                        if (!c.isSummonOnly) {
+                                            if (activeCampaignId === 'torneo_assoluto') {
+                                                newRosterStats[c.id] = c.maxHp; // Cura completa per il torneo
+                                            } else {
                                                 newRosterStats[c.id] = c.hp;
-                                                if (c.hp <= 0) {
-                                                    faintedThisBattle.push(c.name);
-                                                }
                                             }
-                                        });
-                                    }
-                                    
-                                    const mission = activeCampaign.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
+                                            if (c.hp <= 0) {
+                                                faintedThisBattle.push(c.name);
+                                            }
+                                        }
+                                    });
+                                }
+
+                                // Cura anche la panchina nel Torneo Assoluto
+                                if (activeCampaignId === 'torneo_assoluto') {
+                                    campaignState.roster.forEach(id => {
+                                        const baseChar = CHARACTERS.find(ch => ch.id === id);
+                                        if(baseChar) newRosterStats[id] = baseChar.maxHp;
+                                    });
+                                }
+                                
+                                const mission = activeCampaign.sectors[campaignState.sectorIdx].missions[campaignState.missionIdx];
                                     const newRoster = [...campaignState.roster];
                                     let unlockedThisTime = [];
 
@@ -9290,12 +9398,16 @@
                                         }
                                     }
 
-                                    // Prevenzione Soft-lock se tutto il Roster è morto
+                                    // Prevenzione Soft-lock se tutto il Roster è morto o siamo nel Torneo
                                     const aliveCount = campaignState.roster.filter(id => newRosterStats[id] > 0).length;
-                                    if (aliveCount === 0) {
+                                    if (aliveCount === 0 || activeCampaignId === 'torneo_assoluto') {
                                         campaignState.roster.forEach(id => {
                                             const baseChar = CHARACTERS.find(c=>c.id===id);
-                                            newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
+                                            if (activeCampaignId === 'torneo_assoluto') {
+                                                newRosterStats[id] = baseChar ? baseChar.maxHp : 100;
+                                            } else {
+                                                newRosterStats[id] = Math.max(1, Math.floor((baseChar ? baseChar.maxHp : 100) * 0.3)); 
+                                            }
                                         });
                                     }
 
