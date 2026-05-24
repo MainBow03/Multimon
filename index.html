@@ -5251,14 +5251,17 @@
                         for (let effect of effects) {
                             const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(effect.type);
                             
+                            // FIX CRITICO: Se la mossa non ha una "chance" specificata, assumiamo che sia 1.0 (100% garantita)!
+                            const chanceToApply = effect.chance !== undefined ? effect.chance : 1.0;
+                            
                             if (isNegative && t.char.passive && t.char.passive.immuneToNegativeStatuses) {
-                                if (Math.random() < effect.chance) {
+                                if (Math.random() < chanceToApply) {
                                     events.push({ type: 'text', text: `🛡️ ${t.char.name} resiste a ${effect.type} grazie a ${t.char.passive.name}!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
                                 }
                                 continue;
                             }
 
-                            if (Math.random() < effect.chance) {
+                            if (Math.random() < chanceToApply) {
                                 const existingIdx = t.char.statuses.findIndex(s => s.type === effect.type);
                                 let turns = effect.turns || 1;
                                 if (effect.type === 'Addormentato' && !effect.turns) turns = Math.floor(Math.random() * 3) + 2;
