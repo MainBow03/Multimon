@@ -95,7 +95,7 @@
         migrateSaves();
 
         // --- GAME DATA ---
-        const TYPES = ['Normale', 'Lotta', 'Fuoco', 'Acqua', 'Erba', 'Aria', 'Roccia', 'Ghiaccio', 'Robot', 'Drago', 'Magico', 'Veleno', 'Insetto', 'Elettro', 'Oscuro', 'Spettro', 'Buio', 'Suono', 'Psico'];
+        const TYPES = ['Normale', 'Lotta', 'Fuoco', 'Acqua', 'Erba', 'Aria', 'Roccia', 'Ghiaccio', 'Robot', 'Drago', 'Magico', 'Veleno', 'Insetto', 'Elettro', 'Oscuro', 'Spettro', 'Buio', 'Suono', 'Psico', 'Terra'];
 
         const ITEMS_DB = {
             'pozione': { id: 'pozione', name: 'Pozione', desc: 'Cura il 50% dei PS del personaggio in campo.', price: 200, type: 'heal', value: 0.5, icon: '🧪' },
@@ -215,15 +215,15 @@
           'Faccino carino!': { name: 'Faccino carino!', type: 'Normale', power: 0, maxUses: 3, targetStatDebuff: { atk: 0.5 }, desc: 'Sfrutta la tenerezza per abbassare la guardia del nemico, dimezzandone permanentemente l\'Attacco. (3 utilizzi)' },
           'Tsunami dolce': { name: 'Tsunami dolce', type: 'Acqua', power: 80, desc: 'Travolge il nemico con una massiccia e inaspettata onda zuccherata.' },
 
-          'Pugno Minerale': { name: 'Pugno Minerale', type: 'Roccia', power: 60, desc: 'Un colpo fisico durissimo sferrato tramutando il proprio braccio in pietra massiccia.' },
+          'Pugno Minerale': { name: 'Pugno Minerale', type: 'Terra', power: 60, desc: 'Un colpo fisico durissimo sferrato tramutando il proprio braccio in pietra massiccia.' },
           'Frana Impattante': { name: 'Frana Impattante', type: 'Roccia', power: 50, targetCount: 2, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Fa precipitare massi enormi dall\'alto. Colpisce fino a 2 nemici e ha il 30% di probabilità di stordirli.' },
-          'Assorbimento grezzo': { name: 'Assorbimento grezzo', type: 'Roccia', power: 0, maxUses: 3, targetStatDebuff: { atk: 0.7 }, selfHeal: 0.2, desc: 'Assorbe l\'essenza del nemico: ne riduce l\'Attacco del 30% e cura Kevin del 20% dei suoi PS massimi. (3 utilizzi)' },
-          'Carica selvaggia': { name: 'Carica selvaggia', type: 'Normale', power: 100, desc: 'Si scaglia a testa bassa contro l\'avversario con una carica a tutta velocità.' },
+          'Assorbimento grezzo': { name: 'Assorbimento grezzo', type: 'Terra', power: 0, maxUses: 3, targetStatDebuff: { atk: 0.7 }, selfHeal: 0.2, desc: 'Assorbe l\'essenza del nemico: ne riduce l\'Attacco del 30% e cura Kevin del 20% dei suoi PS massimi. (3 utilizzi)' },
+          'Carica selvaggia': { name: 'Carica selvaggia', type: 'Normale', power: 110, statusEffect: { type: 'Confuso', chance: 0.10 }, desc: 'Si scaglia a testa bassa contro l\'avversario con una carica a tutta velocità. 10% di probabilità di confondere.' },
 
           'Ruggito di Pietra': { name: 'Ruggito di Pietra', type: 'Roccia', power: 0, targetCount: 2, targetStatDebuff: { atk: 0.7, spd: 0.7 }, desc: 'Un boato roccioso che riduce l\'Attacco e la Velocità di due bersagli.' },
           'Pugno di Macigno': { name: 'Pugno di Macigno', type: 'Roccia', power: 120, accuracy: 0.70, desc: 'Colpo fisico devastante con il braccio di pietra. Alta potenza, ma bassa precisione (70%).' },
           'Scaglie di Roccia': { name: 'Scaglie di Roccia', type: 'Roccia', power: 55, targetCount: 4, desc: 'Lancia schegge di pietra affilate dal proprio corpo colpendo più bersagli.' },
-          'Presa Schiacciante': { name: 'Presa Schiacciante', type: 'Normale', power: 75, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Afferra il nemico e lo stringe con forza sovrumana. 30% di probabilità di stordirlo.' },
+          'Presa Schiacciante': { name: 'Presa Schiacciante', type: 'Terra', power: 75, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Afferra il nemico e lo stringe con forza sovrumana. 30% di probabilità di stordirlo.' },
 
           'Gelo Eterno': { name: 'Gelo Eterno', type: 'Ghiaccio', power: 80, statusEffect: { type: 'Congelato', chance: 0.3 }, desc: 'Un raggio di ghiaccio puro. 30% di probabilità di congelare il bersaglio.' },
           'Frammenti di Neve': { name: 'Frammenti di Neve', type: 'Ghiaccio', power: 25, multiHit: { min: 2, max: 5 }, desc: 'Scaglia schegge di ghiaccio che colpiscono il bersaglio in rapida successione (da 2 a 5 volte).' },
@@ -297,9 +297,9 @@
 
           // NUOVE MOSSE GROOT (Curatore/Supporto)
           'Io sono Groot': { name: 'Io sono Groot', type: 'Erba', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.3, removeNegativeStatuses: true, desc: 'Cura il team del 30% (o 50% se è solo) e rimuove le alterazioni di stato negative.' },
-          'Scudo di Rami': { name: 'Scudo di Rami', type: 'Erba', power: 0, targetMode: 'ally', targetStatBuff: { def: 2.0 }, desc: 'Avvolge un alleato (o sé stesso) con rami resistenti raddoppiandone la Difesa.' },
+          'Scudo di Rami': { name: 'Scudo di Rami', type: 'Terra', power: 0, targetMode: 'ally', targetStatBuff: { def: 2.0 }, desc: 'Avvolge un alleato (o sé stesso) con rami resistenti raddoppiandone la Difesa.' },
           'Liane Sferzanti': { name: 'Liane Sferzanti', type: 'Erba', power: 80, desc: 'Sferza il nemico con robuste liane. Un attacco potente e diretto di tipo Erba.' },
-          'Pugno di Tronco': { name: 'Pugno di Tronco', type: 'Roccia', power: 75, desc: 'Sferra un colpo pesante con il suo braccio di legno duro come la roccia.' },
+          'Colpo Radice': { name: 'Colpo Radice', type: 'Terra', power: 75, desc: 'Sferra un colpo pesante facendo emergere enormi radici dure come la roccia.' },
 
           // NUOVE MOSSE GRAVELORD NITO
           'Miasma della Morte': { name: 'Miasma della Morte', type: 'Oscuro', power: 40, targetCount: 4, statusEffect: { type: 'Avvelenato', chance: 0.8 }, desc: 'Un gas mortale che colpisce tutti i nemici. 80% di probabilità di avvelenamento grave.' },
@@ -734,6 +734,13 @@
           'Alchimia Metallica': { name: 'Alchimia Metallica', type: 'Robot', power: 80, desc: 'Trasmuta l\'ambiente circostante in armi acuminate.' },
           'Pugno d\'Acciaio': { name: 'Pugno d\'Acciaio', type: 'Lotta', power: 90, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Un pugno pesantissimo sferrato con l\'armatura. 20% di stordire.' },
           'Muro Terrestre': { name: 'Muro Terrestre', type: 'Roccia', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, desc: 'Trasmuta un muro di roccia che protegge il team per 3 turni.' },
+          'Pilastro di Terra': { name: 'Pilastro di Terra', type: 'Terra', power: 85, desc: 'Sfrutta l\'alchimia per far scaturire un enorme pilastro di terra sotto il nemico.' },
+
+          // NUOVE MOSSE SHREK
+          'Fanghiglia paludosa': { name: 'Fanghiglia paludosa', type: 'Terra', power: 80, targetCount: 3, hitStatDebuff: { chance: 0.10, acc: 0.90 }, desc: 'Lancia fango ovunque colpendo fino a 3 bersagli. 10% di probabilità di ridurre la precisione.' },
+          'Colpo di fango bollente': { name: 'Colpo di fango bollente', type: 'Terra', power: 50, statusEffect: { type: 'Scottato', chance: 0.80 }, desc: 'Un colpo rovente di fango. 80% di probabilità di scottare il bersaglio.' },
+          'ESCI DALLA MIA PALUDE!!': { name: 'ESCI DALLA MIA PALUDE!!', type: 'Veleno', power: 0, targetStatDebuff: { atk: 0.7, def: 0.7 }, desc: 'Un urlo spaventoso che intimidisce il bersaglio, riducendone Attacco e Difesa del 30%.' },
+          'Soffio pestilenziale': { name: 'Soffio pestilenziale', type: 'Veleno', power: 90, statusEffect: { type: 'Avvelenato', chance: 0.20 }, desc: 'Un alito micidiale. 20% di probabilità di avvelenare gravemente il nemico.' },
 
           // NUOVE MOSSE ARCO DEL TORNEO (DISCORD & ZENO)
           'Schiocco di Dita': { name: 'Schiocco di Dita', type: 'Magico', power: 120, statusEffects: [{ type: 'Confuso', chance: 0.5 }, { type: 'Stordito', chance: 0.5 }], desc: 'Distorce la realtà. Alta probabilità di confondere o stordire il nemico.' },
@@ -818,8 +825,8 @@
           { id: 'juvia', name: 'Juvia', types: ['Acqua'], hp: 90, maxHp: 90, atk: 100, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/5b/ba/7c/5bba7c154e41cf9d8a3905ca7020ac3b.jpg', moves: [MOVES_DB['Tempesta emotiva'], MOVES_DB['Colpo impetuoso'], MOVES_DB['Amore devoto'], MOVES_DB['Flirt']] },
           { id: 'sanemi', name: 'Sanemi', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/54/49/7f/54497f3c2cfb1a3467f996f942c4f812.jpg', moves: [MOVES_DB['Primo Kata'], MOVES_DB['Terzo Kata'], MOVES_DB['Settimo Kata'], MOVES_DB['Colpo Karate']] },
           { id: 'dolli', name: 'Dolli', types: ['Aria', 'Acqua'], hp: 90, maxHp: 90, atk: 85, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/5c/dd/8d/5cdd8d89ce9d32e38f97c50ccece9933.jpg', passive: { name: 'Bambola di Pezza', type: 'on_faint', maxUses: 1, applyStatusToTeam: { type: 'Scudo Team', turns: 3 }, desc: 'Quando viene sconfitta, applica Scudo Team (Difesa x3) agli alleati in campo per 3 turni.' }, moves: [MOVES_DB['Riflesso Team'], MOVES_DB['Sorriso Luminoso'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
-          { id: 'kevin', name: 'Kevin', types: ['Normale', 'Roccia'], hp: 110, maxHp: 110, atk: 90, def: 100, spd: 50, img: 'https://i.pinimg.com/736x/a6/c1/a5/a6c1a5535bcc84e78886d6e6f29a560a.jpg', moves: [MOVES_DB['Pugno Minerale'], MOVES_DB['Frana Impattante'], MOVES_DB['Assorbimento grezzo'], MOVES_DB['Carica selvaggia']] },
-          { id: 'cuoredipietra', name: 'Cuore di Pietra', types: ['Roccia'], hp: 120, maxHp: 120, atk: 105, def: 130, spd: 30, img: 'https://i.pinimg.com/736x/3d/91/a9/3d91a9f4d2e605b15a70289b5e0045e7.jpg', passive: { name: 'Vigore', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Ruggito di Pietra'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Scaglie di Roccia'], MOVES_DB['Presa Schiacciante']] },
+          { id: 'kevin', name: 'Kevin', types: ['Terra', 'Roccia'], hp: 110, maxHp: 110, atk: 90, def: 100, spd: 50, img: 'https://i.pinimg.com/736x/a6/c1/a5/a6c1a5535bcc84e78886d6e6f29a560a.jpg', moves: [MOVES_DB['Pugno Minerale'], MOVES_DB['Frana Impattante'], MOVES_DB['Assorbimento grezzo'], MOVES_DB['Carica selvaggia']] },
+          { id: 'cuoredipietra', name: 'Cuore di Pietra', types: ['Roccia', 'Terra'], hp: 120, maxHp: 120, atk: 105, def: 130, spd: 30, img: 'https://i.pinimg.com/736x/3d/91/a9/3d91a9f4d2e605b15a70289b5e0045e7.jpg', passive: { name: 'Vigore', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Ruggito di Pietra'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Scaglie di Roccia'], MOVES_DB['Presa Schiacciante']] },
           { id: 'elsa', name: 'Elsa', types: ['Ghiaccio'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/4d/fa/e0/4dfae0259d23b33d9a4b90f7848f9ed8.jpg', moves: [MOVES_DB['Gelo Eterno'], MOVES_DB['Frammenti di Neve'], MOVES_DB['Canto dell Inverno'], MOVES_DB['Luce Cristallina']] },
           { id: 'reghiaccio', name: 'Re Ghiaccio', types: ['Ghiaccio', 'Magico'], hp: 95, maxHp: 95, atk: 90, def: 75, spd: 70, img: 'https://i.pinimg.com/736x/63/11/d2/6311d2bddf8b2672df70a957bea7a93d.jpg', moves: [MOVES_DB['Raggio Congelante'], MOVES_DB['Vai Gunter!'], MOVES_DB['Prigione di Ghiaccio'], MOVES_DB['Follia della Corona']] },
           { id: 'cyborg', name: 'Cyborg', types: ['Robot', 'Elettro'], hp: 110, maxHp: 110, atk: 100, def: 95, spd: 65, img: 'https://i.pinimg.com/736x/a7/45/42/a74542534570c959bced77c025e13427.jpg', passive: { name: 'Malfunzionamento', type: 'on_hp_threshold', threshold: 0.5, maxUses: 1, aoeDamagePercentMaxHp: 0.10, desc: 'Quando i PS scendono al 50% o meno, esplode infliggendo a tutti gli avversari il 10% dei loro PS massimi.' }, moves: [MOVES_DB['Cannone Sonico'], MOVES_DB['Booyah!'], MOVES_DB['Missile a Ricerca'], MOVES_DB['Riparazione Automatica']] },
@@ -853,7 +860,7 @@
           { id: 'kratos', name: 'Kratos', types: ['Lotta', 'Oscuro'], hp: 130, maxHp: 130, atk: 125, def: 90, spd: 60, img: 'https://i.pinimg.com/736x/a5/f2/fb/a5f2fb9f780595e3266b66c7d625a98a.jpg', passive: { name: 'Volontà Indomabile', type: 'aura', immuneToNegativeStatuses: true, desc: 'La sua determinazione lo rende completamente immune a tutte le alterazioni di stato negative.' }, moves: [MOVES_DB['Lame del Caos'], MOVES_DB['Rabbia di Sparta'], MOVES_DB['Ascia Leviatano'], MOVES_DB['Furia Cieca']] },
           { id: 'goku', name: 'Goku', types: ['Lotta', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/49/7f/b3/497fb342699f4ac700ea00c8bf5e0814.jpg', passive: { name: 'Super Saiyan', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 25%, si trasforma in Super Saiyan aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Kamehameha'], MOVES_DB['Trasmissione Istantanea'], MOVES_DB['Raffica Meteorica'], MOVES_DB['Sfera Genkidama']] },
           { id: 'natsu', name: 'Natsu', types: ['Fuoco', 'Drago'], hp: 100, maxHp: 100, atk: 115, def: 75, spd: 100, img: 'https://i.pinimg.com/736x/86/bc/e5/86bce50161217997ea61060ea41126eb.jpg', moves: [MOVES_DB['Pugno di Ferro del Drago'], MOVES_DB['Ruggito del Drago di Fuoco'], MOVES_DB['Mangiafuoco'], MOVES_DB['Loto Cremisi']] },
-          { id: 'groot', name: 'Groot', types: ['Erba', 'Roccia'], hp: 140, maxHp: 140, atk: 85, def: 110, spd: 40, img: 'https://i.pinimg.com/1200x/dc/c5/77/dcc5776f7fe4a04e467b743f64983568.jpg', moves: [MOVES_DB['Io sono Groot'], MOVES_DB['Scudo di Rami'], MOVES_DB['Liane Sferzanti'], MOVES_DB['Pugno di Tronco']] },
+          { id: 'groot', name: 'Groot', types: ['Erba', 'Terra'], hp: 140, maxHp: 140, atk: 85, def: 110, spd: 40, img: 'https://i.pinimg.com/1200x/dc/c5/77/dcc5776f7fe4a04e467b743f64983568.jpg', moves: [MOVES_DB['Io sono Groot'], MOVES_DB['Scudo di Rami'], MOVES_DB['Liane Sferzanti'], MOVES_DB['Colpo Radice']] },
           { id: 'nito', name: 'Gravelord Nito', types: ['Roccia', 'Oscuro'], hp: 150, maxHp: 150, atk: 120, def: 100, spd: 30, img: 'https://i.pinimg.com/736x/22/87/55/2287556595e62712232400e6929d9744.jpg', moves: [MOVES_DB['Miasma della Morte'], MOVES_DB['Spadone del Re Tombale'], MOVES_DB['Danza Macabra'], MOVES_DB['Risveglio dei Morti']] },
           { id: 'jackfrost', name: 'Jack Frost', types: ['Ghiaccio'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 130, img: 'https://i.pinimg.com/736x/77/2b/6c/772b6c839360cde6c8ff1bc29b919c70.jpg', moves: [MOVES_DB['Vento Invernale'], MOVES_DB['Scherzetto di Neve'], MOVES_DB['Bastone Magico'], MOVES_DB['Aura Glaciale']] },
           { id: 'yukionna', name: 'Yuki-Onna', types: ['Ghiaccio', 'Spettro'], hp: 90, maxHp: 90, atk: 115, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/b3/d9/97/b3d997af21d0480a83466cf4db87a973.jpg', moves: [MOVES_DB['Alito Congelante'], MOVES_DB['Sguardo Spirituale'], MOVES_DB['Tormenta Spettrale'], MOVES_DB['Fascino Glaciale']] },
@@ -917,6 +924,10 @@
           { id: 'miku', name: 'Hatsune Miku', types: ['Suono', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 115, img: 'https://i.pinimg.com/736x/51/cf/f4/51cff4f1b602b7220d4eaeccf558ffbf.jpg', moves: [MOVES_DB['Vocal Burst'], MOVES_DB['Melodia Curativa'], MOVES_DB['Risonanza Mentale'], MOVES_DB['Canto Armonico']] },
           { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soundwave&backgroundColor=1e293b', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
 
+          { id: 'alphonse', name: 'Alphonse Elric', types: ['Robot', 'Terra'], hp: 110, maxHp: 110, atk: 95, def: 125, spd: 70, img: 'https://i.pinimg.com/1200x/6b/02/53/6b0253e74a2738939cf60840ff6c73df.jpg', moves: [MOVES_DB['Alchimia Metallica'], MOVES_DB['Pugno d\'Acciaio'], MOVES_DB['Muro Terrestre'], MOVES_DB['Pilastro di Terra']] },
+          { id: 'sailormercury', name: 'Sailor Mercury', types: ['Acqua', 'Magico'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 100, img: 'https://api.dicebear.com/7.x/adventurer/svg?seed=SailorMercury', moves: [MOVES_DB['Bolle di Nebbia'], MOVES_DB['Shabon Spray'], MOVES_DB['Raggio di Mercurio']] },
+          { id: 'bort', name: 'Bort', types: ['Roccia'], hp: 95, maxHp: 95, atk: 125, def: 110, spd: 90, img: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Bort', moves: [MOVES_DB['Capelli di Diamante'], MOVES_DB['Durezza 10'], MOVES_DB['Istinto Combattivo']] },
+
           { id: 'summon_chatnoir', name: 'Chat Noir (Aiutante)', types: ['Buio', 'Lotta'], hp: 47, maxHp: 47, atk: 115, def: 37, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', moves: [MOVES_DB['Cataclisma']], isSummonOnly: true },
           { id: 'summon_renarouge', name: 'Rena Rouge (Aiutante)', types: ['Normale'], hp: 45, maxHp: 45, atk: 100, def: 40, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Volpe rabbiosa']], isSummonOnly: true },
           { id: 'viperion', name: 'Viperion', types: ['Suono', 'Magico'], hp: 50, maxHp: 50, atk: 90, def: 38, spd: 110, img: 'https://i.pinimg.com/736x/33/c9/ec/33c9ecacb70492bbff9645e25fc29eb4.jpg', moves: [MOVES_DB['Colpo di arpa'], MOVES_DB['Seconda occasione!']], isSummonOnly: true },
@@ -927,6 +938,8 @@
           // NUOVI BOSS ARCO DEL TORNEO
           { id: 'discord', name: 'Discord', types: ['Magico', 'Oscuro'], hp: 180, maxHp: 180, atk: 130, def: 100, spd: 120, img: 'https://i.pinimg.com/736x/08/39/1b/08391b40b095f508fabd15bcb2693195.jpg', moves: [MOVES_DB['Schiocco di Dita'], MOVES_DB['Pioggia di Cioccolato'], MOVES_DB['Caos Totale'], MOVES_DB['Trasformazione Bizzarra']], isSecretUnlock: true },
           { id: 'zeno', name: 'Zeno', types: ['Psico', 'Magico'], hp: 250, maxHp: 250, atk: 200, def: 150, spd: 150, img: 'https://i.pinimg.com/736x/aa/41/66/aa4166f77b5a871a426dece71c67d547.jpg', moves: [MOVES_DB['Cancellazione'], MOVES_DB['Giochiamo!'], MOVES_DB['Sguardo Onnipotente'], MOVES_DB['Stato Avatar']], isSecretUnlock: true },
+
+          { id: 'shrek', name: 'Shrek', types: ['Terra', 'Veleno'], hp: 135, maxHp: 135, atk: 110, def: 105, spd: 70, img: 'https://i.pinimg.com/736x/d4/0f/f2/d40ff2626e2e505a415ff68f1c841bb4.jpg', moves: [MOVES_DB['Fanghiglia paludosa'], MOVES_DB['Colpo di fango bollente'], MOVES_DB['ESCI DALLA MIA PALUDE!!'], MOVES_DB['Soffio pestilenziale']] },
 
           { id: 'scheletro', name: 'Scheletro', types: ['Oscuro'], hp: 60, maxHp: 60, atk: 45, def: 50, spd: 40, img: 'https://i.pinimg.com/736x/8a/bf/93/8abf937e5547b247f0ed9a75750e765d.jpg', passive: { name: 'Scudo d\'Ossa', type: 'bodyguard', protectAlly: 'Strega', desc: 'Finché è in campo, intercetta automaticamente tutti gli attacchi mirati alla Strega!' }, moves: [MOVES_DB['Proteggi la mamma!'], MOVES_DB['Colpo di spada']], isSummonOnly: true },
           { id: 'mostro_scheletrico', name: 'Mostro Scheletrico', types: ['Oscuro', 'Spettro'], hp: 80, maxHp: 80, atk: 70, def: 60, spd: 50, img: 'https://i1-e.pinimg.com/736x/48/be/8d/48be8d863481efebe551e64800f74baa.jpg', moves: [MOVES_DB['Sguardo demoniaco'], MOVES_DB['Aura spettrale']], isSummonOnly: true },
@@ -963,7 +976,7 @@
         const CHAR_PRICES = {
             'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
             'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
         };
         CHARACTERS.forEach(c => {
@@ -2161,29 +2174,31 @@
           'Spettro': 'bg-gradient-to-r from-violet-600 to-fuchsia-900 text-white shadow-[0_0_8px_rgba(139,92,246,0.6)] border border-violet-400',
           'Buio': 'bg-gradient-to-r from-slate-900 to-black text-cyan-200 border border-cyan-900/50 shadow-[0_0_8px_rgba(8,145,178,0.5)]',
           'Suono': 'bg-gradient-to-r from-pink-500 to-cyan-400 text-white shadow-[0_0_8px_rgba(236,72,153,0.5)]',
-          'Psico': 'bg-gradient-to-r from-fuchsia-400 to-pink-500 text-white shadow-[0_0_8px_rgba(217,70,239,0.5)]'
+          'Psico': 'bg-gradient-to-r from-fuchsia-400 to-pink-500 text-white shadow-[0_0_8px_rgba(217,70,239,0.5)]',
+          'Terra': 'bg-gradient-to-r from-yellow-700 to-yellow-900 text-white shadow-[0_0_8px_rgba(161,98,7,0.5)]'
         };
 
         const TYPE_CHART = {
           'Normale': { 'Roccia': 0.5, 'Robot': 0.5, 'Magico': 1, 'Spettro': 0 },
           'Fuoco': { 'Erba': 2, 'Insetto': 2, 'Ghiaccio': 2, 'Robot': 2, 'Fuoco': 0.5, 'Acqua': 0.5, 'Roccia': 0.5, 'Drago': 0.5 },
-          'Acqua': { 'Fuoco': 2, 'Roccia': 2, 'Acqua': 0.5, 'Erba': 0.5, 'Drago': 0.5 },
-          'Erba': { 'Acqua': 2, 'Roccia': 2, 'Fuoco': 0.5, 'Erba': 0.5, 'Veleno': 0.5, 'Aria': 0.5, 'Insetto': 0.5, 'Drago': 0.5, 'Robot': 0.5 },
+          'Acqua': { 'Fuoco': 2, 'Roccia': 2, 'Terra': 2, 'Acqua': 0.5, 'Erba': 0.5, 'Drago': 0.5 },
+          'Erba': { 'Acqua': 2, 'Roccia': 2, 'Terra': 2, 'Fuoco': 0.5, 'Erba': 0.5, 'Veleno': 0.5, 'Aria': 0.5, 'Insetto': 0.5, 'Drago': 0.5, 'Robot': 0.5 },
           'Lotta': { 'Normale': 2, 'Roccia': 2, 'Ghiaccio': 2, 'Robot': 2, 'Oscuro': 2, 'Buio': 2, 'Aria': 0.5, 'Veleno': 0.5, 'Magico': 0.5, 'Insetto': 0.5, 'Spettro': 0, 'Psico': 0.5 },
           'Aria': { 'Erba': 2, 'Lotta': 2, 'Insetto': 2, 'Elettro': 0.5, 'Roccia': 0.5, 'Robot': 0.5 },
-          'Roccia': { 'Fuoco': 2, 'Ghiaccio': 2, 'Aria': 2, 'Insetto': 2, 'Lotta': 0.5, 'Robot': 0.5, 'Suono': 2 },
-          'Ghiaccio': { 'Erba': 2, 'Aria': 2, 'Drago': 2, 'Fuoco': 0.5, 'Acqua': 0.5, 'Ghiaccio': 0.5, 'Robot': 0.5, 'Suono': 2 },
+          'Roccia': { 'Fuoco': 2, 'Ghiaccio': 2, 'Aria': 2, 'Insetto': 2, 'Lotta': 0.5, 'Robot': 0.5, 'Terra': 0.5, 'Suono': 2 },
+          'Ghiaccio': { 'Erba': 2, 'Aria': 2, 'Drago': 2, 'Terra': 2, 'Fuoco': 0.5, 'Acqua': 0.5, 'Ghiaccio': 0.5, 'Robot': 0.5, 'Suono': 2 },
           'Robot': { 'Roccia': 2, 'Ghiaccio': 2, 'Magico': 2, 'Robot': 0.5, 'Fuoco': 0.5, 'Acqua': 0.5, 'Elettro': 0.5 },
           'Drago': { 'Drago': 2, 'Robot': 0.5, 'Magico': 0 },
           'Magico': { 'Lotta': 2, 'Drago': 2, 'Buio': 2, 'Fuoco': 0.5, 'Veleno': 0.5, 'Robot': 0.5, 'Oscuro': 0.5, 'Spettro': 0.5 },
-          'Veleno': { 'Erba': 2, 'Magico': 2, 'Veleno': 0.5, 'Roccia': 0.5, 'Robot': 0, 'Spettro': 0.5 },
+          'Veleno': { 'Erba': 2, 'Magico': 2, 'Veleno': 0.5, 'Roccia': 0.5, 'Terra': 0.5, 'Robot': 0, 'Spettro': 0.5 },
           'Insetto': { 'Erba': 2, 'Magico': 0.5, 'Buio': 2, 'Lotta': 0.5, 'Aria': 0.5, 'Veleno': 0.5, 'Fuoco': 0.5, 'Robot': 0.5, 'Oscuro': 2, 'Spettro': 0.5, 'Psico': 2 },
-          'Elettro': { 'Acqua': 2, 'Aria': 2, 'Erba': 0.5, 'Elettro': 0.5, 'Drago': 0.5, 'Roccia': 1 },
+          'Elettro': { 'Acqua': 2, 'Aria': 2, 'Erba': 0.5, 'Elettro': 0.5, 'Drago': 0.5, 'Roccia': 1, 'Terra': 0 },
           'Oscuro': { 'Magico': 2, 'Lotta': 0.5, 'Oscuro': 0.5, 'Spettro': 2, 'Psico': 2 },
           'Spettro': { 'Spettro': 2, 'Magico': 2, 'Normale': 0, 'Oscuro': 0.5, 'Psico': 2 },
           'Buio': { 'Magico': 2, 'Spettro': 2, 'Lotta': 0.5, 'Oscuro': 0.5, 'Buio': 0.5, 'Psico': 2 },
           'Suono': { 'Elettro': 2, 'Robot': 2, 'Roccia': 0.5, 'Ghiaccio': 0.5, 'Spettro': 0 },
-          'Psico': { 'Lotta': 2, 'Veleno': 2, 'Psico': 0.5, 'Robot': 0.5, 'Oscuro': 0, 'Buio': 0 }
+          'Psico': { 'Lotta': 2, 'Veleno': 2, 'Psico': 0.5, 'Robot': 0.5, 'Oscuro': 0, 'Buio': 0 },
+          'Terra': { 'Fuoco': 2, 'Elettro': 2, 'Veleno': 2, 'Roccia': 2, 'Robot': 2, 'Erba': 0.5, 'Insetto': 0.5, 'Aria': 0 }
         };
 
         const PLAYER_THEMES = {
@@ -4200,6 +4215,7 @@
               char.atk = char.baseAtk;
               char.def = char.baseDef;
               char.spd = char.baseSpd;
+              char.acc = 1.0;
               char.consecutiveProtect = 0;
               char.statuses = [];
               
@@ -4535,6 +4551,7 @@
                       attacker.atk = attacker.baseAtk;
                       attacker.def = attacker.baseDef;
                       attacker.spd = attacker.baseSpd;
+                      attacker.acc = 1.0;
                       attacker.consecutiveProtect = 0;
 
                       workingField[player][fieldPos] = action.toIdx;
@@ -4723,342 +4740,8 @@
                     continue;
                 }
 
-                if (move.accuracy && Math.random() > move.accuracy) {
-                    events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma manca clamorosamente il bersaglio!` });
-                    continue;
-                }
-
-                if (move.target === 'self') {
-                    let text = `${attacker.name} usa ${move.name}!`;
-                    let didSomething = false;
-                    
-                    if (move.heal) {
-                        const healAmount = Math.floor(attacker.maxHp * move.heal);
-                        attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                        text += ` Recupera ${healAmount} HP!`;
-                        events.push({ type: 'damage', text, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
-                        didSomething = true;
-                    } 
-                    if (move.statBuff || move.targetStatBuff) {
-                        const buff = move.statBuff || move.targetStatBuff;
-                        let statTexts = [];
-                        let debuffTexts = [];
-                        if (buff.atk) { attacker.atk = Math.floor(attacker.atk * buff.atk); if(buff.atk > 1) statTexts.push("Attacco"); else debuffTexts.push("Attacco"); }
-                        if (buff.def) { attacker.def = Math.floor(attacker.def * buff.def); if(buff.def > 1) statTexts.push("Difesa"); else debuffTexts.push("Difesa"); }
-                        if (buff.spd) { attacker.spd = Math.floor(attacker.spd * buff.spd); if(buff.spd > 1) statTexts.push("Velocità"); else debuffTexts.push("Velocità"); }
-                        if (statTexts.length > 0) {
-                            text += ` Aumenta ${statTexts.join(" e ")}!`;
-                        }
-                        if (debuffTexts.length > 0) {
-                            text += ` Diminuisce ${debuffTexts.join(" e ")}!`;
-                        }
-                        if (statTexts.length > 0 || debuffTexts.length > 0) {
-                            events.push({ type: 'text', text });
-                            didSomething = true;
-                        }
-                    }
-                    if (move.statusEffect) {
-                        const isNegative = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'].includes(move.statusEffect.type);
-                        if (isNegative && attacker.passive && attacker.passive.immuneToNegativeStatuses) {
-                            events.push({ type: 'text', text: `🛡️ ${attacker.name} resiste a ${move.statusEffect.type} grazie a ${attacker.passive.name}!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
-                        } else {
-                            attacker.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
-                            updateStatusUI(player, charTeamIdx);
-                            events.push({ type: 'text', text: `${attacker.name} ottiene lo status ${move.statusEffect.type}!` });
-                            didSomething = true;
-                        }
-                    }
-                    if (!didSomething) events.push({ type: 'text', text });
-                    continue;
-                }
-
-                if (move.targetMode === 'team') {
-                    let myTeamPlayers = [player];
-                    if (gameState.gameMode === 'multipla') {
-                        myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
-                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                        if (player !== juggPlayer) {
-                            myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
-                        }
-                    }
-                    
-                    let aliveAllies = [];
-                    myTeamPlayers.forEach(pAlly => {
-                        if (workingField[pAlly]) {
-                            workingField[pAlly].forEach(idx => {
-                                if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
-                                    aliveAllies.push({ p: pAlly, idx: idx });
-                                }
-                            });
-                        }
-                    });
-
-                    events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su tutto il team!` });
-                    for (let aObj of aliveAllies) {
-                        let allyPlayer = aObj.p;
-                        let aIdx = aObj.idx;
-                        let ally = workingTeams[allyPlayer][aIdx];
-                        let didSomething = false;
-                        
-                        if (move.statusEffect) {
-                            const existingIdx = ally.statuses.findIndex(s => s.type === move.statusEffect.type);
-                            if(existingIdx === -1) {
-                                ally.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1 });
-                            } else {
-                                ally.statuses[existingIdx].turns = move.statusEffect.turns || 1;
-                            }
-                            updateStatusUI(allyPlayer, aIdx);
-                            events.push({ type: 'text', text: `${ally.name} ottiene lo status ${move.statusEffect.type}!` });
-                            didSomething = true;
-                        }
-                        if (move.removeNegativeStatuses) {
-                            const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
-                            const filtered = ally.statuses.filter(s => !negatives.includes(s.type));
-                            if (filtered.length < ally.statuses.length) {
-                                ally.statuses = filtered;
-                                updateStatusUI(allyPlayer, aIdx);
-                                events.push({ type: 'text', text: `Gli status negativi di ${ally.name} svaniscono!` });
-                                didSomething = true;
-                            }
-                        }
-                        if (move.targetStatBuff) {
-                            let statTexts = [];
-                            if (move.targetStatBuff.atk) { ally.atk = Math.floor(ally.atk * move.targetStatBuff.atk); statTexts.push("Attacco"); }
-                            if (move.targetStatBuff.def) { ally.def = Math.floor(ally.def * move.targetStatBuff.def); statTexts.push("Difesa"); }
-                            if (move.targetStatBuff.spd) { ally.spd = Math.floor(ally.spd * move.targetStatBuff.spd); statTexts.push("Velocità"); }
-                            if (statTexts.length > 0) {
-                                events.push({ type: 'text', text: `Aumenta ${statTexts.join(" e ")} di ${ally.name}!` });
-                                didSomething = true;
-                            }
-                        }
-                    }
-                    continue;
-                }
-
-                if (move.targetMode === 'team_smart_heal') {
-                    let myTeamPlayers = [player];
-                    if (gameState.gameMode === 'multipla') {
-                        myTeamPlayers = ['p1', 'p2'].includes(player) ? ['p1', 'p2'] : ['p3', 'p4'];
-                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
-                        const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
-                        if (player !== juggPlayer) {
-                            myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
-                        }
-                    }
-
-                    let aliveAllies = [];
-                    myTeamPlayers.forEach(pAlly => {
-                        if (workingField[pAlly]) {
-                            workingField[pAlly].forEach(idx => {
-                                if (workingTeams[pAlly][idx] && workingTeams[pAlly][idx].hp > 0) {
-                                    aliveAllies.push({ p: pAlly, idx: idx });
-                                }
-                            });
-                        }
-                    });
-
-                    if (aliveAllies.length > 1) {
-                        for (let aObj of aliveAllies) {
-                            let allyPlayer = aObj.p;
-                            let aIdx = aObj.idx;
-                            let ally = workingTeams[allyPlayer][aIdx];
-                            const healAmount = Math.floor(ally.maxHp * move.healTeam);
-                            ally.hp = Math.min(ally.maxHp, ally.hp + healAmount);
-                            events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e cura ${ally.name} di ${healAmount} HP!`, targetPlayer: allyPlayer, targetIdx: aIdx, newHp: ally.hp });
-                        }
-                    } else {
-                        const healAmount = Math.floor(attacker.maxHp * move.healAlone);
-                        attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                        events.push({ type: 'damage', text: `${attacker.name} usa ${move.name} e recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
-                    }
-                    continue;
-                }
-
-                if (move.targetMode === 'ally') {
-                    let targetPlayer = action.targetPlayer;
-                    let targetIdx = action.targetIdx;
-                    
-                    if (action.targetFieldIdx !== undefined) {
-                        const currentIdxAtPos = workingField[targetPlayer]?.[action.targetFieldIdx];
-                        if (currentIdxAtPos !== undefined && workingTeams[targetPlayer]?.[currentIdxAtPos]?.hp > 0) {
-                            targetIdx = currentIdxAtPos;
-                        }
-                    }
-
-                    let target = workingTeams[targetPlayer]?.[targetIdx];
-
-                    if (!target || target.hp <= 0 || !workingField[targetPlayer]?.includes(targetIdx)) {
-                       events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma il bersaglio non è più in campo!` });
-                       continue;
-                    }
-
-                    if (move.specificAlly && target.name !== move.specificAlly) {
-                        events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma non ha effetto su ${target.name}!` });
-                        continue;
-                    }
-
-                    let text = `${attacker.name} usa ${move.name} su ${target.name}!`;
-                    let didSomething = false;
-
-                    if (move.healFlat) {
-                        target.hp = Math.min(target.maxHp, target.hp + move.healFlat);
-                        events.push({ type: 'damage', text: `${text} Lo cura di ${move.healFlat} HP!`, targetPlayer, targetIdx, newHp: target.hp });
-                        didSomething = true;
-                    }
-                    if (move.heal) {
-                        const healAmount = Math.floor(target.maxHp * move.heal);
-                        target.hp = Math.min(target.maxHp, target.hp + healAmount);
-                        events.push({ type: 'damage', text: `${text} Lo cura di ${healAmount} HP!`, targetPlayer, targetIdx, newHp: target.hp });
-                        didSomething = true;
-                    }
-                    if (move.healLastTurnDamage) {
-                        const healAmount = target.damageTakenLastTurn || 0;
-                        if (healAmount > 0) {
-                            target.hp = Math.min(target.maxHp, target.hp + healAmount);
-                            events.push({ type: 'damage', text: `${text} Il tempo si riavvolge curandolo di ${healAmount} HP!`, targetPlayer, targetIdx, newHp: target.hp });
-                            didSomething = true;
-                        } else {
-                            events.push({ type: 'text', text: `${text} Ma il bersaglio non ha perso PS nel turno precedente!` });
-                            didSomething = true;
-                        }
-                    }
-                    if (move.targetStatBuff) {
-                        let statTexts = [];
-                        if (move.targetStatBuff.atk) { target.atk = Math.floor(target.atk * move.targetStatBuff.atk); statTexts.push("Attacco"); }
-                        if (move.targetStatBuff.def) { target.def = Math.floor(target.def * move.targetStatBuff.def); statTexts.push("Difesa"); }
-                        if (move.targetStatBuff.spd) { target.spd = Math.floor(target.spd * move.targetStatBuff.spd); statTexts.push("Velocità"); }
-                        events.push({ type: 'text', text: `${text} Aumenta ${statTexts.join(" e ")} di ${target.name}!` });
-                        didSomething = true;
-                    }
-                    if (move.removeNegativeStatuses) {
-                        const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
-                        const filtered = target.statuses.filter(s => !negatives.includes(s.type));
-                        if (filtered.length < target.statuses.length) {
-                            target.statuses = filtered;
-                            events.push({ type: 'text', text: `Gli status negativi di ${target.name} svaniscono!` });
-                            didSomething = true;
-                            updateStatusUI(targetPlayer, targetIdx);
-                        }
-                    }
-                    if (move.statusEffect) {
-                        const existingIdx = target.statuses.findIndex(s => s.type === move.statusEffect.type);
-                        if(existingIdx === -1) {
-                            target.statuses.push({ type: move.statusEffect.type, turns: move.statusEffect.turns || 1, protectorIdx: charTeamIdx });
-                        } else {
-                            target.statuses[existingIdx].turns = move.statusEffect.turns || 1;
-                            target.statuses[existingIdx].protectorIdx = charTeamIdx;
-                        }
-                        updateStatusUI(targetPlayer, targetIdx);
-                        events.push({ type: 'text', text: `${target.name} è in groppa a ${attacker.name}!` });
-                        didSomething = true;
-                    }
-                    
-                    if (!didSomething) {
-                        events.push({ type: 'text', text: text });
-                    }
-                    continue;
-                }
-
-                if (move.targetMode === 'revive') {
-                    let targetPlayer = action.targetPlayer;
-                    let targetIdx = action.targetIdx;
-                    let target = workingTeams[targetPlayer]?.[targetIdx];
-
-                    if (!target || target.hp > 0 || target.isSummonOnly) {
-                        events.push({ type: 'text', text: `${attacker.name} prova ad usare ${move.name}, ma il bersaglio non è valido!` });
-                        continue;
-                    }
-
-                    let text = `${attacker.name} usa ${move.name} su ${target.name}!`;
-                    const healAmount = Math.floor(target.maxHp * (move.heal || 0.5));
-                    target.hp = healAmount;
-                    target.statuses = [];
-                    
-                    events.push({ type: 'damage', text: `${text} ${target.name} è tornato in vita con ${healAmount} HP!`, targetPlayer, targetIdx, newHp: target.hp });
-                    continue;
-                }
-
-                if (move.isSummon || move.randomSummon) {
-                    let summonIds = [];
-                    if (move.randomSummon) {
-                        const randId = move.randomSummon[Math.floor(Math.random() * move.randomSummon.length)];
-                        summonIds.push(randId);
-                    } else {
-                        summonIds = Array.isArray(move.isSummon) ? move.isSummon : [move.isSummon];
-                    }
-                    
-                    let summonedNames = [];
-                    
-                    summonIds.forEach(summonId => {
-                        const baseChar = CHARACTERS.find(c => c.id === summonId);
-                        if (baseChar) {
-                            const newSummon = {
-                                ...JSON.parse(JSON.stringify(baseChar)), 
-                                statuses: [],
-                                consecutiveProtect: 0,
-                                baseAtk: baseChar.atk,
-                                baseDef: baseChar.def,
-                                baseSpd: baseChar.spd
-                            };
-                            newSummon.moves.forEach(m => {
-                                if (m.maxUses !== undefined) m.remainingUses = m.maxUses;
-                            });
-
-                            // --- POTENZIAMENTO EVOCAZIONI JUGGERNAUT / CAMPAGNA ---
-                            if (gameState.gameMode === 'juggernaut' && player === (gameState.settings.juggernautPlayer || 'p1')) {
-                                const numOpp = activeMatchPlayers.length - 1;
-                                if (numOpp > 0) {
-                                    newSummon.maxHp = Math.floor(newSummon.maxHp * (1 + numOpp * 0.8));
-                                    newSummon.hp = newSummon.maxHp;
-                                    newSummon.atk = Math.floor(newSummon.atk * (1 + numOpp * 0.3));
-                                    newSummon.def = Math.floor(newSummon.def * (1 + numOpp * 0.3));
-                                    newSummon.baseAtk = newSummon.atk;
-                                    newSummon.baseDef = newSummon.def;
-                                    newSummon.imageFilter = 'drop-shadow(0 0 15px rgba(220,38,38,0.8))';
-                                }
-                            } else if (gameState.isCampaignBattle && player === 'p2') {
-                                const summonerBase = CHARACTERS.find(c => c.id === attacker.id);
-                                if (summonerBase) {
-                                    const hpRatio = attacker.maxHp / summonerBase.maxHp;
-                                    const statRatio = attacker.baseAtk / summonerBase.atk;
-                                    newSummon.maxHp = Math.floor(newSummon.maxHp * hpRatio);
-                                    newSummon.hp = newSummon.maxHp;
-                                    newSummon.atk = Math.floor(newSummon.atk * statRatio);
-                                    newSummon.def = Math.floor(newSummon.def * statRatio);
-                                    newSummon.baseAtk = newSummon.atk;
-                                    newSummon.baseDef = newSummon.def;
-                                    if (attacker.imageFilter) newSummon.imageFilter = attacker.imageFilter;
-                                }
-                            }
-
-                            workingTeams[player].push(newSummon);
-                            const newCharTeamIdx = workingTeams[player].length - 1;
-                            workingField[player].push(newCharTeamIdx);
-                            
-                            summonedNames.push(newSummon.name);
-                            events.push({ type: 'summon', text: `${attacker.name} ha evocato ${newSummon.name}!`, player: player, newChar: JSON.parse(JSON.stringify(newSummon)), fieldIdx: newCharTeamIdx });
-                        }
-                    });
-                    
-                    if (summonedNames.length > 1) {
-                         // Modifica il testo se sono state fatte evocazioni multiple per renderlo più leggibile
-                         events[events.length - 1].text = `${attacker.name} ha evocato ${summonedNames.join(' e ')}!`;
-                    }
-                    
-                    if (move.selfStatBuff && attacker.hp > 0) {
-                        let statTexts = [];
-                        if (move.selfStatBuff.def) { attacker.def = Math.floor(attacker.def * move.selfStatBuff.def); statTexts.push("Difesa"); }
-                        if (move.selfStatBuff.spd) { attacker.spd = Math.floor(attacker.spd * move.selfStatBuff.spd); statTexts.push("Velocità"); }
-                        if (move.selfStatBuff.atk) { attacker.atk = Math.floor(attacker.atk * move.selfStatBuff.atk); statTexts.push("Attacco"); }
-                        if (statTexts.length > 0) {
-                            events.push({ type: 'text', text: `La ${statTexts.join(" e ")} di ${attacker.name} aumenta per via della mossa!` });
-                        }
-                    }
-                    continue;
-                }
-
-                if (move.accuracy && Math.random() > move.accuracy) {
+                let finalAccuracy = (move.accuracy !== undefined ? move.accuracy : 1.0) * (attacker.acc || 1.0);
+                if (finalAccuracy < 1.0 && Math.random() > finalAccuracy) {
                     events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma manca clamorosamente il bersaglio!` });
                     continue;
                 }
@@ -5386,10 +5069,12 @@
                             actualHits++;
                             
                             if (move.hitStatDebuff && Math.random() < move.hitStatDebuff.chance) {
-                                if (move.hitStatDebuff.def) t.char.def = Math.floor(t.char.def * move.hitStatDebuff.def);
-                                if (move.hitStatDebuff.atk) t.char.atk = Math.floor(t.char.atk * move.hitStatDebuff.atk);
-                                if (move.hitStatDebuff.spd) t.char.spd = Math.floor(t.char.spd * move.hitStatDebuff.spd);
-                                events.push({ type: 'text', text: `Il colpo riduce la Difesa di ${t.char.name}!` });
+                                let statTexts = [];
+                                if (move.hitStatDebuff.def) { t.char.def = Math.floor(t.char.def * move.hitStatDebuff.def); statTexts.push("la Difesa"); }
+                                if (move.hitStatDebuff.atk) { t.char.atk = Math.floor(t.char.atk * move.hitStatDebuff.atk); statTexts.push("l'Attacco"); }
+                                if (move.hitStatDebuff.spd) { t.char.spd = Math.floor(t.char.spd * move.hitStatDebuff.spd); statTexts.push("la Velocità"); }
+                                if (move.hitStatDebuff.acc) { t.char.acc = (t.char.acc || 1.0) * move.hitStatDebuff.acc; statTexts.push("la Precisione"); }
+                                events.push({ type: 'text', text: `Il colpo riduce ${statTexts.join(" e ")} di ${t.char.name}!` });
                             }
 
                             if (t.char.juggShieldHpThresholds && t.char.juggShieldHpThresholds.length > 0) {
@@ -5446,6 +5131,7 @@
                             if (move.targetStatDebuff.atk) { t.char.atk = Math.floor(t.char.atk * move.targetStatDebuff.atk); statTexts.push("Attacco"); }
                             if (move.targetStatDebuff.def) { t.char.def = Math.floor(t.char.def * move.targetStatDebuff.def); statTexts.push("Difesa"); }
                             if (move.targetStatDebuff.spd) { t.char.spd = Math.floor(t.char.spd * move.targetStatDebuff.spd); statTexts.push("Velocità"); }
+                            if (move.targetStatDebuff.acc) { t.char.acc = (t.char.acc || 1.0) * move.targetStatDebuff.acc; statTexts.push("Precisione"); }
                             if (statTexts.length > 0) {
                                 events.push({ type: 'text', text: `${statTexts.join(" e ")} di ${t.char.name} diminuisce!` });
                             }
@@ -5470,6 +5156,7 @@
                             if (move.targetStatDebuff.atk) { t.char.atk = Math.floor(t.char.atk * move.targetStatDebuff.atk); statTexts.push("Attacco"); }
                             if (move.targetStatDebuff.def) { t.char.def = Math.floor(t.char.def * move.targetStatDebuff.def); statTexts.push("Difesa"); }
                             if (move.targetStatDebuff.spd) { t.char.spd = Math.floor(t.char.spd * move.targetStatDebuff.spd); statTexts.push("Velocità"); }
+                            if (move.targetStatDebuff.acc) { t.char.acc = (t.char.acc || 1.0) * move.targetStatDebuff.acc; statTexts.push("Precisione"); }
                             if (statTexts.length > 0) {
                                 events.push({ type: 'text', text: `${statTexts.join(" e ")} di ${t.char.name} diminuisce!` });
                             }
@@ -6983,6 +6670,7 @@
                 'shifu': "La pace interiore guiderà i nostri colpi verso il trionfo.",
                 'gardevoir': "Proteggerò i miei alleati a costo della mia stessa vita.",
                 'jakedc': "Ho preso un lanciafiamme! Andiamo!",
+                'shrek': "Meglio fuori che dentro! La palude dominerà il ring!",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -7053,6 +6741,7 @@
                 'shifu': "Mediterò sul vostro futuro e forse sul vostro fallimento.",
                 'gardevoir': "*Fa un inchino profondamente rispettoso e svanisce nel nulla*",
                 'jakedc': "Vado a fare battute altrove, gente senza umorismo.",
+                'shrek': "Fate come volete. Io me ne torno nella mia palude!",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
