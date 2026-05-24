@@ -3900,6 +3900,9 @@
                     }
                 });
 
+                // --- FIX: MESCOLIAMO I NEMICI PER EVITARE IL BIAS POSIZIONALE (ATTACCO SEMPRE A SINISTRA) ---
+                possibleEnemies.sort(() => 0.5 - Math.random());
+
                 gameState.field[cpuPlayer].forEach((charTeamIdx, fieldIdx) => {
                     if (cpuActions[charTeamIdx]) return; // FIX: Se ha già un'azione (es. combo_assist del compagno), salta la valutazione
                     
@@ -4037,7 +4040,8 @@
                                     if (move.statusEffect) score += 60; 
                                     if (move.drain && cpuChar.hp < cpuChar.maxHp) score += 80;
 
-                                    score += Math.random() * 15; 
+                                    // Aumentato il fattore random per rendere le scelte della CPU meno robotiche a parità di efficacia
+                                    score += Math.random() * 40; 
 
                                     if (score > bestScore) {
                                         bestScore = score;
@@ -4924,22 +4928,28 @@
                             finalTargetIdx = currentIdxAtPos;
                         } else {
                             // Se lo slot è vuoto o chi c'è è morto, cerca il primo vivo disponibile
-                            const anyAlive = (workingField[action.targetPlayer] || []).filter(i => workingTeams[action.targetPlayer]?.[i]?.hp > 0);
-                            if (anyAlive.length > 0) {
-                                finalTargetIdx = anyAlive[0];
-                            } else {
-                                finalTargetIdx = null; // Nessuno in campo!
+                            if (move.targetMode !== 'revive') {
+                                const anyAlive = (workingField[action.targetPlayer] || []).filter(i => workingTeams[action.targetPlayer]?.[i]?.hp > 0);
+                                if (anyAlive.length > 0) {
+                                    finalTargetIdx = anyAlive[0];
+                                } else {
+                                    finalTargetIdx = null; // Nessuno in campo!
+                                }
                             }
                         }
                     } else {
                         // Fallback se targetFieldIdx non è presente (vecchie azioni o IA)
                         const originalTarget = workingTeams[action.targetPlayer]?.[action.targetIdx];
                         if (originalTarget && (originalTarget.hp <= 0 || !workingField[action.targetPlayer]?.includes(action.targetIdx))) {
-                            const anyAlive = (workingField[action.targetPlayer] || []).filter(i => workingTeams[action.targetPlayer]?.[i]?.hp > 0);
-                            if (anyAlive.length > 0) {
-                                finalTargetIdx = anyAlive[0];
+                            if (move.targetMode !== 'revive') {
+                                const anyAlive = (workingField[action.targetPlayer] || []).filter(i => workingTeams[action.targetPlayer]?.[i]?.hp > 0);
+                                if (anyAlive.length > 0) {
+                                    finalTargetIdx = anyAlive[0];
+                                } else {
+                                    finalTargetIdx = null;
+                                }
                             } else {
-                                finalTargetIdx = null;
+                                finalTargetIdx = action.targetIdx;
                             }
                         }
                     }
@@ -4960,7 +4970,12 @@
                 let attackSucceeded = false;
 
                 for (let t of resolvedTargets) {
-                    if (t.char.hp <= 0) continue;
+                    if (t.char.hp <= 0 && move.targetMode !== 'revive') continue;
+                    
+                    if (move.targetMode === 'revive' && t.char.hp > 0) {
+                         events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma ${t.char.name} è già in vita!` });
+                         continue;
+                    }
 
                     // --- REDIRECT LOGIC (SALI SULLA MIA SCHIENA) ---
                     let isRedirectedDmgReduced = false;
@@ -5268,7 +5283,9 @@
                         }
                     } else {
                         attackSucceeded = true;
-                        events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}!` });
+                        if (move.targetMode !== 'revive') {
+                            events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}!` });
+                        }
                         
                         if (move.targetStatDebuff && t.char.hp > 0) {
                             let statTexts = [];
@@ -5282,26 +5299,15 @@
                         }
                     }
 
-                    // --- NUOVA LOGICA: PASSIVE ON_KO ---
-                    if (wasAlive && t.char.hp <= 0 && attacker.passive && attacker.passive.type === 'on_ko' && attackSucceeded) {
-                        if (attacker.passive.statBuff) {
-                            let statTexts = [];
-                            if (attacker.passive.statBuff.atk) { attacker.atk = Math.floor(attacker.atk * attacker.passive.statBuff.atk); statTexts.push("Attacco"); }
-                            if (attacker.passive.statBuff.def) { attacker.def = Math.floor(attacker.def * attacker.passive.statBuff.def); statTexts.push("Difesa"); }
-                            if (attacker.passive.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * attacker.passive.statBuff.spd); statTexts.push("Velocità"); }
-                            events.push({ type: 'text', text: `👑 ${attacker.name} ha mandato K.O. un nemico! Attiva la passiva "${attacker.passive.name}": ${statTexts.join(" e ")} aumenta!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
-                        }
-                        if (attacker.passive.healPercent) {
-                            const healAmount = Math.max(1, Math.floor(attacker.maxHp * attacker.passive.healPercent));
-                            attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                            events.push({ type: 'damage', text: `🩸 ${attacker.name} ha mandato K.O. un nemico! Attiva "${attacker.passive.name}" e recupera ${healAmount} PS!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
-                        }
-                    }
-
-                    if (t.char.hp > 0) {
+                    if (t.char.hp > 0 || move.targetMode === 'revive') {
                         
                         // --- FIX: APPLICAZIONE CURE, PURIFICAZIONI E POTENZIAMENTI BERSAGLIO ---
-                        if (move.heal) {
+                        if (move.targetMode === 'revive') {
+                            const healAmount = Math.floor(t.char.maxHp * move.heal);
+                            t.char.hp = healAmount;
+                            t.char.statuses = [];
+                            events.push({ type: 'damage', text: `✨ ${attacker.name} usa ${move.name}! ${t.char.name} è tornato in vita con ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                        } else if (move.heal) {
                             const healAmount = Math.floor(t.char.maxHp * move.heal);
                             t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
                             events.push({ type: 'damage', text: `✨ ${attacker.name} cura ${t.char.name} di ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
