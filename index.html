@@ -2245,6 +2245,8 @@
           pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
           switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           tournamentMatch: null, 
+          tournamentPhase: 'semis', // <--- AGGIUNTO PER LE LOTTE SIMULTANEE
+          tournamentMatchStatus: { semi1: 'battling', semi2: 'battling', final: 'battling', bronze: 'battling' }, // <--- AGGIUNTO
           tournamentBracket: ['p1', 'p2', 'p3', 'p4'],
           tournamentResults: { semi1: null, semi2: null, bronze: null, final: null },
           roundRobinMatches: [],
@@ -3286,14 +3288,24 @@
                   return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
               }
               if (gameState.gameMode === 'torneo') {
-                  const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
-                  if (gameState.tournamentMatch === 'semi1') return [bracket[0], bracket[1]];
-                  if (gameState.tournamentMatch === 'semi2') return [bracket[2], bracket[3]];
-                  if (gameState.tournamentMatch === 'bronze' && gameState.tournamentResults.semi1 && gameState.tournamentResults.semi2) 
-                      return [gameState.tournamentResults.semi1.loser, gameState.tournamentResults.semi2.loser];
-                  if (gameState.tournamentMatch === 'final' && gameState.tournamentResults.semi1 && gameState.tournamentResults.semi2) 
-                      return [gameState.tournamentResults.semi1.winner, gameState.tournamentResults.semi2.winner];
-                  return [bracket[0], bracket[1]]; 
+                  let active = [];
+                  const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+                  const phase = gameState.tournamentPhase || 'semis';
+                  const tStatus = gameState.tournamentMatchStatus || {};
+                  
+                  if (phase === 'semis') {
+                      if (tStatus.semi1 !== 'finished') active.push(b[0], b[1]);
+                      if (tStatus.semi2 !== 'finished') active.push(b[2], b[3]);
+                  } else if (phase === 'finals') {
+                      const res = gameState.tournamentResults || {};
+                      if (tStatus.final !== 'finished' && res.semi1 && res.semi2) {
+                          active.push(res.semi1.winner, res.semi2.winner);
+                      }
+                      if (tStatus.bronze !== 'finished' && res.semi1 && res.semi2) {
+                          active.push(res.semi1.loser, res.semi2.loser);
+                      }
+                  }
+                  return active;
               }
               if (gameState.gameMode === 'torneo_punti') {
                   if (gameState.roundRobinMatches && gameState.roundRobinMatches.length > 0) {
@@ -3767,6 +3779,8 @@
               pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
               switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
               tournamentMatch: gameState.gameMode === 'torneo' ? 'semi1' : null,
+              tournamentPhase: gameState.gameMode === 'torneo' ? 'semis' : 'semis',
+              tournamentMatchStatus: { semi1: 'battling', semi2: 'battling', final: 'battling', bronze: 'battling' },
               tournamentBracket: bracket,
               roundRobinMatches: rrMatches,
               currentMatchIdx: 0,
@@ -3790,7 +3804,7 @@
 
             if (appMode === 'local_room' || appMode === 'vs_cpu') {
                 let active = [];
-                if (gameState.gameMode === 'torneo') active = [bracket[0], bracket[1]];
+                if (gameState.gameMode === 'torneo') active = [bracket[0], bracket[1], bracket[2], bracket[3]]; // In torneo sono attivi tutti e 4 all'inizio!
                 else if (gameState.gameMode === 'torneo_punti') active = [rrMatches[0].pA, rrMatches[0].pB];
                 else active = ['p1', 'p2', 'p3', 'p4'].slice(0, getRequiredPlayers(gameState.gameMode, gameState.settings));
                 
@@ -3804,6 +3818,24 @@
             }
           };
 
+          // --- HELPER PER OPPONENTI NEL TORNEO SIMULTANEO ---
+          const getTournamentMatchOpponents = (p) => {
+              const phase = gameState.tournamentPhase || 'semis';
+              const res = gameState.tournamentResults || {};
+              const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+              
+              if (phase === 'semis') {
+                  if (['p1', 'p2'].includes(p)) return ['p1', 'p2'].filter(x => x !== p);
+                  if (['p3', 'p4'].includes(p)) return ['p3', 'p4'].filter(x => x !== p);
+              } else if (phase === 'finals') {
+                  const finalP = [res.semi1?.winner, res.semi2?.winner].filter(Boolean);
+                  const bronzeP = [res.semi1?.loser, res.semi2?.loser].filter(Boolean);
+                  if (finalP.includes(p)) return finalP.filter(x => x !== p);
+                  if (bronzeP.includes(p)) return bronzeP.filter(x => x !== p);
+              }
+              return [];
+          };
+
           // --- INTELLIGENZA ARTIFICIALE CPU (Migliorata per Tutti i Bot) ---
           const generateCPUActionsForPlayer = (cpuPlayer, currentActions) => {
                 let cpuActions = {};
@@ -3815,7 +3847,9 @@
                 } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                     const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                     enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                } else if (gameState.gameMode === 'torneo') {
+                    enemyTeams = getTournamentMatchOpponents(cpuPlayer);
+                } else if (gameState.gameMode === 'torneo_punti') {
                     enemyTeams = [activeMatchPlayers.find(p => p !== cpuPlayer)];
                 } else if (gameState.gameMode === 'battleroyale') {
                     enemyTeams = activeMatchPlayers.filter(p => p !== cpuPlayer);
@@ -3899,7 +3933,8 @@
                                         myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                     }
                                 }
-
+                                // Le mosse revive nel Torneo agiscono solo su se stessi (il proprio alleato)
+                                
                                 let bestDeadAlly = null;
                                 myTeamPlayers.forEach(p => {
                                     gameState.teams[p]?.forEach((c, idx) => {
@@ -4118,7 +4153,9 @@
             } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-            } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+            } else if (gameState.gameMode === 'torneo') {
+                enemyTeams = getTournamentMatchOpponents(playerRole);
+            } else if (gameState.gameMode === 'torneo_punti') {
                 enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
             } else if (gameState.gameMode === 'battleroyale') {
                 enemyTeams = activeMatchPlayers.filter(p => p !== playerRole);
@@ -4705,8 +4742,16 @@
                     attacker.consecutiveProtect = 0; 
                 }
 
-                if (move.isSummon) {
-                    const summonIds = Array.isArray(move.isSummon) ? move.isSummon : [move.isSummon];
+                if (move.isSummon || move.randomSummon) {
+                    let summonIds = [];
+                    if (move.isSummon) {
+                        summonIds = Array.isArray(move.isSummon) ? move.isSummon : [move.isSummon];
+                    } else if (move.randomSummon) {
+                        // Sceglie un aiutante a caso dalla lista
+                        const randomId = move.randomSummon[Math.floor(Math.random() * move.randomSummon.length)];
+                        summonIds = [randomId];
+                    }
+
                     let summonedNames = [];
                     
                     summonIds.forEach(summonId => {
@@ -4757,7 +4802,9 @@
                     } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                         const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                         enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                    } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                    } else if (gameState.gameMode === 'torneo') {
+                        enemyTeams = getTournamentMatchOpponents(player);
+                    } else if (gameState.gameMode === 'torneo_punti') {
                         enemyTeams = [activeMatchPlayers.find(p => p !== player)];
                     } else if (gameState.gameMode === 'battleroyale') {
                         enemyTeams = activeMatchPlayers.filter(p => p !== player);
@@ -4950,6 +4997,8 @@
                     } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                          const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                          isEnemyTarget = (player === juggPlayer) !== (t.player === juggPlayer);
+                    } else if (gameState.gameMode === 'torneo') {
+                         isEnemyTarget = getTournamentMatchOpponents(player).includes(t.player);
                     }
 
                     let isProtectedFromEnemy = isEnemyTarget && t.char.statuses.some(s => s.type === 'Protetto' || s.type === 'Rashield');
@@ -5694,24 +5743,64 @@
             else if (!opponentsAlive) { nextStatus = 'gameover'; winner = gameState.players[juggPlayer]; }
         }
         else if (gameState.gameMode === 'torneo') {
-            const pA = activeMatchPlayers[0];
-            const pB = activeMatchPlayers[1];
-            const pA_Alive = workingTeams[pA].some(c=>c.hp>0);
-            const pB_Alive = workingTeams[pB].some(c=>c.hp>0);
+            let tStatus = { ...gameState.tournamentMatchStatus };
+            let tResults = { ...gameState.tournamentResults };
+            const phase = gameState.tournamentPhase || 'semis';
+            const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
             
-            if (!pA_Alive || !pB_Alive) {
-                const mWinner = pA_Alive ? pA : (pB_Alive ? pB : 'Draw(P1_default)');
-                const mLoser = pA_Alive ? pB : (pB_Alive ? pA : 'Draw(P2_default)');
+            if (phase === 'semis') {
+                const p1 = b[0], p2 = b[1], p3 = b[2], p4 = b[3];
                 
-                tResults[gameState.tournamentMatch] = { winner: mWinner, loser: mLoser };
+                if (tStatus.semi1 !== 'finished') {
+                    const p1Alive = workingTeams[p1]?.some(c=>c.hp>0);
+                    const p2Alive = workingTeams[p2]?.some(c=>c.hp>0);
+                    if (!p1Alive || !p2Alive) {
+                        tStatus.semi1 = 'finished';
+                        tResults.semi1 = { winner: p1Alive ? p1 : (p2Alive ? p2 : 'p1'), loser: p1Alive ? p2 : (p2Alive ? p1 : 'p2') };
+                    }
+                }
                 
-                if (gameState.tournamentMatch === 'final') {
-                    nextStatus = 'gameover';
-                    winner = gameState.players[mWinner];
-                } else {
+                if (tStatus.semi2 !== 'finished') {
+                    const p3Alive = workingTeams[p3]?.some(c=>c.hp>0);
+                    const p4Alive = workingTeams[p4]?.some(c=>c.hp>0);
+                    if (!p3Alive || !p4Alive) {
+                        tStatus.semi2 = 'finished';
+                        tResults.semi2 = { winner: p3Alive ? p3 : (p4Alive ? p4 : 'p3'), loser: p3Alive ? p4 : (p4Alive ? p3 : 'p4') };
+                    }
+                }
+                
+                if (tStatus.semi1 === 'finished' && tStatus.semi2 === 'finished') {
                     nextStatus = 'intermission';
                 }
+            } else if (phase === 'finals') {
+                const fw1 = tResults.semi1?.winner, fw2 = tResults.semi2?.winner;
+                const bw1 = tResults.semi1?.loser, bw2 = tResults.semi2?.loser;
+                
+                if (tStatus.final !== 'finished' && fw1 && fw2) {
+                    const fw1Alive = workingTeams[fw1]?.some(c=>c.hp>0);
+                    const fw2Alive = workingTeams[fw2]?.some(c=>c.hp>0);
+                    if (!fw1Alive || !fw2Alive) {
+                        tStatus.final = 'finished';
+                        tResults.final = { winner: fw1Alive ? fw1 : (fw2Alive ? fw2 : fw1), loser: fw1Alive ? fw2 : (fw2Alive ? fw1 : fw2) };
+                    }
+                }
+                
+                if (tStatus.bronze !== 'finished' && bw1 && bw2) {
+                    const bw1Alive = workingTeams[bw1]?.some(c=>c.hp>0);
+                    const bw2Alive = workingTeams[bw2]?.some(c=>c.hp>0);
+                    if (!bw1Alive || !bw2Alive) {
+                        tStatus.bronze = 'finished';
+                        tResults.bronze = { winner: bw1Alive ? bw1 : (bw2Alive ? bw2 : bw1), loser: bw1Alive ? bw2 : (bw2Alive ? bw1 : bw2) };
+                    }
+                }
+                
+                if (tStatus.final === 'finished' && tStatus.bronze === 'finished') {
+                    nextStatus = 'gameover';
+                    winner = gameState.players[tResults.final?.winner];
+                }
             }
+            
+            updateState({ tournamentMatchStatus: tStatus, tournamentResults: tResults });
         }
         else if (gameState.gameMode === 'torneo_punti') {
             const pA = activeMatchPlayers[0];
@@ -5842,47 +5931,42 @@
             return;
         }
 
-        let nextMatch = null;
-        if (gameState.tournamentMatch === 'semi1') nextMatch = 'semi2';
-        else if (gameState.tournamentMatch === 'semi2') nextMatch = 'bronze';
-        else if (gameState.tournamentMatch === 'bronze') nextMatch = 'final';
+        if (gameState.gameMode === 'torneo') {
+            setCombatLog([]);
+            setIsLogOpen(false);
 
-        setCombatLog([]);
-        setIsLogOpen(false);
-
-        let newField = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
-        let activeNext = [];
-        const bracket = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
-        
-        if (nextMatch === 'semi2') activeNext = [bracket[2], bracket[3]];
-        if (nextMatch === 'bronze') activeNext = [gameState.tournamentResults.semi1.loser, gameState.tournamentResults.semi2.loser];
-        if (nextMatch === 'final') activeNext = [gameState.tournamentResults.semi1.winner, gameState.tournamentResults.semi2.winner];
-        
-        activeNext.forEach(p => {
-            newField[p] = healedTeams[p].slice(0, gameState.settings.fieldSize).map((_, i) => i);
-            newField[p].forEach(idx => {
-                if(healedTeams[p][idx]) healedTeams[p][idx].revealed = true;
+            let newField = { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] };
+            const res = gameState.tournamentResults;
+            const activeNext = [res.semi1?.winner, res.semi2?.winner, res.semi1?.loser, res.semi2?.loser].filter(Boolean);
+            
+            activeNext.forEach(p => {
+                newField[p] = healedTeams[p].slice(0, gameState.settings.fieldSize).map((_, i) => i);
+                newField[p].forEach(idx => {
+                    if(healedTeams[p][idx]) healedTeams[p][idx].revealed = true;
+                });
             });
-        });
 
-        updateState({
-            status: 'pre_battle', 
-            tournamentMatch: nextMatch,
-            teams: healedTeams,
-            field: newField,
-            actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
-            switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
-            pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
-        });
+            updateState({
+                status: 'pre_battle', 
+                tournamentPhase: 'finals',
+                tournamentMatchStatus: { semi1: 'finished', semi2: 'finished', final: 'battling', bronze: 'battling' },
+                teams: healedTeams,
+                field: newField,
+                actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+                switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+                pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
+            });
 
-        if (appMode === 'local_room') {
-            const humans = activeNext.filter(p => !gameState.isBot[p]);
-            if (humans.length > 0) {
-                setPlayerRole(humans[0]);
-            } else {
-                setPlayerRole(activeNext[0]);
+            if (appMode === 'local_room') {
+                const humans = activeNext.filter(p => !gameState.isBot[p]);
+                if (humans.length > 0) {
+                    setPlayerRole(humans[0]);
+                } else {
+                    setPlayerRole(activeNext[0]);
+                }
+                setCommandingIdx(0);
             }
-            setCommandingIdx(0);
+            return;
         }
     };
 
@@ -8209,7 +8293,9 @@
         let enemyPlayers = [];
         if (gameState.gameMode === 'multipla') {
             enemyPlayers = ['p1', 'p2'].includes(playerRole) ? ['p3', 'p4'] : ['p1', 'p2'];
-        } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+        } else if (gameState.gameMode === 'torneo') {
+            enemyPlayers = getTournamentMatchOpponents(playerRole);
+        } else if (gameState.gameMode === 'torneo_punti') {
             enemyPlayers = [activeMatchPlayers.find(p => p !== playerRole)];
         } else if (gameState.gameMode === 'battleroyale') {
             enemyPlayers = activeMatchPlayers.filter(p => p !== playerRole);
@@ -8313,7 +8399,7 @@
                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 topPlayers = [juggPlayer]; 
                 bottomPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
-        } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+        } else if (gameState.gameMode === 'torneo_punti') {
                 if (isSpectatorState) {
                         bottomPlayers = [activeMatchPlayers[0]];
                         topPlayers = [activeMatchPlayers[1]];
@@ -8332,7 +8418,7 @@
                         bottomPlayers = [playerRole];
                         topPlayers = activeMatchPlayers.filter(p => p !== playerRole);
                 }
-        } else {
+        } else if (gameState.gameMode !== 'torneo') {
                 if (isSpectatorState) {
                         bottomPlayers = ['p1'];
                         topPlayers = ['p2'];
@@ -8342,8 +8428,8 @@
                 }
         }
 
-        const isSpectator = isSpectatorState || (!bottomPlayers.includes(playerRole) && !topPlayers.includes(playerRole) && gameState.gameMode !== 'battleroyale');
-        const isMyTurn = gameState.status === 'battling' && !isSpectator && !gameState.isBot[playerRole] && commandingIdx >= 0 && commandingIdx < gameState.field[playerRole].length;
+        const isSpectator = isSpectatorState || (gameState.gameMode !== 'torneo' && !bottomPlayers.includes(playerRole) && !topPlayers.includes(playerRole) && gameState.gameMode !== 'battleroyale');
+        const isMyTurn = gameState.status === 'battling' && !isSpectatorState && !gameState.isBot[playerRole] && commandingIdx >= 0 && commandingIdx < gameState.field[playerRole].length;
         const activeCommandCharIdx = isMyTurn ? gameState.field[playerRole][commandingIdx] : null;
         const activeCommandChar = activeCommandCharIdx !== null ? gameState.teams[playerRole][activeCommandCharIdx] : null;
 
@@ -8409,6 +8495,8 @@
                             const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                             const myTeam = playerRole === juggPlayer ? [juggPlayer] : activeMatchPlayers.filter(p => p !== juggPlayer);
                             isTargetable = !myTeam.includes(teamPlayer);
+                    } else if (gameState.gameMode === 'torneo') {
+                            isTargetable = getTournamentMatchOpponents(playerRole).includes(teamPlayer);
                     } else {
                             const myTeam = gameState.gameMode === 'multipla' 
                                      ? (['p1', 'p2'].includes(playerRole) ? ['p1', 'p2'] : ['p3', 'p4']) 
@@ -8613,7 +8701,7 @@
                     {/* Top Info Bar per Torneo */}
                     {gameState.gameMode === 'torneo' && (
                          <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full border border-yellow-500/50 shadow-lg text-yellow-400 font-black tracking-widest uppercase">
-                                {gameState.tournamentMatch === 'semi1' ? 'Semifinale 1' : gameState.tournamentMatch === 'semi2' ? 'Semifinale 2' : gameState.tournamentMatch === 'bronze' ? 'Finale 3° Posto' : 'Finalissima'}
+                                {gameState.tournamentPhase === 'semis' ? 'Semifinali' : 'Finali'}
                          </div>
                     )}
                     
@@ -8649,9 +8737,55 @@
                         ))}
                     </div>
 
-                    {gameState.gameMode === 'battleroyale' ? (
+                    {gameState.gameMode === 'torneo' ? (() => {
+                        // --- RENDERER ARENE MULTIPLE (TORNEO) ---
+                        const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+                        const phase = gameState.tournamentPhase || 'semis';
+                        const res = gameState.tournamentResults || {};
+                        const tStatus = gameState.tournamentMatchStatus || {};
+                        
+                        let m1 = phase === 'semis' ? [b[0], b[1]] : [res.semi1?.winner, res.semi2?.winner].filter(Boolean);
+                        let m2 = phase === 'semis' ? [b[2], b[3]] : [res.semi1?.loser, res.semi2?.loser].filter(Boolean);
+                        
+                        const renderArena = (players, key, title) => {
+                            if (players.length !== 2) return null;
+                            const isDone = tStatus[key] === 'finished';
+                            let topP = players[1];
+                            let botP = players[0];
+                            if (playerRole === players[1]) { topP = players[0]; botP = players[1]; }
+                            
+                            return (
+                                <div className={`relative flex-1 min-w-[300px] flex flex-col rounded-3xl border border-slate-700/80 overflow-hidden bg-slate-900/50 ${isDone ? 'opacity-40 grayscale' : ''}`}>
+                                    <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-black/80 px-4 py-1 rounded-full border border-yellow-500/50 text-yellow-400 font-black text-[10px] uppercase shadow-lg whitespace-nowrap">{title} {isDone && '- CONCLUSA'}</div>
+                                    {/* Top Side */}
+                                    <div className="h-1/2 flex flex-col items-center justify-start pt-8 relative bg-gradient-to-b from-rose-900/30 to-transparent pb-2">
+                                        {renderPlayerBanners([topP], true)}
+                                        <div className="flex justify-center gap-2 flex-wrap relative w-full mt-2">
+                                            {currentField[topP]?.map((charIdx, fIdx) => renderFieldCharacter(topP, fIdx, charIdx, topP !== playerRole))}
+                                        </div>
+                                    </div>
+                                    {/* Mid Divider */}
+                                    <div className="absolute inset-x-0 top-1/2 h-px bg-white/10 z-10"></div>
+                                    {/* Bot Side */}
+                                    <div className="h-1/2 flex flex-col items-center justify-end pb-8 relative bg-gradient-to-t from-blue-900/30 to-transparent pt-2">
+                                        <div className="flex justify-center gap-2 flex-wrap relative w-full mb-2 items-end">
+                                            {currentField[botP]?.map((charIdx, fIdx) => renderFieldCharacter(botP, fIdx, charIdx, botP !== playerRole))}
+                                        </div>
+                                        {renderPlayerBanners([botP], false)}
+                                    </div>
+                                </div>
+                            );
+                        };
+
+                        return (
+                            <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 pb-32 h-full overflow-y-auto overflow-x-hidden w-full custom-scrollbar">
+                                {renderArena(m1, phase === 'semis' ? 'semi1' : 'final', phase === 'semis' ? 'Semifinale 1' : 'Finalissima')}
+                                {renderArena(m2, phase === 'semis' ? 'semi2' : 'bronze', phase === 'semis' ? 'Semifinale 2' : 'Finale 3° Posto')}
+                            </div>
+                        );
+                    })() : gameState.gameMode === 'battleroyale' ? (
                         /* BATTLE ROYALE LAYOUT: Grid or Flex around center */
-                        <div className="flex-1 flex flex-wrap justify-center items-center gap-6 p-4 pt-12 overflow-y-auto custom-scrollbar">
+                        <div className="flex-1 flex flex-wrap justify-center items-center gap-6 p-4 pt-12 overflow-y-auto custom-scrollbar pb-32">
                             {activeMatchPlayers.map(p => {
                                 const currentFieldForPlayer = isPlayingEvents ? (displayField[p] || []) : (gameState.field[p] || []);
                                 const isEliminated = gameState.teams[p].every(c => c.hp <= 0);
@@ -8683,7 +8817,7 @@
                             <div className="absolute inset-x-0 top-1/2 h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent z-10"></div>
 
                             {/* Player Side (BOTTOM) */}
-                            <div className="h-1/2 flex flex-col items-center justify-end pb-6 relative bg-gradient-to-t from-blue-900/60 via-cyan-900/20 to-transparent rounded-t-3xl">
+                            <div className="h-1/2 flex flex-col items-center justify-end pb-24 relative bg-gradient-to-t from-blue-900/60 via-cyan-900/20 to-transparent rounded-t-3xl">
                                 <div className="flex justify-center gap-6 flex-wrap relative w-full h-full items-end mb-2">
                                         {bottomPlayers.map(p => currentField[p]?.map((charIdx, fIdx) => renderFieldCharacter(p, fIdx, charIdx, false)))}
                                 </div>
@@ -8692,7 +8826,8 @@
                         </>
                     )}
 
-                    <div className="mb-2 w-full flex flex-col items-center justify-center max-w-2xl mx-auto relative min-h-[80px] z-20">
+                    {/* MODIFICATO: Action Menu ora fisso a fondo schermo per supportare layout multipli come il Torneo */}
+                    <div className="fixed bottom-4 inset-x-0 w-[95%] md:w-full flex flex-col items-center justify-center max-w-2xl mx-auto relative min-h-[80px] z-50 bg-slate-950/80 backdrop-blur-md rounded-2xl py-3 px-4 shadow-[0_0_30px_black] border border-slate-700/50">
                          
                          {(!isPlayingEvents && isMyTurn && activeCommandChar && targetingMoveIdx === null) && (
                                  <div className="flex gap-3 justify-center mb-2 z-10">
@@ -8820,7 +8955,9 @@
                                                                             } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                                                                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                                                                 enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                                                                            } else if (gameState.gameMode === 'torneo' || gameState.gameMode === 'torneo_punti') {
+                                                                            } else if (gameState.gameMode === 'torneo') {
+                                                                                enemyTeams = getTournamentMatchOpponents(playerRole);
+                                                                            } else if (gameState.gameMode === 'torneo_punti') {
                                                                                 enemyTeams = [activeMatchPlayers.find(p => p !== playerRole)];
                                                                             } else if (gameState.gameMode === 'battleroyale') {
                                                                                 enemyTeams = activeMatchPlayers.filter(p => p !== playerRole);
@@ -8902,6 +9039,8 @@
                                                                     const activeMatchPlayers = getActivePlayers();
                                                                     myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                                                 }
+                                                            } else if (gameState.gameMode === 'torneo') {
+                                                                myTeamPlayers = [playerRole]; // Nel torneo 1v1 ressi te stesso
                                                             }
                                                             
                                                             let hasDead = false;
@@ -8971,6 +9110,8 @@
                                                     const activeMatchPlayers = getActivePlayers();
                                                     myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                                 }
+                                            } else if (gameState.gameMode === 'torneo') {
+                                                myTeamPlayers = [playerRole];
                                             }
 
                                             let deadAllies = [];
@@ -9494,6 +9635,53 @@
 
     if (gameState.status === 'pre_battle') {
         const activeMatchPlayers = getActivePlayers();
+
+        if (gameState.gameMode === 'torneo') {
+            const phase = gameState.tournamentPhase || 'semis';
+            const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+            const res = gameState.tournamentResults || {};
+            
+            let m1Title, m2Title, m1p1, m1p2, m2p1, m2p2;
+            if (phase === 'semis') {
+                m1Title = "SEMIFINALE 1"; m2Title = "SEMIFINALE 2";
+                m1p1 = b[0]; m1p2 = b[1]; m2p1 = b[2]; m2p2 = b[3];
+            } else {
+                m1Title = "FINALISSIMA"; m2Title = "FINALE 3° POSTO";
+                m1p1 = res.semi1?.winner; m1p2 = res.semi2?.winner;
+                m2p1 = res.semi1?.loser; m2p2 = res.semi2?.loser;
+            }
+
+            const renderMiniVS = (pA, pB, title) => {
+                if (!pA || !pB) return null;
+                return (
+                    <div className="flex flex-col items-center flex-1 min-w-[300px]">
+                        <h3 className="text-yellow-400 font-black mb-4 text-xl tracking-widest">{title}</h3>
+                        <div className="flex items-center justify-center gap-4 bg-slate-900/60 p-6 rounded-3xl border border-slate-700/50 backdrop-blur-md w-full">
+                            <div className="flex flex-col items-center">
+                                <img src={gameState.playerAvatars[pA] || getDefaultAvatar(gameState.players[pA])} className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-cyan-400 mb-2 object-cover bg-slate-950" />
+                                <span className="font-bold text-base md:text-lg text-cyan-300">{gameState.players[pA]}</span>
+                            </div>
+                            <span className="text-3xl font-black text-white italic mx-2 md:mx-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.8)]">VS</span>
+                            <div className="flex flex-col items-center">
+                                <img src={gameState.playerAvatars[pB] || getDefaultAvatar(gameState.players[pB])} className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-rose-400 mb-2 object-cover bg-slate-950" />
+                                <span className="font-bold text-base md:text-lg text-rose-300">{gameState.players[pB]}</span>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 md:p-8 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-slate-950 to-black"></div>
+                    <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 mb-12 z-10 animate-pulse tracking-tighter drop-shadow-lg text-center">TORNEO ASSOLUTO</h2>
+                    <div className="flex flex-wrap justify-center gap-8 w-full max-w-5xl z-10 transition-all duration-700 transform scale-100 opacity-100">
+                        {renderMiniVS(m1p1, m1p2, m1Title)}
+                        {renderMiniVS(m2p1, m2p2, m2Title)}
+                    </div>
+                </div>
+            );
+        }
 
         if (gameState.gameMode === 'battleroyale') {
             return (
