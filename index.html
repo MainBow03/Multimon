@@ -4887,7 +4887,8 @@
                     // --- REDIRECT LOGIC (SALI SULLA MIA SCHIENA) ---
                     let isRedirectedDmgReduced = false;
                     let inGroppaStatus = t.char.statuses.find(s => s.type === 'In_Groppa');
-                    if (inGroppaStatus && inGroppaStatus.protectorIdx !== undefined) {
+                    // MODIFICA: Yoshi devia l'attacco SOLO se non è un attacco ad area (altrimenti verrebbe colpito due volte dalla stessa esplosione!)
+                    if (inGroppaStatus && inGroppaStatus.protectorIdx !== undefined && (!move.targetCount || move.targetCount < 4)) {
                         const protectorChar = workingTeams[t.player]?.[inGroppaStatus.protectorIdx];
                         if (protectorChar && protectorChar.hp > 0) {
                             events.push({ type: 'text', text: `🛡️ L'attacco mirato a ${t.char.name} viene deviato su ${protectorChar.name}!` });
@@ -4929,13 +4930,61 @@
                     }
                     // --- END REDIRECT BODYGUARD LOGIC ---
 
-                    let multiplier = getMultiplier(move.type, t.char.types);
+                    // --- CHECK ALLY TARGET FOR IMMUNITIES ---
+                    const isAllyTargeted = move.targetMode === 'team' || move.targetMode === 'team_smart_heal' || move.targetMode === 'ally' || move.targetMode === 'revive' || move.target === 'self';
+
+                    let multiplier = isAllyTargeted ? 1 : getMultiplier(move.type, t.char.types);
                     let isImmuneDueToPassive = false;
 
                     // --- GESTIONE PASSIVE: IMMUNITÀ E RESISTENZE ---
-                    if (t.char.passive && t.char.passive.immuneToType === move.type) {
+                    if (!isAllyTargeted && t.char.passive && t.char.passive.immuneToType === move.type) {
                         multiplier = 0;
                         isImmuneDueToPassive = true;
+                    }
+
+                    // --- CHECK ENEMY FOR PROTECT ---
+                    let isEnemyTarget = t.player !== player;
+                    if (gameState.gameMode === 'multipla') {
+                         const team1 = ['p1', 'p2'];
+                         isEnemyTarget = (team1.includes(player) !== team1.includes(t.player));
+                    } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
+                         const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                         isEnemyTarget = (player === juggPlayer) !== (t.player === juggPlayer);
+                    }
+
+                    let isProtectedFromEnemy = isEnemyTarget && t.char.statuses.some(s => s.type === 'Protetto' || s.type === 'Rashield');
+
+                    let isInvincibleShield = false;
+                    let isPerfectBarrier = false;
+
+                    if (t.char.id.startsWith('celljr_') && isEnemyTarget) {
+                        const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
+                        if (teamAlive.some(c => c.id === 'natsu' || c.id === 'po')) {
+                            isInvincibleShield = true;
+                        }
+                    }
+                    if (t.char.id === 'cell' && gameState.isCampaignBattle && isEnemyTarget) {
+                        const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
+                        if (teamAlive.some(c => c.id.startsWith('celljr_'))) {
+                            isPerfectBarrier = true;
+                        }
+                    }
+
+                    if (isProtectedFromEnemy || isInvincibleShield || isPerfectBarrier) {
+                        if (isProtectedFromEnemy) {
+                            events.push({ type: 'text', text: `🛡️ ${t.char.name} si è protetto dall'attacco di ${attacker.name}!` });
+                            if (t.char.statuses.some(s => s.type === 'Rashield') && attacker.hp > 0 && move.power > 0) {
+                                let hitDmg = calculateDamage(attacker, t.char, move, multiplier, isFirstAttackOfTurn);
+                                let recoil = Math.max(1, Math.floor(hitDmg * 0.25));
+                                applyDamage(attacker, recoil, player, charTeamIdx, `⚡ Lo scudo di ${t.char.name} riflette l'attacco! ${attacker.name} subisce ${recoil} danni!`);
+                            }
+                        } else if (isInvincibleShield) {
+                            events.push({ type: 'text', text: `🛡️ Lo Scudo Invincibile blocca l'attacco su ${t.char.name}! Sconfiggi Natsu o Po prima!` });
+                        } else if (isPerfectBarrier) {
+                            events.push({ type: 'text', text: `🛡️ La Barriera Perfetta protegge Cell! Sconfiggi prima tutti i Cell Jr.!` });
+                        }
+                        attackSucceeded = true;
+                        continue; // SCARTA TUTTO IL RESTO (Danni, status, debuff)
                     }
                     
                     let superEffectiveResisted = false;
@@ -5054,43 +5103,6 @@
                                 }
                             }
                             // -----------------------------------------------------------
-                            
-                            // --- PROTEZIONI (Protetto / Rashield) ---
-                            let isProtected = t.char.statuses.some(s => s.type === 'Protetto' || s.type === 'Rashield');
-                            if (isProtected) {
-                                if (t.char.statuses.some(s => s.type === 'Rashield') && attacker.hp > 0) {
-                                    let recoil = Math.max(1, Math.floor(hitDmg * 0.25));
-                                    applyDamage(attacker, recoil, player, charTeamIdx, `⚡ Lo scudo di ${t.char.name} riflette l'attacco! ${attacker.name} subisce ${recoil} danni!`);
-                                }
-                                hitDmg = 0;
-                                if (i === 0) {
-                                    events.push({ type: 'text', text: `🛡️ ${t.char.name} si è protetto dall'attacco!` });
-                                }
-                            }
-                            
-                            // --- NUOVA LOGICA: SCUDO INVINCIBILE DEI CELL JR E DI CELL ---
-                            if (t.char.id.startsWith('celljr_')) {
-                                const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
-                                const protectorAlive = teamAlive.some(c => c.id === 'natsu' || c.id === 'po');
-                                if (protectorAlive) {
-                                    hitDmg = 0;
-                                    if (i === 0) { // Mostra il messaggio solo al primo colpo dell'attacco
-                                        events.push({ type: 'text', text: `🛡️ Lo Scudo Invincibile blocca l'attacco su ${t.char.name}! Sconfiggi Natsu o Po prima!` });
-                                    }
-                                }
-                            }
-                            
-                            if (t.char.id === 'cell' && gameState.isCampaignBattle) {
-                                const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
-                                const cellJrAlive = teamAlive.some(c => c.id.startsWith('celljr_'));
-                                if (cellJrAlive) {
-                                    hitDmg = 0;
-                                    if (i === 0) {
-                                        events.push({ type: 'text', text: `🛡️ La Barriera Perfetta protegge Cell! Sconfiggi prima tutti i Cell Jr.!` });
-                                    }
-                                }
-                            }
-                            // ---------------------------------------------------
 
                             totalDmg += hitDmg;
                             actualHits++;
