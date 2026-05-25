@@ -4135,7 +4135,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -4688,8 +4688,7 @@
                             type: 'hyper_transform', 
                             text: `✨ INCREDIBILE! ${char.name} sprigiona un'aura cosmica e assume la sua FORMA IPER! ✨`,
                             player: order.player,
-                            charTeamIdx: order.charTeamIdx,
-                            newTypes: char.types // <--- AGGIUNTO: Passiamo i nuovi tipi istantaneamente all'evento visivo
+                            charTeamIdx: order.charTeamIdx
                         });
                     }
                 }
@@ -6213,9 +6212,6 @@
                    
                    if (currentDisplay[evt.player] && currentDisplay[evt.player][evt.charTeamIdx]) {
                        currentDisplay[evt.player][evt.charTeamIdx].isHyper = true;
-                       if (evt.newTypes) {
-                           currentDisplay[evt.player][evt.charTeamIdx].types = evt.newTypes; // <--- AGGIUNTO: Aggiorna l'etichetta del tipo in tempo reale
-                       }
                        setDisplayTeams({ ...currentDisplay });
                    }
                 } else if (evt.type === 'damage') {
@@ -8056,7 +8052,7 @@
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
-                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin') && (
+                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet') && (
                                         <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title="Questo personaggio possiede la Forma Iper in battaglia!">
                                             ✨ IPER
                                         </div>
@@ -9195,7 +9191,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin'].includes(activeCommandChar.id) && (IS_PREVIEW || (gameState.unlockedHypers && gameState.unlockedHypers[playerRole] || []).includes(activeCommandChar.id))) && (
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet')) && (
                                                     <div className="col-span-2 mb-1">
                                                         <button
                                                             onClick={() => setPendingHyper(!pendingHyper)}
