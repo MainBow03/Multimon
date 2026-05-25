@@ -242,6 +242,7 @@
           'Colpo impetuoso': { name: 'Colpo impetuoso', type: 'Acqua', power: 80, desc: 'Un colpo d\'acqua violento e inarrestabile.' },
           'Amore devoto': { name: 'Amore devoto', type: 'Magico', power: 0, maxUses: 3, targetMode: 'ally', targetStatBuff: { atk: 1.5, def: 1.5 }, desc: 'Il potere dell\'amore: potenzia grandemente l\'Attacco e la Difesa di un alleato in squadra.' },
           'Flirt': { name: 'Flirt', type: 'Normale', power: 0, maxUses: 5, statusEffect: { type: 'Infatuato', chance: 1.0 }, desc: 'Usa il fascino per far innamorare irrimediabilmente il bersaglio.' },
+          'Abisso Disperato': { name: 'Abisso Disperato', type: 'Buio', power: 85, drain: 0.5, maxUses: 3, desc: 'L\'oscurità della sua gelosia avvolge il nemico. Drena il 50% del danno inflitto in PS. (3 utilizzi)' },
 
           'Primo Kata': { name: 'Primo Kata', type: 'Aria', power: 20, multiHit: { min: 2, max: 4 }, speedScaling: true, desc: 'Raffiche multiple in rotazione. Il danno scala aggiungendo un bonus in base alla Velocità.' },
           'Terzo Kata': { name: 'Terzo Kata', type: 'Aria', power: 0, target: 'self', statBuff: { def: 2.0 }, statusEffect: { type: 'Riflesso', turns: 2 }, desc: 'Crea una barriera di vento: raddoppia la Difesa e riflette i danni al mittente (2 turni).' },
@@ -296,6 +297,7 @@
           'Ruba-Chiavi': { name: 'Ruba-Chiavi', type: 'Normale', power: 45, targetStatDebuff: { def: 0.6, spd: 0.6 }, desc: 'Ruba gli oggetti dell\'avversario per giocarci! Riduce drasticamente Difesa e Velocità (-40%).' },
           'Buon Cagnolino': { name: 'Buon Cagnolino', type: 'Normale', power: 0, targetMode: 'ally', heal: 0.5, removeNegativeStatuses: true, desc: 'Guarisce un alleato del 50% dei PS e rimuove le sue alterazioni di stato.' },
           'Nascondino': { name: 'Nascondino', type: 'Spettro', power: 0, target: 'self', isProtect: true, priority: 5, statBuff: { spd: 1.5 }, maxUses: 3, desc: 'Si nasconde sotto terra proteggendosi. Aumenta la sua Velocità del 50%.' },
+          'Riporta': { name: 'Riporta', type: 'Normale', power: 40, multiHit: { min: 1, max: 3 }, desc: 'Corre a riportare qualcosa di pesante scodinzolando! Colpisce da 1 a 3 volte.' },
 
           // NUOVE MOSSE RIAS GREMORY
           'Potere della Distruzione': { name: 'Potere della Distruzione', type: 'Oscuro', power: 100, ignoreDefBuffs: true, desc: 'Una sfera di pura aura distruttiva che annienta tutto ignorando le difese.' },
@@ -395,6 +397,7 @@
           'Scudo d\'Ombra': { name: 'Scudo d\'Ombra', type: 'Oscuro', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 4 }, desc: 'Avvolge il team nelle ombre moltiplicando la Difesa x3 per 4 turni.' },
           'Telecinesi Oscura': { name: 'Telecinesi Oscura', type: 'Magico', power: 80, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Scaglia oggetti con la mente. 30% di probabilità di confondere.' },
           'Assorbimento Animico': { name: 'Assorbimento Animico', type: 'Oscuro', power: 70, drain: 0.5, desc: 'Attacca l\'anima del bersaglio, assorbendo il 50% dei danni inflitti per curarsi.' },
+          'Luce di Azarath': { name: 'Luce di Azarath', type: 'Magico', power: 120, selfHeal: 0.5, removeNegativeStatuses: true, maxUses: 2, desc: 'Sprigiona il potere puro della Corvina Bianca. Infligge danni enormi, si cura del 50% e si purifica dagli status negativi. (2 utilizzi)' },
           
           // NUOVE MOSSE POISON IVY
           'Bacio Tossico': { name: 'Bacio Tossico', type: 'Veleno', power: 60, statusEffect: { type: 'Avvelenato', chance: 0.8 }, desc: 'Un bacio letale con l\'80% di probabilità di avvelenare gravemente il bersaglio.' },
@@ -467,6 +470,7 @@
           'Potere ariana grande': { name: 'Potere ariana grande: ATTIVAZIONE!', type: 'Magico', power: 100, targetCount: 2, desc: 'Sprigiona il suo potere infliggendo 100 danni a due bersagli.' },
           'Into You': { name: 'Into You', type: 'Normale', power: 60, statusEffect: { type: 'Infatuato', chance: 0.3 }, desc: 'Infligge danni e ha il 30% di probabilità di infatuare il nemico.' },
           'Bang Bang': { name: 'Bang Bang', type: 'Elettro', power: 0, statusEffect: { type: 'Elettrizzato', chance: 1.0 }, desc: 'Un colpo stordente che paralizza istantaneamente il bersaglio.' },
+          'Dangerous Woman': { name: 'Dangerous Woman', type: 'Oscuro', power: 50, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 2, desc: 'Sprigiona l\'aura di una femme fatale. Infligge 50 danni e stordisce infallibilmente il bersaglio. (2 utilizzi)' },
 
           // NUOVE MOSSE MARIO & LUIGI
           'Salto Idraulico': { name: 'Salto Idraulico', type: 'Normale', power: 55, desc: 'Un classico salto sulla testa del nemico.' },
@@ -487,10 +491,14 @@
           'Zaino Verde': { name: 'Zaino Verde', type: 'Normale', power: 0, target: 'self', statBuff: { def: 1.5 }, desc: 'Usa lo zaino per parare i colpi, aumentando la Difesa del 50%.' },
           'Eroe di Ooo': { name: 'Eroe di Ooo', type: 'Lotta', power: 0, targetMode: 'team', targetStatBuff: { atk: 1.3 }, desc: 'Ispira la squadra: aumenta l\'Attacco di tutti gli alleati del 30%.' },
 
+          'Lama Vulcanica': { name: 'Lama Vulcanica', type: 'Fuoco', power: 90, statusEffect: { type: 'Scottato', chance: 0.3 }, maxUses: 3, desc: 'Un fendente infuocato sprigionato dalla Forma Iper. 30% probabilità di scottare. (3 utilizzi)' },
+          'Fulmine dell\'Eroe': { name: 'Fulmine dell\'Eroe', type: 'Elettro', power: 85, speedScaling: true, statusEffect: { type: 'Elettrizzato', chance: 0.3 }, maxUses: 3, desc: 'Un balzo caricato a pura elettricità. Scala con la Velocità e ha il 30% di prob. di paralizzare. (3 utilizzi)' },
+
           'Pugno Elastico': { name: 'Pugno Elastico', type: 'Magico', power: 65, targetCount: 2, desc: 'Allunga le braccia colpendo fino a 2 nemici a distanza.' },
           'Trasformazione Scudo': { name: 'Trasformazione Scudo', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Prende la forma di uno scudo per parare i danni diretti a lui. (3 utilizzi)' },
           'Schiacciata Gigante': { name: 'Schiacciata Gigante', type: 'Magico', power: 100, accuracy: 0.8, desc: 'Diventa gigante e schiaccia il nemico. Devastante ma impreciso.' },
           'Bacon Pancakes': { name: 'Bacon Pancakes', type: 'Normale', power: 0, targetMode: 'ally', heal: 0.4, desc: 'Cucina dei deliziosi pancake curando un alleato o sé stesso del 40% dei PS.' },
+          'Morsa del Demone': { name: 'Morsa del Demone', type: 'Buio', power: 85, statusEffect: { type: 'Stordito', chance: 0.3 }, maxUses: 3, desc: 'Usa i poteri elastici demoniaci per stritolare il nemico. 30% di probabilità di stordire. (3 utilizzi)' },
 
           // NUOVE MOSSE KRATOS
           'Lame del Caos': { name: 'Lame del Caos', type: 'Lotta', power: 65, targetCount: 2, desc: 'Fende l\'aria con le sue lame incatenate, colpendo fino a 2 nemici.' },
@@ -846,7 +854,8 @@
           'Lama di Insetto': { name: 'Lama di Insetto', type: 'Insetto', power: 75, desc: 'Fende il nemico con arti affilati come lame.' },
           'Talismano Esplosivo': { name: 'Talismano Esplosivo', type: 'Buio', power: 90, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Lancia un talismano che esplode in fiamme oscure. 30% di probabilità di scottare.' },
           'Sciame Famelico': { name: 'Sciame Famelico', type: 'Insetto', power: 30, multiHit: { min: 2, max: 4 }, drain: 0.3, desc: 'Evoca insetti che divorano il nemico. Colpisce da 2 a 4 volte e assorbe il 30% del danno inflitto.' },
-          'Ragnatela Tenebrosa': { name: 'Ragnatela Tenebrosa', type: 'Buio', power: 50, targetCount: 2, targetStatDebuff: { spd: 0.5 }, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Intrappola fino a 2 nemici, dimezzandone permanentemente la Velocità. 20% probabilità di stordire.' }
+          'Ragnatela Tenebrosa': { name: 'Ragnatela Tenebrosa', type: 'Buio', power: 50, targetCount: 2, targetStatDebuff: { spd: 0.5 }, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Intrappola fino a 2 nemici, dimezzandone permanentemente la Velocità. 20% probabilità di stordire.' },
+          'Fame Insaziabile': { name: 'Fame Insaziabile', type: 'Insetto', power: 100, drain: 0.6, statusEffect: { type: 'Stordito', chance: 0.3 }, maxUses: 2, desc: 'La sua vera forma divora il nemico senza pietà. Drena il 60% dei danni inflitti e ha il 30% di stordire. (2 utilizzi)' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -4126,7 +4135,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -4631,6 +4640,45 @@
                         if (char.id === 'astral') {
                             char.types = ['Oscuro']; // Astral diventa puramente Oscuro
                             char.moves.push({ ...MOVES_DB['Assorbimento Tenebroso'], remainingUses: MOVES_DB['Assorbimento Tenebroso'].maxUses !== undefined ? MOVES_DB['Assorbimento Tenebroso'].maxUses : null });
+                        }
+
+                        if (char.id === 'polterpup') {
+                            char.moves.push({ ...MOVES_DB['Riporta'], remainingUses: MOVES_DB['Riporta'].maxUses !== undefined ? MOVES_DB['Riporta'].maxUses : null });
+                        }
+
+                        if (char.id === 'spongebob') {
+                            char.types = ['Acqua', 'Lotta'];
+                        }
+
+                        if (char.id === 'ariana') {
+                            char.types = ['Suono', 'Oscuro'];
+                            char.moves.push({ ...MOVES_DB['Dangerous Woman'], remainingUses: MOVES_DB['Dangerous Woman'].maxUses !== undefined ? MOVES_DB['Dangerous Woman'].maxUses : null });
+                        }
+
+                        if (char.id === 'jake') {
+                            char.types = ['Magico', 'Buio'];
+                            char.moves.push({ ...MOVES_DB['Morsa del Demone'], remainingUses: MOVES_DB['Morsa del Demone'].maxUses !== undefined ? MOVES_DB['Morsa del Demone'].maxUses : null });
+                        }
+
+                        if (char.id === 'finn') {
+                            char.types = ['Elettro', 'Fuoco'];
+                            char.moves.push({ ...MOVES_DB['Lama Vulcanica'], remainingUses: MOVES_DB['Lama Vulcanica'].maxUses !== undefined ? MOVES_DB['Lama Vulcanica'].maxUses : null });
+                            char.moves.push({ ...MOVES_DB['Fulmine dell\'Eroe'], remainingUses: MOVES_DB['Fulmine dell\'Eroe'].maxUses !== undefined ? MOVES_DB['Fulmine dell\'Eroe'].maxUses : null });
+                        }
+
+                        if (char.id === 'juvia') {
+                            char.types = ['Acqua', 'Buio'];
+                            char.moves.push({ ...MOVES_DB['Abisso Disperato'], remainingUses: MOVES_DB['Abisso Disperato'].maxUses !== undefined ? MOVES_DB['Abisso Disperato'].maxUses : null });
+                        }
+
+                        if (char.id === 'corvina') {
+                            char.types = ['Magico']; // Diventa pura magia (Corvina Bianca)
+                            char.moves.push({ ...MOVES_DB['Luce di Azarath'], remainingUses: MOVES_DB['Luce di Azarath'].maxUses !== undefined ? MOVES_DB['Luce di Azarath'].maxUses : null });
+                        }
+
+                        if (char.id === 'entoma') {
+                            char.types = ['Insetto', 'Buio'];
+                            char.moves.push({ ...MOVES_DB['Fame Insaziabile'], remainingUses: MOVES_DB['Fame Insaziabile'].maxUses !== undefined ? MOVES_DB['Fame Insaziabile'].maxUses : null });
                         }
 
                         workingHyperUsed[order.player] = true;
@@ -8004,7 +8052,7 @@
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
-                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral') && (
+                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet') && (
                                         <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title="Questo personaggio possiede la Forma Iper in battaglia!">
                                             ✨ IPER
                                         </div>
@@ -8744,6 +8792,40 @@
                     displayImg = "https://i.pinimg.com/736x/5b/fc/45/5bfc453fcdf52854983d80f2b7614abf.jpg";
                 } else if (char.id === 'astral') {
                     displayImg = "https://i.pinimg.com/736x/cb/c6/27/cbc62707cd7e489bc2af1452055cd148.jpg"; 
+                } else if (char.id === 'polterpup') {
+                    displayImg = "https://i.pinimg.com/736x/7c/cb/6b/7ccb6b4a151705a8186777ae1379c472.jpg";
+                } else if (char.id === 'spongebob') {
+                    displayImg = "https://i.pinimg.com/1200x/a2/b3/11/a2b3112c702d2f0f03a8adc3cc05eb78.jpg"; // Spongebob Muscoloso
+                } else if (char.id === 'patrick') {
+                    displayImg = "https://i.pinimg.com/1200x/f9/b2/b1/f9b2b173fa94cf8b883787c26118cc61.jpg"; // Patrick Muscoloso
+                } else if (char.id === 'alphonse') {
+                    displayImg = "https://i.pinimg.com/736x/f5/52/0c/f5520ce0b913d427f0f992774.jpg"; // Alphonse Iper
+                } else if (char.id === 'ariana') {
+                    displayImg = "https://i.pinimg.com/736x/1a/d9/67/1ad967b56ae629c6acb40c00e837613d.jpg"; // Ariana Iper
+                } else if (char.id === 'bloom') {
+                    displayImg = "https://i.pinimg.com/736x/58/55/d3/5855d360ba56c8e37976835e48a4b724.jpg"; // Bloom Iper
+                } else if (char.id === 'gaston') {
+                    displayImg = "https://i.pinimg.com/736x/b3/ff/14/b3ff14068712a2926a7af8eead2422a9.jpg"; // Gaston Iper
+                } else if (char.id === 'jake') {
+                    displayImg = "https://i.pinimg.com/736x/86/6b/dc/866bdc8b9f83b2da400763e9d7b0a071.jpg"; // Jake Iper
+                } else if (char.id === 'marceline') {
+                    displayImg = "https://i.pinimg.com/736x/6c/f3/57/6cf357050acbc8e86676d3017d6c4ef4.jpg"; // Marceline Iper
+                } else if (char.id === 'finn') {
+                    displayImg = "https://i.pinimg.com/736x/51/cd/cf/51cdcf83d6a1d881f91f20bb7c219659.jpg"; // Finn Iper
+                } else if (char.id === 'natsu') {
+                    displayImg = "https://i.pinimg.com/736x/46/38/71/4638717f53f57400feb9949c77e6f481.jpg"; // Natsu Iper
+                } else if (char.id === 'juvia') {
+                    displayImg = "https://i.pinimg.com/736x/aa/29/5f/aa295f4695f570b09efbb7e84c1539c3.jpg"; // Juvia Iper
+                } else if (char.id === 'laxus') {
+                    displayImg = "https://i.pinimg.com/736x/76/e4/d1/76e4d18a3536b22a7e32ea37e1ef5f71.jpg"; // Laxus Iper
+                } else if (char.id === 'bumblebee') {
+                    displayImg = "https://i.pinimg.com/1200x/fc/1d/de/fc1ddef3272962f71c1678b9a13744bf.jpg"; // Bumblebee Iper
+                } else if (char.id === 'corvina') {
+                    displayImg = "https://i.pinimg.com/1200x/e9/0b/f7/e90bf763d6dd629badadf4577c1ff017.jpg"; // Corvina Iper
+                } else if (char.id === 'entoma') {
+                    displayImg = "https://i.pinimg.com/736x/50/e6/2a/50e62a01cc9186095dc216345d820eef.jpg"; // Entoma Iper
+                } else if (char.id === 'garnet') {
+                    displayImg = "https://i.pinimg.com/1200x/2c/db/e6/2cdbe6606a1387a260136966feb33ad7.jpg"; // Garnet Iper
                 }
             }
 
@@ -9109,7 +9191,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral')) && (
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet')) && (
                                                     <div className="col-span-2 mb-1">
                                                         <button
                                                             onClick={() => setPendingHyper(!pendingHyper)}
