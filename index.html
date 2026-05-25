@@ -27,6 +27,35 @@
         @keyframes pulse-vs { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         @keyframes slide-in-left { from { transform: translateX(-100%); } to { transform: translateX(0); } }
         @keyframes slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        
+        /* Animazione trasformazione magica (es. Ponygon) */
+        @keyframes morph-spin {
+            0% { transform: rotateY(0deg) scale(0.5) rotateZ(0deg); opacity: 0.5; filter: brightness(2) contrast(1.5); }
+            50% { transform: rotateY(180deg) scale(1.3) rotateZ(180deg); filter: brightness(1.5) contrast(1.2); }
+            100% { transform: rotateY(360deg) scale(1) rotateZ(360deg); opacity: 1; filter: brightness(1) contrast(1); }
+        }
+        .animate-morph-spin { animation: morph-spin 0.6s ease-out forwards; }
+        
+        /* --- NUOVE ANIMAZIONI FORMA IPER --- */
+        @keyframes hyper-awaken {
+            0% { transform: scale(1) translateY(0px); filter: brightness(10) contrast(3) sepia(1) blur(5px); opacity: 0; }
+            10% { transform: scale(1.8) translateY(-40px) rotate(-8deg); filter: brightness(5) contrast(2) sepia(0.8) blur(0px); opacity: 1; }
+            20% { transform: scale(1.6) translateY(-25px) rotate(8deg); filter: brightness(4) sepia(0.6); }
+            30% { transform: scale(1.7) translateY(-30px) rotate(-6deg); filter: brightness(3) drop-shadow(0 0 100px rgba(250,204,21,1)); }
+            40% { transform: scale(1.6) translateY(-25px) rotate(6deg); filter: brightness(2) drop-shadow(0 0 80px rgba(250,204,21,1)); }
+            50% { transform: scale(1.65) translateY(-28px) rotate(-4deg); filter: brightness(1.5) drop-shadow(0 0 60px rgba(250,204,21,0.8)); }
+            65% { transform: scale(1.5) translateY(-15px) rotate(2deg); filter: brightness(1.2) drop-shadow(0 0 40px rgba(250,204,21,0.8)); }
+            100% { transform: scale(1) translateY(0) rotate(0deg); filter: brightness(1.1) contrast(1.1) drop-shadow(0 0 25px rgba(250,204,21,0.5)); }
+        }
+        .animate-hyper-awaken { animation: hyper-awaken 3.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+        @keyframes screen-flash {
+            0% { background-color: rgba(255, 255, 255, 0); }
+            10% { background-color: rgba(255, 255, 255, 1); }
+            30% { background-color: rgba(255, 255, 255, 1); }
+            100% { background-color: rgba(255, 255, 255, 0); }
+        }
+        .animate-screen-flash { animation: screen-flash 3.5s ease-out forwards; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -81,6 +110,15 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'multiverse-rpg-1';
+
+        // --- RILEVAMENTO AMBIENTE (Anteprima vs Online) ---
+        // Se siamo su localhost, file:// o nell'anteprima dell'IA, consideriamo il gioco "In Test"
+        const IS_PREVIEW = window.location.hostname === 'localhost' || 
+                           window.location.hostname === '127.0.0.1' || 
+                           window.location.protocol === 'file:' || 
+                           window.location.hostname.includes('googleusercontent') || 
+                           window.location.hostname === '';
+        // --------------------------------------------------
 
         // --- MIGRAZIONE SALVATAGGI ---
         const migrateSaves = () => {
@@ -612,7 +650,7 @@
           'Non sono Rick!': { name: 'Non sono Rick!', type: 'Acqua', power: 50, statusEffect: { type: 'Confuso', chance: 0.5 }, desc: 'Urla arrabbiato il suo nome. Infligge danni e ha il 50% di probabilità di confondere.' },
           'Riposino sotto la Roccia': { name: 'Riposino sotto la Roccia', type: 'Roccia', power: 0, target: 'self', heal: 0.5, statBuff: { def: 1.5 }, desc: 'Torna sotto la sua roccia per farsi un sonnellino. Si cura del 50% e aumenta la Difesa.' },
           'Lancio del Sasso': { name: 'Lancio del Sasso', type: 'Roccia', power: 30, multiHit: { min: 2, max: 4 }, desc: 'Raccoglie e lancia sassi trovati in giro. Colpisce l\'avversario da 2 a 4 volte.' },
-          'A caccia di meduse': { name: 'A caccia di meduse', type: 'Normale', power: 250, ignoreDefBuffs: true, maxUses: 1, isCombo: ['spongebob', 'patrick'], specificComboEffects: { 'patrick': { selfHeal: -0.75 }, 'spongebob': { statBuff: { atk: 2.0, def: 2.0, spd: 2.0 } } }, desc: 'Mossa Combinata: Danni immensi (250). Patrick si sacrifica perdendo il 75% dei PS massimi, ma Spongebob raddoppia Attacco, Difesa e Velocità!' },
+          'A caccia di meduse': { name: 'A caccia di meduse', type: 'Acqua', power: 250, ignoreDefBuffs: true, maxUses: 1, isCombo: ['spongebob', 'patrick'], specificComboEffects: { 'patrick': { selfHeal: -0.75 }, 'spongebob': { statBuff: { atk: 2.0, def: 2.0, spd: 2.0 } } }, desc: 'Mossa Combinata: Danni immensi (250). Patrick si sacrifica perdendo il 75% dei PS massimi, ma Spongebob raddoppia Attacco, Difesa e Velocità!' },
 
           // NUOVE MOSSE PLANKTON
           'Laser Mentale': { name: 'Laser Mentale', type: 'Robot', power: 85, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Spari ad alta tecnologia. 20% di probabilità di confondere il nemico.' },
@@ -769,6 +807,7 @@
 
           // NUOVE MOSSE GARDEVOIR E URSULA
           'Psichico': { name: 'Psichico', type: 'Psico', power: 90, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Un potente attacco telecinetico. 20% di probabilità di confondere il bersaglio.' },
+          'Liane Oscillanti': { name: 'Liane Oscillanti', type: 'Erba', power: 70, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Colpisce il nemico con liane robuste e oscillanti. 20% di probabilità di stordire il bersaglio.' },
           'Tentacoli Avvolgenti': { name: 'Tentacoli Avvolgenti', type: 'Acqua', power: 75, drain: 0.3, desc: 'Stritola il bersaglio con i tentacoli. Cura chi la usa del 30% del danno inflitto.' },
           'Canto Ammaliatore': { name: 'Canto Ammaliatore', type: 'Suono', power: 0, statusEffect: { type: 'Infatuato', chance: 1.0 }, targetStatDebuff: { def: 0.7 }, desc: 'Canta una melodia che infatua infallibilmente il bersaglio e ne riduce la Difesa del 30%.' },
           'Patto Ingannevole': { name: 'Patto Ingannevole', type: 'Veleno', power: 60, statusEffects: [{ type: 'Avvelenato', chance: 0.5 }, { type: 'Confuso', chance: 0.5 }], desc: 'Un contratto magico pericoloso. Infligge danni e ha il 50% di avvelenare o confondere.' },
@@ -2270,6 +2309,7 @@
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
           actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} }, 
           inventory: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+          hyperUsed: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false }, // <--- AGGIUNTO PER FORMA IPER
           events: [], 
           winner: null,
           postExecStatus: 'battling', 
@@ -2329,6 +2369,9 @@
           const [resolutionDialogueIdx, setResolutionDialogueIdx] = useState(0);
 
           const [introCharIdx, setIntroCharIdx] = useState(0);
+          
+          const [pendingHyper, setPendingHyper] = useState(false); // <--- AGGIUNTO PER FORMA IPER
+          const [screenFlash, setScreenFlash] = useState(false); // <--- AGGIUNTO PER EFFETTO FLASH BIANCO
 
           const [teamSelectionDialogue, setTeamSelectionDialogue] = useState(null);
           const selectionDialogueTimerRef = useRef(null);
@@ -3807,6 +3850,7 @@
               field: field,
               events: initialEvents,
               actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
+              hyperUsed: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false }, // <--- AGGIUNTO PER FORMA IPER
               pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
               switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
               tournamentMatch: gameState.gameMode === 'torneo' ? 'semi1' : null,
@@ -4075,6 +4119,20 @@
                     }
                 });
 
+                // --- CPU USA FORMA IPER (Solo per Barry e Gardevoir) ---
+                if (!gameState.hyperUsed[cpuPlayer]) {
+                    const firstAttackerIdxStr = Object.keys(cpuActions).find(idxStr => {
+                        if (cpuActions[idxStr].type !== 'attack') return false;
+                        const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
+                        // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral') && !char.isHyper;
+                    });
+                    
+                    if (firstAttackerIdxStr) {
+                        cpuActions[firstAttackerIdxStr].hyperize = true;
+                    }
+                }
+
                 return cpuActions;
           };
 
@@ -4096,6 +4154,12 @@
             setSelectedMultiTargets([]);
 
             let myNewActions = { ...(gameState.actions[playerRole] || {}) };
+            
+            // --- AGGIUNGE LA FORMA IPER ALL'AZIONE ---
+            if (pendingHyper && actionDetails.type === 'attack') {
+                actionDetails.hyperize = true;
+            }
+            
             myNewActions[activeCharTeamIdx] = actionDetails;
 
             if (actionDetails.type === 'attack') {
@@ -4114,6 +4178,7 @@
             updateState({ [`actions.${playerRole}`]: myNewActions }).then(() => {
               setTargetingMoveIdx(null);
               setActionMenuMode('moves');
+              setPendingHyper(false); // <--- RESET FORMA IPER
               
               let nextIdx = commandingIdx + 1;
               while (nextIdx < gameState.field[playerRole].length) {
@@ -4277,6 +4342,7 @@
             let workingTeams = JSON.parse(JSON.stringify(gameState.teams));
             let workingField = JSON.parse(JSON.stringify(gameState.field));
             let workingInventory = JSON.parse(JSON.stringify(gameState.inventory));
+            let workingHyperUsed = JSON.parse(JSON.stringify(gameState.hyperUsed || {})); // <--- AGGIUNTO PER FORMA IPER
             const activeMatchPlayers = getActivePlayers();
 
             const handleFaint = (targetPlayer, targetIdx) => {
@@ -4538,6 +4604,46 @@
             turnQueue.sort((a, b) => b.priority - a.priority || b.effSpd - a.effSpd);
 
             let isFirstAttackOfTurn = true;
+
+            // --- ELABORAZIONE FORMA IPER (Avviene prima degli attacchi) ---
+            for (let order of turnQueue) {
+                if (order.action.hyperize && !workingHyperUsed[order.player]) {
+                    const char = workingTeams[order.player]?.[order.charTeamIdx];
+                    if (char && char.hp > 0 && !char.isHyper) {
+                        char.isHyper = true;
+                        
+                        // Aumenta Base Stats (Così i buff/debuff scalano su questo nuovo valore)
+                        char.baseAtk = Math.floor(char.baseAtk * 1.5);
+                        char.baseDef = Math.floor(char.baseDef * 1.5);
+                        char.baseSpd = Math.floor(char.baseSpd * 1.5);
+                        
+                        // Aumenta Stats Correnti
+                        char.atk = Math.floor(char.atk * 1.5);
+                        char.def = Math.floor(char.def * 1.5);
+                        char.spd = Math.floor(char.spd * 1.5);
+                        
+                        if (char.id === 'gardevoir') {
+                            char.types = ['Psico', 'Erba'];
+                            char.moves.push({ ...MOVES_DB['Liane Oscillanti'], remainingUses: MOVES_DB['Liane Oscillanti'].maxUses !== undefined ? MOVES_DB['Liane Oscillanti'].maxUses : null });
+                        }
+                        
+                        if (char.id === 'astral') {
+                            char.types = ['Oscuro']; // Astral diventa puramente Oscuro
+                        }
+
+                        workingHyperUsed[order.player] = true;
+                        
+                        // Genera evento speciale per innescare l'animazione di trasformazione!
+                        events.push({ 
+                            type: 'hyper_transform', 
+                            text: `✨ INCREDIBILE! ${char.name} sprigiona un'aura cosmica e assume la sua FORMA IPER! ✨`,
+                            player: order.player,
+                            charTeamIdx: order.charTeamIdx
+                        });
+                    }
+                }
+            }
+            // ---------------------------------------------------------------
 
             for (let order of turnQueue) {
               const { player, charTeamIdx, action, move } = order;
@@ -5911,6 +6017,7 @@
           events: events,
           actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
           inventory: workingInventory,
+          hyperUsed: workingHyperUsed, // <--- SALVA LO STATO DELLA FORMA IPER
           pendingSwitches: pendingSwitches,
           switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           tournamentResults: tResults,
@@ -6030,7 +6137,7 @@
                     
                     // Aggiungi al registro battaglia con classificazione colori
                     let logType = 'normal';
-                    if (evt.isPassive) logType = 'passive';
+                    if (evt.isPassive || evt.type === 'hyper_transform') logType = 'passive';
                     else if (evt.type === 'faint' || evt.text.toLowerCase().includes('esausto')) logType = 'faint';
                     else if (evt.text.toLowerCase().includes('recupera') || evt.text.toLowerCase().includes('cura ') || evt.text.toLowerCase().includes('curato')) logType = 'heal';
                     else if (evt.text.toLowerCase().includes('danni')) logType = 'damage';
@@ -6048,6 +6155,15 @@
                    if(currentDisplayField[evt.player]) currentDisplayField[evt.player].push(evt.fieldIdx);
                    setDisplayTeams({ ...currentDisplay });
                    setDisplayField({ ...currentDisplayField });
+                } else if (evt.type === 'hyper_transform') {
+                   // --- ANIMAZIONE FORMA IPER LENTA E AD EFFETTO ---
+                   setScreenFlash(true);
+                   setTimeout(() => setScreenFlash(false), 3500);
+                   
+                   if (currentDisplay[evt.player] && currentDisplay[evt.player][evt.charTeamIdx]) {
+                       currentDisplay[evt.player][evt.charTeamIdx].isHyper = true;
+                       setDisplayTeams({ ...currentDisplay });
+                   }
                 } else if (evt.type === 'damage') {
                   if (currentDisplay[evt.targetPlayer] && currentDisplay[evt.targetPlayer][evt.targetIdx]) {
                       currentDisplay[evt.targetPlayer][evt.targetIdx].hp = evt.newHp;
@@ -6073,6 +6189,7 @@
                 
                 let delay = 1600;
                 if (evt.isPassive) delay = 2200; // Tempo extra per far leggere la passiva
+                if (evt.type === 'hyper_transform') delay = 4500; // Tempo extra per ammirare la lunghissima trasformazione
                 await new Promise(r => setTimeout(r, delay)); 
             }
 
@@ -6250,6 +6367,12 @@
                     <Swords size={64} className="text-purple-500 drop-shadow-lg hidden md:block" />
                 </h1>
                 <p className="text-slate-400 mb-12 text-center text-lg z-10 max-w-lg font-medium">Scegli i tuoi campioni. Domina il multiverso in tattiche battaglie a turni in diverse modalità!</p>
+                
+                {IS_PREVIEW && (
+                    <div className="bg-amber-500/20 border border-amber-500 text-amber-400 font-bold px-6 py-2 rounded-xl mb-6 z-10 animate-pulse text-sm text-center shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+                        🛠️ MODALITÀ ANTEPRIMA ATTIVA<br/>Tutti i personaggi sono temporaneamente sbloccati per i test!
+                    </div>
+                )}
                 
                 <div className="bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl w-full max-w-md border border-slate-700/50 shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-5 z-10">
                     <div>
@@ -7589,7 +7712,7 @@
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 overflow-y-auto custom-scrollbar p-2">
                                 {CHARACTERS.filter(c => c.price && !c.isSummonOnly && c.name.toLowerCase().includes(shopCharSearch.toLowerCase())).sort((a,b) => a.price - b.price).map(char => {
-                                    const isUnlocked = playerData.unlockedChars.includes(char.id);
+                                    const isUnlocked = IS_PREVIEW || playerData.unlockedChars.includes(char.id);
                                     const canAfford = playerData.coins >= char.price;
                                     
                                     return (
@@ -7879,6 +8002,11 @@
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
+                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral') && (
+                                        <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title="Questo personaggio possiede la Forma Iper in battaglia!">
+                                            ✨ IPER
+                                        </div>
+                                    )}
                                     <h4 className="font-bold text-lg mb-2 text-slate-100 text-center">{char.name}</h4>
                                     <div className="flex flex-wrap gap-1.5 justify-center mb-4">
                                       {char.types.map(t => (
@@ -8160,7 +8288,7 @@
         });
 
         const currentPlayerName = gameState.players[playerRole] || "Player";
-        const myUnlocked = getPlayerData().unlockedChars || [];
+        const myUnlocked = IS_PREVIEW ? CHARACTERS.map(c => c.id) : (getPlayerData().unlockedChars || []);
         const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && ((!c.price && !c.isSecretUnlock) || myUnlocked.includes(c.id)));
 
         let filteredDraftableChars = draftableChars.filter(c => {
@@ -8552,6 +8680,8 @@
 
             const isBeingCommanded = isMyTurn && teamPlayer === playerRole && fieldIdx === commandingIdx;
             const isJuggernaut = char.isJuggernaut || ((gameState.gameMode === 'survival' || gameState.gameMode === 'juggernaut') && teamPlayer === (gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1')));
+            const isHyper = char.isHyper; // <--- RILEVA FORMA IPER GIA' ATTIVA
+            const isPendingHyperHere = pendingHyper && isBeingCommanded; // <--- RILEVA SE STA CARICANDO L'ENERGIA
             
             const targetIndex = selectedMultiTargets.findIndex(t => t.player === teamPlayer && t.fieldIdx === fieldIdx);
             const isTargetedNow = targetIndex !== -1;
@@ -8560,8 +8690,12 @@
             if (gameState.gameMode === 'battleroyale') {
                 borderClass = PLAYER_THEMES[teamPlayer]?.border || 'border-slate-500';
             }
-            if (isJuggernaut) {
+            if (isPendingHyperHere) { // <--- EFFETTO CARICAMENTO PRE-ATTACCO (Quando scegli l'Iper)
+                borderClass = 'border-yellow-300 shadow-[0_0_40px_rgba(253,224,71,1)] scale-110 z-30 animate-pulse filter brightness-150';
+            } else if (isJuggernaut) {
                 borderClass = 'border-rose-600 shadow-[0_0_20px_rgba(225,29,72,0.6)]';
+            } else if (isHyper) { // <--- EFFETTO FORMA IPER (Dopo che si è trasformato)
+                borderClass = 'border-yellow-400 shadow-[0_0_25px_rgba(250,204,21,0.8)] z-40';
             }
             
             if (isTargetedNow) {
@@ -8586,8 +8720,39 @@
                     }
             }
             
+            // --- LOGICA CAMBIO IMMAGINE TRASFORMAZIONI + ANIMAZIONE ---
+            let formLevel = 0;
+            let displayImg = char.img;
+            
+            if (char.id === 'ponygon' && char.statuses) {
+                if (char.statuses.some(s => s.type === 'Dioemuru')) {
+                    formLevel = 2; // Seconda trasformazione (Dioemuru Shudoruku)
+                    displayImg = "https://static.wikia.nocookie.net/zatchbell/images/2/20/DioemurShudorukZBGM.webp/revision/latest/scale-to-width-down/250?cb=20240908143545";
+                } else if (char.statuses.some(s => s.type === 'Shudoruku')) {
+                    formLevel = 1; // Prima trasformazione (Shudoruku)
+                    displayImg = "https://static.wikia.nocookie.net/zatchbell/images/1/1b/ShudorukGoldenMemories.webp/revision/latest/scale-to-width-down/420?cb=20240521225743";
+                }
+            }
+            // --- FORMA IPER (Cambio Immagine e Animazione Esplosiva) ---
+            if (isHyper) {
+                formLevel = 'hyper'; // Forza l'aggiornamento della key React
+                if (char.id === 'barry') {
+                    displayImg = "https://i.redd.it/le0qp8fednsc1.jpeg"; // NUOVA IMMAGINE REDDIT
+                } else if (char.id === 'gardevoir') {
+                    displayImg = "https://i.pinimg.com/736x/5b/fc/45/5bfc453fcdf52854983d80f2b7614abf.jpg";
+                } else if (char.id === 'astral') {
+                    // Sostituisci questo link con il PNG che volevi mandarmi!
+                    displayImg = "INSERISCI_QUI_IL_TUO_LINK_PNG"; 
+                }
+            }
+
+            let extraAnimClass = "";
+            if (formLevel === 1 || formLevel === 2) extraAnimClass = "animate-morph-spin";
+            if (formLevel === 'hyper') extraAnimClass = "animate-hyper-awaken";
+            // ---------------------------------------------------
+            
             return (
-                <div key={`${teamPlayer}-${charTeamIdx}`} className={`flex flex-col items-center cursor-pointer ${isJuggernaut ? 'w-56' : 'w-36'} transition-all ${isDead ? 'opacity-0 scale-0 absolute' : 'opacity-100'}`} onClick={() => {
+                <div key={`${teamPlayer}-${charTeamIdx}`} className={`relative flex flex-col items-center cursor-pointer ${isJuggernaut ? 'w-56' : 'w-36'} transition-all ${isDead ? 'opacity-0 scale-0 absolute' : 'opacity-100'} ${isHyper ? 'z-[45]' : 'z-10'}`} onClick={() => {
                     if (isTargetable) {
                         handleSelectMoveTarget(teamPlayer, fieldIdx);
                     } else {
@@ -8596,7 +8761,11 @@
                 }}>
                     <div className="bg-slate-800/80 p-2 rounded-lg w-full mb-2 backdrop-blur-sm text-center shadow-lg z-10">
                         <div className="font-bold text-xs truncate text-gray-400 uppercase tracking-widest">{gameState.players[teamPlayer]}</div>
-                        <div className="font-bold text-sm truncate text-gray-100 mb-1">{char.name} {isJuggernaut && <span className="text-[10px] text-rose-500">(BOSS)</span>}</div>
+                        <div className="font-bold text-sm truncate text-gray-100 mb-1">
+                            {char.name} 
+                            {isJuggernaut && <span className="text-[10px] text-rose-500 ml-1">(BOSS)</span>}
+                            {isHyper && <span className="text-[10px] text-yellow-400 font-black ml-1">(IPER)</span>} 
+                        </div>
                         
                         <div className="flex gap-1 justify-center mb-1 flex-wrap">
                             {char.types.map(t => (
@@ -8608,7 +8777,7 @@
                         {renderStatuses(char.statuses)}
                     </div>
                     <div className="relative">
-                        <img src={char.img} style={{ filter: char.imageFilter || 'none' }} className={`${isJuggernaut ? 'w-48 h-48 md:w-56 md:h-56' : 'w-28 h-28'} object-cover rounded-xl border-4 ${borderClass} transition-all`} alt="" />
+                        <img key={`img-${char.id}-form-${formLevel}`} src={displayImg} style={{ filter: char.imageFilter || 'none' }} className={`${isJuggernaut ? 'w-48 h-48 md:w-56 md:h-56' : 'w-28 h-28'} object-cover rounded-xl border-4 ${borderClass} transition-all ${extraAnimClass}`} alt="" />
                         {char.juggHitsRemaining > 0 && (
                             <div className="absolute inset-0 border-[6px] border-cyan-400 rounded-xl shadow-[inset_0_0_20px_rgba(34,211,238,0.8),_0_0_20px_rgba(34,211,238,0.8)] z-30 animate-pulse pointer-events-none flex items-center justify-center bg-cyan-900/30">
                                 <span className="text-cyan-100 text-6xl font-black drop-shadow-[0_4px_4px_black]">{char.juggHitsRemaining}</span>
@@ -8682,6 +8851,9 @@
         return (
             <div className="min-h-screen bg-slate-900 flex flex-col font-sans text-white overflow-hidden">
                 
+                {/* SCREEN FLASH BIANCO PER FORMA IPER (Messo allo z-[40] per far scattare Barry in primo piano) */}
+                {screenFlash && <div className="fixed inset-0 bg-white z-[40] animate-screen-flash"></div>}
+
                 {/* EVENT PLAYBACK OVERLAY */}
                 {isPlayingEvents && (
                     <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-50 pointer-events-none flex flex-col items-center justify-center transition-all duration-300">
@@ -8935,6 +9107,18 @@
                                     <>
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
+                                                {/* --- PULSANTE FORMA IPER --- */}
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral')) && (
+                                                    <div className="col-span-2 mb-1">
+                                                        <button
+                                                            onClick={() => setPendingHyper(!pendingHyper)}
+                                                            className={`w-full py-3 rounded-xl font-black uppercase tracking-widest transition-all shadow-md ${pendingHyper ? 'bg-gradient-to-r from-yellow-300 to-yellow-500 text-black shadow-[0_0_25px_rgba(250,204,21,0.8)] scale-[1.02]' : 'bg-slate-800 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-900/30'}`}
+                                                        >
+                                                            {pendingHyper ? '✨ FORMA IPER SELEZIONATA! Scegli una mossa! ✨' : '⚡ ATTIVA FORMA IPER (1 Uso) ⚡'}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                                {/* --------------------------- */}
                                                 {activeCommandChar.moves.map((move, idx) => {
                                                     let isDisabled = move.remainingUses === 0 || (move.currentCooldown && move.currentCooldown > 0);
                                                     if (move.requireSummonsDead && !isDisabled) {
@@ -9194,7 +9378,7 @@
                                                 </div>
                                             );
                                         })()}
-                                        <button onClick={() => { setTargetingMoveIdx(null); setSelectedMultiTargets([]); }} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
+                                        <button onClick={() => { setTargetingMoveIdx(null); setSelectedMultiTargets([]); setPendingHyper(false); }} className="mt-4 bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg font-bold w-full mx-auto block max-w-xs transition-colors shadow-md">
                                              Annulla Selezione
                                         </button>
                                     </div>
