@@ -93,6 +93,8 @@
         const Eye = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>;
         const XIcon = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
         const Upload = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
+        const Volume2 = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>;
+        const VolumeX = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>;
 
         // --- FIREBASE CONFIGURATION ---
         // INSERISCI QUI LE TUE CHIAVI FIREBASE PER L'ONLINE SU GITHUB PAGES
@@ -297,7 +299,7 @@
           'Ruba-Chiavi': { name: 'Ruba-Chiavi', type: 'Normale', power: 45, targetStatDebuff: { def: 0.6, spd: 0.6 }, desc: 'Ruba gli oggetti dell\'avversario per giocarci! Riduce drasticamente Difesa e Velocità (-40%).' },
           'Buon Cagnolino': { name: 'Buon Cagnolino', type: 'Normale', power: 0, targetMode: 'ally', heal: 0.5, removeNegativeStatuses: true, desc: 'Guarisce un alleato del 50% dei PS e rimuove le sue alterazioni di stato.' },
           'Nascondino': { name: 'Nascondino', type: 'Spettro', power: 0, target: 'self', isProtect: true, priority: 5, statBuff: { spd: 1.5 }, maxUses: 3, desc: 'Si nasconde sotto terra proteggendosi. Aumenta la sua Velocità del 50%.' },
-          'Riporta': { name: 'Riporta', type: 'Normale', power: 40, multiHit: { min: 1, max: 3 }, desc: 'Corre a riportare qualcosa di pesante scodinzolando! Colpisce da 1 a 3 volte.' },
+          'Riporta': { name: 'Riporta', type: 'Normale', power: 40, multiHit: { min: 2, max: 5 }, desc: 'Corre a riportare qualcosa di pesante scodinzolando! Colpisce da 2 a 5 volte.' },
 
           // NUOVE MOSSE RIAS GREMORY
           'Potere della Distruzione': { name: 'Potere della Distruzione', type: 'Oscuro', power: 100, ignoreDefBuffs: true, desc: 'Una sfera di pura aura distruttiva che annienta tutto ignorando le difese.' },
@@ -467,8 +469,8 @@
           'Vandal': { name: 'Vandal', type: 'Normale', power: 80, statusEffect: { type: 'Stordito', chance: 0.15 }, desc: 'Spara con il fucile d\'assalto. 15% di probabilità di stordire il bersaglio (Headshot!).' },
 
           'YUH!': { name: 'YUH!', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5 }, desc: 'Il suo iconico grido di battaglia che aumenta l\'Attacco del 50%.' },
-          'Potere ariana grande': { name: 'Potere ariana grande: ATTIVAZIONE!', type: 'Magico', power: 100, targetCount: 2, desc: 'Sprigiona il suo potere infliggendo 100 danni a due bersagli.' },
-          'Into You': { name: 'Into You', type: 'Normale', power: 60, statusEffect: { type: 'Infatuato', chance: 0.3 }, desc: 'Infligge danni e ha il 30% di probabilità di infatuare il nemico.' },
+          'Potere ariana grande': { name: 'Potere ariana grande: ATTIVAZIONE!', type: 'Magico', power: 90, targetCount: 2, desc: 'Sprigiona il suo potere infliggendo 90 danni a due bersagli.' },
+          'Into You': { name: 'Into You', type: 'Suono', power: 60, statusEffect: { type: 'Infatuato', chance: 0.3 }, desc: 'Infligge danni e ha il 30% di probabilità di infatuare il nemico.' },
           'Bang Bang': { name: 'Bang Bang', type: 'Elettro', power: 0, statusEffect: { type: 'Elettrizzato', chance: 1.0 }, desc: 'Un colpo stordente che paralizza istantaneamente il bersaglio.' },
           'Dangerous Woman': { name: 'Dangerous Woman', type: 'Oscuro', power: 50, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 2, desc: 'Sprigiona l\'aura di una femme fatale. Infligge 50 danni e stordisce infallibilmente il bersaglio. (2 utilizzi)' },
 
@@ -2414,6 +2416,28 @@
           
           // NUOVO: Ref per bloccare i doppi click veloci
           const isSubmittingActionRef = useRef(false);
+          
+          // --- YOUTUBE BGM PLAYER ---
+          const [isMuted, setIsMuted] = useState(false);
+          const ytRef = useRef(null);
+          // La musica si attiva solo durante le fasi di lotta
+          const shouldPlayMusic = ['pre_battle', 'battling', 'executing', 'switching_phase', 'intermission'].includes(gameState.status);
+
+          useEffect(() => {
+              if (ytRef.current && ytRef.current.contentWindow) {
+                  if (shouldPlayMusic) {
+                      ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
+                      if (isMuted) {
+                          ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute' }), '*');
+                      } else {
+                          ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute' }), '*');
+                          ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [40] }), '*'); // Volume bilanciato al 40%
+                      }
+                  } else {
+                      ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
+                  }
+              }
+          }, [shouldPlayMusic, isMuted, gameState.status]);
           
           // Auto-scroll per il registro battaglia
           useEffect(() => {
@@ -10273,6 +10297,26 @@
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Iframe YouTube Nascosto per l'Audio */}
+            <iframe 
+                ref={ytRef}
+                className="hidden"
+                src="https://www.youtube.com/embed/rXefFHRgyE0?enablejsapi=1&loop=1&playlist=rXefFHRgyE0"
+                allow="autoplay"
+                title="BGM"
+            ></iframe>
+
+            {/* Pulsante Toggle Musica Globale */}
+            {shouldPlayMusic && (
+                <button 
+                    onClick={() => setIsMuted(!isMuted)}
+                    className="fixed top-4 right-4 z-[200] bg-slate-900/80 p-3 rounded-full border border-cyan-500/50 text-cyan-400 hover:text-white transition-all shadow-[0_0_15px_rgba(6,182,212,0.5)] backdrop-blur-md hover:scale-110"
+                    title={isMuted ? "Attiva Musica" : "Disattiva Musica"}
+                >
+                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
             )}
             
             {renderView()}
