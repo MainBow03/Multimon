@@ -134,6 +134,13 @@
         };
         migrateSaves();
 
+        // --- COLONNE SONORE ---
+        const SOUNDTRACKS = [
+            { id: 'wpEBouFcwqI', name: 'LB : heroes day' },
+            { id: 'rXefFHRgyE0', name: 'Cynthia theme' },
+            { id: 'bUG_NS0xqSY', name: 'Dandel theme' }
+        ];
+
         // --- GAME DATA ---
         const TYPES = ['Normale', 'Lotta', 'Fuoco', 'Acqua', 'Erba', 'Aria', 'Roccia', 'Ghiaccio', 'Robot', 'Drago', 'Magico', 'Veleno', 'Insetto', 'Elettro', 'Oscuro', 'Spettro', 'Buio', 'Suono', 'Psico', 'Terra'];
 
@@ -284,13 +291,13 @@
           'Pugno Ghiacciato': { name: 'Pugno Ghiacciato', type: 'Ghiaccio', power: 65, statusEffect: { type: 'Congelato', chance: 0.3 }, desc: 'Usa la sua criocinesi in un pugno. 30% di probabilità di congelare.' },
 
           // NUOVE MOSSE RE BOO
-          'Trappola nel Quadro': { name: 'Trappola nel Quadro', type: 'Magico', power: 50, statusEffect: { type: 'Stordito', chance: 0.8 }, maxUses: 3, desc: 'Intrappola l\'avversario in una tela! 80% probabilità di stordire. (3 utilizzi)' },
-          'Illusione Spettrale': { name: 'Illusione Spettrale', type: 'Spettro', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.5, spd: 0.5 }, desc: 'Crea illusioni terrificanti. Dimezza l\'Attacco e la Velocità di tutti i nemici.' },
-          'Lingua Gigante': { name: 'Lingua Gigante', type: 'Normale', power: 70, drain: 0.3, desc: 'Lecca il nemico con una lingua enorme. Recupera il 30% dei danni inflitti.' },
+          'Trappola nel Quadro': { name: 'Trappola nel Quadro', type: 'Magico', power: 80, statusEffect: { type: 'Stordito', chance: 0.25 }, maxUses: 3, desc: 'Intrappola l\'avversario in una tela! 80 di danno e 25% di probabilità di stordire. (3 utilizzi)' },
+          'boo ho ho hahaha': { name: 'boo ho ho hahaha', type: 'Spettro', power: 0, isSummon: 'boo', maxUses: 3, desc: 'Evoca un Boo alleato sul campo di battaglia. (3 utilizzi)' },
+          'Lingua Gigante': { name: 'Lingua Gigante', type: 'Spettro', power: 70, drain: 0.3, desc: 'Lecca il nemico con una lingua enorme. Recupera il 30% dei danni inflitti.' },
+          'Lingua Gigante (Boo)': { name: 'Lingua Gigante', type: 'Spettro', power: 50, drain: 0.3, desc: 'Lecca il nemico. Recupera il 30% dei danni inflitti.' },
           'Potere della Corona': { name: 'Potere della Corona', type: 'Magico', power: 0, target: 'self', statBuff: { def: 1.5, atk: 1.5 }, desc: 'Il gioiello della corona brilla, aumentando Attacco e Difesa del 50%.' },
 
-          // NUOVE MOSSE RYUK
-          'Quaderno della Morte': { name: 'Quaderno della Morte', type: 'Oscuro', power: 150, accuracy: 0.4, maxUses: 2, desc: 'Scrive il nome dell\'avversario. Se va a segno (40%), infligge danni devastanti.' },
+          // NUOVE MOSSE DANNY PHANTOM
           'Mela Rossa': { name: 'Mela Rossa', type: 'Erba', power: 0, target: 'self', heal: 0.5, statBuff: { spd: 1.3 }, desc: 'Mangia una succosa mela terrestre: si cura del 50% e aumenta la Velocità.' },
           'Sguardo Shinigami': { name: 'Sguardo Shinigami', type: 'Oscuro', power: 0, targetStatDebuff: { def: 0.5 }, statusEffect: { type: 'Confuso', chance: 0.4 }, desc: 'Scopre il vero nome del bersaglio: gli dimezza la Difesa e ha il 40% di confonderlo.' },
           'Ali Nere': { name: 'Ali Nere', type: 'Aria', power: 75, speedScaling: true, desc: 'Vola a gran velocità per sferrare un attacco aereo. Scala con la Velocità.' },
@@ -767,9 +774,9 @@
           
           // NUOVE MOSSE FATA COSMICA
           'Fata protettiva': { name: 'Fata protettiva', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Protetto', turns: 1 }, priority: 5, maxUses: 1, strictUses: true, desc: 'Difende tutti i compagni in campo da ogni attacco. (Solo 1 utilizzo)' },
-          'Spirito!': { name: 'Spirito!', type: 'Aria', power: 0, targetMode: 'team', targetStatBuff: { spd: 1.5 }, desc: 'Energia spirituale che aumenta la Velocità di tutti gli alleati del 50%.' },
-          'ha,ha,ha!': { name: 'ha,ha,ha!', type: 'Suono', power: 0, targetMode: 'team', removeNegativeStatuses: true, desc: 'Una risata magica che cura tutti gli effetti di stato negativi degli alleati in campo.' },
-          'Schermoluce': { name: 'Schermoluce', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 5 }, targetStatBuff: { def: 1.3 }, desc: 'Genera uno schermo di luce. Aumenta la Difesa del team del 30% e li protegge per 5 turni.' },
+          'Spirito!': { name: 'Spirito!', type: 'Aria', power: 0, targetMode: 'team', targetStatBuff: { spd: 1.5 }, maxUses: 2, desc: 'Energia spirituale che aumenta la Velocità di tutti gli alleati del 50%. (2 utilizzi)' },
+          'ha,ha,ha!': { name: 'ha,ha,ha!', type: 'Suono', power: 0, targetMode: 'team', removeNegativeStatuses: true, desc: 'Una risata magica che cura solo gli effetti di stato negativi degli alleati in campo (non cura i PS).' },
+          'Schermoluce': { name: 'Schermoluce', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, maxUses: 3, desc: 'Genera uno schermo di luce. Protegge il team dimezzando i danni subiti per 3 turni. (3 utilizzi)' },
 
           // NUOVE MOSSE BORT, SAILOR MERCURY E ALPHONSE
           'Capelli di Diamante': { name: 'Capelli di Diamante', type: 'Roccia', power: 90, desc: 'Usa i suoi capelli resistentissimi come fruste letali.' },
@@ -851,13 +858,25 @@
           'Mano di Pietra': { name: 'Mano di Pietra', type: 'Terra', power: 90, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Plasma la terra in un enorme pugno. 20% di probabilità di stordire il bersaglio.' },
           'Liane Stritolanti': { name: 'Liane Stritolanti', type: 'Erba', power: 65, drain: 0.3, targetStatDebuff: { spd: 0.7 }, desc: 'Evoca radici che stritolano, rallentando il nemico e assorbendo il 30% del danno in PS.' },
           'Levitazione Rocciosa': { name: 'Levitazione Rocciosa', type: 'Roccia', power: 0, target: 'self', statBuff: { atk: 1.3, def: 1.5 }, desc: 'Si solleva su un disco di pietra. Aumenta il proprio Attacco (+30%) e Difesa (+50%).' },
+          'Fame Insaziabile': { name: 'Fame Insaziabile', type: 'Insetto', power: 100, drain: 0.6, statusEffect: { type: 'Stordito', chance: 0.3 }, maxUses: 2, desc: 'La sua vera forma divora il nemico senza pietà. Drena il 60% dei danni inflitti e ha il 30% di stordire. (2 utilizzi)' },
 
           // NUOVE MOSSE ENTOMA
-          'Lama di Insetto': { name: 'Lama di Insetto', type: 'Insetto', power: 75, desc: 'Fende il nemico con arti affilati come lame.' },
-          'Talismano Esplosivo': { name: 'Talismano Esplosivo', type: 'Buio', power: 90, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Lancia un talismano che esplode in fiamme oscure. 30% di probabilità di scottare.' },
-          'Sciame Famelico': { name: 'Sciame Famelico', type: 'Insetto', power: 30, multiHit: { min: 2, max: 4 }, drain: 0.3, desc: 'Evoca insetti che divorano il nemico. Colpisce da 2 a 4 volte e assorbe il 30% del danno inflitto.' },
-          'Ragnatela Tenebrosa': { name: 'Ragnatela Tenebrosa', type: 'Buio', power: 50, targetCount: 2, targetStatDebuff: { spd: 0.5 }, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Intrappola fino a 2 nemici, dimezzandone permanentemente la Velocità. 20% probabilità di stordire.' },
-          'Fame Insaziabile': { name: 'Fame Insaziabile', type: 'Insetto', power: 100, drain: 0.6, statusEffect: { type: 'Stordito', chance: 0.3 }, maxUses: 2, desc: 'La sua vera forma divora il nemico senza pietà. Drena il 60% dei danni inflitti e ha il 30% di stordire. (2 utilizzi)' }
+          'Lama di Insetto': { name: 'Lama di Insetto', type: 'Insetto', power: 75, desc: 'Un fendente affilato scagliato con arti da insetto.' },
+          'Talismano Esplosivo': { name: 'Talismano Esplosivo', type: 'Magico', power: 65, targetCount: 2, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Lancia talismani magici esplosivi che colpiscono fino a 2 nemici. 30% di probabilità di scottare.' },
+          'Sciame Famelico': { name: 'Sciame Famelico', type: 'Insetto', power: 60, drain: 0.5, desc: 'Evoca insetti voraci che divorano il nemico. Cura del 50% dei danni inflitti.' },
+          'Ragnatela Tenebrosa': { name: 'Ragnatela Tenebrosa', type: 'Buio', power: 40, targetStatDebuff: { spd: 0.5 }, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Intrappola il nemico in una ragnatela oscura, dimezzandone la Velocità. 20% di probabilità di stordire.' },
+
+          // NUOVE MOSSE WEISS
+          'Stoccata di Ghiaccio': { name: 'Stoccata di Ghiaccio', type: 'Ghiaccio', power: 75, statusEffect: { type: 'Congelato', chance: 0.20 }, desc: 'Un affondo rapido con Myrtenaster. 20% di probabilità di congelare il bersaglio.' },
+          'Frammenti di Neve Weiss': { name: 'Frammenti di Neve', type: 'Ghiaccio', power: 20, multiHit: { min: 2, max: 8 }, desc: 'Lancia innumerevoli schegge di ghiaccio pungenti. Colpisce da 2 a 8 volte in rapida successione.' },
+          'Glifo di Barriera': { name: 'Glifo di Barriera', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, targetStatBuff: { def: 1.3 }, desc: 'Crea uno scudo magico che protegge tutto il team aumentando la Difesa del 30% per 3 turni.' },
+          'Glifo di Accelerazione': { name: 'Glifo di Accelerazione', type: 'Magico', power: 0, target: 'self', statBuff: { spd: 2.0 }, priority: 1, desc: 'Crea un glifo sotto di sé. Raddoppia la Velocità (+100%) e colpisce sempre per prima in questo turno.' },
+
+          // NUOVE MOSSE NEON
+          'Saetta Relè': { name: 'Saetta Relè', type: 'Elettro', power: 0, targetCount: 2, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 1, desc: 'Spara saette elettriche che stordiscono infallibilmente fino a due bersagli a scelta. (1 utilizzo)' },
+          'Fast Lane': { name: 'Fast Lane', type: 'Elettro', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, targetStatBuff: { def: 1.3 }, desc: 'Crea muri elettrici per proteggere gli alleati, aumentando la Difesa del team del 30% per 3 turni.' },
+          'Sprint Elettrico': { name: 'Sprint Elettrico', type: 'Elettro', power: 60, priority: 1, statusEffect: { type: 'Elettrizzato', chance: 0.20 }, desc: 'Corre a velocità estrema colpendo sempre per prima (Priorità +1). 20% probabilità di paralizzare.' },
+          'Overdrive': { name: 'Overdrive', type: 'Elettro', power: 120, targetCount: 4, maxUses: 2, desc: 'Scatena l\'energia accumulata per folgorare tutti i bersagli in campo! (2 utilizzi)' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -944,7 +963,7 @@
           { id: 'zabuza', name: 'Zabuza', types: ['Acqua', 'Buio'], hp: 110, maxHp: 110, atk: 115, def: 85, spd: 95, img: 'https://i.pinimg.com/736x/73/01/8b/73018bd605e624d68f3cd45900f4499c.jpg', passive: { name: 'Mannaia Rigenerante', type: 'on_ko', healPercent: 0.20, desc: 'La sua spada assorbe il sangue dei nemici sconfitti. Se dà il colpo di grazia a un avversario, recupera il 20% dei PS massimi.' }, moves: [MOVES_DB['Velo di Nebbia'], MOVES_DB['Mannaia Tagliateste'], MOVES_DB['Drago Acquatico'], MOVES_DB['Omicidio Silenzioso']] },
           { id: 'stewie', name: 'Stewie', types: ['Robot', 'Elettro'], hp: 80, maxHp: 80, atk: 115, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/72/98/97/729897013a80e2f47d32fa0f790811eb.jpg', moves: [MOVES_DB['Pistola Laser'], MOVES_DB['Macchina del Tempo'], MOVES_DB['Granata EMP'], MOVES_DB['Controllo Mentale']] },
           { id: 'dannyphantom', name: 'Danny Phantom', types: ['Spettro', 'Elettro'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/0b/75/5d/0b755da4ccc07381fb6ba32991b35135.jpg', passive: { name: 'Phantom mode : activate!', type: 'damage_reduction_on_move', moveName: 'Urlo Spettrale', reduction: 0.25, desc: 'Quando utilizza Urlo Spettrale, riceve il 25% di danni in meno per quel turno.' }, moves: [MOVES_DB['Raggio Ectoplasmatico'], MOVES_DB['Urlo Spettrale'], MOVES_DB['Intangibilità'], MOVES_DB['Pugno Ghiacciato']] },
-          { id: 'reboo', name: 'Re Boo', types: ['Spettro', 'Psico'], hp: 130, maxHp: 130, atk: 95, def: 110, spd: 50, img: 'https://i.pinimg.com/736x/e4/32/5d/e4325df5bb0d6bac82d57332f1262f33.jpg', moves: [MOVES_DB['Trappola nel Quadro'], MOVES_DB['Illusione Spettrale'], MOVES_DB['Lingua Gigante'], MOVES_DB['Potere della Corona']] },
+          { id: 'reboo', name: 'Re Boo', types: ['Spettro', 'Psico'], hp: 130, maxHp: 130, atk: 95, def: 110, spd: 50, img: 'https://i.pinimg.com/736x/e4/32/5d/e4325df5bb0d6bac82d57332f1262f33.jpg', moves: [MOVES_DB['Trappola nel Quadro'], MOVES_DB['boo ho ho hahaha'], MOVES_DB['Lingua Gigante'], MOVES_DB['Potere della Corona']] },
           { id: 'ryuk', name: 'Ryuk', types: ['Oscuro', 'Aria'], hp: 100, maxHp: 100, atk: 120, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/5f/e5/ee/5fe5ee520cfc60bc417670fb536d1dd7.jpg', moves: [MOVES_DB['Quaderno della Morte'], MOVES_DB['Mela Rossa'], MOVES_DB['Sguardo Shinigami'], MOVES_DB['Ali Nere']] },
           { id: 'polterpup', name: 'Polterpup', types: ['Spettro', 'Normale'], hp: 95, maxHp: 95, atk: 80, def: 95, spd: 130, img: 'https://i.pinimg.com/736x/94/14/01/941401a8a6cc3d7693a9a93275616f1a.jpg', moves: [MOVES_DB['Leccata Festosa'], MOVES_DB['Ruba-Chiavi'], MOVES_DB['Buon Cagnolino'], MOVES_DB['Nascondino']] },
           { id: 'rias', name: 'Rias Gremory', types: ['Oscuro', 'Magico'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 90, img: 'https://i.pinimg.com/736x/d1/8f/36/d18f368c9350408a665b56d5dd04486e.jpg', moves: [MOVES_DB['Potere della Distruzione'], MOVES_DB['Stella del Mattino'], MOVES_DB['Ali da Demone'], MOVES_DB['Regina Cremisi']] },
@@ -983,8 +1002,6 @@
           { id: 'gardevoir', name: 'Gardevoir', types: ['Psico', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/3a/6b/31/3a6b317944e47ed8bb647813e45b9e58.jpg', moves: [MOVES_DB['Psichico'], MOVES_DB['Fulmine'], MOVES_DB['Schermoluce'], MOVES_DB['Geloraggio']] },
           { id: 'ursula', name: 'Ursula', types: ['Acqua', 'Veleno'], hp: 130, maxHp: 130, atk: 100, def: 110, spd: 50, img: 'https://i.pinimg.com/1200x/a2/43/3b/a2433b064caf68f524d68e3cb61eaebe.jpg', moves: [MOVES_DB['Tentacoli Avvolgenti'], MOVES_DB['Canto Ammaliatore'], MOVES_DB['Onda Melmosa'], MOVES_DB['Patto Ingannevole']] },
 
-          { id: 'entoma', name: 'Entoma', types: ['Insetto', 'Buio'], hp: 95, maxHp: 95, atk: 115, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/75/2e/11/752e119ef8175ba56a2d3d023591ba81.jpg', passive: { name: 'Vera Forma', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Quando i PS scendono sotto il 30%, rivela la sua vera, terrificante natura, aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Lama di Insetto'], MOVES_DB['Talismano Esplosivo'], MOVES_DB['Sciame Famelico'], MOVES_DB['Ragnatela Tenebrosa']] },
-
           { id: 'nicole', name: 'Nicole Watterson', types: ['Lotta', 'Oscuro'], hp: 110, maxHp: 110, atk: 125, def: 85, spd: 115, img: 'https://i.pinimg.com/736x/d4/48/49/d44849bc672dc5a88293c048403fea7d.jpg', moves: [MOVES_DB['Sguardo della morte'], MOVES_DB['Zuffa'], MOVES_DB['Pausa Pranzo'], MOVES_DB['VAI A LETTO.']] },
           { id: 'yoshi', name: 'Yoshi', types: ['Drago', 'Normale'], hp: 105, maxHp: 105, atk: 95, def: 85, spd: 110, img: 'https://i.pinimg.com/736x/e1/f3/ef/e1f3efeeaaedb7f96173a3cd032e7412.jpg', passive: { name: 'Compagno di Avventure', type: 'mount_buff', desc: 'Il miglior destriero del mondo! L\'alleato che si trova "In Groppa" a Yoshi è ispirato e infligge il 25% di danni extra con tutti i suoi attacchi.' }, moves: [MOVES_DB['Nyop-nyop'], MOVES_DB['Uovo boomerang'], MOVES_DB['Sali sulla mia schiena'], MOVES_DB['Colpo salterino']] },
 
@@ -992,9 +1009,10 @@
           { id: 'ainz', name: 'Ainz Ooal Gown', types: ['Buio', 'Psico'], hp: 120, maxHp: 120, atk: 130, def: 95, spd: 75, img: 'https://i.pinimg.com/1200x/2d/23/88/2d23889e9f387524d2cbcaf6b5213fd3.jpg', passive: { name: 'Aura di Disperazione', type: 'on_enter', maxUses: 1, enemyStatDebuff: { atk: 0.8, spd: 0.8 }, desc: 'Appena scende in campo, la sua aura spaventosa riduce Attacco e Velocità di tutti i nemici in campo del 20%.' }, moves: [MOVES_DB['Grasp Heart'], MOVES_DB['Black Hole'], MOVES_DB['Fermare il Tempo'], MOVES_DB['Fallen Down']] },
 
           { id: 'terra', name: 'Terra', types: ['Terra', 'Roccia'], hp: 100, maxHp: 100, atk: 115, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/19/44/9b/19449bd66aef08eec7c122162b316bad.jpg', passive: { name: 'Geocinesi', type: 'aura', boostMoveType: { type: 'Terra', multiplier: 1.2 }, desc: 'Il suo profondo legame con la terra aumenta passivamente la potenza delle sue mosse di tipo Terra del 20%.' }, moves: [MOVES_DB['Onda Sismica'], MOVES_DB['Mano di Pietra'], MOVES_DB['Liane Stritolanti'], MOVES_DB['Levitazione Rocciosa']] },
+          { id: 'weiss', name: 'Weiss', types: ['Ghiaccio', 'Magico'], hp: 90, maxHp: 90, atk: 115, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/79/3e/0e/793e0ed43f708ad10db2789082cca1f9.jpg', moves: [MOVES_DB['Stoccata di Ghiaccio'], MOVES_DB['Frammenti di Neve Weiss'], MOVES_DB['Glifo di Barriera'], MOVES_DB['Glifo di Accelerazione']] },
+          { id: 'neon', name: 'Neon', types: ['Elettro'], hp: 90, maxHp: 90, atk: 115, def: 70, spd: 135, img: 'https://i.pinimg.com/1200x/bc/a2/eb/bca2eb15e235e22e08530c22d6c332f1.jpg', moves: [MOVES_DB['Saetta Relè'], MOVES_DB['Fast Lane'], MOVES_DB['Sprint Elettrico'], MOVES_DB['Overdrive']] },
 
-          { id: 'trigon', name: 'Trigon', types: ['Fuoco', 'Oscuro'], hp: 200, maxHp: 200, atk: 150, def: 120, spd: 90, img: 'https://i.pinimg.com/736x/95/42/23/954223a99735d41eb5eb7d93cf24e365.jpg', moves: [MOVES_DB['Inferno demoniaco'], MOVES_DB['Sguardo dell\'abisso'], MOVES_DB['Artigli dell\'apocalisse'], MOVES_DB['Corvina unisciti a me!']], isSecretUnlock: true },
-          { id: 'gaster', name: 'Gaster', types: ['Spettro', 'Oscuro'], hp: 180, maxHp: 180, atk: 140, def: 110, spd: 110, img: 'https://i.pinimg.com/736x/25/fd/83/25fd83efc282c92eac32955587857ebf.jpg', moves: [MOVES_DB['Frattura della realtà'], MOVES_DB['Errore 404'], MOVES_DB['Teletrasporto instabile'], MOVES_DB['Gaster Blaster']], isSecretUnlock: true },
+          { id: 'entoma', name: 'Entoma', types: ['Insetto', 'Buio'], hp: 95, maxHp: 95, atk: 115, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/75/2e/11/752e119ef8175ba56a2d3d023591ba81.jpg', passive: { name: 'Vera Forma', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Quando i PS scendono sotto il 30%, rivela la sua vera, terrificante natura, aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Lama di Insetto'], MOVES_DB['Talismano Esplosivo'], MOVES_DB['Sciame Famelico'], MOVES_DB['Ragnatela Tenebrosa']] },
           
           { id: 'nightwing', name: 'Nightwing', types: ['Buio', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/fa/f0/7e/faf07eceb881811e8788b7c5ff539c90.jpg', moves: [MOVES_DB['Trappola d\'ombra'], MOVES_DB['Ala della notte'], MOVES_DB['Colpo mirato'], MOVES_DB['Fendente notturno']] },
 
@@ -1032,6 +1050,8 @@
           { id: 'clone_rosso', name: 'Clone Rosso', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(320deg) saturate(3) brightness(0.7)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           
+          { id: 'boo', name: 'Boo', types: ['Spettro'], hp: 45, maxHp: 45, atk: 60, def: 40, spd: 65, img: 'https://i.pinimg.com/736x/c6/b8/6a/c6b86a449b23bbcc0023b6a7968ff99d.jpg', moves: [MOVES_DB['Lingua Gigante (Boo)']], isSummonOnly: true },
+
           { id: 'bulma', name: 'Bulma', types: ['Robot'], hp: 100, maxHp: 100, atk: 70, def: 110, spd: 85, img: 'https://i.pinimg.com/736x/a4/d0/2c/a4d02c84248f59d5e683b1d57a9ad3b8.jpg', passive: { name: 'Rifornimento Capsule Corp.', type: 'on_turn_end', healPercent: 0.03, desc: 'Alla fine di ogni turno, recupera il 3% dei propri PS massimi.' }, moves: [MOVES_DB['Senzu per tutti'], MOVES_DB['Capsula Gadget'], MOVES_DB['Geyser fotonico'], MOVES_DB['Cortocircuito']] },
           { id: 'robo_aiutante_1', name: 'Robo Aiutante (Difesa)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/2e/e4/74/2ee4744e03259e47f7005eb9a799b54b.jpg', moves: [MOVES_DB['Difesa al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
           { id: 'robo_aiutante_2', name: 'Robo Aiutante (Attacco)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/3e/8c/64/3e8c64997be28096fd2bc924b3743d39.jpg', moves: [MOVES_DB['Attacco al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
@@ -1052,13 +1072,13 @@
           { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSecretUnlock: true, isCampaignMonster: true },
           { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true, isCampaignMonster: true },
           
-          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 80, maxHp: 80, atk: 10, def: 80, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true, isCampaignMonster: true }
+          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 60, maxHp: 60, atk: 10, def: 50, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true, isCampaignMonster: true }
         ];
 
         const CHAR_PRICES = {
             'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
-            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200,
+            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
         };
         CHARACTERS.forEach(c => {
@@ -2315,7 +2335,7 @@
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
-          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1' }, 
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI' }, 
           draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
@@ -3536,7 +3556,7 @@
           const handleSurvivalStart = () => {
             const state = initialGameState();
             state.gameMode = 'survival';
-            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2' }; 
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI' }; 
             state.players.p1 = playerName || "Sopravvissuto";
             state.playerAvatars.p1 = playerAvatarUrl;
             state.inventory.p1 = getPlayerData().inventory;
@@ -4159,7 +4179,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -4713,6 +4733,11 @@
                         if (char.id === 'brago') {
                             char.types = ['Oscuro', 'Psico'];
                             char.moves.push({ ...MOVES_DB['Caos Totale'], remainingUses: MOVES_DB['Caos Totale'].maxUses !== undefined ? MOVES_DB['Caos Totale'].maxUses : null });
+                        }
+
+                        if (char.id === 'sdentato') {
+                            char.types = ['Drago', 'Elettro'];
+                            char.moves.push({ ...MOVES_DB['Fulmine'], remainingUses: MOVES_DB['Fulmine'].maxUses !== undefined ? MOVES_DB['Fulmine'].maxUses : null });
                         }
 
                         workingHyperUsed[order.player] = true;
@@ -7092,6 +7117,8 @@
                 'kai': "Il fuoco è la mia forza! Vi farò vedere di cosa è capace un vero Ninja!",
                 'ainz': "Dimostrerò il potere supremo della Grande Tomba di Nazarick.",
                 'terra': "Posso spostare le montagne. Letteralmente. Contate su di me!",
+                'weiss': "Myrtenaster è pronta. Mostreremo a questa gentaglia la nostra eleganza.",
+                'neon': "Pronti? Io sono nata pronta. Vado a fulminarli!",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -7167,6 +7194,8 @@
                 'kai': "Tsk, il fuoco non si spegne così facilmente. Vi aspetterò qui.",
                 'ainz': "Una mossa saggia. Osserverò le capacità di questi esseri inferiori.",
                 'terra': "Come volete. Torno a fare una passeggiata tra le rocce.",
+                'weiss': "Tsk. Non avete alcun gusto per la vera arte della spada.",
+                'neon': "Uffa, ma siete lentissimi! Fatemi sapere quando vi serve una vera scossa.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -8086,7 +8115,7 @@
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
-                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris') && (
+                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug') && (
                                         <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title="Questo personaggio possiede la Forma Iper in battaglia!">
                                             ✨ IPER
                                         </div>
@@ -8248,6 +8277,16 @@
                     {isHost ? (
                         <div className="space-y-4 text-left">
                             <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Regole</h3>
+
+                            <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-slate-700/30 mb-4">
+                                <span className="font-semibold text-slate-300 flex items-center gap-2"><Volume2 size={16}/> Soundtrack:</span>
+                                <select value={gameState.settings.soundtrack || 'wpEBouFcwqI'} onChange={e => updateState({ settings: { ...gameState.settings, soundtrack: e.target.value } })} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 max-w-[150px] sm:max-w-[200px] truncate text-xs sm:text-sm">
+                                    {SOUNDTRACKS.map(st => (
+                                        <option key={st.id} value={st.id}>{st.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
                             {(gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && (
                                 <div className={`flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border ${gameState.gameMode === 'survival' ? 'border-violet-500/30 shadow-[0_0_10px_rgba(139,92,246,0.1)]' : 'border-rose-500/30 shadow-[0_0_10px_rgba(225,29,72,0.1)]'} mb-4 animate-fade-in`}>
                                     <span className={`font-bold ${gameState.gameMode === 'survival' ? 'text-violet-400' : 'text-rose-400'}`}>{gameState.gameMode === 'survival' ? 'Giocatore Orda (Boss):' : 'Juggernaut (Il Boss):'}</span>
@@ -8866,6 +8905,10 @@
                     displayImg = "https://pbs.twimg.com/media/FWqDimhUEAAh-wk.jpg"; // Brago Iper
                 } else if (char.id === 'iris') {
                     displayImg = "https://i.pinimg.com/736x/79/4b/0b/794b0b7ac8e43390a87df4e26bed8b40.jpg"; // Iris Iper
+                } else if (char.id === 'sdentato') {
+                    displayImg = "https://i.pinimg.com/736x/8f/41/03/8f4103a00fabb4223c3f4095a4635776.jpg"; // Sdentato Iper
+                } else if (char.id === 'ladybug') {
+                    displayImg = "https://i.pinimg.com/736x/40/b6/29/40b629847b9740338ac820695fe68dd0.jpg"; // Ladybug Iper
                 }
             }
 
@@ -9231,7 +9274,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris')) && (
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug')) && (
                                                     <div className="col-span-2 mb-1">
                                                         <button
                                                             onClick={() => setPendingHyper(!pendingHyper)}
@@ -10303,7 +10346,7 @@
             <iframe 
                 ref={ytRef}
                 className="hidden"
-                src="https://www.youtube.com/embed/rXefFHRgyE0?enablejsapi=1&loop=1&playlist=rXefFHRgyE0"
+                src={`https://www.youtube.com/embed/${gameState.settings?.soundtrack || 'wpEBouFcwqI'}?enablejsapi=1&loop=1&playlist=${gameState.settings?.soundtrack || 'wpEBouFcwqI'}`}
                 allow="autoplay"
                 title="BGM"
             ></iframe>
