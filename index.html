@@ -3157,22 +3157,26 @@
               if (gameState.status === 'gameover' && !hasRewarded && playerName.trim()) {
                   setHasRewarded(true);
                   
+                  // --- FIX BUG MONETE: CREIAMO UN UNICO OGGETTO PER SALVARE TUTTO IN UNA VOLTA ---
+                  let statsUpdates = {};
+                  
                   if (matchStartTimeRef.current) {
-                      const playTimeSecs = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
-                      updateLocalStats({ playtime: playTimeSecs });
+                      statsUpdates.playtime = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
                   }
                   
                   if (gameState.isCampaignBattle) {
                       const isWin = gameState.winner === gameState.players.p1;
                       if (isWin) {
-                          updateLocalStats({ addCoins: 20, win: true });
+                          statsUpdates.addCoins = 20;
+                          statsUpdates.win = true;
                       }
-                      return; // Esce per non eseguire la logica sottostante
+                      if (Object.keys(statsUpdates).length > 0) updateLocalStats(statsUpdates);
+                      return; 
                   }
                   
                   const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
                   if (myKey && gameState.inventory[myKey]) {
-                      updateLocalStats({ overwriteInventory: gameState.inventory[myKey] });
+                      statsUpdates.overwriteInventory = gameState.inventory[myKey];
                   }
 
                   if (myKey) {
@@ -3187,7 +3191,7 @@
                           else if (tr.bronze && tr.bronze.loser === myKey) { coinsToReward = 50; }
                           else { coinsToReward = 50; }
                       } else if (gameState.gameMode === 'juggernaut') {
-                          // NUOVA LOGICA PREMI JUGGERNAUT
+                          // LOGICA PREMI JUGGERNAUT
                           const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
                           const amIJuggernaut = myKey === juggPlayer;
                           const juggWon = gameState.winner === gameState.players[juggPlayer];
@@ -3199,11 +3203,11 @@
                                   coinsToReward = 150; // Juggernaut vince
                                   won = true;
                               } else {
-                                  coinsToReward = Math.floor(Math.random() * 21) + 40; // Sfidante sconfitto: 40-60
+                                  coinsToReward = 50; // Fissato per non sfasare i testi
                               }
                           } else {
                               if (amIJuggernaut) {
-                                  coinsToReward = Math.floor(Math.random() * 21) + 40; // Juggernaut sconfitto: 40-60
+                                  coinsToReward = 50; // Fissato
                               } else {
                                   coinsToReward = 110; // Sfidanti vincono
                                   won = true;
@@ -3216,7 +3220,7 @@
                               calculatedCoins += Math.min(10, i + 2);
                           }
                           coinsToReward = calculatedCoins;
-                          updateLocalStats({ maxSurvivalRound: roundsSurvived });
+                          statsUpdates.maxSurvivalRound = roundsSurvived;
                       } else {
                           if (gameState.gameMode === 'multipla') {
                                if (gameState.winner && gameState.winner.includes(playerName)) won = true;
@@ -3233,11 +3237,16 @@
                       }
 
                       if (won) {
-                           updateLocalStats({ win: true });
+                           statsUpdates.win = true;
                       }
                       if (coinsToReward > 0) {
-                           updateLocalStats({ addCoins: coinsToReward });
+                           statsUpdates.addCoins = coinsToReward;
                       }
+                  }
+                  
+                  // CHIAMATA UNICA AL SALVATAGGIO (Risolve il bug di sovrascrittura di localStorage)
+                  if (Object.keys(statsUpdates).length > 0) {
+                      updateLocalStats(statsUpdates);
                   }
               }
           }, [gameState.status, hasRewarded, playerName, gameState.winner, gameState.gameMode, gameState.tournamentResults, gameState.settings.teamSize, gameState.inventory, gameState.players, gameState.isCampaignBattle]);
@@ -4225,8 +4234,8 @@
               const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
               
               if (phase === 'semis') {
-                  if (['p1', 'p2'].includes(p)) return ['p1', 'p2'].filter(x => x !== p);
-                  if (['p3', 'p4'].includes(p)) return ['p3', 'p4'].filter(x => x !== p);
+                  if ([b[0], b[1]].includes(p)) return [b[0], b[1]].filter(x => x !== p);
+                  if ([b[2], b[3]].includes(p)) return [b[2], b[3]].filter(x => x !== p);
               } else if (phase === 'finals') {
                   const finalP = [res.semi1?.winner, res.semi2?.winner].filter(Boolean);
                   const bronzeP = [res.semi1?.loser, res.semi2?.loser].filter(Boolean);
@@ -9123,6 +9132,42 @@
                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 topPlayers = [juggPlayer]; 
                 bottomPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
+        } else if (gameState.gameMode === 'torneo') {
+            const phase = gameState.tournamentPhase || 'semis';
+            const res = gameState.tournamentResults || {};
+            const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+            const tStatus = gameState.tournamentMatchStatus || {};
+            let myMatch = [];
+
+            if (phase === 'semis') {
+                const m1 = [b[0], b[1]];
+                const m2 = [b[2], b[3]];
+                if (m1.includes(playerRole)) {
+                    myMatch = tStatus.semi1 === 'finished' && tStatus.semi2 !== 'finished' ? m2 : m1;
+                } else if (m2.includes(playerRole)) {
+                    myMatch = tStatus.semi2 === 'finished' && tStatus.semi1 !== 'finished' ? m1 : m2;
+                } else {
+                    myMatch = tStatus.semi1 !== 'finished' ? m1 : m2;
+                }
+            } else {
+                const fw = [res.semi1?.winner, res.semi2?.winner].filter(Boolean);
+                const bw = [res.semi1?.loser, res.semi2?.loser].filter(Boolean);
+                if (fw.includes(playerRole)) {
+                    myMatch = tStatus.final === 'finished' && tStatus.bronze !== 'finished' ? bw : fw;
+                } else if (bw.includes(playerRole)) {
+                    myMatch = tStatus.bronze === 'finished' && tStatus.final !== 'finished' ? fw : bw;
+                } else {
+                    myMatch = tStatus.final !== 'finished' ? fw : bw;
+                }
+            }
+
+            if (myMatch.includes(playerRole) && !isSpectatorState) {
+                bottomPlayers = [playerRole];
+                topPlayers = [myMatch.find(p => p !== playerRole)];
+            } else {
+                bottomPlayers = [myMatch[0]];
+                topPlayers = [myMatch[1]];
+            }
         } else if (gameState.gameMode === 'torneo_punti') {
                 if (isSpectatorState) {
                         bottomPlayers = [activeMatchPlayers[0]];
@@ -9142,7 +9187,7 @@
                         bottomPlayers = [playerRole];
                         topPlayers = activeMatchPlayers.filter(p => p !== playerRole);
                 }
-        } else if (gameState.gameMode !== 'torneo') {
+        } else {
                 if (isSpectatorState) {
                         bottomPlayers = ['p1'];
                         topPlayers = ['p2'];
@@ -9152,7 +9197,7 @@
                 }
         }
 
-        const isSpectator = isSpectatorState || (gameState.gameMode !== 'torneo' && !bottomPlayers.includes(playerRole) && !topPlayers.includes(playerRole) && gameState.gameMode !== 'battleroyale');
+        const isSpectator = isSpectatorState || (!bottomPlayers.includes(playerRole) && !topPlayers.includes(playerRole) && gameState.gameMode !== 'battleroyale');
         const isMyTurn = gameState.status === 'battling' && !isSpectatorState && !gameState.isBot[playerRole] && commandingIdx >= 0 && commandingIdx < gameState.field[playerRole].length;
         const activeCommandCharIdx = isMyTurn ? gameState.field[playerRole][commandingIdx] : null;
         const activeCommandChar = activeCommandCharIdx !== null ? gameState.teams[playerRole][activeCommandCharIdx] : null;
@@ -9514,11 +9559,29 @@
                     </div>
 
                     {/* Top Info Bar per Torneo */}
-                    {gameState.gameMode === 'torneo' && (
-                         <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full border border-yellow-500/50 shadow-lg text-yellow-400 font-black tracking-widest uppercase">
-                                {gameState.tournamentPhase === 'semis' ? 'Semifinali' : 'Finali'}
-                         </div>
-                    )}
+                    {gameState.gameMode === 'torneo' && (() => {
+                        let matchTitle = '';
+                        const phase = gameState.tournamentPhase || 'semis';
+                        const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
+                        const res = gameState.tournamentResults || {};
+                        if (phase === 'semis') {
+                            if ([b[0], b[1]].includes(bottomPlayers[0])) matchTitle = 'Semifinale 1';
+                            else matchTitle = 'Semifinale 2';
+                        } else {
+                            const fw = [res.semi1?.winner, res.semi2?.winner].filter(Boolean);
+                            if (fw.includes(bottomPlayers[0])) matchTitle = 'Finalissima';
+                            else matchTitle = 'Finale 3° Posto';
+                        }
+                        
+                        const amSpectating = isSpectatorState || (!bottomPlayers.includes(playerRole) && !topPlayers.includes(playerRole));
+                        
+                        return (
+                             <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full border border-yellow-500/50 shadow-lg text-yellow-400 font-black tracking-widest uppercase flex flex-col items-center">
+                                    <span>{matchTitle}</span>
+                                    {amSpectating && <span className="text-[10px] text-slate-300 normal-case">(Spettatore - In attesa)</span>}
+                             </div>
+                        );
+                    })()}
                     
                     {gameState.gameMode === 'battleroyale' && (
                          <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full border border-amber-500/50 shadow-lg text-amber-400 font-black tracking-widest uppercase text-xs sm:text-sm">
@@ -9552,53 +9615,7 @@
                         ))}
                     </div>
 
-                    {gameState.gameMode === 'torneo' ? (() => {
-                        // --- RENDERER ARENE MULTIPLE (TORNEO) ---
-                        const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
-                        const phase = gameState.tournamentPhase || 'semis';
-                        const res = gameState.tournamentResults || {};
-                        const tStatus = gameState.tournamentMatchStatus || {};
-                        
-                        let m1 = phase === 'semis' ? [b[0], b[1]] : [res.semi1?.winner, res.semi2?.winner].filter(Boolean);
-                        let m2 = phase === 'semis' ? [b[2], b[3]] : [res.semi1?.loser, res.semi2?.loser].filter(Boolean);
-                        
-                        const renderArena = (players, key, title) => {
-                            if (players.length !== 2) return null;
-                            const isDone = tStatus[key] === 'finished';
-                            let topP = players[1];
-                            let botP = players[0];
-                            if (playerRole === players[1]) { topP = players[0]; botP = players[1]; }
-                            
-                            return (
-                                <div className={`relative flex-1 min-w-[300px] flex flex-col rounded-3xl border border-slate-700/80 overflow-hidden bg-slate-900/50 ${isDone ? 'opacity-40 grayscale' : ''}`}>
-                                    <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-black/80 px-4 py-1 rounded-full border border-yellow-500/50 text-yellow-400 font-black text-[10px] uppercase shadow-lg whitespace-nowrap">{title} {isDone && '- CONCLUSA'}</div>
-                                    {/* Top Side */}
-                                    <div className="h-1/2 flex flex-col items-center justify-start pt-8 relative bg-gradient-to-b from-rose-900/30 to-transparent pb-2">
-                                        {renderPlayerBanners([topP], true)}
-                                        <div className="flex justify-center gap-2 flex-wrap relative w-full mt-2">
-                                            {currentField[topP]?.map((charIdx, fIdx) => renderFieldCharacter(topP, fIdx, charIdx, topP !== playerRole))}
-                                        </div>
-                                    </div>
-                                    {/* Mid Divider */}
-                                    <div className="absolute inset-x-0 top-1/2 h-px bg-white/10 z-10"></div>
-                                    {/* Bot Side */}
-                                    <div className="h-1/2 flex flex-col items-center justify-end pb-8 relative bg-gradient-to-t from-blue-900/30 to-transparent pt-2">
-                                        <div className="flex justify-center gap-2 flex-wrap relative w-full mb-2 items-end">
-                                            {currentField[botP]?.map((charIdx, fIdx) => renderFieldCharacter(botP, fIdx, charIdx, botP !== playerRole))}
-                                        </div>
-                                        {renderPlayerBanners([botP], false)}
-                                    </div>
-                                </div>
-                            );
-                        };
-
-                        return (
-                            <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 pb-32 h-full overflow-y-auto overflow-x-hidden w-full custom-scrollbar">
-                                {renderArena(m1, phase === 'semis' ? 'semi1' : 'final', phase === 'semis' ? 'Semifinale 1' : 'Finalissima')}
-                                {renderArena(m2, phase === 'semis' ? 'semi2' : 'bronze', phase === 'semis' ? 'Semifinale 2' : 'Finale 3° Posto')}
-                            </div>
-                        );
-                    })() : gameState.gameMode === 'battleroyale' ? (
+                    {gameState.gameMode === 'battleroyale' ? (
                         /* BATTLE ROYALE LAYOUT: Grid or Flex around center */
                         <div className="flex-1 flex flex-wrap justify-center items-center gap-6 p-4 pt-12 overflow-y-auto custom-scrollbar pb-32">
                             {activeMatchPlayers.map(p => {
@@ -10203,6 +10220,21 @@
                     }
                     coins = calculatedCoins;
                     if (roundsSurvived > 0) rewardText = `+${coins} Monete ricevute!`;
+                } else if (gameState.gameMode === 'juggernaut') {
+                    // --- PREMI SPECIFICI JUGGERNAUT (Allineati col salvataggio) ---
+                    const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    const amIJuggernaut = myKey === juggPlayer;
+                    const juggWon = gameState.winner === gameState.players[juggPlayer];
+
+                    if (gameState.winner === 'Pareggio') {
+                        coins = 50;
+                    } else if (juggWon) {
+                        if (amIJuggernaut) coins = 150;
+                        else coins = 50; 
+                    } else {
+                        if (amIJuggernaut) coins = 50; 
+                        else coins = 110; 
+                    }
                 } else {
                     let won = false;
                     if (gameState.gameMode === 'multipla') {
@@ -10507,14 +10539,25 @@
                     </div>
                 );
             };
+            
+            let matchToRender = null;
+            if (playerRole === m1p1 || playerRole === m1p2) matchToRender = renderMiniVS(m1p1, m1p2, m1Title);
+            else if (playerRole === m2p1 || playerRole === m2p2) matchToRender = renderMiniVS(m2p1, m2p2, m2Title);
+            else {
+                matchToRender = (
+                    <>
+                        {renderMiniVS(m1p1, m1p2, m1Title)}
+                        {renderMiniVS(m2p1, m2p2, m2Title)}
+                    </>
+                );
+            }
 
             return (
                 <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 md:p-8 relative overflow-hidden">
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-slate-950 to-black"></div>
                     <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 mb-12 z-10 animate-pulse tracking-tighter drop-shadow-lg text-center">TORNEO ASSOLUTO</h2>
                     <div className="flex flex-wrap justify-center gap-8 w-full max-w-5xl z-10 transition-all duration-700 transform scale-100 opacity-100">
-                        {renderMiniVS(m1p1, m1p2, m1Title)}
-                        {renderMiniVS(m2p1, m2p2, m2Title)}
+                        {matchToRender}
                     </div>
                 </div>
             );
