@@ -897,7 +897,13 @@
           'Pogo Elettrico': { name: 'Pogo Elettrico', type: 'Elettro', power: 85, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Rimbalza scatenando elettricità. 20% di probabilità di stordire.' },
           'Assolo Ribelle': { name: 'Assolo Ribelle', type: 'Suono', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Suona con pura ribellione aumentando Attacco e Velocità del 50%.' },
           'Riff Assordante': { name: 'Riff Assordante', type: 'Elettro', power: 100, ignoreDefBuffs: true, desc: 'Un riff chitarristico elettrizzante che ignora i potenziamenti difensivi.' },
-          'Assolo Inarrestabile': { name: 'Assolo Inarrestabile', type: 'Suono', power: 9999, targetCount: 4, priority: 5, ignoreDefBuffs: true, ignoreImmunities: true, desc: 'Un accordo talmente potente da spazzare via chiunque osi non ascoltarla. Ignora le immunità.' }
+          'Assolo Inarrestabile': { name: 'Assolo Inarrestabile', type: 'Suono', power: 9999, targetCount: 4, priority: 5, ignoreDefBuffs: true, ignoreImmunities: true, desc: 'Un accordo talmente potente da spazzare via chiunque osi non ascoltarla. Ignora le immunità.' },
+
+          // NUOVE MOSSE MAESTRO SPIETATO (SHIFU)
+          'Tocco della Paralisi Oscura': { name: 'Tocco della Paralisi Oscura', type: 'Oscuro', power: 60, statusEffect: { type: 'Stordito', chance: 0.6 }, desc: 'Un colpo mirato ai centri nervosi con energia oscura. 60% di stordire il bersaglio.' },
+          'Agilità Infernale': { name: 'Agilità Infernale', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, statBuff: { spd: 2.0, atk: 1.3 }, desc: 'Schiva ogni attacco con movimenti innaturali. Raddoppia la Velocità e aumenta l\'Attacco del 30%.' },
+          'Pressione Mortale': { name: 'Pressione Mortale', type: 'Lotta', power: 110, ignoreDefBuffs: true, desc: 'Una tecnica letale proibita che spezza le difese avversarie ignorandone i potenziamenti.' },
+          'Loto Nero': { name: 'Loto Nero', type: 'Oscuro', power: 85, targetCount: 4, targetStatDebuff: { atk: 0.7 }, desc: 'Un vortice di oscurità a forma di fiore di loto. Colpisce tutti e ne riduce l\'Attacco del 30%.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1107,7 +1113,9 @@
           { id: 'staticshocker', name: 'Static Shocker', types: ['Suono', 'Elettro'], hp: 180, maxHp: 180, atk: 135, def: 90, spd: 125, img: 'https://i.postimg.cc/TwrPVJZt/Gemini-Generated-Image-nt2jtgnt2jtgnt2j.png', moves: [MOVES_DB['Accordo Dissonante'], MOVES_DB['Pogo Elettrico'], MOVES_DB['Assolo Ribelle'], MOVES_DB['Riff Assordante']], isSecretUnlock: true, isCampaignMonster: true },
           { id: 'staticshocker_invincible', name: 'Static Shocker', types: ['Suono', 'Elettro'], hp: 9999, maxHp: 9999, atk: 9999, def: 999, spd: 9999, img: 'https://i.postimg.cc/TwrPVJZt/Gemini-Generated-Image-nt2jtgnt2jtgnt2j.png', moves: [MOVES_DB['Assolo Inarrestabile']], isSecretUnlock: true, isCampaignMonster: true },
           { id: 'maxcaulfield_corrotta', name: 'Max (Sottomessa)', types: ['Normale', 'Oscuro'], hp: 47, maxHp: 47, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' },
-          { id: 'marceline_corrotta', name: 'Marceline (Sottomessa)', types: ['Spettro', 'Oscuro'], hp: 47, maxHp: 47, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' }
+          { id: 'marceline_corrotta', name: 'Marceline (Sottomessa)', types: ['Spettro', 'Oscuro'], hp: 47, maxHp: 47, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' },
+          
+          { id: 'maestrospietato', name: 'Maestro Spietato', types: ['Oscuro', 'Lotta'], hp: 165, maxHp: 165, atk: 140, def: 100, spd: 145, img: 'https://i.postimg.cc/7ZV1Px5p/Akuma-Master-Shifu.png', moves: [MOVES_DB['Tocco della Paralisi Oscura'], MOVES_DB['Agilità Infernale'], MOVES_DB['Pressione Mortale'], MOVES_DB['Loto Nero']], isSecretUnlock: true, isCampaignMonster: true }
         ];
 
         const CHAR_PRICES = {
@@ -2455,6 +2463,39 @@
                   ],
                   boss: ['staticshocker', 'maxcaulfield_corrotta', 'marceline_corrotta'],
                   unlock: ['maxcaulfield', 'chloeprice', 'marceline']
+                }
+              ]
+            },
+            {
+              name: "Settore 3: Il Peso dell'Eredità",
+              description: "Monarch punta ai maestri e alle guide, corrompendo la loro saggezza e sfruttando la loro ansia di fallire con gli allievi.",
+              bg: "bg-emerald-950",
+              missions: [
+                {
+                  id: 'm_akuma7', title: 'Lezione di Paralisi',
+                  dialogue: [
+                    { s: "Maestro Shifu", t: "Quante volte devo dirtelo, Po?! La concentrazione è tutto! Non puoi fermarti a mangiare ravioli mentre esegui i Kata base!" },
+                    { s: "Po", t: "Ma Maestro, il mio stomaco faceva rumori fortissimi! Era una disarmonia pura dell'universo che andava placata con del cibo al vapore!" },
+                    { s: "Maestro Shifu", t: "Pazienza! Disciplina! Perché i miei studenti sono sempre così indisciplinati? Tai Lung... Tigre... e ora tu. Forse il problema sono io. Forse non sono un buon maestro, forse fallirò anche con il Guerriero Dragone." },
+                    { s: "Monarch", t: "Ah... il senso di inadeguatezza di un grande saggio. Il peso opprimente delle aspettative non realizzate verso se stesso. Meraviglioso! Vola, mia piccola Akuma, e offuscagli la mente!" },
+                    { s: "Ladybug", t: "Attenti ragazzi! Il bastone del Maestro Shifu è stato infettato!" },
+                    { s: "Monarch", t: "Maestro Spietato, io sono Monarch. I tuoi studenti non ascoltano? Sono troppo indisciplinati? Ti offro il potere di piegare le loro menti e i loro corpi ribelli con la disciplina assoluta. E in cambio... i Miraculous!" },
+                    { s: "Maestro Spietato", t: "L'indisciplina sarà sradicata con il dolore. Po, ti darò la lezione definitiva!" },
+                    { s: "Po", t: "Maestro, no! Skadoo-- ugh! Ahia! Ah! Mi ha colpito i centri nervosi... non riesco a muovere un muscolo! Sono diventato un panda di sasso!" },
+                    { s: "Chat Noir", t: "Sembra che il Maestro abbia bisogno di una lezione di relax intensivo, M'lady! E il nostro panda gigante è fuori gioco." },
+                    { s: "Ladybug", t: "Ci pensiamo noi! State in guardia, è incredibilmente veloce ed usa l'energia oscura per colpire i punti vitali!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Presa! Niente più malefatte per te, piccola akuma! ... Miraculous Ladybug!" },
+                    { s: "Maestro Shifu", t: "Ugh... Po? Dove sono? Perché ti stai toccando la pancia come una statua?" },
+                    { s: "Po", t: "Fiuuu! Mi si sono sbloccati i muscoli! Maestro, era diventato tutto viola e spaventoso e mi aveva bloccato il chi!" },
+                    { s: "Maestro Shifu", t: "Io... ho perso la pace interiore. L'ansia di fallire con te mi ha reso cieco, e quella magia oscura ne ha approfittato." },
+                    { s: "Po", t: "Maestro, lei è il migliore che ci sia! Non si preoccupi per me, so il fatto mio. Anche se ogni tanto mangio troppi ravioli." },
+                    { s: "Chat Noir", t: "Tutto è bene quel che finisce bene! Anche se mi fa ancora male la schiena per quei calci rotanti." },
+                    { s: "Maestro Shifu", t: "Vi sono debitore, eroi di Parigi. Affronterò questo 'Monarch' assieme a voi per ristabilire l'equilibrio." }
+                  ],
+                  boss: ['maestrospietato'],
+                  unlock: ['shifu']
                 }
               ]
             }
