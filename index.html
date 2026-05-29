@@ -2603,7 +2603,7 @@
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
-          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI' }, 
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false }, 
           draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
@@ -3826,7 +3826,7 @@
           const handleSurvivalStart = () => {
             const state = initialGameState();
             state.gameMode = 'survival';
-            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI' }; 
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false }; 
             state.players.p1 = playerName || "Sopravvissuto";
             state.playerAvatars.p1 = playerAvatarUrl;
             state.inventory.p1 = getPlayerData().inventory;
@@ -4056,8 +4056,9 @@
               }
           };
 
-          const startBattle = () => {
-            const teams = JSON.parse(JSON.stringify(gameState.draft));
+          const startBattle = (customDraft = null) => {
+            const isCustomDraft = customDraft && typeof customDraft === 'object' && !customDraft.nativeEvent && (customDraft.p1 || customDraft.p2);
+            const teams = JSON.parse(JSON.stringify(isCustomDraft ? customDraft : gameState.draft));
             let fieldSize = gameState.settings.fieldSize;
             if (gameState.gameMode === 'multipla') fieldSize = 1; 
             
@@ -8599,7 +8600,12 @@
                     )}
 
                     {!isHost && (
-                         <div className="mb-6 text-xl font-bold text-cyan-400">Modalità: {gameState.gameMode.toUpperCase()}</div>
+                         <div className="mb-6 flex flex-col items-center">
+                             <div className="text-xl font-bold text-cyan-400">Modalità: {gameState.gameMode.toUpperCase()}</div>
+                             {gameState.settings?.rentalMode && (
+                                 <div className="text-amber-400 text-sm font-black uppercase tracking-widest mt-1 animate-pulse flex items-center gap-2"><Swords size={16}/> Multimon in Nolo Attivo!</div>
+                             )}
+                         </div>
                     )}
 
                     <div className="grid grid-cols-2 gap-4 mb-8">
@@ -8709,6 +8715,21 @@
                                         <input type="number" min="1" max="4" value={gameState.settings.fieldSize} onChange={e => updateState({ settings: { ...gameState.settings, fieldSize: Math.min(4, parseInt(e.target.value) || 1) } })} className="bg-slate-800 text-center w-20 p-2 rounded-lg outline-none font-bold" />
                                 )}
                             </div>
+
+                            {/* NUOVO: Multimon in Nolo */}
+                            <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-amber-500/30 shadow-inner mt-4">
+                                <div className="flex flex-col text-left">
+                                    <span className="font-bold text-amber-400">Multimon in Nolo</span>
+                                    <span className="text-[10px] text-amber-200/70">Squadre 100% Casuali. Salta la scelta!</span>
+                                </div>
+                                <button 
+                                    onClick={() => updateState({ settings: { ...gameState.settings, rentalMode: !gameState.settings.rentalMode } })} 
+                                    className={`w-12 h-6 rounded-full flex items-center transition-all p-1 ${gameState.settings.rentalMode ? 'bg-amber-500' : 'bg-slate-700'}`}
+                                >
+                                    <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${gameState.settings.rentalMode ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                </button>
+                            </div>
+
                             <button disabled={!canStartDraft} onClick={() => {
                                 let hasBots = false;
                                 // FIX: Impedisce ai bot di usare personaggi e boss della campagna (isSecretUnlock)
@@ -8716,9 +8737,10 @@
                                 const newDraft = { ...gameState.draft };
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
+                                const activePlayersToDraft = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).filter(p => gameState.players[p]);
                                 
-                                ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).forEach(p => {
-                                    if (gameState.isBot[p]) {
+                                if (gameState.settings.rentalMode) {
+                                    activePlayersToDraft.forEach(p => {
                                         const cpuDraft = [];
                                         const shuffled = [...draftable].sort(() => 0.5 - Math.random());
                                         let cpuTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) ? 1 : gameState.settings.teamSize;
@@ -8728,17 +8750,32 @@
                                             cpuDraft.push(c);
                                         }
                                         newDraft[p] = cpuDraft;
-                                        hasBots = true;
-                                    }
-                                });
-
-                                if (hasBots) {
-                                     updateState({ status: 'drafting', draft: newDraft });
+                                    });
+                                    startBattle(newDraft);
                                 } else {
-                                     updateState({ status: 'drafting' });
+                                    activePlayersToDraft.forEach(p => {
+                                        if (gameState.isBot[p]) {
+                                            const cpuDraft = [];
+                                            const shuffled = [...draftable].sort(() => 0.5 - Math.random());
+                                            let cpuTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                                            
+                                            for(let i=0; i<cpuTeamSize; i++) {
+                                                let c = {...shuffled[i], statuses: [], consecutiveProtect: 0, baseAtk: shuffled[i].atk, baseDef: shuffled[i].def, baseSpd: shuffled[i].spd, moves: shuffled[i].moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))};
+                                                cpuDraft.push(c);
+                                            }
+                                            newDraft[p] = cpuDraft;
+                                            hasBots = true;
+                                        }
+                                    });
+
+                                    if (hasBots) {
+                                         updateState({ status: 'drafting', draft: newDraft });
+                                    } else {
+                                         updateState({ status: 'drafting' });
+                                    }
                                 }
-                            }} className="w-full bg-gradient-to-r from-emerald-500 to-green-600 disabled:opacity-50 disabled:grayscale text-white font-bold py-4 rounded-xl mt-6 shadow-lg text-lg">
-                                Procedi alla Scelta Personaggi
+                            }} className={`w-full disabled:opacity-50 disabled:grayscale text-white font-bold py-4 rounded-xl mt-6 shadow-lg text-lg ${gameState.settings.rentalMode ? 'bg-gradient-to-r from-amber-500 to-orange-600' : 'bg-gradient-to-r from-emerald-500 to-green-600'}`}>
+                                {gameState.settings.rentalMode ? 'Avvia Multimon in Nolo (Casuale)' : 'Procedi alla Scelta Personaggi'}
                             </button>
                         </div>
                     ) : (
