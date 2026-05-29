@@ -211,6 +211,7 @@
           'Barriera di Nuvole': { name: 'Barriera di Nuvole', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 5, desc: 'Si nasconde in una nuvola parando i danni. Usandola di fila aumenta la probabilità che fallisca.' },
           'Calcio Fulmineo': { name: 'Calcio Fulmineo', type: 'Elettro', power: 75, statusEffect: { type: 'Elettrizzato', chance: 0.3 }, desc: 'Un calcio veloce e caricato elettricamente. 30% di probabilità di paralizzare.' },
           'Volo Acrobatico': { name: 'Volo Acrobatico', type: 'Aria', power: 0, target: 'self', statBuff: { spd: 2.0, atk: 1.3 }, desc: 'Acrobazie aeree spettacolari che raddoppiano la Velocità e aumentano l\'Attacco del 30%.' },
+          'Morso del Pony': { name: 'Morso del Pony', type: 'Buio', power: 80, selfHeal: 0.5, selfHealChance: 0.5, desc: 'Un morso oscuro e inaspettato. 50% di probabilità di recuperare il 50% dei PS massimi.' },
 
           // NUOVE MOSSE LADYBUG
           'Yo-Yo Devastante': { name: 'Yo-Yo Devastante', type: 'Insetto', power: 80, desc: 'Colpisce il nemico con il suo inseparabile yo-yo magico.' },
@@ -871,12 +872,32 @@
           'Frammenti di Neve Weiss': { name: 'Frammenti di Neve', type: 'Ghiaccio', power: 20, multiHit: { min: 2, max: 8 }, desc: 'Lancia innumerevoli schegge di ghiaccio pungenti. Colpisce da 2 a 8 volte in rapida successione.' },
           'Glifo di Barriera': { name: 'Glifo di Barriera', type: 'Magico', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, targetStatBuff: { def: 1.3 }, desc: 'Crea uno scudo magico che protegge tutto il team aumentando la Difesa del 30% per 3 turni.' },
           'Glifo di Accelerazione': { name: 'Glifo di Accelerazione', type: 'Magico', power: 0, target: 'self', statBuff: { spd: 2.0 }, priority: 1, desc: 'Crea un glifo sotto di sé. Raddoppia la Velocità (+100%) e colpisce sempre per prima in questo turno.' },
+          'Overdrive': { name: 'Overdrive', type: 'Elettro', power: 120, targetCount: 4, maxUses: 2, desc: 'Scatena l\'energia accumulata per folgorare tutti i bersagli in campo! (2 utilizzi)' },
 
-          // NUOVE MOSSE NEON
-          'Saetta Relè': { name: 'Saetta Relè', type: 'Elettro', power: 0, targetCount: 2, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 1, desc: 'Spara saette elettriche che stordiscono infallibilmente fino a due bersagli a scelta. (1 utilizzo)' },
-          'Fast Lane': { name: 'Fast Lane', type: 'Elettro', power: 0, targetMode: 'team', statusEffect: { type: 'Scudo Team', turns: 3 }, targetStatBuff: { def: 1.3 }, desc: 'Crea muri elettrici per proteggere gli alleati, aumentando la Difesa del team del 30% per 3 turni.' },
-          'Sprint Elettrico': { name: 'Sprint Elettrico', type: 'Elettro', power: 60, priority: 1, statusEffect: { type: 'Elettrizzato', chance: 0.20 }, desc: 'Corre a velocità estrema colpendo sempre per prima (Priorità +1). 20% probabilità di paralizzare.' },
-          'Overdrive': { name: 'Overdrive', type: 'Elettro', power: 120, targetCount: 4, maxUses: 2, desc: 'Scatena l\'energia accumulata per folgorare tutti i bersagli in campo! (2 utilizzi)' }
+          // NUOVE MOSSE TERZA CAMPAGNA (MONARCH & AKUMA)
+          'Fiamme del Rifiuto': { name: 'Fiamme del Rifiuto', type: 'Fuoco', power: 85, targetCount: 4, statusEffect: { type: 'Scottato', chance: 0.4 }, desc: 'Fiamme oscure nate dalla rabbia. Colpisce tutti i nemici e ha il 40% di probabilità di scottare.' },
+          'Schianto Akuma': { name: 'Schianto Akuma', type: 'Oscuro', power: 100, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Un salto devastante potenziato dal male puro. 30% di probabilità di stordire il bersaglio.' },
+          'Guscio dell Odio': { name: 'Guscio dell\'Odio', type: 'Oscuro', power: 0, target: 'self', statBuff: { def: 2.0, atk: 1.3 }, desc: 'Si rinchiude nel guscio accumulando rabbia oscura. Raddoppia la Difesa e aumenta l\'Attacco del 30%.' },
+          
+          'Urlo del Terrore': { name: 'Urlo del Terrore', type: 'Suono', power: 0, targetCount: 4, targetStatDebuff: { atk: 0.6 }, desc: 'Un urlo straziante che terrorizza tutti i nemici, riducendo drasticamente il loro Attacco (40%).' },
+          'Tempesta Nera': { name: 'Tempesta Nera', type: 'Aria', power: 85, targetCount: 4, desc: 'Scatena un tornado di fulmini neri e vento oscuro colpendo tutti i nemici sul campo.' },
+          'Raid da Incubo': { name: 'Raid da Incubo', type: 'Oscuro', power: 100, speedScaling: true, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Un attacco in picchiata a velocità sonica. Scala con la Velocità e ha il 30% di stordire il bersaglio.' },
+          'Nuvola di Disperazione': { name: 'Nuvola di Disperazione', type: 'Veleno', power: 0, targetCount: 2, statusEffects: [{ type: 'Avvelenato', chance: 0.5 }, { type: 'Confuso', chance: 0.5 }], desc: 'Avvolge fino a due nemici in una nube tossica. 50% di avvelenare e/o confondere.' },
+
+          'Stritolamento Akuma': { name: 'Stritolamento Akuma', type: 'Oscuro', power: 90, drain: 0.3, statusEffect: { type: 'Stordito', chance: 0.4 }, desc: 'Stritola il nemico con arti allungati e demoniaci. Drena vita (30%) e ha il 40% di prob. di stordire.' },
+          'Pugno Demoniaco': { name: 'Pugno Demoniaco', type: 'Lotta', power: 100, ignoreDefBuffs: true, desc: 'Un pugno gigante imbevuto di magia nera. Ignora i potenziamenti difensivi dell\'avversario.' },
+          'Corpo d Ombra': { name: 'Corpo d\'Ombra', type: 'Oscuro', power: 0, target: 'self', statBuff: { def: 1.5, atk: 1.5 }, desc: 'Abbraccia l\'oscurità per potenziare a dismisura Attacco e Difesa (+50%).' },
+
+          'Zaker Corrotto': { name: 'Zaker Corrotto', type: 'Oscuro', power: 95, statusEffect: { type: 'Elettrizzato', chance: 0.4 }, desc: 'Un fulmine nero come la pece. 40% di probabilità di paralizzare il bersaglio.' },
+          'Fiamma Demoniaca': { name: 'Fiamma Demoniaca', type: 'Fuoco', power: 90, statusEffect: { type: 'Scottato', chance: 0.4 }, desc: 'Fiamme oscure scaturite da un destriero infernale. 40% probabilità di scottare.' },
+          'Carica della Rovina': { name: 'Carica della Rovina', type: 'Oscuro', power: 140, isCombo: ['zatch_akuma', 'ponygon_akuma'], desc: 'Mossa Combinata: I due araldi caricano insieme avvolti nell\'oscurità. Danni immensi.' },
+
+          // NUOVE MOSSE STATIC SHOCKER (CHLOE)
+          'Accordo Dissonante': { name: 'Accordo Dissonante', type: 'Suono', power: 75, targetCount: 2, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Un accordo stonato che colpisce fino a 2 nemici. 30% di confondere.' },
+          'Pogo Elettrico': { name: 'Pogo Elettrico', type: 'Elettro', power: 85, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Rimbalza scatenando elettricità. 20% di probabilità di stordire.' },
+          'Assolo Ribelle': { name: 'Assolo Ribelle', type: 'Suono', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Suona con pura ribellione aumentando Attacco e Velocità del 50%.' },
+          'Riff Assordante': { name: 'Riff Assordante', type: 'Elettro', power: 100, ignoreDefBuffs: true, desc: 'Un riff chitarristico elettrizzante che ignora i potenziamenti difensivi.' },
+          'Assolo Inarrestabile': { name: 'Assolo Inarrestabile', type: 'Suono', power: 9999, targetCount: 4, priority: 5, ignoreDefBuffs: true, ignoreImmunities: true, desc: 'Un accordo talmente potente da spazzare via chiunque osi non ascoltarla. Ignora le immunità.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -912,7 +933,7 @@
           { id: 'topolino', name: 'Topolino', types: ['Normale'], hp: 105, maxHp: 105, atk: 85, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/d8/f2/ef/d8f2efccf41766493727a5bf5c49e082.jpg', moves: [MOVES_DB['Colpo Cartoon'], MOVES_DB['Fischietto amico'], MOVES_DB['Tappeto scivoloso'], MOVES_DB['Magia Disney']] },
           { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 110, maxHp: 110, atk: 100, def: 70, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', passive: { name: 'Testa Calda', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando la vita scende sotto il 25%, aumenta il proprio Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
           { id: 'bloom', name: 'Bloom', types: ['Fuoco', 'Magico'], hp: 80, maxHp: 80, atk: 110, def: 60, spd: 100, img: 'https://i.pinimg.com/736x/d6/c1/38/d6c138c9b4720da37aa07f8ae69b158c.jpg', passive: { name: 'Cuore di Fenice', type: 'on_faint', reviveHpPercent: 0.3, maxUses: 1, desc: 'La prima volta che i PS scendono a 0, rinasce immediatamente recuperando il 30% della salute.' }, moves: [MOVES_DB['Fiamma del Drago'], MOVES_DB['Esplosione Solare'], MOVES_DB['Aura Stellare'], MOVES_DB['Incanto Protettivo']] },
-          { id: 'bowser', name: 'Bowser', types: ['Fuoco', 'Drago'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 40, img: 'https://i.pinimg.com/736x/cf/3f/ec/cf3fec1f6b9334e0255065f150fa97a9.jpg', passive: { name: 'Fiamma del Re Koopa', type: 'on_enter', maxUses: 1, applyStatusToRandomEnemy: { type: 'Scottato', turns: 1 }, desc: 'Appena scende in campo, scotta immediatamente un nemico casuale. (1 sola volta per battaglia)' }, moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Rolla-Guscio'], MOVES_DB['Ruggito del re koopa'], MOVES_DB['Dragartigli']] },
+          { id: 'bowser', name: 'Bowser', types: ['Fuoco', 'Drago'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 40, img: 'https://i.pinimg.com/736x/cf/3f/ec/cf3fec1f6b9334e0255065f150fa97a9.jpg', passive: { name: 'Fiamma del Re Koopa', type: 'on_enter', maxUses: 1, applyStatusToRandomEnemy: { type: 'Scottato', turns: 99 }, desc: 'Appena scende in campo, scotta immediatamente un nemico casuale. (1 sola volta per battaglia)' }, moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Rolla-Guscio'], MOVES_DB['Ruggito del re koopa'], MOVES_DB['Dragartigli']] },
           { id: 'leslie', name: 'Leslie', types: ['Erba'], hp: 120, maxHp: 120, atk: 90, def: 110, spd: 65, img: 'https://i.pinimg.com/736x/27/9b/52/279b527b56263fab8939f6597633a51b.jpg', moves: [MOVES_DB['Polline fastidioso'], MOVES_DB['Foglia Danzerina'], MOVES_DB['Fotosintesi clorofiliana'], MOVES_DB['L ho fatta nel vaso']] },
           { id: 'roserade', name: 'Roserade', types: ['Erba', 'Veleno'], hp: 80, maxHp: 80, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/67/88/49/678849c01d18a4e0b90038bc069642ce.jpg', moves: [MOVES_DB['Tossina'], MOVES_DB['Gigassorbimento'], MOVES_DB['Fangobomba'], MOVES_DB['Protezione']] },
           { id: 'darwin', name: 'Darwin', types: ['Acqua', 'Normale'], hp: 95, maxHp: 95, atk: 85, def: 80, spd: 100, img: 'https://i.pinimg.com/1200x/5a/cf/9c/5acf9c886678411963046b04051e610e.jpg', moves: [MOVES_DB['Bolla Turbo'], MOVES_DB['Onda Amica'], MOVES_DB['Brutto, brutto e cattivo!'], MOVES_DB['Onda Travolgente']] },
@@ -1072,7 +1093,21 @@
           { id: 'alberto', name: 'Alber(t)o', types: ['Erba', 'Spettro'], hp: 130, maxHp: 130, atk: 110, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/b5/a7/56/b5a756e1b71e78ff29e14255d5e1ab71.jpg', moves: [MOVES_DB['Face demoniaca'], MOVES_DB['Ramo e stoccata']], isSecretUnlock: true, isCampaignMonster: true },
           { id: 'fioretenebroso', name: 'Fiore Tenebroso', types: ['Erba', 'Buio'], hp: 100, maxHp: 100, atk: 130, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/e9/e1/d8/e9e1d8b95743209534bd9837311bb52c.jpg', moves: [MOVES_DB['Sguardo incattivito'], MOVES_DB['Fotosintesi offensiva']], isSecretUnlock: true, isCampaignMonster: true },
           
-          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 60, maxHp: 60, atk: 10, def: 50, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true, isCampaignMonster: true }
+          { id: 'fatacosmica', name: 'Fata Cosmica', types: ['Magico', 'Aria'], hp: 60, maxHp: 60, atk: 10, def: 50, spd: 300, img: 'https://i.pinimg.com/736x/a3/1d/22/a31d22e02379b2d77434c6b5f61e98c6.jpg', moves: [MOVES_DB['Fata protettiva'], MOVES_DB['Spirito!'], MOVES_DB['ha,ha,ha!'], MOVES_DB['Schermoluce']], isSecretUnlock: true, isCampaignMonster: true },
+
+          // BOSS E NEMICI TERZA CAMPAGNA
+          { id: 'monarch', name: 'Monarch', types: ['Oscuro', 'Magico'], hp: 200, maxHp: 200, atk: 130, def: 110, spd: 100, img: 'https://i.pinimg.com/736x/f8/f3/9b/f8f39b2ad44af45a6027783dcfa69f7f.jpg', moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Assorbimento Tenebroso']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'cuoreinfranto', name: 'Cuore Infranto', types: ['Oscuro', 'Fuoco'], hp: 150, maxHp: 150, atk: 125, def: 115, spd: 55, img: 'https://i.postimg.cc/mgRNGcgM/Akuma-Bowser.png', passive: { name: 'Aura Infranta', type: 'on_enter', maxUses: 1, applyStatusToRandomEnemy: { type: 'Scottato', turns: 99 }, desc: 'L\'odio brucia: appena scende in campo scotta un nemico casuale.' }, moves: [MOVES_DB['Fiamme del Rifiuto'], MOVES_DB['Schianto Akuma'], MOVES_DB['Guscio dell Odio']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'terrordash', name: 'Terror Dash', types: ['Oscuro', 'Aria'], hp: 160, maxHp: 160, atk: 140, def: 85, spd: 155, img: 'https://i.postimg.cc/q7vsz9ns/Akuma-Rainbow-Dash.png', moves: [MOVES_DB['Urlo del Terrore'], MOVES_DB['Tempesta Nera'], MOVES_DB['Raid da Incubo'], MOVES_DB['Nuvola di Disperazione']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'jakeildemone', name: 'Jake il Demone', types: ['Oscuro', 'Lotta'], hp: 170, maxHp: 170, atk: 135, def: 110, spd: 80, img: 'https://i.postimg.cc/521qMH27/Akuma-Jake-Il-Cane.png', moves: [MOVES_DB['Stritolamento Akuma'], MOVES_DB['Pugno Demoniaco'], MOVES_DB['Corpo d Ombra'], MOVES_DB['Morsa del Demone']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'zatch_akuma', name: 'Re della Rovina', types: ['Oscuro', 'Elettro'], hp: 160, maxHp: 160, atk: 145, def: 90, spd: 110, img: 'https://i.postimg.cc/P5Qm2tTk/Gemini-Generated-Image-ls2n0jls2n0jls2n.png', moves: [MOVES_DB['Zaker Corrotto'], MOVES_DB['Schianto Akuma'], MOVES_DB['Carica della Rovina']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'ponygon_akuma', name: 'Destriero Oscuro', types: ['Oscuro', 'Fuoco'], hp: 170, maxHp: 170, atk: 125, def: 120, spd: 140, img: 'https://i.postimg.cc/bNH7HtGK/Gemini-Generated-Image-npa5wznpa5wznpa5.png', moves: [MOVES_DB['Fiamma Demoniaca'], MOVES_DB['Corpo d Ombra'], MOVES_DB['Carica della Rovina']], isSecretUnlock: true, isCampaignMonster: true },
+
+          { id: 'gommarosa', name: 'Gommarosa', types: ['Magico'], hp: 50, maxHp: 50, atk: 50, def: 50, spd: 50, img: 'https://i.pinimg.com/736x/9d/30/1d/9d301d9b6e4fe9899430acfa06f780e4.jpg', moves: [], isSummonOnly: true },
+          { id: 'staticshocker', name: 'Static Shocker', types: ['Suono', 'Elettro'], hp: 180, maxHp: 180, atk: 135, def: 90, spd: 125, img: 'https://i.postimg.cc/TwrPVJZt/Gemini-Generated-Image-nt2jtgnt2jtgnt2j.png', moves: [MOVES_DB['Accordo Dissonante'], MOVES_DB['Pogo Elettrico'], MOVES_DB['Assolo Ribelle'], MOVES_DB['Riff Assordante']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'staticshocker_invincible', name: 'Static Shocker', types: ['Suono', 'Elettro'], hp: 9999, maxHp: 9999, atk: 9999, def: 999, spd: 9999, img: 'https://i.postimg.cc/TwrPVJZt/Gemini-Generated-Image-nt2jtgnt2jtgnt2j.png', moves: [MOVES_DB['Assolo Inarrestabile']], isSecretUnlock: true, isCampaignMonster: true },
+          { id: 'maxcaulfield_corrotta', name: 'Max (Sottomessa)', types: ['Normale', 'Oscuro'], hp: 47, maxHp: 47, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' },
+          { id: 'marceline_corrotta', name: 'Marceline (Sottomessa)', types: ['Spettro', 'Oscuro'], hp: 47, maxHp: 47, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' }
         ];
 
         const CHAR_PRICES = {
@@ -2232,6 +2267,198 @@
               ]
             }
           ]
+        },
+        {
+            id: 'monarch_akuma',
+            title: "L'Ombra di Monarch",
+            shortTitle: "Terza Campagna",
+            description: "La festa per la vittoria nel Torneo viene interrotta da sciami di Akuma! Usa Ladybug e Chat Noir per purificare i tuoi amici corrotti dalle emozioni negative.",
+            bg: "from-purple-900 to-slate-950",
+            intro: {
+                title: "L'Ombra di Monarch",
+                subtitle: "Prologo: Il Banchetto Interrotto",
+                p1: "Sono passati alcuni mesi da quando gli eroi hanno salvato i loro universi nel Torneo Assoluto. Zeno e Discord hanno organizzato un enorme banchetto interdimensionale per festeggiare in pace.",
+                p2: "Ma la felicità di molti nasconde la frustrazione di altri. Attratto da questa incredibile concentrazione di emozioni, Monarch (il portatore del Miraculous della Farfalla) ha invaso il Villaggio dei Campioni. Il suo piano è akumizzare i campioni uno ad uno per impadronirsi dei Miraculous di Ladybug e Chat Noir!"
+            },
+            sectors: [
+            {
+              name: "Settore 1: La Minaccia Oscura",
+              description: "I primi giorni di pace vengono sconvolti. Monarch sfrutta le debolezze dei campioni per creare i suoi araldi.",
+              bg: "bg-fuchsia-950",
+              missions: [
+                {
+                  id: 'm_akuma1', title: 'Un Re Incompreso',
+                  dialogue: [
+                    { s: "Bowser", t: "Grrr... Non ci posso credere! Ho conquistato galassie, ho sputato fiumi di magma, eppure a questo banchetto tutti pendono dalle labbra di quell'idraulico baffuto! E la torta? Hanno dato a lui la fetta più grande con la ciliegina! È un affronto inaccettabile per il grande Re dei Koopa!" },
+                    { s: "Topolino", t: "Suvvia Bowser, non fare così! È una festa per tutti, ci sono dolci in abbondanza se vuoi..." },
+                    { s: "Bowser", t: "Taci, topo! Nessuno capisce la grandezza del mio genio incompreso! Mi trattano sempre come una barzelletta!" },
+                    { s: "Monarch", t: "Ah... la frustrazione cocente di un sovrano ignorato e sminuito. L'invidia che corrode l'orgoglio. È una sinfonia perfetta per i miei scopi. Vola, mia piccola creatura oscura, e infetta quel cuore colmo di rabbia!" },
+                    { s: "Ladybug", t: "Chat! Il mio yo-yo segnala un'anomalia... Quella è un'Akuma! Sta puntando verso Bowser!" },
+                    { s: "Chat Noir", t: "Un'Akuma qui, nel Villaggio dei Campioni? Sembra che il nostro 'amico' Monarch non voglia proprio concederci una vacanza, M'lady." },
+                    { s: "Topolino", t: "Un'a-che-cosa? Ragazzi, una farfalla nera è appena entrata nel guscio spinoso di Bowser! E ora c'è una maschera di luce viola sul suo volto!" },
+                    { s: "Monarch", t: "Cuore Infranto, io sono Monarch. Ti hanno sempre umiliato e messo in secondo piano. Ora ti dono il potere inarrestabile per bruciare chiunque osi deriderti, per far capire a tutti chi è il vero Re. In cambio, mi porterai i Miraculous di Ladybug e Chat Noir!" },
+                    { s: "Cuore Infranto", t: "BWAHAHAHA! Perfetto... Finalmente! Nessuno ignorerà più la mia potenza! Ridurrò in cenere questa festa, l'intero villaggio, e poi prenderò quei gioielli scintillanti per te, Monarch!" },
+                    { s: "Ladybug", t: "Non se te lo impediremo noi! Attenti tutti, non è più in sé, le sue emozioni negative lo stanno controllando. Dobbiamo sconfiggerlo per liberare l'Akuma! Tikki, trasformami!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Niente più malefatte per te, piccola akuma! ... Miraculous Ladybug!" },
+                    { s: "Bowser", t: "Ugh... la mia testa. Cos'è successo? Perché ho il sapore di cenere in bocca? E soprattutto... DOV'È FINITA LA MIA FETTA DI TORTA?!" },
+                    { s: "Chat Noir", t: "Ben svegliato, fiammifero. Ci stavi dando del filo da torcere. Hai cercato di grigliare tutti gli invitati." },
+                    { s: "Topolino", t: "Mamma mia... Se Ladybug non avesse ripristinato tutto con la sua magia, avremmo perso mezzo accampamento. Siete stati incredibili, ragazzi!" },
+                    { s: "Ladybug", t: "È il nostro lavoro. Ma questo significa che Monarch ha trovato un modo per far viaggiare le sue Akuma attraverso le dimensioni." },
+                    { s: "Monarch", t: "Avete vinto questa piccola scaramuccia, Ladybug e Chat Noir. Ma siete lontani da casa, vulnerabili. E questo multiverso pullula di anime frustrate, insicure e arrabbiate, pronte a servirmi. I vostri Miraculous saranno miei!" }
+                  ],
+                  boss: ['cuoreinfranto'],
+                  unlock: ['bowser']
+                },
+                {
+                  id: 'm_akuma2', title: 'Velocità Infranta',
+                  dialogue: [
+                    { s: "Topolino", t: "Sono passati tre giorni dall'incidente alla festa. Abbiamo raddoppiato le ronde, ma finora nessuna traccia di altre farfalle nere." },
+                    { s: "Rainbow Dash", t: "Ugh, sono così frustrata! Ieri mi sono allenata con Sonic e quel tizio robot, Metal Sonic. Mi hanno battuta! Me! Il pony più veloce di tutta Equestria, lasciata a mangiare la polvere cibernetica!" },
+                    { s: "Topolino", t: "Dash, non puoi vincere sempre. Metal Sonic ha dei propulsori a reazione spaziali, non c'è paragone..." },
+                    { s: "Rainbow Dash", t: "Non m'importa! Se non sono la più veloce, allora chi sono?! Forse hanno ragione... forse sto perdendo il mio tocco. Forse sono diventata... lenta." },
+                    { s: "Monarch", t: "La paura di non essere abbastanza. Il terrore di perdere la propria identità e la propria fama. Che preda prelibata per il mio sciame. Vola, mia piccola Akuma, e falle superare ogni limite... verso il baratro!" },
+                    { s: "Chat Noir", t: "M'lady, il radar del tuo yo-yo sta impazzendo! Segnala un'altra intrusione oscura, settore ovest, vicino alla pista d'atletica!" },
+                    { s: "Ladybug", t: "Presto Chat! Dobbiamo intercettarla prima che trovi un bersaglio debole emotivamente!" },
+                    { s: "Monarch", t: "Terror Dash, io sono Monarch. Ti senti umiliata e scavalcata. Ti offro la velocità dell'oscurità assoluta, una rapidità che nessuno potrà mai eguagliare. Farai assaggiare la polvere a chi ti ha superato, in cambio dei Miraculous di Ladybug e Chat Noir!" },
+                    { s: "Terror Dash", t: "Sì... Sì! Nessuno sarà più veloce di me! Porterò un uragano di terrore su chiunque osi sfidarmi!" },
+                    { s: "Topolino", t: "Oh no, siamo arrivati tardi! Rainbow Dash è diventata completamente grigia, e ha degli occhi rossi spaventosi!" },
+                    { s: "Chat Noir", t: "Accidenti, non ci voleva. Battere qualcuno che vola alla velocità della luce sarà una bella gatta da pelare..." },
+                    { s: "Ladybug", t: "Dobbiamo bloccarla o stordirla! Se le permettiamo di prendere velocità, i suoi attacchi ci spazzeranno via!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Presa! Ciao ciao, farfallina. Miraculous Ladybug!" },
+                    { s: "Rainbow Dash", t: "Cosa...? Dove sono? L'ultima cosa che ricordo è che volevo superare la barriera del suono per dimostrare quanto valessi..." },
+                    { s: "Chat Noir", t: "E ci sei quasi riuscita, solo che lo stavi facendo circondata da fulmini neri molto poco rassicuranti." },
+                    { s: "Rainbow Dash", t: "Oh cavolo... mi sono lasciata prendere dall'insicurezza. Io sono Rainbow Dash, non ho bisogno di distruggere tutto per dimostrare quanto sono veloce! Mi dispiace, ragazzi." },
+                    { s: "Finn l'Umano", t: "Ehi ragazzi! Abbiamo visto i fulmini neri da lontano! Siete stati fantastici a fermarla!" },
+                    { s: "Topolino", t: "Finn! Meno male che siete qui." },
+                    { s: "Finn l'Umano", t: "Se questo Monarch se la prende con i nostri amici, vi diamo una mano noi a pattugliare!" }
+                  ],
+                  boss: ['terrordash'],
+                  unlock: ['rainbowdash', 'finn']
+                },
+                {
+                  id: 'm_akuma3', title: 'L\'Amico Demoniaco',
+                  dialogue: [
+                    { s: "Finn l'Umano", t: "Tutto tranquillo nel settore ovest. Jake, amico, stai bene? Sembri un po' giù di corda da quando Sonic ci ha superati l'altro giorno." },
+                    { s: "Jake il Cane", t: "Oh, non è niente Finn... è solo che... tu diventi sempre più forte, hai spade magiche, salvi principesse... e io sono solo un cane che si allunga. Prima o poi non avrai più bisogno di me." },
+                    { s: "Finn l'Umano", t: "Cosa?! Ma sei impazzito?! Tu sei il mio fratello magico! Senza di te non sarei sopravvissuto a metà delle nostre avventure!" },
+                    { s: "Monarch", t: "Il timore dell'abbandono. L'inadeguatezza di un fratello maggiore che si sente inutile. Un'esca perfetta! Vola, mia piccola Akuma, e oscura quel cuore colmo di dubbio!" },
+                    { s: "Ladybug", t: "Attenti! Un'Akuma si sta dirigendo proprio verso di voi!" },
+                    { s: "Finn l'Umano", t: "Un'A-che-cosa?! Jake, spostati!" },
+                    { s: "Jake il Cane", t: "Argh! La mia testa!" },
+                    { s: "Monarch", t: "Jake il Demone, io sono Monarch. La paura di essere lasciato indietro ti divora. Ti dono il potere di diventare il guardiano assoluto, uno scudo inarrestabile. Nessuno potrà mai più fare a meno di te. In cambio, mi porterai i Miraculous di Ladybug e Chat Noir!" },
+                    { s: "Jake il Demone", t: "GRRRR... IO PROTEGGERÒ FINN! STRITOLERÒ CHIUNQUE OSI AVVICINARSI! Sarete la mia colazione, eroi da strapazzo!" },
+                    { s: "Finn l'Umano", t: "No, Jake! Ladybug, Chat Noir, aiutatemi a farlo tornare in sé! Non voglio fargli del male!" },
+                    { s: "Ladybug", t: "Tranquillo Finn! Dobbiamo solo stancarlo e distruggere l'oggetto akumizzato! In questo caso... il suo collare!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Preso il collare! Niente più malefatte per te, piccola akuma! ... Miraculous Ladybug!" },
+                    { s: "Jake il Cane", t: "Oh... ohi ohi... la mia pancia. Credo di aver mangiato troppa oscurità. Ha il sapore di calzini vecchi dimenticati al sole." },
+                    { s: "Finn l'Umano", t: "JAKE! Fratello!" },
+                    { s: "Jake il Cane", t: "Scusa, Finn. Quella farfallina mi ha fatto pensare a cose bruttissime. Mi sentivo così inutile..." },
+                    { s: "Finn l'Umano", t: "Non spaventarmi mai più così! Io ho bisogno di te, amico. Siamo inseparabili, ricordi?" },
+                    { s: "Chat Noir", t: "Un vero lieto fine. Anche se il mio costume è completamente ricoperto di bava di demone gigante elastico." },
+                    { s: "Finn l'Umano", t: "Siete stati formidabili, eroi di Parigi. Ora che anche Jake sta bene, ci prepareremo per la prossima minaccia!" },
+                    { s: "Monarch", t: "Illusi. Ogni alleanza che forgiate sarà la vostra debolezza. Le vostre paure sono un serbatoio infinito per il mio potere. Non mi fermerò finché non avrò i Miraculous!" }
+                  ],
+                  boss: ['jakeildemone'],
+                  unlock: ['jake']
+                }
+              ]
+            },
+            {
+              name: "Settore 2: Legami Spezzati",
+              description: "Monarch inizia a prendere di mira i legami più stretti tra i campioni, cercando di distruggere le loro amicizie per ottenere potere.",
+              bg: "bg-indigo-950",
+              missions: [
+                {
+                  id: 'm_akuma4', title: 'I Sovrani della Rovina',
+                  dialogue: [
+                    { s: "Zatch bell", t: "Ponygon, no! Quello è Vulcan 300, il mio migliore amico costruito con una scatola di merendine! Non morderlo, ti prego!" },
+                    { s: "Ponygon", t: "Meru meru meee! (Stringe la scatola tra i denti e tira fortissimo giocando)" },
+                    { s: "Zatch bell", t: "Lascialo! Così lo rompiamo! Dai, Ponygon, molla la presa!" },
+                    { s: "Topolino", t: "*(Strappo netto)* Oh cielo... si è letteralmente spezzato a metà." },
+                    { s: "Zatch bell", t: "Oh no... Vulcan... si è strappato. Il mio amico..." },
+                    { s: "Ponygon", t: "Meru... (Abbassa le orecchie, rendendosi conto del danno, profondamente triste e in colpa)" },
+                    { s: "Monarch", t: "Il dolore pungente di un'amicizia ferita. Il senso di colpa soffocante per aver rovinato qualcosa di prezioso. L'incapacità di comprendersi. Le emozioni perfette per... non una, ma ben due vittime! Vola, mia piccola Akuma, e corrompi quel giocattolo spezzato che li unisce!" },
+                    { s: "Ladybug", t: "Attenti ragazzi! L'Akuma è entrata di scatto in quello che rimane della scatola di cartone che tengono in mano!" },
+                    { s: "Monarch", t: "Sovrani della Rovina, io sono Monarch. Vi sentite in colpa, tristi, incompresi. Vi dono il potere di distruggere ogni cosa, così che nulla in questo fragile mondo possa più ferirvi o spezzarsi. Sarete i dominatori assoluti... in cambio dei Miraculous di Ladybug e Chat Noir!" },
+                    { s: "Re della Rovina", t: "Questo mondo è troppo fragile... Non mi serve. Ti porteremo i gioielli! ZAKER OSCURO!" },
+                    { s: "Destriero Oscuro", t: "MERU RAWRRR! (Avvolge il suo corpo in fiamme oscure)" },
+                    { s: "Finn l'Umano", t: "Santo cielo, il ragazzino spara fulmini neri e il cavallino è diventato un demone in fiamme! Ladybug, Chat Noir, vi copro io!" },
+                    { s: "Chat Noir", t: "Sembra che questi due abbiano deciso di darci una bella 'scossa' emotiva, M'lady." },
+                    { s: "Ladybug", t: "Meno battute, Chat! L'oggetto akumizzato è quel robottino di cartone che tengono stretto, ma dobbiamo prima stenderli entrambi per arrivarci!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Preso! Niente più malefatte per te, piccola Akuma! Miraculous Ladybug!" },
+                    { s: "Topolino", t: "Guardate! Lo sciame magico di Ladybug ha appena riparato completamente Vulcan 300!" },
+                    { s: "Zatch bell", t: "Ugh... la mia bocca sa di cenere. Eh?! Vulcan 300! Sei di nuovo intero! Scusa Ponygon, non volevo arrabbiarmi così tanto con te." },
+                    { s: "Ponygon", t: "Meru... meru me. (Scuote la testa terrorizzato guardandosi le zampe, poi corre via veloce verso la foresta dell'accampamento)" },
+                    { s: "Zatch bell", t: "Ponygon, aspetta! Uffa, si è spaventato tantissimo per via di quell'energia oscura che aveva in corpo. Deve essersi sentito in trappola ed è scappato." },
+                    { s: "Finn l'Umano", t: "Lasciagli un po' di spazio, Zatch. Si calmerà e tornerà. Nel frattempo, noi abbiamo un tizio con le farfalle da sistemare." },
+                    { s: "Zatch bell", t: "Hai ragione, Finn! Quel 'Monarch' ha usato il povero Vulcan 300 per fare del male ai miei amici e spaventare Ponygon! Io, Zatch Bell, diventerò un Re gentile e non permetterò a nessuno di fare il prepotente! Vi aiuterò io!" },
+                    { s: "Chat Noir", t: "Un re che spara fulmini dalla bocca? Purr-fetto, la nostra squadra si fa sempre più elettrizzante." }
+                  ],
+                  boss: ['zatch_akuma', 'ponygon_akuma'],
+                  unlock: ['zatchbell']
+                },
+                {
+                  id: 'm_akuma5', title: 'Uscita a Quattro Rovinata',
+                  forcedRoster: ['maxcaulfield', 'marceline'],
+                  progressOnDefeat: true,
+                  dialogue: [
+                    { s: "Topolino", t: "Oggi l'accampamento è tranquillo. Max e Marceline hanno organizzato un'uscita a quattro con le loro ragazze vicino al lago!" },
+                    { s: "Max Caulfield", t: "Chloe, dai, non fare così. Stavo solo ascoltando la spiegazione di Bonnibel sulla struttura molecolare dello zucchero... era interessante!" },
+                    { s: "Chloe Price", t: "Interessante?! Per tre ore, Max?! Vi siete isolate completamente! Che senso ha fare un'uscita a quattro se io devo stare qui a fissare le paperelle del lago?" },
+                    { s: "Gommarosa", t: "La scienza richiede concentrazione, Chloe. E il tuo atteggiamento ostile è statisticamente inutile per la risoluzione di questo futile conflitto." },
+                    { s: "Marceline", t: "Ehi Bonnie, vacci piano, non fare la secchiona adesso. E tu Chloe, dacci un taglio e smettila di fare la bambina." },
+                    { s: "Chloe Price", t: "Perfetto. Fate tutti squadra contro di me, giusto?! Voi due siete le principessine perfette e geniali... e io sono solo lo stupido terzo incomodo! Anzi, quarto!" },
+                    { s: "Monarch", t: "Oh... il pungente sapore dell'esclusione. Il sentirsi stupidi e messi da parte da chi si ama. La gelosia che si trasforma in pura rabbia elettrica! Vola, mia piccola Akuma, e accendi il suo odio!" },
+                    { s: "Chloe Price", t: "Argh! La mia chitarra... scotta!" },
+                    { s: "Monarch", t: "Static Shocker, io sono Monarch. Ti fanno sentire inutile e ignorante? Ti darò il potere di farti ascoltare da tutto il multiverso con una scossa inarrestabile! In cambio, voglio i Miraculous!" },
+                    { s: "Static Shocker", t: "Alzerò il volume al massimo! Nessuno potrà più ignorarmi!" },
+                    { s: "Max Caulfield", t: "Oh no... Marceline, Ladybug e Chat Noir sono lontani da qui in pattuglia! Dobbiamo fermarla noi due!" },
+                    { s: "Marceline", t: "Sfoderiamo i bassi, Max. Facciamola ragionare a suon di musica... e botte!" }
+                  ],
+                  postDialogue: [
+                    { s: "Static Shocker", t: "Ahahah! Ve l'avevo detto che la mia musica vi avrebbe letteralmente spazzate via!" },
+                    { s: "Monarch", t: "Eccellente, Static Shocker. Usa il tuo ritmo dissonante per piegare le loro menti. Saranno le tue coriste obbedienti!" },
+                    { s: "Marceline", t: "Ugh... la mia testa... la sua musica... non riesco a pensare ad altro... ha un ritmo così... perfetto..." },
+                    { s: "Max Caulfield", t: "Chloe... la tua voce... è l'unica cosa che conta. Faremo... faremo tutto quello che vorrai..." },
+                    { s: "Static Shocker", t: "Molto meglio! E ora, mie fedeli groupies, andiamo a dare una bella scossa a quegli insetti di Parigi!" }
+                  ],
+                  boss: ['staticshocker_invincible'],
+                  unlock: []
+                },
+                {
+                  id: 'm_akuma6', title: 'Il Ritmo dell\'Eroismo',
+                  forcedRoster: ['ladybug', 'chatnoir'],
+                  dialogue: [
+                    { s: "Chat Noir", t: "M'lady! Abbiamo sentito un boato pazzesco dal lago! Guarda là... Chloe ha un aspetto elettrizzante." },
+                    { s: "Ladybug", t: "Fermati, Chloe! O dovrei dire Static Shocker! Lascia andare Max e Marceline, non costringerci a farti del male!" },
+                    { s: "Static Shocker", t: "Non sono più Max e Marceline! Sono le mie groupies personali! Coriste, attaccate gli intrusi!" },
+                    { s: "Max (Sottomessa)", t: "Come desideri... Chloe." },
+                    { s: "Marceline (Sottomessa)", t: "Strappiamo le loro corde vocali." },
+                    { s: "Chat Noir", t: "M'lady, le hanno fatto il lavaggio del cervello! Ma sembrano un po' provate dalla botta di prima, non sono al massimo delle forze." },
+                    { s: "Ladybug", t: "Meglio per noi! Dobbiamo disarmare Static Shocker e spezzare la sua chitarra, così l'incantesimo si scioglierà! Attento ai suoi accordi, Chat!" }
+                  ],
+                  postDialogue: [
+                    { s: "Ladybug", t: "Presa! Niente più malefatte per te, piccola akuma! ... Miraculous Ladybug!" },
+                    { s: "Chloe Price", t: "Ugh... la mia testa. C-cosa è successo? Max... ho rovinato tutto di nuovo, vero?" },
+                    { s: "Max Caulfield", t: "Shh, Chloe. Va tutto bene. Era colpa di quell'insetto gigante, non tua. Ti prometto che non parleremo più di chimica zuccherina, o quello che era." },
+                    { s: "Gommarosa", t: "Per la cronaca, mi scuso anche io. Ho sottovalutato le tue reazioni emotive. Analizzerò meglio il contesto sociale la prossima volta." },
+                    { s: "Marceline", t: "Questa è Bonnibel per dire 'Scusa, sono stata una secchiona insopportabile'. Tutto risolto!" },
+                    { s: "Chat Noir", t: "Un altro lieto fine! Anche se ho le orecchie che fischiano ancora per quel ronzio elettrico." }
+                  ],
+                  boss: ['staticshocker', 'maxcaulfield_corrotta', 'marceline_corrotta'],
+                  unlock: ['maxcaulfield', 'chloeprice', 'marceline']
+                }
+              ]
+            }
+          ]
         }];
 
         const getCampaignStoryCharacters = (campId) => {
@@ -2475,6 +2702,8 @@
               let defaultRoster = [];
               if (campId === 'crisi_varco') {
                   defaultRoster = ['finn', 'topolino'];
+              } else if (campId === 'monarch_akuma') {
+                  defaultRoster = ['ladybug', 'chatnoir'];
               } else {
                   const storyChars = getCampaignStoryCharacters(campId);
                   defaultRoster = CHARACTERS.filter(c => !c.isSummonOnly && !storyChars.includes(c.id)).map(c => c.id);
@@ -4179,7 +4408,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -4740,6 +4969,10 @@
                             char.moves.push({ ...MOVES_DB['Fulmine'], remainingUses: MOVES_DB['Fulmine'].maxUses !== undefined ? MOVES_DB['Fulmine'].maxUses : null });
                         }
 
+                        if (char.id === 'rainbowdash') {
+                            char.moves.push({ ...MOVES_DB['Morso del Pony'], remainingUses: MOVES_DB['Morso del Pony'].maxUses !== undefined ? MOVES_DB['Morso del Pony'].maxUses : null });
+                        }
+
                         workingHyperUsed[order.player] = true;
                         
                         // Genera evento speciale per innescare l'animazione di trasformazione!
@@ -5250,6 +5483,12 @@
                         isImmuneDueToPassive = true;
                     }
 
+                    // --- BYPASS IMMUNITÀ PER MOSSE SCRIPTATE (Boss) ---
+                    if (move.ignoreImmunities && multiplier === 0) {
+                        multiplier = 1;
+                        isImmuneDueToPassive = false;
+                    }
+
                     // --- CHECK ENEMY FOR PROTECT ---
                     let isEnemyTarget = t.player !== player;
                     if (gameState.gameMode === 'multipla') {
@@ -5522,6 +5761,14 @@
                             t.char.hp = healAmount;
                             t.char.statuses = [];
                             events.push({ type: 'damage', text: `✨ ${attacker.name} usa ${move.name}! ${t.char.name} è tornato in vita con ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                        } else if (move.healLastTurnDamage) {
+                            const dmgToHeal = t.char.damageTakenLastTurn || 0;
+                            if (dmgToHeal > 0) {
+                                t.char.hp = Math.min(t.char.maxHp, t.char.hp + dmgToHeal);
+                                events.push({ type: 'damage', text: `✨ ${attacker.name} usa ${move.name}! Il tempo si riavvolge e ${t.char.name} recupera ${dmgToHeal} PS persi nello scorso turno!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                            } else {
+                                events.push({ type: 'text', text: `✨ ${attacker.name} usa ${move.name}, ma ${t.char.name} non ha subito danni nello scorso turno!` });
+                            }
                         } else if (move.heal) {
                             const healAmount = Math.floor(t.char.maxHp * move.heal);
                             t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
@@ -5610,9 +5857,11 @@
                 }
 
                 if (attackSucceeded && move.selfHeal && attacker.hp > 0) {
-                    const healAmount = Math.floor(attacker.maxHp * move.selfHeal);
-                    attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
-                    events.push({ type: 'damage', text: `${attacker.name} recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                    if (move.selfHealChance === undefined || Math.random() < move.selfHealChance) {
+                        const healAmount = Math.floor(attacker.maxHp * move.selfHeal);
+                        attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                        events.push({ type: 'damage', text: `${attacker.name} recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
+                    }
                 }
 
                 // GESTIONE EFFETTI SUL PARTNER PER LE MOSSE COMBINATE E COMBINATE ASIMMETRICHE
@@ -6814,6 +7063,20 @@
                     } else if (campaignState.protagonist) {
                         setCampaignSelectedTeam([campaignState.protagonist]);
                     }
+                } else if (mission.forcedRoster) {
+                    // LOGICA SQUADRA FORZATA (Assicura che i personaggi siano vivi e nel roster)
+                    let newStats = {...campaignState.rosterStats};
+                    let newRoster = [...campaignState.roster];
+                    
+                    mission.forcedRoster.forEach(id => {
+                        if (!newRoster.includes(id)) newRoster.push(id);
+                        if (!newStats[id] || newStats[id] <= 0) {
+                            const c = CHARACTERS.find(x => x.id === id);
+                            if (c) newStats[id] = Math.floor(c.maxHp * 0.3); // Li rianima al 30% per la trama se erano esausti
+                        }
+                    });
+                    setCampaignState(p => ({...p, rosterStats: newStats, roster: newRoster}));
+                    setCampaignSelectedTeam(mission.forcedRoster);
                 } else if (campaignState.roster.length <= maxTeamSize) {
                     const alive = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
                     setCampaignSelectedTeam(alive);
@@ -6828,7 +7091,7 @@
              return <div className="min-h-screen bg-slate-950"></div>;
         }
 
-        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
+        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '').replace(' (Sottomessa)', '');
         let speakerChar = CHARACTERS.find(c => c.name === speakerName);
         if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
         
@@ -6874,7 +7137,7 @@
              return <div className="min-h-screen bg-slate-950"></div>;
         }
 
-        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '');
+        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '').replace(' (Sottomessa)', '');
         let speakerChar = CHARACTERS.find(c => c.name === speakerName);
         if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
         
@@ -7223,6 +7486,11 @@
                 return;
             }
 
+            if (mission.forcedRoster) {
+                setSystemAlert("Questa missione richiede una squadra fissa per motivi di trama!");
+                return;
+            }
+
             if (activeCampaignId === 'torneo_assoluto' && id === campaignState.protagonist && campaignState.roster.length > 8) {
                 setSystemAlert("Il tuo protagonista deve guidare l'alleanza, non puoi rimuoverlo dalla selezione base!");
                 return;
@@ -7468,7 +7736,7 @@
             <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
                 
                 {/* TOAST MINIDIALOGHI SELEZIONE TORNEO */}
-                {teamSelectionDialogue && (
+                {teamSelectionDialogue && !mission.forcedRoster && (
                     <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-slate-900/95 border-2 border-indigo-500 p-4 rounded-2xl max-w-xl w-[90%] z-50 shadow-[0_0_30px_rgba(99,102,241,0.5)] animate-bounce-in flex items-center gap-4 transition-all">
                         <img src={teamSelectionDialogue.img} className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-indigo-400 shrink-0 shadow-lg" alt={teamSelectionDialogue.name} />
                         <div>
@@ -7480,11 +7748,14 @@
 
                 <div className="flex-1 flex flex-col items-center justify-center mt-6 w-full z-10">
                     <h2 className="text-4xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">
-                        {activeCampaignId === 'torneo_assoluto' && campaignState.roster.length <= maxTeamSize 
-                            ? `Schiera i tuoi Campioni (${campaignSelectedTeam.length}/${Math.min(maxTeamSize, campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).length)})` 
-                            : `Seleziona la tua Resistenza (${campaignSelectedTeam.length}/${maxTeamSize})`
+                        {mission.forcedRoster 
+                            ? "Squadra Tattica Obbligatoria!"
+                            : (activeCampaignId === 'torneo_assoluto' && campaignState.roster.length <= maxTeamSize 
+                                ? `Schiera i tuoi Campioni (${campaignSelectedTeam.length}/${Math.min(maxTeamSize, campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).length)})` 
+                                : `Seleziona la tua Resistenza (${campaignSelectedTeam.length}/${maxTeamSize})`
+                            )
                         }
-                        {activeCampaignId === 'torneo_assoluto' && campaignState.roster.length > maxTeamSize && <span className="block text-sm text-indigo-400 mt-2">Forma l'Alleanza fissa da 8 (5 Membri + 3 Riserve)</span>}
+                        {activeCampaignId === 'torneo_assoluto' && campaignState.roster.length > maxTeamSize && !mission.forcedRoster && <span className="block text-sm text-indigo-400 mt-2">Forma l'Alleanza fissa da 8 (5 Membri + 3 Riserve)</span>}
                     </h2>
                     
                     {/* HINT TIPI NEMICI NELLA SELEZIONE */}
@@ -8044,10 +8315,70 @@
 
     if (appMode === 'catalog') {
         let displayedChars = [...CHARACTERS];
+        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash'];
+        
         if (catalogFilter === 'Evocazioni') {
             displayedChars = displayedChars.filter(c => c.isSummonOnly);
         } else if (catalogFilter === 'Mostri Campagna') {
             displayedChars = displayedChars.filter(c => c.isCampaignMonster);
+        } else if (catalogFilter === 'Iper forme') {
+            displayedChars = displayedChars.filter(c => hyperIds.includes(c.id)).map(baseChar => {
+                let char = JSON.parse(JSON.stringify(baseChar));
+                
+                // --- APPLICA STATS IPER ---
+                char.atk = Math.floor(char.atk * 1.5);
+                char.def = Math.floor(char.def * 1.5);
+                char.spd = Math.floor(char.spd * 1.5);
+                char.name = char.name + " (Iper)";
+                char.isHyperInCatalog = true;
+                
+                // --- APPLICA MOSSE E TIPI IPER ---
+                if (char.id === 'gardevoir') { char.types = ['Psico', 'Erba']; char.moves.push(MOVES_DB['Liane Oscillanti']); }
+                if (char.id === 'astral') { char.types = ['Oscuro']; char.moves.push(MOVES_DB['Assorbimento Tenebroso']); }
+                if (char.id === 'polterpup') { char.moves.push(MOVES_DB['Riporta']); }
+                if (char.id === 'spongebob') { char.types = ['Acqua', 'Lotta']; }
+                if (char.id === 'ariana') { char.types = ['Suono', 'Oscuro']; char.moves.push(MOVES_DB['Dangerous Woman']); }
+                if (char.id === 'jake') { char.types = ['Magico', 'Buio']; char.moves.push(MOVES_DB['Morsa del Demone']); }
+                if (char.id === 'finn') { char.types = ['Elettro', 'Fuoco']; char.moves.push(MOVES_DB['Lama Vulcanica']); char.moves.push(MOVES_DB['Fulmine dell\'Eroe']); }
+                if (char.id === 'juvia') { char.types = ['Acqua', 'Buio']; char.moves.push(MOVES_DB['Abisso Disperato']); }
+                if (char.id === 'corvina') { char.types = ['Magico']; char.moves.push(MOVES_DB['Luce di Azarath']); }
+                if (char.id === 'entoma') { char.types = ['Insetto', 'Buio']; char.moves.push(MOVES_DB['Fame Insaziabile']); }
+                if (char.id === 'darwin') { char.types = ['Acqua', 'Oscuro']; char.moves.push(MOVES_DB['Idropompa']); }
+                if (char.id === 'brago') { char.types = ['Oscuro', 'Psico']; char.moves.push(MOVES_DB['Caos Totale']); }
+                if (char.id === 'sdentato') { char.types = ['Drago', 'Elettro']; char.moves.push(MOVES_DB['Fulmine']); }
+                if (char.id === 'rainbowdash') { char.moves.push(MOVES_DB['Morso del Pony']); }
+
+                // --- APPLICA IMMAGINE IPER ---
+                if (char.id === 'barry') char.img = "https://i.redd.it/le0qp8fednsc1.jpeg";
+                else if (char.id === 'gardevoir') char.img = "https://i.pinimg.com/736x/5b/fc/45/5bfc453fcdf52854983d80f2b7614abf.jpg";
+                else if (char.id === 'astral') char.img = "https://i.pinimg.com/736x/cb/c6/27/cbc62707cd7e489bc2af1452055cd148.jpg"; 
+                else if (char.id === 'polterpup') char.img = "https://i.pinimg.com/736x/7c/cb/6b/7ccb6b4a151705a8186777ae1379c472.jpg";
+                else if (char.id === 'spongebob') char.img = "https://i.pinimg.com/1200x/a2/b3/11/a2b3112c702d2f0f03a8adc3cc05eb78.jpg"; 
+                else if (char.id === 'patrick') char.img = "https://i.pinimg.com/1200x/f9/b2/b1/f9b2b173fa94cf8b883787c26118cc61.jpg"; 
+                else if (char.id === 'alphonse') char.img = "https://i.pinimg.com/736x/f5/52/0c/f5520ce0b913d427f0f992774.jpg"; 
+                else if (char.id === 'ariana') char.img = "https://i.pinimg.com/736x/1a/d9/67/1ad967b56ae629c6acb40c00e837613d.jpg"; 
+                else if (char.id === 'bloom') char.img = "https://i.pinimg.com/736x/58/55/d3/5855d360ba56c8e37976835e48a4b724.jpg"; 
+                else if (char.id === 'gaston') char.img = "https://i.pinimg.com/736x/b3/ff/14/b3ff14068712a2926a7af8eead2422a9.jpg"; 
+                else if (char.id === 'jake') char.img = "https://i.pinimg.com/736x/86/6b/dc/866bdc8b9f83b2da400763e9d7b0a071.jpg"; 
+                else if (char.id === 'marceline') char.img = "https://i.pinimg.com/736x/6c/f3/57/6cf357050acbc8e86676d3017d6c4ef4.jpg"; 
+                else if (char.id === 'finn') char.img = "https://i.pinimg.com/736x/51/cd/cf/51cdcf83d6a1d881f91f20bb7c219659.jpg"; 
+                else if (char.id === 'natsu') char.img = "https://i.pinimg.com/736x/46/38/71/4638717f53f57400feb9949c77e6f481.jpg"; 
+                else if (char.id === 'juvia') char.img = "https://i.pinimg.com/736x/aa/29/5f/aa295f4695f570b09efbb7e84c1539c3.jpg"; 
+                else if (char.id === 'laxus') char.img = "https://i.pinimg.com/736x/76/e4/d1/76e4d18a3536b22a7e32ea37e1ef5f71.jpg"; 
+                else if (char.id === 'bumblebee') char.img = "https://i.pinimg.com/1200x/fc/1d/de/fc1ddef3272962f71c1678b9a13744bf.jpg"; 
+                else if (char.id === 'corvina') char.img = "https://i.pinimg.com/1200x/e9/0b/f7/e90bf763d6dd629badadf4577c1ff017.jpg"; 
+                else if (char.id === 'entoma') char.img = "https://i.pinimg.com/736x/50/e6/2a/50e62a01cc9186095dc216345d820eef.jpg"; 
+                else if (char.id === 'garnet') char.img = "https://i.pinimg.com/1200x/2c/db/e6/2cdbe6606a1387a260136966feb33ad7.jpg"; 
+                else if (char.id === 'darwin') char.img = "https://i.pinimg.com/1200x/c0/51/54/c05154be74cffbbaa49bc46c681082b3.jpg"; 
+                else if (char.id === 'brago') char.img = "https://pbs.twimg.com/media/FWqDimhUEAAh-wk.jpg"; 
+                else if (char.id === 'iris') char.img = "https://i.pinimg.com/736x/79/4b/0b/794b0b7ac8e43390a87df4e26bed8b40.jpg"; 
+                else if (char.id === 'sdentato') char.img = "https://i.pinimg.com/736x/8f/41/03/8f4103a00fabb4223c3f4095a4635776.jpg"; 
+                else if (char.id === 'ladybug') char.img = "https://i.pinimg.com/736x/40/b6/29/40b629847b9740338ac820695fe68dd0.jpg"; 
+                else if (char.id === 'bowser') char.img = "https://i.pinimg.com/736x/46/97/12/4697127f5285439d6d0448bd64a7b1a0.jpg"; 
+                else if (char.id === 'rainbowdash') char.img = "https://i.pinimg.com/736x/31/a1/38/31a13869a5fd16b2c24134e2205ba8fd.jpg";
+                
+                return char;
+            });
         } else {
             displayedChars = displayedChars.filter(c => !c.isSummonOnly && !c.isCampaignMonster);
             if (catalogFilter !== 'Tutti') {
@@ -8093,6 +8424,7 @@
                                 <option value="Tutti">Tutti i Tipi</option>
                                 <option value="Evocazioni">Solo Evocazioni</option>
                                 <option value="Mostri Campagna">Mostri Campagna</option>
+                                <option value="Iper forme">Iper Forme</option>
                                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                             </select>
                         </div>
@@ -8108,15 +8440,15 @@
                     <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                             {displayedChars.map(char => (
-                                <div key={char.id} className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-5 flex flex-col items-center hover:border-cyan-500/50 transition-colors shadow-lg relative">
-                                    <img src={char.img} alt={char.name} className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-slate-600/50" />
-                                    {char.price && (
+                                <div key={char.id} className={`bg-slate-900/80 backdrop-blur-md border ${char.isHyperInCatalog ? 'border-yellow-400/50 shadow-[0_0_15px_rgba(250,204,21,0.2)]' : 'border-slate-700/50'} rounded-2xl p-5 flex flex-col items-center hover:border-cyan-500/50 transition-colors shadow-lg relative`}>
+                                    <img src={char.img} alt={char.name} className={`w-24 h-24 rounded-full object-cover mb-4 border-2 ${char.isHyperInCatalog ? 'border-yellow-400' : 'border-slate-600/50'}`} />
+                                    {char.price && !char.isHyperInCatalog && (
                                         <div className="absolute top-2 right-2 bg-amber-500/20 border border-amber-500/50 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
-                                    {(char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug') && (
-                                        <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title="Questo personaggio possiede la Forma Iper in battaglia!">
+                                    {(char.isHyperInCatalog || char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash') && (
+                                        <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title={char.isHyperInCatalog ? "Stai visualizzando le statistiche e le mosse della Forma Iper!" : "Questo personaggio possiede la Forma Iper in battaglia!"}>
                                             ✨ IPER
                                         </div>
                                     )}
@@ -8507,73 +8839,91 @@
                             </div>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
-                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
-                                {filteredDraftableChars.map(char => {
-                                    const isSelected = myDraft.some(c => c.id === char.id);
-                                    return (
-                                        <div 
-                                            key={char.id} 
-                                            onClick={() => !isSelected && handlePick(char)}
-                                            onMouseEnter={() => setDraftHoverInfo(char.id)}
-                                            onMouseLeave={() => setDraftHoverInfo(null)}
-                                            onTouchStart={(e) => {
-                                                draftLongPressRef.current = false;
-                                                draftPressTimerRef.current = setTimeout(() => {
-                                                    draftLongPressRef.current = true;
-                                                    setDraftHoverInfo(char.id);
-                                                }, 400); 
-                                            }}
-                                            onTouchEnd={(e) => {
-                                                clearTimeout(draftPressTimerRef.current);
-                                                if (draftLongPressRef.current) {
-                                                    e.preventDefault();
-                                                    setDraftHoverInfo(null);
-                                                }
-                                            }}
-                                            onTouchMove={() => {
-                                                clearTimeout(draftPressTimerRef.current);
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
+                            {filteredDraftableChars.map(char => {
+                                const isSelected = myDraft.some(c => c.id === char.id);
+                                return (
+                                    <div 
+                                        key={char.id} 
+                                        onMouseEnter={() => setDraftHoverInfo(char.id)} 
+                                        onMouseLeave={() => { setDraftHoverInfo(null); draftLongPressRef.current = false; }}
+                                        onTouchStart={() => {
+                                            draftLongPressRef.current = false;
+                                            draftPressTimerRef.current = setTimeout(() => {
+                                                draftLongPressRef.current = true;
+                                                setDraftHoverInfo(char.id);
+                                            }, 400); 
+                                        }}
+                                        onTouchEnd={(e) => {
+                                            clearTimeout(draftPressTimerRef.current);
+                                            if (draftLongPressRef.current) {
+                                                e.preventDefault();
+                                            } else {
                                                 setDraftHoverInfo(null);
-                                            }}
-                                            className={`relative bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border transition-all duration-300 ${isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)] opacity-50 cursor-not-allowed' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer hover:shadow-lg'}`}
-                                        >
-                                            <img src={char.img} alt={char.name} className="w-20 h-20 rounded-full object-cover mx-auto mb-4 border-2 border-slate-600/50 relative z-10" />
-                                            <h4 className="font-bold text-sm mb-3 truncate text-slate-100 relative z-10">{char.name}</h4>
-                                            <div className="flex flex-wrap gap-1.5 justify-center relative z-10">
-                                                {char.types.map(t => (
-                                                    <span key={t} className={`text-[9px] font-black px-2 py-0.5 rounded-md uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                                ))}
-                                            </div>
-                                            
-                                            {draftHoverInfo === char.id && (
-                                                <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
-                                                    <div className="flex justify-between items-center mb-2">
-                                                        <span className="font-bold text-amber-400">Statistiche</span>
-                                                        <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">HP: {char.maxHp}</span>
-                                                    </div>
-                                                    <div className="grid grid-cols-3 gap-1 text-[10px] text-center mb-3">
-                                                        <div className="bg-slate-800/50 p-1 rounded border border-rose-900/50"><div className="text-rose-400 font-bold">ATK</div><div>{char.atk}</div></div>
-                                                        <div className="bg-slate-800/50 p-1 rounded border border-blue-900/50"><div className="text-blue-400 font-bold">DEF</div><div>{char.def}</div></div>
-                                                        <div className="bg-slate-800/50 p-1 rounded border border-amber-900/50"><div className="text-amber-400 font-bold">SPD</div><div>{char.spd}</div></div>
-                                                    </div>
-                                                    <div className="font-bold text-amber-400 mb-1 text-xs">Mosse</div>
-                                                    <div className="space-y-1.5 overflow-y-auto custom-scrollbar flex-1 pr-1">
-                                                        {char.moves.filter(Boolean).map((m, i) => (
-                                                            <div key={i} className="text-[9px] bg-slate-800/50 p-1.5 rounded border border-slate-700/50">
-                                                                <div className="flex justify-between items-center mb-0.5">
-                                                                    <span className="font-bold text-slate-200">{m.name}</span>
-                                                                    <span className={`px-1 rounded text-[8px] ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
-                                                                </div>
-                                                                <p className="text-slate-400 italic leading-tight line-clamp-2">{m.desc}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
+                                                if (!isSelected) handlePick(char);
+                                            }
+                                        }}
+                                        onTouchMove={() => {
+                                            clearTimeout(draftPressTimerRef.current);
+                                        }}
+                                        onClick={(e) => {
+                                            if (draftLongPressRef.current) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                return; 
+                                            }
+                                            if (!isSelected) handlePick(char);
+                                        }}
+                                        className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)] opacity-50 grayscale' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
+                                    >
+                                        <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
+                                        <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
+                                        <div className="flex flex-wrap gap-1 justify-center mb-3">
+                                            {char.types.map(t => (
+                                                <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                            ))}
                                         </div>
-                                    );
-                                })}
-                            </div>
+                                        <div className="w-full grid grid-cols-2 gap-1 text-[10px] font-mono bg-slate-950/50 p-2 rounded-xl border border-slate-800 mb-1">
+                                            <div className="text-emerald-400">HP: {char.maxHp}</div>
+                                            <div className="text-rose-400">ATK: {char.atk}</div>
+                                            <div className="text-blue-400">DEF: {char.def}</div>
+                                            <div className="text-amber-400">SPD: {char.spd}</div>
+                                        </div>
+
+                                        {isSelected && (
+                                            <div className="absolute inset-0 flex items-center justify-center bg-emerald-900/40 backdrop-blur-sm z-10">
+                                                <div className="bg-emerald-500 text-white rounded-full p-2 shadow-lg"><Unlock size={24}/></div>
+                                            </div>
+                                        )}
+                                        
+                                        {draftHoverInfo === char.id && (
+                                            <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <span className="font-bold text-amber-400">Statistiche</span>
+                                                    <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">HP: {char.maxHp}</span>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-1 text-[10px] text-center mb-3">
+                                                    <div className="bg-slate-800/50 p-1 rounded border border-rose-900/50"><div className="text-rose-400 font-bold">ATK</div><div>{char.atk}</div></div>
+                                                    <div className="bg-slate-800/50 p-1 rounded border border-blue-900/50"><div className="text-blue-400 font-bold">DEF</div><div>{char.def}</div></div>
+                                                    <div className="bg-slate-800/50 p-1 rounded border border-amber-900/50"><div className="text-amber-400 font-bold">SPD</div><div>{char.spd}</div></div>
+                                                </div>
+                                                <div className="font-bold text-amber-400 mb-1 text-xs">Mosse</div>
+                                                <div className="space-y-1.5 overflow-y-auto custom-scrollbar flex-1 pr-1">
+                                                    {char.moves.filter(Boolean).map((m, i) => (
+                                                        <div key={i} className="text-[9px] bg-slate-800/50 p-1.5 rounded border border-slate-700/50">
+                                                            <div className="flex justify-between items-center mb-0.5">
+                                                                <span className="font-bold text-slate-200">{m.name}</span>
+                                                                <span className={`px-1 rounded text-[8px] ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
+                                                            </div>
+                                                            <p className="text-slate-400 italic leading-tight line-clamp-2">{m.desc}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 )}
@@ -8909,6 +9259,10 @@
                     displayImg = "https://i.pinimg.com/736x/8f/41/03/8f4103a00fabb4223c3f4095a4635776.jpg"; // Sdentato Iper
                 } else if (char.id === 'ladybug') {
                     displayImg = "https://i.pinimg.com/736x/40/b6/29/40b629847b9740338ac820695fe68dd0.jpg"; // Ladybug Iper
+                } else if (char.id === 'bowser') {
+                    displayImg = "https://i.pinimg.com/736x/46/97/12/4697127f5285439d6d0448bd64a7b1a0.jpg"; // Bowser Iper
+                } else if (char.id === 'rainbowdash') {
+                    displayImg = "https://i.pinimg.com/736x/31/a1/38/31a13869a5fd16b2c24134e2205ba8fd.jpg"; // Rainbow Dash Iper
                 }
             }
 
@@ -9274,7 +9628,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug')) && (
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash')) && (
                                                     <div className="col-span-2 mb-1">
                                                         <button
                                                             onClick={() => setPendingHyper(!pendingHyper)}
@@ -9565,15 +9919,25 @@
         if (gameState.isCampaignBattle) {
             const isWin = gameState.winner === gameState.players.p1;
             
+            const sector = activeCampaign.sectors[campaignState.sectorIdx] || activeCampaign.sectors[0];
+            const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
+            const isScriptedDefeat = !isWin && mission.progressOnDefeat;
+            
+            const winMessage = activeCampaignId === 'monarch_akuma'
+                ? 'Hai purificato l\'Akuma e salvato i tuoi amici dall\'oscurità di Monarch!'
+                : (activeCampaignId === 'crisi_varco'
+                    ? 'Hai sconfitto i burattini di Cell e spezzato il controllo mentale!'
+                    : 'Hai trionfato e superato la sfida!');
+            
             return (
                 <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-                    <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isWin ? 'from-emerald-900/40' : 'from-rose-900/40'} via-slate-950 to-black pointer-events-none`}></div>
+                    <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isWin || isScriptedDefeat ? 'from-emerald-900/40' : 'from-rose-900/40'} via-slate-950 to-black pointer-events-none`}></div>
                     <div className="relative z-10 bg-slate-900/80 p-12 rounded-3xl border border-slate-700/50 shadow-2xl backdrop-blur-xl">
-                        <h1 className={`text-7xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${isWin ? 'from-emerald-400 to-teal-500' : 'from-rose-500 to-red-600'}`}>{isWin ? 'VITTORIA!' : 'SCONFITTA!'}</h1>
+                        <h1 className={`text-7xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${isWin || isScriptedDefeat ? 'from-emerald-400 to-teal-500' : 'from-rose-500 to-red-600'}`}>{isWin ? 'VITTORIA!' : (isScriptedDefeat ? 'SOPRAFATTI...' : 'SCONFITTA!')}</h1>
                         
-                        {isWin ? (
+                        {isWin || isScriptedDefeat ? (
                             <>
-                                <p className="text-xl text-slate-300 mb-4 font-medium">Hai sconfitto i burattini di Cell e spezzato il controllo mentale!</p>
+                                <p className="text-xl text-slate-300 mb-4 font-medium">{isWin ? winMessage : 'L\'avversario era troppo potente... ma la storia non finisce qui!'}</p>
                                 <p className="text-2xl font-bold text-yellow-400 mb-8 flex items-center justify-center gap-2"><Coins size={28}/> +20 Monete Globali!</p>
                                 <button onClick={() => {
                                     const newRosterStats = { ...campaignState.rosterStats };
@@ -9585,7 +9949,7 @@
                                             if (activeCampaignId === 'torneo_assoluto') {
                                                 newRosterStats[c.id] = c.maxHp; // Cura completa per il torneo
                                             } else {
-                                                newRosterStats[c.id] = c.hp;
+                                                newRosterStats[c.id] = c.hp; // Se sconfitta programmata, i PG restano a 0
                                             }
                                             if (c.hp <= 0) {
                                                 faintedThisBattle.push(c.name);
@@ -10359,6 +10723,19 @@
                     title={isMuted ? "Attiva Musica" : "Disattiva Musica"}
                 >
                     {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
+            )}
+
+            {/* PULSANTE SKIP (Visibile SOLO nell'Anteprima/Canvas per il Testing) */}
+            {IS_PREVIEW && gameState.isCampaignBattle && ['pre_battle', 'battling', 'executing', 'switching_phase'].includes(gameState.status) && (
+                <button 
+                    onClick={() => {
+                        updateState({ status: 'gameover', winner: gameState.players.p1 });
+                    }}
+                    className="fixed top-4 right-20 z-[200] bg-emerald-900/80 px-4 py-2.5 rounded-full border border-emerald-500/50 text-emerald-400 hover:text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)] backdrop-blur-md hover:scale-105 flex items-center gap-1"
+                    title="Skip Vittoria (Dev Only)"
+                >
+                    ⏩ Skip
                 </button>
             )}
             
