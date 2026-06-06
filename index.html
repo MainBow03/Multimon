@@ -739,15 +739,15 @@
           'Missile': { name: 'Missile', type: 'Robot', power: 80, desc: 'Spara un piccolo missile a ricerca che infligge 80 danni.' },
 
           // NUOVE MOSSE MAX CAULFIELD E CHLOE PRICE
-          'Rewind': { name: 'Rewind', type: 'Magico', power: 0, target: 'self', maxUses: 3, heal: 0.5, removeNegativeStatuses: true, desc: 'Riavvolge il tempo per annullare i danni! Recupera il 50% dei PS e cura gli status. (3 utilizzi)' },
+          'Rewind': { name: 'Rewind', type: 'Magico', power: 0, target: 'self', priority: 2, maxUses: 3, heal: 0.5, removeNegativeStatuses: true, desc: 'Riavvolge il tempo con priorità +2 per annullare i danni! Recupera il 50% dei PS e cura gli status. (3 utilizzi)' },
           'Eco Temporale': { name: 'Eco Temporale', type: 'Magico', power: 0, target: 'self', statBuff: { atk: 2.0 }, desc: 'Altera la linea temporale. Raddoppia il proprio Attacco per il prossimo colpo.' },
-          'Polaroid Anomala': { name: 'Polaroid Anomala', type: 'Normale', power: 65, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Scatta una foto con un flash abbagliante. 20% di probabilità di confondere il bersaglio.' },
+          'Polaroid Anomala': { name: 'Polaroid Anomala', type: 'Normale', power: 80, statusEffects: [{ type: 'Confuso', chance: 0.2 }, { type: 'Scottato', chance: 0.1 }], desc: 'Scatta una foto con un flash abbagliante. 20% di probabilità di confondere e 10% di scottare il bersaglio.' },
           'Tempesta di Arcadia Bay': { name: 'Tempesta di Arcadia Bay', type: 'Aria', power: 110, targetCount: 2, maxUses: 2, recharge: true, desc: 'Evoca un tornado devastante su 2 nemici. Richiede ricarica nel turno successivo.' },
 
-          'Riff Ribelle': { name: 'Riff Ribelle', type: 'Suono', power: 70, statusEffect: { type: 'Confuso', chance: 0.1 }, desc: 'Colpo sonoro punk con la chitarra. 10% di probabilità di confondere.' },
-          'Caos Punk': { name: 'Caos Punk', type: 'Suono', power: 10, statusEffects: [{ type: 'Avvelenato', chance: 0.25 }, { type: 'Scottato', chance: 0.25 }, { type: 'Confuso', chance: 0.25 }, { type: 'Infatuato', chance: 0.25 }], desc: 'Causa caos totale! Può infliggere a caso veleno, scottatura, confusione o infatuazione.' },
+          'Riff Ribelle': { name: 'Riff Ribelle', type: 'Suono', power: 80, statusEffect: { type: 'Confuso', chance: 0.1 }, desc: 'Colpo sonoro punk con la chitarra. 10% di probabilità di confondere.' },
+          'Caos Punk': { name: 'Caos Punk', type: 'Suono', power: 50, statusEffects: [{ type: 'Avvelenato', chance: 0.25 }, { type: 'Scottato', chance: 0.25 }, { type: 'Confuso', chance: 0.25 }, { type: 'Infatuato', chance: 0.25 }], desc: 'Causa caos totale! Infligge 50 danni e può infliggere a caso veleno, scottatura, confusione o infatuazione.' },
           'Testa Calda': { name: 'Testa Calda', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5, def: 0.7 }, desc: 'Aumenta drasticamente Attacco e Velocità (+50%), ma diminuisce la Difesa (-30%).' },
-          'Ride Or Die': { name: 'Ride Or Die', type: 'Normale', power: 90, accuracy: 0.75, desc: 'Un colpo tutto o niente! Infligge molti danni ma ha solo il 75% di precisione.' },
+          'Ride Or Die': { name: 'Ride Or Die', type: 'Normale', power: 90, desc: 'Un colpo implacabile! Infligge molti danni con il 100% di precisione.' },
           'Love is Strange': { name: 'Love is Strange', type: 'Magico', power: 150, maxUses: 1, isCombo: ['maxcaulfield', 'chloeprice'], selfStatBuff: { def: 2.0 }, desc: 'Mossa Combinata: 150 danni e Raddoppia la Difesa di Max e Chloe! Consuma il turno di entrambe.' },
 
           // NUOVE MOSSE MIKU
