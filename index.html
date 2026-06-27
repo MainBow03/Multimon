@@ -163,10 +163,10 @@
         const MOVES_DB = {
           'Azione': { name: 'Azione', type: 'Normale', power: 40, desc: 'Un attacco fisico rapido e diretto.' },
           'Pugno': { name: 'Pugno Duro', type: 'Lotta', power: 60, desc: 'Sferra un pugno devastante al bersaglio.' },
-          'Lanciafiamme': { name: 'Lanciafiamme', type: 'Fuoco', power: 90, desc: "Scotta il bersaglio con un'intensa fiammata." },
+          'Lanciafiamme': { name: 'Lanciafiamme', type: 'Fuoco', power: 90, statusEffect: { type: 'Scottato', chance: 0.15 }, desc: "Scotta il bersaglio con un'intensa fiammata. 15% di probabilità di scottare." },
           'Pistolacqua': { name: 'Pistolacqua', type: 'Acqua', power: 40, desc: "Spara un getto d'acqua ad alta pressione." },
           'Foglielama': { name: 'Foglielama', type: 'Erba', power: 55, desc: 'Taglia il bersaglio con foglie affilate come rasoi.' },
-          'Tifone': { name: 'Tifone', type: 'Aria', power: 80, desc: 'Evoca un potente vortice di vento avvolgente.' },
+          'Tifone': { name: 'Tifone', type: 'Aria', power: 110, accuracy: 0.80, desc: 'Evoca un potente vortice di vento avvolgente. Alta potenza ma precisione 80%.' },
           'Sassata': { name: 'Sassata', type: 'Roccia', power: 50, desc: 'Scaglia un grosso masso contro il nemico.' },
           'Geloraggio': { name: 'Geloraggio', type: 'Ghiaccio', power: 90, desc: 'Colpisce con un raggio di energia gelida.' },
           'Raggio Laser': { name: 'Raggio Laser', type: 'Robot', power: 80, desc: 'Spara un fascio di luce altamente concentrato.' },
@@ -176,7 +176,7 @@
           'Morsico': { name: 'Morsico Insetto', type: 'Insetto', power: 60, desc: 'Morde il bersaglio con zanne affilate e pungenti.' },
           'Fulmine': { name: 'Fulmine', type: 'Elettro', power: 90, desc: 'Scaglia una potente scarica elettrica dal cielo.' },
           'Idropompa': { name: 'Idropompa', type: 'Acqua', power: 110, desc: "Travolge il bersaglio con un'enorme colonna d'acqua." },
-          'Terremoto': { name: 'Terremoto', type: 'Roccia', power: 100, desc: 'Scuote la terra violentemente, infliggendo ingenti danni.' },
+          'Terremoto': { name: 'Terremoto', type: 'Terra', power: 100, desc: 'Scuote la terra violentemente, infliggendo ingenti danni.' },
           
           'Riposo': { name: 'Riposo', type: 'Normale', power: 0, heal: 1.0, maxUses: 2, target: 'self', desc: 'Si addormenta per recuperare il 100% dei PS.' },
           'Doppia Sberla': { name: 'Doppia Sberla', type: 'Normale', power: 25, multiHit: { min: 2, max: 5 }, desc: 'Colpisce il bersaglio in rapida successione da 2 a 5 volte di fila.' },
@@ -515,7 +515,7 @@
           'Lama Vulcanica': { name: 'Lama Vulcanica', type: 'Fuoco', power: 90, statusEffect: { type: 'Scottato', chance: 0.3 }, maxUses: 3, desc: 'Un fendente infuocato sprigionato dalla Forma Iper. 30% probabilità di scottare. (3 utilizzi)' },
           'Fulmine dell\'Eroe': { name: 'Fulmine dell\'Eroe', type: 'Elettro', power: 85, speedScaling: true, statusEffect: { type: 'Elettrizzato', chance: 0.3 }, maxUses: 3, desc: 'Un balzo caricato a pura elettricità. Scala con la Velocità e ha il 30% di prob. di paralizzare. (3 utilizzi)' },
 
-          'Pugno Elastico': { name: 'Pugno Elastico', type: 'Magico', power: 65, targetCount: 2, desc: 'Allunga le braccia colpendo fino a 2 nemici a distanza.' },
+          'Pugno Elastico': { name: 'Pugno Elastico', type: 'Lotta', power: 65, targetCount: 2, desc: 'Allunga le braccia colpendo fino a 2 nemici a distanza.' },
           'Trasformazione Scudo': { name: 'Trasformazione Scudo', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Prende la forma di uno scudo per parare i danni diretti a lui. (3 utilizzi)' },
           'Schiacciata Gigante': { name: 'Schiacciata Gigante', type: 'Magico', power: 100, accuracy: 0.8, desc: 'Diventa gigante e schiaccia il nemico. Devastante ma impreciso.' },
           'Bacon Pancakes': { name: 'Bacon Pancakes', type: 'Normale', power: 0, targetMode: 'ally', heal: 0.4, desc: 'Cucina dei deliziosi pancake curando un alleato o sé stesso del 40% dei PS.' },
@@ -589,9 +589,9 @@
           'Rigenerazione G': { name: 'Rigenerazione G', type: 'Normale', power: 0, target: 'self', heal: 0.3, statBuff: { def: 1.3 }, desc: 'Sfrutta le sue cellule rigenerative per curarsi del 30% dei PS e aumentare la Difesa del 30%.' },
 
           // NUOVE MOSSE JURI (YU YU HAKUSHO)
-          'Via all Incontro!': { name: 'Via all\'Incontro!', type: 'Normale', power: 30, priority: 1, targetCount: 4, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Dà inizio allo scontro cogliendo tutti di sorpresa! Colpisce per prima (Priorità +1) con 20% prob. di stordire.' },
+          'Via all Incontro!': { name: 'Via all\'Incontro!', type: 'Aria', power: 50, priority: 1, targetCount: 4, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Dà inizio allo scontro cogliendo tutti di sorpresa! Colpisce per prima (Priorità +1) con 20% prob. di stordire.' },
           'Coda Demoniaca': { name: 'Coda Demoniaca', type: 'Oscuro', power: 70, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Un colpo frustante con la sua coda da demone. 30% di probabilità di confondere.' },
-          'Fuga Tattica': { name: 'Fuga Tattica', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Vola via rapidamente per schivare ogni attacco per un turno intero. (3 utilizzi)' },
+          'Fuga Tattica': { name: 'Fuga Tattica', type: 'Aria', power: 100, speedScaling: true, desc: 'Finge di fuggire per poi lanciarsi in picchiata a velocità inaudita! Il danno scala con la Velocità.' },
           'Chiamata Fuori Campo': { name: 'Chiamata Fuori Campo', type: 'Magico', power: 0, targetStatDebuff: { atk: 0.5 }, desc: 'L\'arbitro è insindacabile! Sgrida duramente un nemico, dimezzandone permanentemente l\'Attacco.' },
 
           // NUOVE MOSSE GASTON
@@ -937,7 +937,24 @@
           'Rebellion Shine': { name: 'Rebellion Shine', type: 'Luce', power: 85, critChance: 0.2, critPower: 150, desc: 'Fendente caricato di energia luminosa. Ha il 20% di probabilità di infliggere un Colpo Critico devastante.' },
           'Ebony & Ivory Barrage': { name: 'Ebony & Ivory Barrage', type: 'Oscuro', power: 25, multiHit: { min: 2, max: 3 }, priority: 1, desc: 'Raffica di proiettili demoniaci. Colpisce da 2 a 3 volte. Priorità +1.' },
           'Devil Trigger Ascension': { name: 'Devil Trigger Ascension', type: 'Oscuro', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Attiva il Devil Trigger! Incrementa drasticamente (+50%) il proprio Attacco e la propria Velocità.' },
-          'Seraphim Overdrive': { name: 'Seraphim Overdrive', type: 'Luce', power: 75, maxUses: 5, selfStatBuff: { spd: 1.3 }, targetStatDebuff: { spd: 0.9 }, desc: 'Calcio verticale intriso di luce. Aumenta la propria Velocità (+30%) e riduce del 10% quella del nemico togliendogli priorità. (5 utilizzi).' }
+          'Seraphim Overdrive': { name: 'Seraphim Overdrive', type: 'Luce', power: 75, maxUses: 5, selfStatBuff: { spd: 1.3 }, targetStatDebuff: { spd: 0.9 }, desc: 'Calcio verticale intriso di luce. Aumenta la propria Velocità (+30%) e riduce del 10% quella del nemico togliendogli priorità. (5 utilizzi).' },
+          
+          // NUOVE MOSSE SHELDON
+          'Piccolo Morso': { name: 'Piccolo Morso', type: 'Drago', power: 75, hitStatDebuff: { def: 0.7, chance: 0.30 }, desc: 'Un morso con dentini affilati. 30% di probabilità di ridurre la Difesa.' },
+          'Ruggito Adorabile': { name: 'Ruggito Adorabile', type: 'Normale', power: 0, targetStatDebuff: { atk: 0.7 }, statusEffect: { type: 'Infatuato', chance: 0.50 }, desc: 'Un ruggito così carino da intenerire i nemici! Riduce l\'Attacco e ha il 50% di probabilità di infatuare.' },
+          'Codata Dinosauro': { name: 'Codata Dinosauro', type: 'Normale', power: 65, desc: 'Usa la sua piccola coda per colpire l\'avversario con inaspettata forza.' },
+          'Carica Giurassica': { name: 'Carica Giurassica', type: 'Roccia', power: 90, statusEffect: { type: 'Stordito', chance: 0.20 }, desc: 'Una testata a tutta velocità! 20% di probabilità di stordire il nemico.' },
+          'Meteora Devastante': { name: 'Meteora Devastante', type: 'Roccia', power: 150, targetCount: 4, maxUses: 1, desc: 'Richiama una meteora colossale! Danni immensi a tutti gli avversari in campo. (1 utilizzo)' },
+
+          // NUOVE MOSSE MEGAMIND
+          'Pistola Disidratante': { name: 'Pistola Disidratante', type: 'Robot', power: 65, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Trasforma quasi il nemico in un cubetto! 30% di probabilità di stordire.' },
+          'Sciame di Brainbot': { name: 'Sciame di Brainbot', type: 'Robot', power: 25, multiHit: { min: 3, max: 5 }, desc: 'I suoi fedeli servitori robotici attaccano in massa. Colpisce da 3 a 5 volte.' },
+          'Travestimento Olografico': { name: 'Travestimento Olografico', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, statBuff: { atk: 1.5 }, maxUses: 3, desc: 'Si traveste per eludere l\'attacco nemico (protezione) e aumenta il proprio Attacco del 50%. (3 utilizzi).' },
+          'Raggio della Morte Concentrato': { name: 'Raggio della Morte Concentrato', type: 'Fuoco', power: 130, recharge: true, desc: 'Usa l\'energia concentrata del sole per un raggio devastante. Richiede un turno per ricaricarsi.' },
+          
+          // NUOVE MOSSE CHARIZARD
+          'Dragopulsar': { name: 'Dragopulsar', type: 'Drago', power: 80, desc: 'Colpisce il nemico con una potente onda d\'urto draconica.' },
+          'Valanga': { name: 'Valanga', type: 'Roccia', power: 80, targetCount: 4, desc: 'Una massiccia frana di rocce. Colpisce tutti gli avversari in campo ad area.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1006,7 +1023,7 @@
           { id: 'mario', name: 'Mario', types: ['Normale', 'Fuoco'], hp: 100, maxHp: 100, atk: 110, def: 85, spd: 90, img: 'https://i.pinimg.com/736x/f0/48/65/f04865769239ed667f302d6f19b8595e.jpg', moves: [MOVES_DB['Salto Idraulico'], MOVES_DB['Palla di Fuoco'], MOVES_DB['Martellata'], MOVES_DB['Super Fungo'], MOVES_DB['Fratelli Bros']] },
           { id: 'luigi', name: 'Luigi', types: ['Normale', 'Aria'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/6b/2d/ef/6b2def306298232ad8a40e93e51a413e.jpg', moves: [MOVES_DB['Salto Svolazzante'], MOVES_DB['Poltergust 3000'], MOVES_DB['Sguardo di Luigi'], MOVES_DB['Missile Verde'], MOVES_DB['Fratelli Bros']] },
           { id: 'finn', name: 'Finn l\'Umano', types: ['Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 95, img: 'https://i.pinimg.com/736x/01/18/1f/01181f2e01e50d16dcceef78de8ac0bd.jpg', moves: [MOVES_DB['Spada d\'Oro'], MOVES_DB['Calcio Volante Eroe'], MOVES_DB['Zaino Verde'], MOVES_DB['Eroe di Ooo']] },
-          { id: 'jake', name: 'Jake il Cane', types: ['Magico'], hp: 115, maxHp: 115, atk: 100, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/00/07/e5/0007e54a9a0d180850ed97718df1e432.jpg', moves: [MOVES_DB['Pugno Elastico'], MOVES_DB['Trasformazione Scudo'], MOVES_DB['Schiacciata Gigante'], MOVES_DB['Bacon Pancakes']] },
+          { id: 'jake', name: 'Jake il Cane', types: ['Magico', 'Lotta'], hp: 115, maxHp: 115, atk: 100, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/00/07/e5/0007e54a9a0d180850ed97718df1e432.jpg', passive: { name: 'Corpo Elastico', type: 'damage_reduction', physicalReduction: 0.2, desc: 'Jake può deformarsi per ridurre i danni. Subisce 20% danni in meno dagli attacchi fisici.' }, moves: [MOVES_DB['Pugno Elastico'], MOVES_DB['Trasformazione Scudo'], MOVES_DB['Schiacciata Gigante'], MOVES_DB['Bacon Pancakes']] },
           { id: 'rainbowdash', name: 'Rainbow Dash', types: ['Aria', 'Elettro'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 130, img: 'https://i.pinimg.com/1200x/f2/61/79/f26179f6cfb3f6331d5843fb83d29fdd.jpg', moves: [MOVES_DB['Sonic Rainboom'], MOVES_DB['Barriera di Nuvole'], MOVES_DB['Calcio Fulmineo'], MOVES_DB['Volo Acrobatico']] },
           { id: 'ladybug', name: 'Ladybug', types: ['Insetto', 'Magico'], hp: 95, maxHp: 95, atk: 100, def: 85, spd: 105, img: 'https://i.pinimg.com/736x/3a/f1/51/3af1517371cc28cac5cdb6af420f1da4.jpg', moves: [MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Lucky Charm'], MOVES_DB['Miraculous Ladybug'], MOVES_DB['Mi serve un aiutante!'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'wario', name: 'Wario', types: ['Veleno', 'Lotta'], hp: 120, maxHp: 120, atk: 115, def: 95, spd: 50, img: 'https://i.pinimg.com/736x/07/72/16/07721681614a459938a7f85ec450f957.jpg', passive: { name: 'Uomo Lercio', type: 'on_turn_end', enemyStatusEffect: { type: 'Confuso', chance: 0.10 }, desc: 'Alla fine di ogni turno, la puzza tremenda che emana ha il 10% di probabilità di confondere i nemici in campo.' }, moves: [MOVES_DB['Peto Velenoso'], MOVES_DB['Carica di Spalla'], MOVES_DB['Masticata d\'Aglio'], MOVES_DB['Moto da teppista']] },
@@ -1036,7 +1053,7 @@
           { id: 'astral', name: 'Astral', types: ['Spettro', 'Magico'], hp: 85, maxHp: 85, atk: 125, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/d2/a0/79/d2a07975568065f659ec52ebe975311d.jpg', passive: { name: 'Visione Numeron', type: 'on_enter', maxUses: 1, selfStatBuff: { def: 1.5 }, revealStrongestEnemyMove: true, desc: 'Appena schierato, analizza la mossa nemica più potente e aumenta la propria Difesa del 50%.' }, moves: [MOVES_DB['Pesca del Destino'], MOVES_DB['Potere dei Numeri'], MOVES_DB['Rete di Sovrapposizione'], MOVES_DB['Analisi Tattica']] },
           { id: 'godzilla', name: 'Godzilla', types: ['Drago', 'Fuoco'], hp: 150, maxHp: 150, atk: 120, def: 110, spd: 30, img: 'https://i.pinimg.com/736x/54/98/35/549835141bd693db641b3c31b108f0c3.jpg', moves: [MOVES_DB['Raggio Atomico'], MOVES_DB['Colpo di Coda'], MOVES_DB['Ruggito del Re'], MOVES_DB['Rigenerazione G']] },
           { id: 'yusei', name: 'Yusei Fudo', types: ['Elettro', 'Aria'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 115, img: 'https://i.pinimg.com/1200x/70/32/59/703259fab8e9b70c86df962b605c29f2.jpg', moves: [MOVES_DB['Evocazione Synchro'], MOVES_DB['Drago Polvere di Stelle'], MOVES_DB['Accelerazione D-Wheel'], MOVES_DB['Forza Riflessa']] },
-          { id: 'juri', name: 'Juri', types: ['Oscuro', 'Aria'], hp: 85, maxHp: 85, atk: 90, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/1f/45/62/1f456243b70b1088b021f8b471143014.jpg', moves: [MOVES_DB['Via all Incontro!'], MOVES_DB['Coda Demoniaca'], MOVES_DB['Fuga Tattica'], MOVES_DB['Chiamata Fuori Campo']] },
+          { id: 'juri', name: 'Juri', types: ['Oscuro', 'Aria'], hp: 95, maxHp: 95, atk: 105, def: 80, spd: 125, img: 'https://i.pinimg.com/736x/1f/45/62/1f456243b70b1088b021f8b471143014.jpg', passive: { name: 'Tifo del Pubblico', type: 'on_ko', statBuff: { atk: 1.3, def: 1.3, spd: 1.3 }, desc: 'Il pubblico la adora e la potenzia. Ogni volta che manda KO un nemico, aumenta Attacco, Difesa e Velocità del 30%!' }, moves: [MOVES_DB['Via all Incontro!'], MOVES_DB['Coda Demoniaca'], MOVES_DB['Fuga Tattica'], MOVES_DB['Chiamata Fuori Campo']] },
           { id: 'gaston', name: 'Gaston', types: ['Normale', 'Lotta'], hp: 120, maxHp: 120, atk: 110, def: 95, spd: 60, img: 'https://i.pinimg.com/736x/98/30/29/9830297f26d087e173f1cae8f928523b.jpg', moves: [MOVES_DB['Fucile da Caccia'], MOVES_DB['Cinque Dozzine di Uova'], MOVES_DB['Nessuno è come Gaston!'], MOVES_DB['Schianto del Bullo']] },
           { id: 'chatnoir', name: 'Chat Noir', types: ['Buio', 'Lotta'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', passive: { name: 'Miracolous Chat Noir', type: 'on_hp_threshold', threshold: 0.5, maxUses: 1, resetEnemyBuffs: true, desc: 'Quando i PS scendono al 50% o meno, sprigiona il potere del Miraculous, azzerando tutti i potenziamenti alle statistiche degli avversari in campo.' }, moves: [MOVES_DB['Bastone Estendibile'], MOVES_DB['Cataclisma'], MOVES_DB['Balzo Felino'], MOVES_DB['Fascino Sfacciato']] },
           { id: 'iris', name: 'Iris', types: ['Magico'], hp: 90, maxHp: 90, atk: 120, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/73/97/82/7397829809c9e0cfef827e17b4b97967.jpg', moves: [MOVES_DB['Cristallo di Ephedia'], MOVES_DB['Scudo Cristallino'], MOVES_DB['Voce della Principessa'], MOVES_DB['Trasformazione Shanila']] },
@@ -1159,13 +1176,19 @@
           { id: 'maxcaulfield_corrotta', name: 'Max (Sottomessa)', types: ['Normale', 'Oscuro'], hp: 47, maxHp: 47, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' },
           { id: 'marceline_corrotta', name: 'Marceline (Sottomessa)', types: ['Spettro', 'Oscuro'], hp: 47, maxHp: 47, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']], isSecretUnlock: true, isCampaignMonster: true, imageFilter: 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))' },
           
-          { id: 'maestrospietato', name: 'Maestro Spietato', types: ['Oscuro', 'Lotta'], hp: 165, maxHp: 165, atk: 140, def: 100, spd: 145, img: 'https://i.postimg.cc/7ZV1Px5p/Akuma-Master-Shifu.png', moves: [MOVES_DB['Tocco della Paralisi Oscura'], MOVES_DB['Agilità Infernale'], MOVES_DB['Pressione Mortale'], MOVES_DB['Loto Nero']], isSecretUnlock: true, isCampaignMonster: true }
+          { id: 'maestrospietato', name: 'Maestro Spietato', types: ['Oscuro', 'Lotta'], hp: 165, maxHp: 165, atk: 140, def: 100, spd: 145, img: 'https://i.postimg.cc/7ZV1Px5p/Akuma-Master-Shifu.png', moves: [MOVES_DB['Tocco della Paralisi Oscura'], MOVES_DB['Agilità Infernale'], MOVES_DB['Pressione Mortale'], MOVES_DB['Loto Nero']], isSecretUnlock: true, isCampaignMonster: true },
+          
+          { id: 'sheldon', name: 'Sheldon (Dinosauro)', types: ['Drago', 'Normale'], hp: 105, maxHp: 105, atk: 110, def: 85, spd: 95, img: 'https://i.pinimg.com/736x/c7/a5/2c/c7a52c2244bd6af7b28a9acc1934b7db.jpg', passive: { name: 'Testa Dura', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.5, def: 1.5 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, si arrabbia e aumenta Attacco e Difesa del 50%.' }, moves: [MOVES_DB['Piccolo Morso'], MOVES_DB['Ruggito Adorabile'], MOVES_DB['Codata Dinosauro'], MOVES_DB['Carica Giurassica']] },
+          
+          { id: 'megamind', name: 'Megamind', types: ['Robot', 'Psico'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/80/f6/29/80f6299471e306b47c2a2b9e88f9f09a.jpg', passive: { name: 'PRESENTAZIONE!', type: 'on_enter', maxUses: 1, enemyStatDebuff: { def: 0.8, spd: 0.8 }, desc: 'Appena scende in campo, sbalordisce i nemici, riducendone permanentemente Difesa e Velocità del 20%.' }, moves: [MOVES_DB['Pistola Disidratante'], MOVES_DB['Sciame di Brainbot'], MOVES_DB['Travestimento Olografico'], MOVES_DB['Raggio della Morte Concentrato']] },
+          
+          { id: 'charizard', name: 'Charizard', types: ['Fuoco', 'Aria'], hp: 105, maxHp: 105, atk: 120, def: 80, spd: 110, img: 'https://i.pinimg.com/1200x/93/1f/28/931f2832788a658540727ba3521d0b84.jpg', moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Tifone'], MOVES_DB['Dragopulsar'], MOVES_DB['Terremoto']] }
         ];
 
         const CHAR_PRICES = {
             'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
             'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
         };
         CHARACTERS.forEach(c => {
@@ -4517,7 +4540,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -5089,6 +5112,16 @@
 
                         if (char.id === 'elsa') {
                             char.moves.push({ ...MOVES_DB['Gelo Definitivo'], remainingUses: MOVES_DB['Gelo Definitivo'].maxUses !== undefined ? MOVES_DB['Gelo Definitivo'].maxUses : null });
+                        }
+
+                        if (char.id === 'sheldon') {
+                            char.types = ['Drago', 'Roccia'];
+                            char.moves.push({ ...MOVES_DB['Meteora Devastante'], remainingUses: MOVES_DB['Meteora Devastante'].maxUses !== undefined ? MOVES_DB['Meteora Devastante'].maxUses : null });
+                        }
+
+                        if (char.id === 'charizard') {
+                            char.types = ['Roccia', 'Aria'];
+                            char.moves.push({ ...MOVES_DB['Valanga'], remainingUses: MOVES_DB['Valanga'].maxUses !== undefined ? MOVES_DB['Valanga'].maxUses : null });
                         }
 
                         workingHyperUsed[order.player] = true;
@@ -5717,6 +5750,15 @@
                                 }
                             }
                         }
+
+                        // --- PASSIVA RIDUZIONE DANNI FISICI ---
+                        if (t.char.passive && t.char.passive.type === 'damage_reduction') {
+                            const physicalTypes = ['Normale', 'Lotta', 'Roccia', 'Terra', 'Insetto', 'Robot', 'Drago'];
+                            if (physicalTypes.includes(move.type)) {
+                                dmg = Math.max(1, Math.floor(dmg * (1 - t.char.passive.physicalReduction)));
+                                events.push({ type: 'text', text: `🛡️ ${t.char.name} si deforma attivando ${t.char.passive.name}! Danni fisici ridotti!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
+                            }
+                        }
                         // -----------------------------------------------------------
                         
                         if (t.char.juggHitsRemaining > 0) {
@@ -5792,6 +5834,17 @@
                                         if (i === 0) {
                                             events.push({ type: 'text', text: `👻 ${t.char.name} attiva ${t.char.passive.name}! Danni ridotti!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
                                         }
+                                    }
+                                }
+                            }
+
+                            // --- PASSIVA RIDUZIONE DANNI FISICI ---
+                            if (t.char.passive && t.char.passive.type === 'damage_reduction') {
+                                const physicalTypes = ['Normale', 'Lotta', 'Roccia', 'Terra', 'Insetto', 'Robot', 'Drago'];
+                                if (physicalTypes.includes(currentMoveForDmg.type)) {
+                                    hitDmg = Math.max(1, Math.floor(hitDmg * (1 - t.char.passive.physicalReduction)));
+                                    if (i === 0) {
+                                        events.push({ type: 'text', text: `🛡️ ${t.char.name} si deforma attivando ${t.char.passive.name}! Danni fisici ridotti!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
                                     }
                                 }
                             }
@@ -5916,6 +5969,23 @@
                             }
                         }
                     }
+
+                    // --- PASSIVA ON_KO (Zabuza, Brago, Juri) ---
+                    if (wasAlive && t.char.hp <= 0 && attacker.hp > 0 && attacker.passive && attacker.passive.type === 'on_ko') {
+                        if (attacker.passive.statBuff) {
+                            let statTexts = [];
+                            if (attacker.passive.statBuff.atk) { attacker.atk = Math.floor(attacker.atk * attacker.passive.statBuff.atk); statTexts.push("Attacco"); }
+                            if (attacker.passive.statBuff.def) { attacker.def = Math.floor(attacker.def * attacker.passive.statBuff.def); statTexts.push("Difesa"); }
+                            if (attacker.passive.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * attacker.passive.statBuff.spd); statTexts.push("Velocità"); }
+                            events.push({ type: 'text', text: `✨ ${attacker.name} manda K.O. l'avversario e attiva ${attacker.passive.name}! Aumenta ${statTexts.join(", ")}!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
+                        }
+                        if (attacker.passive.healPercent) {
+                            const healAmount = Math.max(1, Math.floor(attacker.maxHp * attacker.passive.healPercent));
+                            attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
+                            events.push({ type: 'damage', text: `✨ ${attacker.name} manda K.O. l'avversario e attiva ${attacker.passive.name}! Recupera ${healAmount} PS!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
+                        }
+                    }
+                    // ------------------------------------------
 
                     if (t.char.hp > 0 || move.targetMode === 'revive') {
                         
@@ -7695,6 +7765,7 @@
                 'doraemon': "Lasciate fare a me e ai miei gadget dal 22° secolo!",
                 'ilcavaliere': "*Il Cavaliere ti fissa in silenzio, poi si ritira nell'ombra.*",
                 'dante': "Jackpot! Facciamoli a pezzi con stile.",
+                'megamind': "La differenza tra un cattivo e un supercattivo? La PRESENTAZIONE!",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -7775,6 +7846,7 @@
                 'doraemon': "Oh, d'accordo... vado a mangiarmi dei dorayaki in panchina.",
                 'ilcavaliere': "*Il Cavaliere ti fissa in silenzio, poi si ritira nell'ombra.*",
                 'dante': "Niente demoni da cacciare? Allora mi vado a mangiare una pizza.",
+                'megamind': "Tsk, il mio genio era sprecato qui in panchina.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -8631,7 +8703,7 @@
 
     if (appMode === 'catalog') {
         let displayedChars = [...CHARACTERS];
-        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash', 'elsa'];
+        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash', 'elsa', 'sheldon', 'charizard'];
         
         if (catalogFilter === 'Evocazioni') {
             displayedChars = displayedChars.filter(c => c.isSummonOnly);
@@ -8664,6 +8736,8 @@
                 if (char.id === 'sdentato') { char.types = ['Drago', 'Elettro']; char.moves.push(MOVES_DB['Fulmine']); }
                 if (char.id === 'rainbowdash') { char.moves.push(MOVES_DB['Morso del Pony']); }
                 if (char.id === 'elsa') { char.moves.push(MOVES_DB['Gelo Definitivo']); }
+                if (char.id === 'sheldon') { char.types = ['Drago', 'Roccia']; char.moves.push(MOVES_DB['Meteora Devastante']); }
+                if (char.id === 'charizard') { char.types = ['Roccia', 'Aria']; char.moves.push(MOVES_DB['Valanga']); }
 
                 // --- APPLICA IMMAGINE IPER ---
                 if (char.id === 'barry') char.img = "https://i.redd.it/le0qp8fednsc1.jpeg";
@@ -8694,6 +8768,8 @@
                 else if (char.id === 'bowser') char.img = "https://i.pinimg.com/736x/46/97/12/4697127f5285439d6d0448bd64a7b1a0.jpg"; 
                 else if (char.id === 'rainbowdash') char.img = "https://i.pinimg.com/736x/31/a1/38/31a13869a5fd16b2c24134e2205ba8fd.jpg";
                 else if (char.id === 'elsa') char.img = "https://i.pinimg.com/1200x/fa/2e/ed/fa2eed50fb89e9ea97d9252aa349a979.jpg";
+                else if (char.id === 'sheldon') char.img = "https://i.postimg.cc/FdLNqMxk/Gemini-Generated-Image-85dys085dys085dy.png";
+                else if (char.id === 'charizard') char.img = "https://i.postimg.cc/v1kj6cd6/Gemini-Generated-Image-zd38yrzd38yrzd38.png";
                 
                 return char;
             });
@@ -8765,7 +8841,7 @@
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
-                                    {(char.isHyperInCatalog || char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash') && (
+                                    {(char.isHyperInCatalog || char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard') && (
                                         <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title={char.isHyperInCatalog ? "Stai visualizzando le statistiche e le mosse della Forma Iper!" : "Questo personaggio possiede la Forma Iper in battaglia!"}>
                                             ✨ IPER
                                         </div>
@@ -8822,7 +8898,7 @@
         const reqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const canStartDraft = isAllPlayersJoined();
 
-        const newArrivals = ['dante', 'ilcavaliere', 'doraemon']; // Massimo 20 nuovi inserimenti
+        const newArrivals = ['charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere', 'doraemon']; // Massimo 20 nuovi inserimenti
 
         return (
             <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 relative">
@@ -9680,6 +9756,10 @@
                     displayImg = "https://i.pinimg.com/736x/31/a1/38/31a13869a5fd16b2c24134e2205ba8fd.jpg"; // Rainbow Dash Iper
                 } else if (char.id === 'elsa') {
                     displayImg = "https://i.pinimg.com/1200x/fa/2e/ed/fa2eed50fb89e9ea97d9252aa349a979.jpg"; // Elsa Iper
+                } else if (char.id === 'sheldon') {
+                    displayImg = "https://i.postimg.cc/FdLNqMxk/Gemini-Generated-Image-85dys085dys085dy.png"; // Sheldon Iper
+                } else if (char.id === 'charizard') {
+                    displayImg = "https://i.postimg.cc/v1kj6cd6/Gemini-Generated-Image-zd38yrzd38yrzd38.png"; // Charizard Iper
                 }
             }
 
@@ -10017,7 +10097,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash' || activeCommandChar.id === 'elsa')) && (
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash' || activeCommandChar.id === 'elsa' || activeCommandChar.id === 'sheldon' || activeCommandChar.id === 'charizard')) && (
                                                     <div className="col-span-2 mb-1">
                                                         <button
                                                             onClick={() => setPendingHyper(!pendingHyper)}
