@@ -6002,7 +6002,42 @@
 
                     if (t.char.hp > 0 || move.targetMode === 'revive') {
                         
-                        // --- FIX: APPLICAZIONE CURE, PURIFICAZIONI E POTENZIAMENTI BERSAGLIO ---
+                        // --- FIX: APPLICAZIONE CURE E REVIVE ---
+                        const wasDead = t.char.hp <= 0;
+                        
+                        if (move.targetMode === 'team_smart_heal') {
+                            const aliveAlliesCount = workingField[t.player].filter(idx => workingTeams[t.player][idx].hp > 0).length;
+                            const healFactor = aliveAlliesCount === 1 ? (move.healAlone || move.heal) : (move.healTeam || move.heal);
+                            const healAmount = Math.max(1, Math.floor(t.char.maxHp * healFactor));
+                            t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
+                            events.push({ type: 'damage', text: `✨ ${t.char.name} recupera ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                        } else if (move.heal) {
+                            const healAmount = Math.max(1, Math.floor(t.char.maxHp * move.heal));
+                            t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
+                            events.push({ type: 'damage', text: `✨ ${wasDead ? t.char.name + ' viene rianimato e recupera' : t.char.name + ' recupera'} ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                            if (wasDead) {
+                                t.char.statuses = [];
+                                updateStatusUI(t.player, t.idx);
+                            }
+                        }
+
+                        if (move.healLastTurnDamage && t.char.damageTakenLastTurn) {
+                            const healAmount = t.char.damageTakenLastTurn;
+                            t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
+                            events.push({ type: 'damage', text: `⏱️ ${t.char.name} riavvolge i danni del turno precedente! Recupera ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                        }
+
+                        if (move.removeNegativeStatuses) {
+                            const negatives = ['Avvelenato', 'Scottato', 'Elettrizzato', 'Congelato', 'Addormentato', 'Confuso', 'Indebolito', 'Stordito'];
+                            const originalLength = t.char.statuses.length;
+                            t.char.statuses = t.char.statuses.filter(s => !negatives.includes(s.type));
+                            if (t.char.statuses.length < originalLength) {
+                                events.push({ type: 'text', text: `✨ ${t.char.name} è stato purificato dagli status negativi!` });
+                                updateStatusUI(t.player, t.idx);
+                            }
+                        }
+
+                        // --- FIX: APPLICAZIONE PURIFICAZIONI E POTENZIAMENTI BERSAGLIO ---
                         if (move.targetStatBuff && t.char.hp > 0) {
                             let statTexts = [];
                             if (move.targetStatBuff.atk) { t.char.atk = Math.floor(t.char.atk * move.targetStatBuff.atk); statTexts.push("l'Attacco"); }
