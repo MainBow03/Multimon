@@ -954,7 +954,13 @@
           
           // NUOVE MOSSE CHARIZARD
           'Dragopulsar': { name: 'Dragopulsar', type: 'Drago', power: 80, desc: 'Colpisce il nemico con una potente onda d\'urto draconica.' },
-          'Valanga': { name: 'Valanga', type: 'Roccia', power: 80, targetCount: 4, desc: 'Una massiccia frana di rocce. Colpisce tutti gli avversari in campo ad area.' }
+          'Valanga': { name: 'Valanga', type: 'Roccia', power: 80, targetCount: 4, desc: 'Una massiccia frana di rocce. Colpisce tutti gli avversari in campo ad area.' },
+
+          // NUOVE MOSSE SUMO
+          'Sumo Slam': { name: 'Sumo Slam', type: 'Normale', power: 100, statusEffect: { type: 'Stordito', chance: 0.20 }, desc: 'Un tremendo schianto al suolo. 20% di probabilità di stordire il bersaglio.' },
+          'Mangia-tutto': { name: 'Mangia-tutto', type: 'Normale', power: 0, target: 'self', selfHealRandom: { min: 0.2, max: 1.0 }, desc: 'Mangia qualsiasi cosa trovi per terra! Recupera casualmente tra il 20% e il 100% dei PS massimi.' },
+          'Spinta Da Wrestler': { name: 'Spinta Da Wrestler', type: 'Lotta', power: 65, desc: 'Una potente spinta corpo a corpo.' },
+          'Sgranocchio': { name: 'Sgranocchio', type: 'Buio', power: 85, hitStatDebuff: { def: 0.7, chance: 0.10 }, desc: 'Morde il nemico con ferocia. 10% di probabilità di ridurre la Difesa del 30%.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1182,13 +1188,14 @@
           
           { id: 'megamind', name: 'Megamind', types: ['Robot', 'Psico'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/80/f6/29/80f6299471e306b47c2a2b9e88f9f09a.jpg', passive: { name: 'PRESENTAZIONE!', type: 'on_enter', maxUses: 1, enemyStatDebuff: { def: 0.8, spd: 0.8 }, desc: 'Appena scende in campo, sbalordisce i nemici, riducendone permanentemente Difesa e Velocità del 20%.' }, moves: [MOVES_DB['Pistola Disidratante'], MOVES_DB['Sciame di Brainbot'], MOVES_DB['Travestimento Olografico'], MOVES_DB['Raggio della Morte Concentrato']] },
           
-          { id: 'charizard', name: 'Charizard', types: ['Fuoco', 'Aria'], hp: 105, maxHp: 105, atk: 120, def: 80, spd: 110, img: 'https://i.pinimg.com/1200x/93/1f/28/931f2832788a658540727ba3521d0b84.jpg', moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Tifone'], MOVES_DB['Dragopulsar'], MOVES_DB['Terremoto']] }
+          { id: 'charizard', name: 'Charizard', types: ['Fuoco', 'Aria'], hp: 105, maxHp: 105, atk: 120, def: 80, spd: 110, img: 'https://i.pinimg.com/1200x/93/1f/28/931f2832788a658540727ba3521d0b84.jpg', moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Tifone'], MOVES_DB['Dragopulsar'], MOVES_DB['Terremoto']] },
+          { id: 'sumo', name: 'Sumo', types: ['Normale', 'Lotta'], hp: 130, maxHp: 130, atk: 115, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/aa/cd/61/aacd61f4c49350ef9759acb0531d250b.jpg', moves: [MOVES_DB['Sumo Slam'], MOVES_DB['Mangia-tutto'], MOVES_DB['Spinta Da Wrestler'], MOVES_DB['Sgranocchio']] }
         ];
 
         const CHAR_PRICES = {
             'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
             'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
         };
         CHARACTERS.forEach(c => {
@@ -3623,34 +3630,36 @@
 
                   activePlayers.forEach(p => {
                       if (!gameState.isBot[p]) {
-                          // Conta solo i personaggi ancora vivi sul campo
-                          const aliveFieldCount = gameState.field[p]?.filter(idx => gameState.teams[p] && gameState.teams[p][idx] && gameState.teams[p][idx].hp > 0).length || 0;
-                          
-                          // Conta le azioni solo per i personaggi ancora vivi
-                          let submittedAliveActions = 0;
-                          Object.keys(gameState.actions[p] || {}).forEach(idxStr => {
-                              const cIdx = parseInt(idxStr);
-                              if (gameState.teams[p] && gameState.teams[p][cIdx] && gameState.teams[p][cIdx].hp > 0) {
-                                  submittedAliveActions++;
-                              }
+                          // FIX: Controlla precisamente se ogni personaggio VIVO in campo ha un'azione
+                          const myField = gameState.field[p] || [];
+                          myField.forEach(idx => {
+                               const char = gameState.teams[p]?.[idx];
+                               if (char && char.hp > 0) {
+                                    if (!gameState.actions[p] || !gameState.actions[p][idx]) {
+                                         humansReady = false;
+                                    }
+                               }
                           });
-
-                          if (submittedAliveActions < aliveFieldCount) {
-                              humansReady = false;
-                          }
                       }
                   });
 
                   if (humansReady && !isCalculatingRef.current) {
                       isCalculatingRef.current = true;
                       let finalActions = { ...gameState.actions };
-                      activePlayers.forEach(p => {
-                          if (gameState.isBot[p]) {
-                               finalActions[p] = generateCPUActionsForPlayer(p, finalActions);
-                          }
-                      });
-                      // Aggiunto ritardo di sicurezza per evitare blocchi del main thread
-                      setTimeout(() => calculateTurn(finalActions), 50);
+                      
+                      // FIX: Aggiunto blocco try-catch. Se la CPU sbaglia, il gioco si sblocca!
+                      try {
+                          activePlayers.forEach(p => {
+                              if (gameState.isBot[p]) {
+                                   finalActions[p] = generateCPUActionsForPlayer(p, finalActions);
+                              }
+                          });
+                          // Aggiunto ritardo di sicurezza per evitare blocchi del main thread
+                          setTimeout(() => calculateTurn(finalActions), 50);
+                      } catch (error) {
+                          console.error("Errore critico durante il calcolo CPU. Sblocco turno:", error);
+                          isCalculatingRef.current = false;
+                      }
                   }
               } else {
                   isCalculatingRef.current = false;
@@ -4385,11 +4394,13 @@
                         cpuChar.moves.forEach((move, moveIdx) => {
                             if (move.remainingUses === 0) return;
                             if (move.currentCooldown && move.currentCooldown > 0) return; // IA ignora le mosse in cooldown
-                            if (move.requireSummonsDead && gameState.teams[cpuPlayer].some(c => move.requireSummonsDead.includes(c.id) && c.hp > 0)) return;
+                            // FIX: Controlla che 'c' esista prima di leggerne l'ID per evitare crash
+                            if (move.requireSummonsDead && gameState.teams[cpuPlayer].some(c => c && move.requireSummonsDead.includes(c.id) && c.hp > 0)) return;
                             if (move.requiredStatus && !cpuChar.statuses.some(s => s.type === move.requiredStatus)) return; // IA ignora se manca status
 
                             if (move.isCombo) {
-                                const myFieldChars = gameState.field[cpuPlayer].map(idx => gameState.teams[cpuPlayer][idx]).filter(c => c.hp > 0);
+                                // FIX: Ignora i null/undefined prima di leggere c.hp
+                                const myFieldChars = gameState.field[cpuPlayer].map(idx => gameState.teams[cpuPlayer][idx]).filter(c => c && c.hp > 0);
                                 const myFieldIds = myFieldChars.map(c => c.id);
                                 if (!move.isCombo.every(id => myFieldIds.includes(id))) return;
                             }
@@ -4524,7 +4535,8 @@
                              if (selectedMove && selectedMove.isCombo) {
                                  const partnerIds = selectedMove.isCombo.filter(id => id !== cpuChar.id);
                                  partnerIds.forEach(pId => {
-                                     const pIdx = gameState.field[cpuPlayer].find(idx => gameState.teams[cpuPlayer][idx].id === pId && gameState.teams[cpuPlayer][idx].hp > 0);
+                                     // FIX: Previene crash se l'alleato in campo non esiste più
+                                     const pIdx = gameState.field[cpuPlayer].find(idx => gameState.teams[cpuPlayer][idx] && gameState.teams[cpuPlayer][idx].id === pId && gameState.teams[cpuPlayer][idx].hp > 0);
                                      if (pIdx !== undefined) {
                                          cpuActions[pIdx] = { type: 'combo_assist' };
                                      }
@@ -4582,7 +4594,8 @@
                 if (move && move.isCombo) {
                     const partnerIds = move.isCombo.filter(id => id !== activeCommandChar.id);
                     partnerIds.forEach(pId => {
-                        const partnerTeamIdx = gameState.field[playerRole].find(idx => gameState.teams[playerRole][idx].id === pId && gameState.teams[playerRole][idx].hp > 0);
+                        // FIX: Previene crash per Mossa Combinata del Giocatore se l'alleato è in bug
+                        const partnerTeamIdx = gameState.field[playerRole].find(idx => gameState.teams[playerRole][idx] && gameState.teams[playerRole][idx].id === pId && gameState.teams[playerRole][idx].hp > 0);
                         if (partnerTeamIdx !== undefined) {
                             myNewActions[partnerTeamIdx] = { type: 'combo_assist' };
                         }
@@ -6093,9 +6106,13 @@
                     }
                 }
 
-                if (attackSucceeded && move.selfHeal && attacker.hp > 0) {
+                if (attackSucceeded && (move.selfHeal || move.selfHealRandom) && attacker.hp > 0) {
                     if (move.selfHealChance === undefined || Math.random() < move.selfHealChance) {
-                        const healAmount = Math.floor(attacker.maxHp * move.selfHeal);
+                        let healFactor = move.selfHeal;
+                        if (move.selfHealRandom) {
+                            healFactor = move.selfHealRandom.min + Math.random() * (move.selfHealRandom.max - move.selfHealRandom.min);
+                        }
+                        const healAmount = Math.floor(attacker.maxHp * healFactor);
                         attacker.hp = Math.min(attacker.maxHp, attacker.hp + healAmount);
                         events.push({ type: 'damage', text: `${attacker.name} recupera ${healAmount} HP!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
                     }
@@ -7766,6 +7783,7 @@
                 'ilcavaliere': "*Il Cavaliere ti fissa in silenzio, poi si ritira nell'ombra.*",
                 'dante': "Jackpot! Facciamoli a pezzi con stile.",
                 'megamind': "La differenza tra un cattivo e un supercattivo? La PRESENTAZIONE!",
+                'sumo': "Nessuno può spostarmi dal ring!",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -7847,6 +7865,7 @@
                 'ilcavaliere': "*Il Cavaliere ti fissa in silenzio, poi si ritira nell'ombra.*",
                 'dante': "Niente demoni da cacciare? Allora mi vado a mangiare una pizza.",
                 'megamind': "Tsk, il mio genio era sprecato qui in panchina.",
+                'sumo': "Uff, vado a mangiarmi qualcosa allora.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -9315,7 +9334,8 @@
                                                 e.preventDefault();
                                             } else {
                                                 setDraftHoverInfo(null);
-                                                if (!isSelected) handlePick(char);
+                                                // FIX MOBILE: Rimossa la selezione manuale qui! Ci pensa già l'onClick.
+                                                // In questo modo lo scroll non seleziona accidentalmente il personaggio.
                                             }
                                         }}
                                         onTouchMove={() => {
