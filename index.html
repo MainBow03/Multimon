@@ -188,7 +188,7 @@
           'Assalto Frontale': { name: 'Assalto Frontale', type: 'Lotta', power: 70, desc: 'Carica il nemico con una potente e inarrestabile raffica di colpi.' },
           'Tiro Rapido': { name: 'Tiro Rapido', type: 'Normale', power: 90, accuracy: 0.90, desc: 'Estrae un\'arma e attacca velocemente. Ha il 10% di probabilità di mancare.' },
 
-          'Doruzonisu': { name: 'Doruzonisu', type: 'Oscuro', power: 40, targetCount: 2, desc: 'Colpisce fino a due bersagli contemporaneamente con dardi oscuri.' },
+          'Doruzonisu': { name: 'Doruzonisu', type: 'Oscuro', power: 60, targetCount: 2, desc: 'Colpisce fino a due bersagli contemporaneamente con dardi oscuri.' },
           'Gigano Zonisu': { name: 'Gigano Zonisu', type: 'Oscuro', power: 75, desc: 'Scaglia una potente onda concentrata di energia oscura.' },
           'Dioga zonisudon': { name: 'Dioga zonisudon', type: 'Magico', power: 90, maxUses: 3, desc: 'Un potentissimo e devastante raggio magico. Utilizzabile 3 volte.' },
           'Zorushirudo': { name: 'Zorushirudo', type: 'Magico', power: 0, target: 'self', maxUses: 5, priority: 5, isProtect: true, desc: 'Si protegge dagli attacchi. Se usato di fila, la probabilità di successo si dimezza.' },
@@ -311,8 +311,9 @@
 
           // NUOVE MOSSE DANNY PHANTOM
           'Mela Rossa': { name: 'Mela Rossa', type: 'Erba', power: 0, target: 'self', heal: 0.5, statBuff: { spd: 1.3 }, desc: 'Mangia una succosa mela terrestre: si cura del 50% e aumenta la Velocità.' },
-          'Sguardo Shinigami': { name: 'Sguardo Shinigami', type: 'Oscuro', power: 0, targetStatDebuff: { def: 0.5 }, statusEffect: { type: 'Confuso', chance: 0.4 }, desc: 'Scopre il vero nome del bersaglio: gli dimezza la Difesa e ha il 40% di confonderlo.' },
+          'Sguardo Shinigami': { name: 'Sguardo Shinigami', type: 'Oscuro', power: 0, targetStatDebuff: { def: 0.7, spd: 0.7 }, statusEffect: { type: 'Confuso', chance: 0.4 }, desc: 'Scopre il vero nome del bersaglio: diminuisce la sua Difesa e Velocità del 30% e ha il 40% di confonderlo.' },
           'Ali Nere': { name: 'Ali Nere', type: 'Aria', power: 75, speedScaling: true, desc: 'Vola a gran velocità per sferrare un attacco aereo. Scala con la Velocità.' },
+          'Giudizio dello Shinigami': { name: 'Giudizio dello Shinigami', type: 'Oscuro', power: 100, recharge: true, desc: 'Un colpo fatale e inesorabile. Infligge 100 danni ma richiede un turno di ricarica.' },
 
           'Leccata Festosa': { name: 'Leccata Festosa', type: 'Spettro', power: 55, drain: 0.5, statusEffect: { type: 'Infatuato', chance: 0.3 }, desc: 'Una leccatina affettuosa e bavosa. Assorbe vita (50%) e può infatuare (30%).' },
           'Ruba-Chiavi': { name: 'Ruba-Chiavi', type: 'Normale', power: 45, targetStatDebuff: { def: 0.6, spd: 0.6 }, desc: 'Ruba gli oggetti dell\'avversario per giocarci! Riduce drasticamente Difesa e Velocità (-40%).' },
@@ -683,10 +684,10 @@
           'A caccia di meduse': { name: 'A caccia di meduse', type: 'Acqua', power: 250, ignoreDefBuffs: true, maxUses: 1, isCombo: ['spongebob', 'patrick'], specificComboEffects: { 'patrick': { selfHeal: -0.75 }, 'spongebob': { statBuff: { atk: 2.0, def: 2.0, spd: 2.0 } } }, desc: 'Mossa Combinata: Danni immensi (250). Patrick si sacrifica perdendo il 75% dei PS massimi, ma Spongebob raddoppia Attacco, Difesa e Velocità!' },
 
           // NUOVE MOSSE PLANKTON
-          'Laser Mentale': { name: 'Laser Mentale', type: 'Robot', power: 85, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Spari ad alta tecnologia. 20% di probabilità di confondere il nemico.' },
+          'Laser Mentale': { name: 'Laser Mentale', type: 'Robot', power: 85, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Spari ad alta tecnologia. 30% di probabilità di confondere il nemico.' },
           'Piano Z': { name: 'Piano Z', type: 'Oscuro', power: 0, target: 'self', statBuff: { atk: 2.0, spd: 1.5 }, maxUses: 2, desc: 'Il piano malvagio definitivo! Raddoppia l\'Attacco e aumenta la Velocità del 50%. (2 utilizzi)' },
           'Karen, Aiuto!': { name: 'Karen, Aiuto!', type: 'Robot', power: 0, targetMode: 'ally', targetStatBuff: { def: 2.0 }, heal: 0.3, desc: 'Sfrutta l\'aiuto di sua moglie Karen per curare un alleato del 30% e raddoppiarne la Difesa.' },
-          'Furto della Ricetta': { name: 'Furto della Ricetta', type: 'Oscuro', power: 60, drain: 0.5, targetStatDebuff: { atk: 0.7 }, desc: 'Ruba l\'energia (e la ricetta!) al nemico. Drena il 50% del danno e ne riduce l\'Attacco.' },
+          'Furto della Ricetta': { name: 'Furto della Ricetta', type: 'Oscuro', power: 75, drain: 0.6, targetStatDebuff: { atk: 0.7 }, desc: 'Ruba l\'energia (e la ricetta!) al nemico. Drena il 60% del danno e ne riduce l\'Attacco.' },
 
           // NUOVE MOSSE MARCELINE
           'Assolo demoniaco': { name: 'Assolo demoniaco', type: 'Spettro', power: 70, ignoreDefBuffs: true, desc: 'Suona un accordo brutale con il suo basso-ascia ignorando i potenziamenti difensivi del bersaglio.' },
@@ -953,14 +954,46 @@
           'Raggio della Morte Concentrato': { name: 'Raggio della Morte Concentrato', type: 'Fuoco', power: 130, recharge: true, desc: 'Usa l\'energia concentrata del sole per un raggio devastante. Richiede un turno per ricaricarsi.' },
           
           // NUOVE MOSSE CHARIZARD
-          'Dragopulsar': { name: 'Dragopulsar', type: 'Drago', power: 80, desc: 'Colpisce il nemico con una potente onda d\'urto draconica.' },
-          'Valanga': { name: 'Valanga', type: 'Roccia', power: 80, targetCount: 4, desc: 'Una massiccia frana di rocce. Colpisce tutti gli avversari in campo ad area.' },
+          // NUOVA MOSSA SUMO IPER
+          'Sguardo Luminoso': { name: 'Sguardo Luminoso', type: 'Luce', power: 90, targetStatDebuff: { atk: 0.7 }, desc: 'Uno sguardo accecante di pura luce. Infligge danni e riduce permanentemente l\'Attacco del bersaglio del 30%.' },
 
-          // NUOVE MOSSE SUMO
-          'Sumo Slam': { name: 'Sumo Slam', type: 'Normale', power: 100, statusEffect: { type: 'Stordito', chance: 0.20 }, desc: 'Un tremendo schianto al suolo. 20% di probabilità di stordire il bersaglio.' },
-          'Mangia-tutto': { name: 'Mangia-tutto', type: 'Normale', power: 0, target: 'self', selfHealRandom: { min: 0.2, max: 1.0 }, desc: 'Mangia qualsiasi cosa trovi per terra! Recupera casualmente tra il 20% e il 100% dei PS massimi.' },
-          'Spinta Da Wrestler': { name: 'Spinta Da Wrestler', type: 'Lotta', power: 65, desc: 'Una potente spinta corpo a corpo.' },
-          'Sgranocchio': { name: 'Sgranocchio', type: 'Buio', power: 85, hitStatDebuff: { def: 0.7, chance: 0.10 }, desc: 'Morde il nemico con ferocia. 10% di probabilità di ridurre la Difesa del 30%.' }
+          // NUOVE MOSSE ELLY
+          'Alito fetido': { name: 'Alito fetido', type: 'Veleno', power: 60, statusEffect: { type: 'Avvelenato', chance: 0.70 }, desc: 'Un alito insopportabile. Infligge danni e ha il 70% di probabilità di avvelenare gravemente il bersaglio.' },
+          'Signora pincher': { name: 'Signora pincher', type: 'Normale', power: 100, statusEffect: { type: 'Infatuato', chance: 0.15 }, desc: 'Mette in mostra la sua fierezza di razza! 100 di danno con il 15% di probabilità di infatuare il nemico.' },
+          'n...non le scale!': { name: 'n...non le scale!', type: 'Normale', power: 80, hitStatDebuff: { def: 0.7, chance: 0.40 }, desc: 'Presa dal panico, fa uno sprint improvviso contro il nemico! 80 danni e 40% di probabilità di diminuire la Difesa avversaria.' },
+          '🐕🐕🐕🐕': { name: '🐕🐕🐕🐕', type: 'Normale', power: 0, targetMode: 'team', targetStatBuff: { spd: 1.5 }, desc: 'Un richiamo festoso e incontenibile! Aumenta la Velocità di tutto il team alleato in campo del 50%.' },
+
+          // NUOVE MOSSE ARIE VICENTE
+          'Taglio Divino': { name: 'Taglio Divino', type: 'Luce', power: 80, critChance: 0.4, critPower: 120, desc: 'Un fendente purissimo, veloce e letale. Alta probabilità di critico (40%).' },
+          'Passo Celestiale': { name: 'Passo Celestiale', type: 'Luce', power: 0, target: 'self', priority: 1, statBuff: { spd: 1.2 }, desc: 'Si muove a velocità sovrumana. Colpisce per primo (Priorità +1) e aumenta la Velocità del 20%.' },
+          'Lama Bianca': { name: 'Lama Bianca', type: 'Luce', power: 80, targetStatDebuff: { def: 0.8 }, desc: 'Colpo elegante e preciso. Riduce la Difesa del bersaglio del 20% aprendo la sua guardia.' },
+          'Riflesso Perfetto': { name: 'Riflesso Perfetto', type: 'Luce', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 3, desc: 'Danza difensiva. Blocca i danni e ne riflette il 25% al mittente. (3 utilizzi)' },
+          'Danza delle Mille Lame': { name: 'Danza delle Mille Lame', type: 'Oscuro', power: 25, multiHit: { min: 3, max: 5 }, desc: 'Sequenza di colpi impossibili da seguire. Colpisce da 3 a 5 volte.' },
+          
+          // NUOVE MOSSE DIAMANTE BIANCO
+          'Pianeta natale': { name: 'Pianeta natale', type: 'Luce', power: 0, targetMode: 'team', targetStatBuff: { atk: 1.3 }, desc: 'Chiede aiuto alle gemme del Pianeta Natale. Aumenta l\'Attacco di tutto il team alleato in campo del 30%.' },
+          'Colpo di tacco': { name: 'Colpo di tacco', type: 'Normale', power: 110, desc: 'Schiaccia il bersaglio con il suo enorme tacco.' },
+          'Raggio luminoso': { name: 'Raggio luminoso', type: 'Luce', power: 80, targetCount: 4, desc: 'Emette un bagliore accecante che colpisce tutti gli avversari in campo.' },
+          'Sguardo imperiale': { name: 'Sguardo imperiale', type: 'Luce', power: 0, accuracy: 0.80, statusEffect: { type: 'Infatuato', chance: 1.0 }, desc: 'Sottomette la mente avversaria infatuando infallibilmente il bersaglio, ma ha l\'80% di precisione.' },
+
+          // NUOVE MOSSE SUGINO
+          'Jugaru': { name: 'Jugaru', type: 'Erba', power: 25, multiHit: { min: 3, max: 3 }, desc: 'Evoca tre fiori giganteschi che sparano semi. Colpisce 3 volte.' },
+          'Diojugaro': { name: 'Diojugaro', type: 'Veleno', power: 50, statusEffects: [{ type: 'Avvelenato', chance: 1.0 }, { type: 'Confuso', chance: 0.4 }], desc: 'Spruzza polline velenoso. Infligge danni, avvelena sempre e ha il 40% di confondere.' },
+          'Juruku': { name: 'Juruku', type: 'Erba', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.4, desc: 'Cura tutti gli alleati in campo del 40%, o se stesso del 50% se è solo.' },
+          'Barujuron': { name: 'Barujuron', type: 'Erba', power: 0, isSummon: 'albero_demone', maxUses: 2, strictUses: true, desc: 'Evoca un guerriero albero gigante per combattere al suo fianco. (2 utilizzi)' },
+          'Pugno Arboreo': { name: 'Pugno Arboreo', type: 'Terra', power: 65, desc: 'Un potente colpo sferrato con rami e radici.' },
+
+          // NUOVE MOSSE NARUTO
+          'Rasengan': { name: 'Rasengan', type: 'Aria', power: 90, desc: 'Una sfera di chakra concentrato ad alta rotazione che sbalza via il nemico.' },
+          'Moltiplicazione Superiore': { name: 'Moltiplicazione Superiore', type: 'Lotta', power: 25, multiHit: { min: 3, max: 5 }, desc: 'Crea cloni d\'ombra per sopraffare l\'avversario. Colpisce da 3 a 5 volte.' },
+          'Rasenshuriken': { name: 'Rasenshuriken', type: 'Aria', power: 130, recharge: true, statusEffect: { type: 'Indebolito', chance: 0.5 }, desc: 'Un Rasengan fuso col chakra del vento. Danni devastanti e 50% di probabilità di indebolire, ma richiede ricarica.' },
+          'Combo Uzumaki': { name: 'Combo Uzumaki', type: 'Lotta', power: 55, priority: 1, desc: 'Un rapido assalto corpo a corpo con l\'aiuto di un clone. Colpisce sempre per primo (Priorità +1).' },
+
+          // NUOVE MOSSE SASUKE
+          'Palla di Fuoco Suprema': { name: 'Palla di Fuoco Suprema', type: 'Fuoco', power: 75, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Sputa un\'enorme sfera di fuoco. 30% di probabilità di scottare il bersaglio.' },
+          'Mille Falchi': { name: 'Mille Falchi', type: 'Elettro', power: 90, statusEffect: { type: 'Elettrizzato', chance: 0.2 }, desc: 'Concentra il fulmine nella mano per un colpo letale. 20% di probabilità di paralizzare.' },
+          'Genjutsu: Sharingan': { name: 'Genjutsu: Sharingan', type: 'Magico', power: 0, targetStatDebuff: { def: 0.6, accFlat: 0.2 }, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Intrappola la mente del nemico. Ne riduce la Difesa (-40%) e Precisione (-20%), con il 30% di stordire.' },
+          'Amaterasu': { name: 'Amaterasu', type: 'Oscuro', power: 120, ignoreDefBuffs: true, statusEffect: { type: 'Scottato', chance: 1.0 }, recharge: true, desc: 'Fiamme nere inestinguibili. Ignora le difese, scotta sempre, ma richiede ricarica nel turno successivo.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -994,7 +1027,7 @@
           { id: 'snorlax', name: 'Snorlax', types: ['Normale'], hp: 160, maxHp: 160, atk: 110, def: 65, spd: 30, img: 'https://i.pinimg.com/736x/49/99/27/499927d6452845cbf3a5e65c116bbaca.jpg', moves: [MOVES_DB['Riposo'], MOVES_DB['Doppia Sberla'], MOVES_DB['Corposcontro'], MOVES_DB['Tuonopugno']] },
           { id: 'carlos', name: 'Carlos Oliveira', types: ['Normale', 'Lotta'], hp: 100, maxHp: 100, atk: 90, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/3b/32/29/3b3229d97074aac59eceb564b01601e8.jpg', passive: { name: 'Sopravvissuto R.C.', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Presa Militare'], MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Tiro Rapido']] },
           { id: 'topolino', name: 'Topolino', types: ['Normale'], hp: 105, maxHp: 105, atk: 85, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/d8/f2/ef/d8f2efccf41766493727a5bf5c49e082.jpg', moves: [MOVES_DB['Colpo Cartoon'], MOVES_DB['Fischietto amico'], MOVES_DB['Tappeto scivoloso'], MOVES_DB['Magia Disney']] },
-          { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 110, maxHp: 110, atk: 100, def: 70, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', passive: { name: 'Testa Calda', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando la vita scende sotto il 25%, aumenta il proprio Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
+          { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 115, maxHp: 115, atk: 100, def: 77, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', passive: { name: 'Testa Calda', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando la vita scende sotto il 25%, aumenta il proprio Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
           { id: 'bloom', name: 'Bloom', types: ['Fuoco', 'Magico'], hp: 80, maxHp: 80, atk: 110, def: 60, spd: 100, img: 'https://i.pinimg.com/736x/d6/c1/38/d6c138c9b4720da37aa07f8ae69b158c.jpg', passive: { name: 'Cuore di Fenice', type: 'on_faint', reviveHpPercent: 0.3, maxUses: 1, desc: 'La prima volta che i PS scendono a 0, rinasce immediatamente recuperando il 30% della salute.' }, moves: [MOVES_DB['Fiamma del Drago'], MOVES_DB['Esplosione Solare'], MOVES_DB['Aura Stellare'], MOVES_DB['Incanto Protettivo']] },
           { id: 'bowser', name: 'Bowser', types: ['Fuoco', 'Drago'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 40, img: 'https://i.pinimg.com/736x/cf/3f/ec/cf3fec1f6b9334e0255065f150fa97a9.jpg', passive: { name: 'Fiamma del Re Koopa', type: 'on_enter', maxUses: 1, applyStatusToRandomEnemy: { type: 'Scottato', turns: 99 }, desc: 'Appena scende in campo, scotta immediatamente un nemico casuale. (1 sola volta per battaglia)' }, moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Rolla-Guscio'], MOVES_DB['Ruggito del re koopa'], MOVES_DB['Dragartigli']] },
           { id: 'leslie', name: 'Leslie', types: ['Erba'], hp: 120, maxHp: 120, atk: 90, def: 110, spd: 65, img: 'https://i.pinimg.com/736x/27/9b/52/279b527b56263fab8939f6597633a51b.jpg', moves: [MOVES_DB['Polline fastidioso'], MOVES_DB['Foglia Danzerina'], MOVES_DB['Fotosintesi clorofiliana'], MOVES_DB['L ho fatta nel vaso']] },
@@ -1048,7 +1081,7 @@
           { id: 'stewie', name: 'Stewie', types: ['Robot', 'Elettro'], hp: 80, maxHp: 80, atk: 115, def: 70, spd: 110, img: 'https://i.pinimg.com/736x/72/98/97/729897013a80e2f47d32fa0f790811eb.jpg', moves: [MOVES_DB['Pistola Laser'], MOVES_DB['Macchina del Tempo'], MOVES_DB['Granata EMP'], MOVES_DB['Controllo Mentale']] },
           { id: 'dannyphantom', name: 'Danny Phantom', types: ['Spettro', 'Elettro'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/0b/75/5d/0b755da4ccc07381fb6ba32991b35135.jpg', passive: { name: 'Phantom mode : activate!', type: 'damage_reduction_on_move', moveName: 'Urlo Spettrale', reduction: 0.25, desc: 'Quando utilizza Urlo Spettrale, riceve il 25% di danni in meno per quel turno.' }, moves: [MOVES_DB['Raggio Ectoplasmatico'], MOVES_DB['Urlo Spettrale'], MOVES_DB['Intangibilità'], MOVES_DB['Pugno Ghiacciato']] },
           { id: 'reboo', name: 'Re Boo', types: ['Spettro', 'Psico'], hp: 130, maxHp: 130, atk: 95, def: 110, spd: 50, img: 'https://i.pinimg.com/736x/e4/32/5d/e4325df5bb0d6bac82d57332f1262f33.jpg', moves: [MOVES_DB['Trappola nel Quadro'], MOVES_DB['boo ho ho hahaha'], MOVES_DB['Lingua Gigante'], MOVES_DB['Potere della Corona']] },
-          { id: 'ryuk', name: 'Ryuk', types: ['Oscuro', 'Aria'], hp: 100, maxHp: 100, atk: 120, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/5f/e5/ee/5fe5ee520cfc60bc417670fb536d1dd7.jpg', moves: [MOVES_DB['Quaderno della Morte'], MOVES_DB['Mela Rossa'], MOVES_DB['Sguardo Shinigami'], MOVES_DB['Ali Nere']] },
+          { id: 'ryuk', name: 'Ryuk', types: ['Oscuro', 'Aria'], hp: 100, maxHp: 100, atk: 120, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/5f/e5/ee/5fe5ee520cfc60bc417670fb536d1dd7.jpg', moves: [MOVES_DB['Giudizio dello Shinigami'], MOVES_DB['Mela Rossa'], MOVES_DB['Sguardo Shinigami'], MOVES_DB['Ali Nere']] },
           { id: 'polterpup', name: 'Polterpup', types: ['Spettro', 'Normale'], hp: 95, maxHp: 95, atk: 80, def: 95, spd: 130, img: 'https://i.pinimg.com/736x/94/14/01/941401a8a6cc3d7693a9a93275616f1a.jpg', moves: [MOVES_DB['Leccata Festosa'], MOVES_DB['Ruba-Chiavi'], MOVES_DB['Buon Cagnolino'], MOVES_DB['Nascondino']] },
           { id: 'rias', name: 'Rias Gremory', types: ['Oscuro', 'Magico'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 90, img: 'https://i.pinimg.com/736x/d1/8f/36/d18f368c9350408a665b56d5dd04486e.jpg', moves: [MOVES_DB['Potere della Distruzione'], MOVES_DB['Stella del Mattino'], MOVES_DB['Ali da Demone'], MOVES_DB['Regina Cremisi']] },
           { id: 'crash', name: 'Crash Bandicoot', types: ['Normale', 'Lotta'], hp: 90, maxHp: 90, atk: 105, def: 85, spd: 110, img: 'https://i.pinimg.com/1200x/72/83/d8/7283d8b496ad1920e26feb5414302b20.jpg', moves: [MOVES_DB['Tornado Rotante'], MOVES_DB['Spanciata'], MOVES_DB['Maschera Aku Aku'], MOVES_DB['Frutto Wumpa']] },
@@ -1072,7 +1105,7 @@
           { id: 'robin', name: 'Robin', types: ['Lotta', 'Buio'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 115, img: 'https://i.pinimg.com/736x/a2/19/05/a219056712e870f76d8eb16e8948297f.jpg', moves: [MOVES_DB['Birdarang'], MOVES_DB['Bo Staff'], MOVES_DB['Bomba Fumogena'], MOVES_DB['Calcio Volante Tattico']] },
           { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', passive: { name: 'Corpo Spugnoso', type: 'resist_super_effective', reduction: 0.5, desc: 'Il suo corpo morbido assorbe gli urti: riduce del 50% i danni aggiuntivi subiti dalle mosse Superefficaci (il moltiplicatore scende da 2x a 1.5x).' }, moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso'], MOVES_DB['A caccia di meduse']] },
           { id: 'patrick', name: 'Patrick Stella', types: ['Acqua', 'Roccia'], hp: 140, maxHp: 140, atk: 115, def: 110, spd: 40, img: 'https://i.pinimg.com/736x/60/80/69/60806924c9fa74a24fbeb4c4a81c344e.jpg', moves: [MOVES_DB['Schianto Stella'], MOVES_DB['Non sono Rick!'], MOVES_DB['Riposino sotto la Roccia'], MOVES_DB['Lancio del Sasso'], MOVES_DB['A caccia di meduse']] },
-          { id: 'plankton', name: 'Plankton', types: ['Insetto', 'Robot'], hp: 60, maxHp: 60, atk: 125, def: 70, spd: 120, img: 'https://i.pinimg.com/736x/af/f1/8b/aff18ba41f798ebe95ae1809410cbec9.jpg', moves: [MOVES_DB['Laser Mentale'], MOVES_DB['Piano Z'], MOVES_DB['Karen, Aiuto!'], MOVES_DB['Furto della Ricetta']] },
+          { id: 'plankton', name: 'Plankton', types: ['Insetto', 'Robot'], hp: 75, maxHp: 75, atk: 125, def: 80, spd: 125, img: 'https://i.pinimg.com/736x/af/f1/8b/aff18ba41f798ebe95ae1809410cbec9.jpg', moves: [MOVES_DB['Laser Mentale'], MOVES_DB['Piano Z'], MOVES_DB['Karen, Aiuto!'], MOVES_DB['Furto della Ricetta']] },
           { id: 'marceline', name: 'Marceline', types: ['Spettro', 'Oscuro'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 105, img: 'https://i.pinimg.com/1200x/9a/2a/b2/9a2ab298cd3d50454991ec5008ba04ae.jpg', moves: [MOVES_DB['Assolo demoniaco'], MOVES_DB['Melodia spettrale'], MOVES_DB['Morso vampirico'], MOVES_DB['Nebbia cremisi']] },
           
           { id: 'penny', name: 'Penny', types: ['Acqua'], hp: 90, maxHp: 90, atk: 105, def: 75, spd: 110, img: 'https://i.pinimg.com/736x/36/a1/68/36a168060154d2cb3d496213de3a99a2.jpg', moves: [MOVES_DB['Akur!'], MOVES_DB['guarda il mio faccino!'], MOVES_DB['Akur Kiro!'], MOVES_DB['Sou Giakuru!']] },
@@ -1115,8 +1148,10 @@
           { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soundwave&backgroundColor=1e293b', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
 
           { id: 'alphonse', name: 'Alphonse Elric', types: ['Robot', 'Terra'], hp: 110, maxHp: 110, atk: 95, def: 125, spd: 70, img: 'https://i.pinimg.com/1200x/6b/02/53/6b0253e74a2738939cf60840ff6c73df.jpg', moves: [MOVES_DB['Alchimia Metallica'], MOVES_DB['Pugno d\'Acciaio'], MOVES_DB['Muro Terrestre'], MOVES_DB['Pilastro di Terra']] },
-          { id: 'sailormercury', name: 'Sailor Mercury', types: ['Acqua', 'Magico'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 100, img: 'https://api.dicebear.com/7.x/adventurer/svg?seed=SailorMercury', moves: [MOVES_DB['Bolle di Nebbia'], MOVES_DB['Shabon Spray'], MOVES_DB['Raggio di Mercurio']] },
-          { id: 'bort', name: 'Bort', types: ['Roccia'], hp: 95, maxHp: 95, atk: 125, def: 110, spd: 90, img: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Bort', moves: [MOVES_DB['Capelli di Diamante'], MOVES_DB['Durezza 10'], MOVES_DB['Istinto Combattivo']] },
+          { id: 'diamantebianco', name: 'Diamante Bianco', types: ['Luce'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 85, img: 'https://i.pinimg.com/736x/f8/57/5f/f8575f776adac7111faebf0e6d48bb95.jpg', passive: { name: 'Il Capo del Pianeta Natale', type: 'first_hit_immunity', desc: 'La sua aura di supremazia è intoccabile. Il primo attacco nemico che subisce in battaglia viene completamente annullato (0 danni e nessun malus).' }, moves: [MOVES_DB['Pianeta natale'], MOVES_DB['Colpo di tacco'], MOVES_DB['Raggio luminoso'], MOVES_DB['Sguardo imperiale']] },
+          { id: 'sugino', name: 'Sugino', types: ['Erba'], hp: 100, maxHp: 100, atk: 105, def: 85, spd: 95, img: 'https://ami.animecharactersdatabase.com/uploads/chars/43057-1906525683.png', passive: { name: 'Piante Curative', type: 'aura', immuneToNegativeStatuses: true, desc: 'Le theme piante lo curano istantaneamente da ogni malus: è immune a tutte le alterazioni di stato negative.' }, moves: [MOVES_DB['Jugaru'], MOVES_DB['Diojugaro'], MOVES_DB['Juruku'], MOVES_DB['Barujuron']] },
+          { id: 'naruto', name: 'Naruto Uzumaki', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 120, img: 'https://i.pinimg.com/736x/cd/4e/a1/cd4ea18dfd17257a575dfe671faba4f9.jpg', passive: { name: 'Chakra della Volpe', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.3, spd: 1.3 }, heal: 0.2, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, attinge al chakra di Kurama: recupera il 20% dei PS e aumenta Attacco e Velocità del 30%.' }, moves: [MOVES_DB['Rasengan'], MOVES_DB['Moltiplicazione Superiore'], MOVES_DB['Combo Uzumaki'], MOVES_DB['Rasenshuriken']] },
+          { id: 'sasuke', name: 'Sasuke Uchiha', types: ['Fuoco', 'Elettro'], hp: 100, maxHp: 100, atk: 120, def: 75, spd: 125, img: 'https://i.pinimg.com/736x/bc/8b/b1/bc8bb101895ed8f2beff898258665942.jpg', passive: { name: 'Risveglio del Susanoo', type: 'on_hp_threshold', threshold: 0.3, statBuff: { def: 2.0 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, evoca l\'armatura spirituale del Susanoo, raddoppiando istantaneamente la propria Difesa.' }, moves: [MOVES_DB['Palla di Fuoco Suprema'], MOVES_DB['Mille Falchi'], MOVES_DB['Genjutsu: Sharingan'], MOVES_DB['Amaterasu']] },
 
           { id: 'summon_chatnoir', name: 'Chat Noir (Aiutante)', types: ['Buio', 'Lotta'], hp: 47, maxHp: 47, atk: 115, def: 37, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', moves: [MOVES_DB['Cataclisma']], isSummonOnly: true },
           { id: 'summon_renarouge', name: 'Rena Rouge (Aiutante)', types: ['Normale'], hp: 45, maxHp: 45, atk: 100, def: 40, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Volpe rabbiosa']], isSummonOnly: true },
@@ -1145,6 +1180,8 @@
           { id: 'clone_verde', name: 'Clone Verde', types: ['Normale'], hp: 45, maxHp: 45, atk: 50, def: 40, spd: 55, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', imageFilter: 'sepia(1) hue-rotate(90deg) saturate(3) brightness(1.2)', moves: [MOVES_DB['Colpo di flauto']], isSummonOnly: true },
           
           { id: 'boo', name: 'Boo', types: ['Spettro'], hp: 45, maxHp: 45, atk: 60, def: 40, spd: 65, img: 'https://i.pinimg.com/736x/c6/b8/6a/c6b86a449b23bbcc0023b6a7968ff99d.jpg', moves: [MOVES_DB['Lingua Gigante (Boo)']], isSummonOnly: true },
+
+          { id: 'albero_demone', name: 'Albero Demone', types: ['Terra'], hp: 65, maxHp: 65, atk: 70, def: 60, spd: 40, img: 'https://i.pinimg.com/1200x/f9/d6/6e/f9d66ecde272dfcdf676ac5bd16435f6.jpg', moves: [MOVES_DB['Pugno Arboreo']], isSummonOnly: true },
 
           { id: 'bulma', name: 'Bulma', types: ['Robot'], hp: 100, maxHp: 100, atk: 70, def: 110, spd: 85, img: 'https://i.pinimg.com/736x/a4/d0/2c/a4d02c84248f59d5e683b1d57a9ad3b8.jpg', passive: { name: 'Rifornimento Capsule Corp.', type: 'on_turn_end', healPercent: 0.03, desc: 'Alla fine di ogni turno, recupera il 3% dei propri PS massimi.' }, moves: [MOVES_DB['Senzu per tutti'], MOVES_DB['Capsula Gadget'], MOVES_DB['Geyser fotonico'], MOVES_DB['Cortocircuito']] },
           { id: 'robo_aiutante_1', name: 'Robo Aiutante (Difesa)', types: ['Robot'], hp: 50, maxHp: 50, atk: 40, def: 50, spd: 60, img: 'https://i.pinimg.com/1200x/2e/e4/74/2ee4744e03259e47f7005eb9a799b54b.jpg', moves: [MOVES_DB['Difesa al minimo!'], MOVES_DB['Missile']], isSummonOnly: true },
@@ -1189,14 +1226,16 @@
           { id: 'megamind', name: 'Megamind', types: ['Robot', 'Psico'], hp: 95, maxHp: 95, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/80/f6/29/80f6299471e306b47c2a2b9e88f9f09a.jpg', passive: { name: 'PRESENTAZIONE!', type: 'on_enter', maxUses: 1, enemyStatDebuff: { def: 0.8, spd: 0.8 }, desc: 'Appena scende in campo, sbalordisce i nemici, riducendone permanentemente Difesa e Velocità del 20%.' }, moves: [MOVES_DB['Pistola Disidratante'], MOVES_DB['Sciame di Brainbot'], MOVES_DB['Travestimento Olografico'], MOVES_DB['Raggio della Morte Concentrato']] },
           
           { id: 'charizard', name: 'Charizard', types: ['Fuoco', 'Aria'], hp: 105, maxHp: 105, atk: 120, def: 80, spd: 110, img: 'https://i.pinimg.com/1200x/93/1f/28/931f2832788a658540727ba3521d0b84.jpg', moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Tifone'], MOVES_DB['Dragopulsar'], MOVES_DB['Terremoto']] },
-          { id: 'sumo', name: 'Sumo', types: ['Normale', 'Lotta'], hp: 130, maxHp: 130, atk: 115, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/aa/cd/61/aacd61f4c49350ef9759acb0531d250b.jpg', moves: [MOVES_DB['Sumo Slam'], MOVES_DB['Mangia-tutto'], MOVES_DB['Spinta Da Wrestler'], MOVES_DB['Sgranocchio']] }
+          { id: 'sumo', name: 'Sumo', types: ['Normale', 'Lotta'], hp: 130, maxHp: 130, atk: 115, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/aa/cd/61/aacd61f4c49350ef9759acb0531d250b.jpg', moves: [MOVES_DB['Sumo Slam'], MOVES_DB['Mangia-tutto'], MOVES_DB['Spinta Da Wrestler'], MOVES_DB['Sgranocchio']] },
+          { id: 'elly', name: 'Elly', types: ['Normale'], hp: 90, maxHp: 90, atk: 105, def: 85, spd: 115, img: 'https://i.postimg.cc/G4NHmSrb/Whats-App-Image-2026-06-25-at-06-09-14.jpg', moves: [MOVES_DB['Alito fetido'], MOVES_DB['Signora pincher'], MOVES_DB['n...non le scale!'], MOVES_DB['🐕🐕🐕🐕']] },
+          { id: 'arievicente', name: 'Arie Vicente', types: ['Luce'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/a2/a5/bc/a2a5bcedfecd462bdb1ba949d235c665.jpg', passive: { name: 'Perfezione Assoluta', type: 'perfezione_assoluta', desc: 'Ogni volta che subisce un colpo poco efficace, ottiene +20% Attacco. Se infligge un critico, ottiene +20% Velocità. Se evita o devia un attacco avversario, +20% Difesa.' }, moves: [MOVES_DB['Taglio Divino'], MOVES_DB['Passo Celestiale'], MOVES_DB['Lama Bianca'], MOVES_DB['Riflesso Perfetto'], MOVES_DB['Danza delle Mille Lame']] }
         ];
 
         const CHAR_PRICES = {
-            'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
-            'laxus': 250, 'zabuza': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200,
-            'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150
+            'diamantebianco': 350, 'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
+            'laxus': 250, 'zabuza': 250, 'naruto': 250, 'sasuke': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250, 'arievicente': 250,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200, 'elly': 200,
+            'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150, 'sugino': 150
         };
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
@@ -5435,6 +5474,14 @@
                 let finalAccuracy = (move.accuracy !== undefined ? move.accuracy : 1.0) * (attacker.acc || 1.0);
                 if (finalAccuracy < 1.0 && Math.random() > finalAccuracy) {
                     events.push({ type: 'text', text: `${attacker.name} usa ${move.name}, ma manca clamorosamente il bersaglio!` });
+                    
+                    if (action.targetPlayer && action.targetIdx !== undefined) {
+                        const intendedTarget = workingTeams[action.targetPlayer]?.[action.targetIdx];
+                        if (intendedTarget && intendedTarget.passive && intendedTarget.passive.type === 'perfezione_assoluta' && intendedTarget.hp > 0) {
+                            intendedTarget.def = Math.floor(intendedTarget.def * 1.2);
+                            events.push({ type: 'text', text: `✨ ${intendedTarget.name} attiva ${intendedTarget.passive.name}! Schiva con eleganza e aumenta la sua Difesa del 20%!`, isPassive: true, passiveChar: intendedTarget.name, passiveName: intendedTarget.passive.name });
+                        }
+                    }
                     continue;
                 }
 
@@ -5672,6 +5719,7 @@
 
                     let isInvincibleShield = false;
                     let isPerfectBarrier = false;
+                    let isFirstHitImmunity = false; // AGGIUNTO PER DIAMANTE BIANCO
 
                     if (t.char.id.startsWith('celljr_') && isEnemyTarget) {
                         const teamAlive = workingTeams[t.player].filter(c => c.hp > 0);
@@ -5685,8 +5733,11 @@
                             isPerfectBarrier = true;
                         }
                     }
+                    if (t.char.passive && t.char.passive.type === 'first_hit_immunity' && !t.char.firstHitImmunityUsed && isEnemyTarget) {
+                        isFirstHitImmunity = true;
+                    }
 
-                    if (isProtectedFromEnemy || isInvincibleShield || isPerfectBarrier) {
+                    if (isProtectedFromEnemy || isInvincibleShield || isPerfectBarrier || isFirstHitImmunity) {
                         if (isProtectedFromEnemy) {
                             events.push({ type: 'text', text: `🛡️ ${t.char.name} si è protetto dall'attacco di ${attacker.name}!` });
                             if (t.char.statuses.some(s => s.type === 'Rashield') && attacker.hp > 0 && move.power > 0) {
@@ -5698,6 +5749,9 @@
                             events.push({ type: 'text', text: `🛡️ Lo Scudo Invincibile blocca l'attacco su ${t.char.name}! Sconfiggi Natsu o Po prima!` });
                         } else if (isPerfectBarrier) {
                             events.push({ type: 'text', text: `🛡️ La Barriera Perfetta protegge Cell! Sconfiggi prima tutti i Cell Jr.!` });
+                        } else if (isFirstHitImmunity) {
+                            t.char.firstHitImmunityUsed = true;
+                            events.push({ type: 'text', text: `💎 ${t.char.name} attiva ${t.char.passive.name}! Il primo attacco contro di lei viene completamente annullato!`, isPassive: true, passiveChar: t.char.name, passiveName: t.char.passive.name });
                         }
                         attackSucceeded = true;
                         continue; // SCARTA TUTTO IL RESTO (Danni, status, debuff)
@@ -5715,7 +5769,13 @@
                     if (isImmuneDueToPassive) effectivenessText = ` Ma ${t.char.name} ne è immune grazie a ${t.char.passive.name}!`;
                     else if (superEffectiveResisted) effectivenessText = ` È superefficace! Ma attutito da ${t.char.passive.name}!`;
                     else if (multiplier > 1) effectivenessText = " È superefficace!";
-                    else if (multiplier < 1 && multiplier > 0) effectivenessText = " Non è molto efficace...";
+                    else if (multiplier < 1 && multiplier > 0) {
+                        effectivenessText = " Non è molto efficace...";
+                        if (attacker.passive && attacker.passive.type === 'perfezione_assoluta' && attacker.hp > 0) {
+                            attacker.atk = Math.floor(attacker.atk * 1.2);
+                            events.push({ type: 'text', text: `✨ ${attacker.name} attiva ${attacker.passive.name}! La resistenza avversaria accende la sua lama: Attacco +20%!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
+                        }
+                    }
                     else if (multiplier === 0) effectivenessText = " Non ha alcun effetto!";
                     
                     if (multiplier === 0) {
@@ -5825,6 +5885,10 @@
 
                             if (isCritical && i === 0) {
                                 events.push({ type: 'text', text: `💥 BOOM! Colpo Critico di ${attacker.name}!` });
+                                if (attacker.passive && attacker.passive.type === 'perfezione_assoluta' && attacker.hp > 0) {
+                                    attacker.spd = Math.floor(attacker.spd * 1.2);
+                                    events.push({ type: 'text', text: `✨ ${attacker.name} attiva ${attacker.passive.name}! Il colpo perfetto aumenta la sua Velocità del 20%!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
+                                }
                             }
 
                             let hitDmg = calculateDamage(attacker, t.char, currentMoveForDmg, multiplier, isFirstAttackOfTurn);
@@ -6585,6 +6649,7 @@
         let nextStatus = 'battling';
         let winner = null;
         let tResults = { ...gameState.tournamentResults };
+        let tStatus = { ...gameState.tournamentMatchStatus }; // <-- FIX: Spostato fuori per salvataggio globale
         let newScores = { ...gameState.playerScores };
         let currentSurvivalRound = gameState.survivalRound || 1; // <--- AGGIUNTO
 
@@ -6676,8 +6741,6 @@
             else if (!opponentsAlive) { nextStatus = 'gameover'; winner = gameState.players[juggPlayer]; }
         }
         else if (gameState.gameMode === 'torneo') {
-            let tStatus = { ...gameState.tournamentMatchStatus };
-            let tResults = { ...gameState.tournamentResults };
             const phase = gameState.tournamentPhase || 'semis';
             const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
             
@@ -6732,8 +6795,7 @@
                     winner = gameState.players[tResults.final?.winner];
                 }
             }
-            
-            updateState({ tournamentMatchStatus: tStatus, tournamentResults: tResults });
+            // Rimossa la chiamata doppia problematica a updateState qui!
         }
         else if (gameState.gameMode === 'torneo_punti') {
             const pA = activeMatchPlayers[0];
@@ -6799,18 +6861,19 @@
           status: 'executing', 
           postExecStatus: nextStatus,
           winner,
-          survivalRound: currentSurvivalRound, // <--- AGGIUNTO AL SALVATAGGIO STATO
+          survivalRound: currentSurvivalRound, 
           teams: workingTeams,
           field: workingField,
-          startOfTurnTeams: startOfTurnTeams, // Mantiene i dati intatti per la suspense!
+          startOfTurnTeams: startOfTurnTeams, 
           startOfTurnField: startOfTurnField,
           events: events,
           actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
           inventory: workingInventory,
-          hyperUsed: workingHyperUsed, // <--- SALVA LO STATO DELLA FORMA IPER
+          hyperUsed: workingHyperUsed, 
           pendingSwitches: pendingSwitches,
           switchActions: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           tournamentResults: tResults,
+          tournamentMatchStatus: tStatus, // <--- FIX INSERITO: Ora si salva correttamente!
           playerScores: newScores
         });
     };
@@ -7819,6 +7882,12 @@
                 'dante': "Jackpot! Facciamoli a pezzi con stile.",
                 'megamind': "La differenza tra un cattivo e un supercattivo? La PRESENTAZIONE!",
                 'sumo': "Nessuno può spostarmi dal ring!",
+                'elly': "Bau! Bau bau bau! (Pronta a mordere le caviglie!)",
+                'arievicente': "La mia lama non conosce imperfezioni. Affronteremo il torneo con eleganza assoluta.",
+                'diamantebianco': "La vostra luce impallidisce di fronte alla mia perfezione.",
+                'sugino': "I miei fiori vi mostreranno il potere della natura!",
+                'naruto': "Non mi arrenderò mai! Questo è il mio credo ninja!",
+                'sasuke': "Taglierò ogni legame ostile per raggiungere la vittoria.",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -7901,6 +7970,12 @@
                 'dante': "Niente demoni da cacciare? Allora mi vado a mangiare una pizza.",
                 'megamind': "Tsk, il mio genio era sprecato qui in panchina.",
                 'sumo': "Uff, vado a mangiarmi qualcosa allora.",
+                'elly': "*Guaisce e va a cuccia offesa.*",
+                'arievicente': "Una scelta priva di eleganza. Tornerò ad affilare la mia lama nell'ombra.",
+                'diamantebianco': "Come osate ignorare la mia luce? Scomparite.",
+                'sugino': "D'accordo, tornerò a prendermi cura dei miei germogli.",
+                'naruto': "Uffa... va bene, vado a mangiare del ramen da Ichiraku.",
+                'sasuke': "Tsk. Non avete il potere necessario per comprendermi.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -8952,7 +9027,7 @@
         const reqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const canStartDraft = isAllPlayersJoined();
 
-        const newArrivals = ['charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere', 'doraemon']; // Massimo 20 nuovi inserimenti
+        const newArrivals = ['sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
 
         return (
             <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 relative">
