@@ -857,7 +857,7 @@
 
           'Nyop-nyop': { name: 'Nyop-nyop', type: 'Drago', power: 40, drain: 0.5, statusEffect: { type: 'Elettrizzato', chance: 1.0 }, desc: 'Afferra il nemico con la lingua! Recupera il 50% dei danni inflitti e paralizza al 100% per il trauma.' },
           'Uovo boomerang': { name: 'Uovo boomerang', type: 'Normale', power: 20, multiHit: { min: 2, max: 5 }, desc: 'Lancia uova a ripetizione. Colpisce da 2 a 5 volte.' },
-          'Sali sulla mia schiena': { name: 'Sali sulla mia schiena', type: 'Normale', power: 0, priority: 2, targetMode: 'ally', statusEffect: { type: 'In_Groppa', turns: 1 }, desc: 'Prende in groppa un alleato! Gli attacchi rivolti a lui colpiranno Yoshi, che subirà il 50% dei danni in meno (Priorità +2, più veloce di attacchi rapidi).' },
+          'Sali sulla mia schiena': { name: 'Sali sulla mia schiena', type: 'Normale', power: 0, priority: 2, targetMode: 'ally', statusEffect: { type: 'In_Groppa', turns: 1 }, desc: 'Prende in groppa un alleato per un turno! Gli attacchi a bersaglio singolo rivolti a lui colpiranno Yoshi, che subirà il 50% dei danni in meno.' },
           'Colpo salterino': { name: 'Colpo salterino', type: 'Drago', power: 80, desc: 'Un balzo potentissimo seguito da uno schianto sul nemico.' },
 
           // NUOVE MOSSE KAI
@@ -1057,7 +1057,7 @@
           { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 95, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', moves: [MOVES_DB['Mano d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Ali Liquide']] },
           { id: 'aang', name: 'Aang', types: ['Aria', 'Psico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', passive: { name: 'Respiro dell\'Avatar', type: 'aura', immuneToType: 'Aria', boostMoveType: { type: 'Aria', multiplier: 1.2 }, desc: 'Garantisce immunità totale agli attacchi di tipo Aria e aumenta del 20% la potenza delle proprie mosse di tipo Aria.' }, moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
           { id: 'yugo', name: 'Yugo', types: ['Psico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Danza Eliatrope']] },
-          { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 95, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
+          { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 95, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', passive: { name: 'Resurrezione Vandalica', type: 'on_revive_ally', statBuff: { atk: 1.4 }, desc: 'Quando rianima un compagno caduto, la sua determinazione cresce vertiginosamente, aumentando il proprio Attacco del 40%.' }, moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
           { id: 'ariana', name: 'Ariana Grande', types: ['Magico', 'Suono'], hp: 85, maxHp: 85, atk: 105, def: 70, spd: 100, img: 'https://i.pinimg.com/736x/1f/74/fa/1f74faeae0ec93a8288ab2e8bee3ffe7.jpg', passive: { name: 'Grido da Popstar', type: 'on_enter', maxUses: 1, teamStatBuff: { atk: 1.3 }, enemyStatDebuff: { spd: 0.7 }, desc: 'Appena schierata, aumenta l\'Attacco del tuo team e riduce la Velocità dei nemici in campo (30%).' }, moves: [MOVES_DB['YUH!'], MOVES_DB['Potere ariana grande'], MOVES_DB['Into You'], MOVES_DB['Bang Bang']] },
           { id: 'mario', name: 'Mario', types: ['Normale', 'Fuoco'], hp: 100, maxHp: 100, atk: 110, def: 85, spd: 90, img: 'https://i.pinimg.com/736x/f0/48/65/f04865769239ed667f302d6f19b8595e.jpg', moves: [MOVES_DB['Salto Idraulico'], MOVES_DB['Palla di Fuoco'], MOVES_DB['Martellata'], MOVES_DB['Super Fungo'], MOVES_DB['Fratelli Bros']] },
           { id: 'luigi', name: 'Luigi', types: ['Normale', 'Aria'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/6b/2d/ef/6b2def306298232ad8a40e93e51a413e.jpg', moves: [MOVES_DB['Salto Svolazzante'], MOVES_DB['Poltergust 3000'], MOVES_DB['Sguardo di Luigi'], MOVES_DB['Missile Verde'], MOVES_DB['Fratelli Bros']] },
@@ -3461,6 +3461,7 @@
                   if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                   if (data.unlockedChars === undefined) data.unlockedChars = [];
                   if (data.maxSurvivalRound === undefined) data.maxSurvivalRound = 0;
+                  if (data.freeUnlockUsed === undefined) data.freeUnlockUsed = false; // <-- AGGIUNTO PER REGALO BETA
                   
                   // FIX: Scuse e Regalo di 200 Monete
                   if (!data.apologyGiftReceived) {
@@ -3491,6 +3492,7 @@
                           if (data.inventory === undefined) data.inventory = { cura_totale: 1 };
                           if (data.unlockedChars === undefined) data.unlockedChars = [];
                           if (data.maxSurvivalRound === undefined) data.maxSurvivalRound = 0;
+                          if (data.freeUnlockUsed === undefined) data.freeUnlockUsed = false; // <-- AGGIUNTO PER REGALO BETA
                           
                           if (!data.apologyGiftReceived) {
                               data.coins += 200;
@@ -3538,6 +3540,9 @@
               }
               if (updates.maxSurvivalRound !== undefined && updates.maxSurvivalRound > (current.maxSurvivalRound || 0)) {
                   current.maxSurvivalRound = updates.maxSurvivalRound;
+              }
+              if (updates.useFreeUnlock) {
+                  current.freeUnlockUsed = true; // <-- AGGIUNTO PER REGALO BETA
               }
               
               localStorage.setItem(key, JSON.stringify(current));
@@ -4817,6 +4822,23 @@
               if (!char) return; // FIX: Se è già stato rimosso per errore evita il crash
               events.push({ text: `${char.name} è esausto!`, type: 'faint' });
               
+              // --- RIMOZIONE STATUS IN_GROPPA SE YOSHI MUORE ---
+              activeMatchPlayers.forEach(pAlly => {
+                  if (workingTeams[pAlly]) {
+                      workingTeams[pAlly].forEach((cAlly, aIdx) => {
+                          if (cAlly && cAlly.hp > 0 && cAlly.statuses) {
+                              const groppaIdx = cAlly.statuses.findIndex(s => s.type === 'In_Groppa' && s.protectorIdx === targetIdx && s.protectorPlayer === targetPlayer);
+                              if (groppaIdx !== -1) {
+                                  cAlly.statuses.splice(groppaIdx, 1);
+                                  events.push({ type: 'text', text: `🦕 ${char.name} è andato K.O.! ${cAlly.name} scende dalla sua groppa.` });
+                                  updateStatusUI(pAlly, aIdx);
+                              }
+                          }
+                      });
+                  }
+              });
+              // ------------------------------------------------
+              
               char.atk = char.baseAtk;
               char.def = char.baseDef;
               char.spd = char.baseSpd;
@@ -5277,6 +5299,23 @@
                       attacker.acc = 1.0;
                       attacker.consecutiveProtect = 0;
 
+                      // --- RIMOZIONE STATUS IN_GROPPA SE YOSHI VIENE SOSTITUITO ---
+                      activeMatchPlayers.forEach(pAlly => {
+                          if (workingTeams[pAlly]) {
+                              workingTeams[pAlly].forEach((cAlly, aIdx) => {
+                                  if (cAlly && cAlly.hp > 0 && cAlly.statuses) {
+                                      const groppaIdx = cAlly.statuses.findIndex(s => s.type === 'In_Groppa' && s.protectorIdx === charTeamIdx && s.protectorPlayer === player);
+                                      if (groppaIdx !== -1) {
+                                          cAlly.statuses.splice(groppaIdx, 1);
+                                          events.push({ type: 'text', text: `🦕 ${attacker.name} è stato messo in panchina! ${cAlly.name} scende dalla sua groppa.` });
+                                          updateStatusUI(pAlly, aIdx);
+                                      }
+                                  }
+                              });
+                          }
+                      });
+                      // -----------------------------------------------------------
+
                       workingField[player][fieldPos] = action.toIdx;
                       workingTeams[player][action.toIdx].revealed = true; // Segna come rivelato!
                       events.push({ type: 'switch', player, pos: fieldPos, newIdx: action.toIdx, text: `${gameState.players[player]} ritira ${attacker.name} e manda in campo ${workingTeams[player][action.toIdx].name}!` });
@@ -5643,14 +5682,26 @@
                     let isRedirectedDmgReduced = false;
                     let inGroppaStatus = t.char.statuses.find(s => s.type === 'In_Groppa');
                     // MODIFICA: Yoshi devia l'attacco SOLO se non è un attacco ad area (altrimenti verrebbe colpito due volte dalla stessa esplosione!)
-                    if (inGroppaStatus && inGroppaStatus.protectorIdx !== undefined && (!move.targetCount || move.targetCount < 4)) {
-                        const protectorChar = workingTeams[t.player]?.[inGroppaStatus.protectorIdx];
-                        if (protectorChar && protectorChar.hp > 0) {
-                            events.push({ type: 'text', text: `🛡️ L'attacco mirato a ${t.char.name} viene deviato su ${protectorChar.name}!` });
-                            t.char = protectorChar;
-                            t.idx = inGroppaStatus.protectorIdx;
-                            t.fieldIdx = workingField[t.player].indexOf(inGroppaStatus.protectorIdx);
-                            isRedirectedDmgReduced = true;
+                    if (inGroppaStatus && inGroppaStatus.protectorIdx !== undefined) {
+                        if (!move.targetCount || move.targetCount < 4) {
+                            const pPlayer = inGroppaStatus.protectorPlayer || t.player;
+                            const protectorChar = workingTeams[pPlayer]?.[inGroppaStatus.protectorIdx];
+                            const protectorFieldIdx = workingField[pPlayer].indexOf(inGroppaStatus.protectorIdx);
+
+                            if (protectorChar && protectorChar.hp > 0 && protectorFieldIdx !== -1) {
+                                events.push({ type: 'text', text: `🛡️ L'attacco mirato a ${t.char.name} viene deviato su ${protectorChar.name}! (Danni Dimezzati)` });
+                                t.char = protectorChar;
+                                t.idx = inGroppaStatus.protectorIdx;
+                                t.player = pPlayer; // FIX: Aggiorna il player per i calcoli successivi
+                                t.fieldIdx = protectorFieldIdx;
+                                isRedirectedDmgReduced = true;
+                            } else {
+                                // Failsafe: Se Yoshi non è in campo per un qualsiasi motivo, pulisci lo status per sicurezza
+                                const gIdx = t.char.statuses.findIndex(s => s.type === 'In_Groppa');
+                                if (gIdx !== -1) t.char.statuses.splice(gIdx, 1);
+                            }
+                        } else {
+                            events.push({ type: 'text', text: `⚠️ L'attacco nemico è ad area! La protezione In Groppa non può deviare l'attacco su Yoshi!` });
                         }
                     }
                     // --- END REDIRECT LOGIC ---
@@ -6078,10 +6129,29 @@
                         } else if (move.heal) {
                             const healAmount = Math.max(1, Math.floor(t.char.maxHp * move.heal));
                             t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
+                            
+                            // FIX: Stampa l'azione della mossa se è una resurrezione, così il registro è chiaro!
+                            if (wasDead && move.targetMode === 'revive') {
+                                events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}!` });
+                            }
+
                             events.push({ type: 'damage', text: `✨ ${wasDead ? t.char.name + ' viene rianimato e recupera' : t.char.name + ' recupera'} ${healAmount} PS!`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                            
                             if (wasDead) {
                                 t.char.statuses = [];
                                 updateStatusUI(t.player, t.idx);
+                                
+                                // FIX PASSIVA: Innesco per chi rianima un alleato (es. Sage)
+                                if (attacker.passive && attacker.passive.type === 'on_revive_ally') {
+                                    if (attacker.passive.statBuff) {
+                                        let statTexts = [];
+                                        if (attacker.passive.statBuff.atk) { attacker.atk = Math.floor(attacker.atk * attacker.passive.statBuff.atk); statTexts.push("l'Attacco"); }
+                                        if (attacker.passive.statBuff.def) { attacker.def = Math.floor(attacker.def * attacker.passive.statBuff.def); statTexts.push("la Difesa"); }
+                                        if (attacker.passive.statBuff.spd) { attacker.spd = Math.floor(attacker.spd * attacker.passive.statBuff.spd); statTexts.push("la Velocità"); }
+                                        
+                                        events.push({ type: 'text', text: `🌟 ${attacker.name} attiva ${attacker.passive.name}! Salvando un compagno, aumenta ${statTexts.join(" e ")}!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
+                                    }
+                                }
                             }
                         }
 
@@ -6176,6 +6246,7 @@
                                 // --- FIX: LOGICA DI "In_Groppa" DI YOSHI ---
                                 if (effect.type === 'In_Groppa') {
                                     newStatus.protectorIdx = charTeamIdx; // Assegna il protettore!
+                                    newStatus.protectorPlayer = player; // Assegna il giocatore protettore!
                                 }
                                 
                                 if (existingIdx === -1) {
@@ -6183,12 +6254,18 @@
                                     updateStatusUI(t.player, t.idx);
                                     if (effect.type === 'Ombra Rapida') {
                                         events.push({ type: 'text', text: `${t.char.name} si avvolge nell'Ombra Rapida!` });
+                                    } else if (effect.type === 'In_Groppa') {
+                                        events.push({ type: 'text', text: `🦕 ${t.char.name} salta in groppa! È protetto e i suoi attacchi sono potenziati!` });
                                     } else {
                                         events.push({ type: 'text', text: `${t.char.name} è ${effect.type === 'Addormentato' ? 'caduto addormentato' : 'stato ' + effect.type.toLowerCase()}!` });
                                     }
                                 } else {
                                     t.char.statuses[existingIdx] = newStatus;
-                                    events.push({ type: 'text', text: `Lo status ${effect.type} di ${t.char.name} è stato ripristinato!` });
+                                    if (effect.type === 'In_Groppa') {
+                                        events.push({ type: 'text', text: `🦕 ${t.char.name} rimane ben saldo in groppa!` });
+                                    } else {
+                                        events.push({ type: 'text', text: `Lo status ${effect.type} di ${t.char.name} è stato ripristinato!` });
+                                    }
                                 }
                             }
                         }
@@ -6542,6 +6619,7 @@
             if (groppaIdx !== -1) {
                 char.statuses.splice(groppaIdx, 1);
                 updateStatusUI(target.player, target.charTeamIdx);
+                events.push({ type: 'text', text: `🦕 ${char.name} scende dalla groppa di Yoshi a fine turno!` });
             }
 
             let rashieldIdx = char.statuses.findIndex(s => s.type === 'Rashield');
@@ -6654,15 +6732,15 @@
         let currentSurvivalRound = gameState.survivalRound || 1; // <--- AGGIUNTO
 
         if (gameState.gameMode === 'multipla') {
-            const team1Alive = workingTeams.p1.some(c=>c.hp>0) || workingTeams.p2.some(c=>c.hp>0);
-            const team2Alive = workingTeams.p3.some(c=>c.hp>0) || workingTeams.p4.some(c=>c.hp>0);
+            const team1Alive = workingTeams.p1.some(c=>c.hp>0 && !c.isSummonOnly) || workingTeams.p2.some(c=>c.hp>0 && !c.isSummonOnly);
+            const team2Alive = workingTeams.p3.some(c=>c.hp>0 && !c.isSummonOnly) || workingTeams.p4.some(c=>c.hp>0 && !c.isSummonOnly);
             if (!team1Alive && !team2Alive) { nextStatus = 'gameover'; winner = 'Pareggio'; }
             else if (!team1Alive) { nextStatus = 'gameover'; winner = `${gameState.players.p3} & ${gameState.players.p4}`; }
             else if (!team2Alive) { nextStatus = 'gameover'; winner = `${gameState.players.p1} & ${gameState.players.p2}`; }
         } 
         else if (gameState.gameMode === 'classica') {
-            const p1Alive = workingTeams.p1.some(c=>c.hp>0);
-            const p2Alive = workingTeams.p2.some(c=>c.hp>0);
+            const p1Alive = workingTeams.p1.some(c=>c.hp>0 && !c.isSummonOnly);
+            const p2Alive = workingTeams.p2.some(c=>c.hp>0 && !c.isSummonOnly);
             if (!p1Alive && !p2Alive) { nextStatus = 'gameover'; winner = 'Pareggio'; }
             else if (!p1Alive) { nextStatus = 'gameover'; winner = gameState.players.p2; }
             else if (!p2Alive) { nextStatus = 'gameover'; winner = gameState.players.p1; }
@@ -6670,11 +6748,11 @@
         // --- AGGIUNTO: LOGICA INFINITA SOPRAVVIVENZA ---
         else if (gameState.gameMode === 'survival') {
             const juggPlayer = gameState.settings.juggernautPlayer || 'p2';
-            const hordeAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0);
+            const hordeAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0 && !c.isSummonOnly);
             
             const activeMatchPlayers = getActivePlayers();
             const humansPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
-            const humansAlive = humansPlayers.some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0));
+            const humansAlive = humansPlayers.some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0 && !c.isSummonOnly));
 
             if (!humansAlive) { 
                 nextStatus = 'gameover'; 
@@ -6730,8 +6808,8 @@
         // -----------------------------------------------
         else if (gameState.gameMode === 'juggernaut') {
             const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
-            const juggAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0);
-            const opponentsAlive = activeMatchPlayers.filter(p => p !== juggPlayer).some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0));
+            const juggAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0 && !c.isSummonOnly);
+            const opponentsAlive = activeMatchPlayers.filter(p => p !== juggPlayer).some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0 && !c.isSummonOnly));
             
             if (!juggAlive && !opponentsAlive) { nextStatus = 'gameover'; winner = 'Pareggio'; }
             else if (!juggAlive) { 
@@ -6748,8 +6826,8 @@
                 const p1 = b[0], p2 = b[1], p3 = b[2], p4 = b[3];
                 
                 if (tStatus.semi1 !== 'finished') {
-                    const p1Alive = workingTeams[p1]?.some(c=>c.hp>0);
-                    const p2Alive = workingTeams[p2]?.some(c=>c.hp>0);
+                    const p1Alive = workingTeams[p1]?.some(c=>c.hp>0 && !c.isSummonOnly);
+                    const p2Alive = workingTeams[p2]?.some(c=>c.hp>0 && !c.isSummonOnly);
                     if (!p1Alive || !p2Alive) {
                         tStatus.semi1 = 'finished';
                         tResults.semi1 = { winner: p1Alive ? p1 : (p2Alive ? p2 : 'p1'), loser: p1Alive ? p2 : (p2Alive ? p1 : 'p2') };
@@ -6757,8 +6835,8 @@
                 }
                 
                 if (tStatus.semi2 !== 'finished') {
-                    const p3Alive = workingTeams[p3]?.some(c=>c.hp>0);
-                    const p4Alive = workingTeams[p4]?.some(c=>c.hp>0);
+                    const p3Alive = workingTeams[p3]?.some(c=>c.hp>0 && !c.isSummonOnly);
+                    const p4Alive = workingTeams[p4]?.some(c=>c.hp>0 && !c.isSummonOnly);
                     if (!p3Alive || !p4Alive) {
                         tStatus.semi2 = 'finished';
                         tResults.semi2 = { winner: p3Alive ? p3 : (p4Alive ? p4 : 'p3'), loser: p3Alive ? p4 : (p4Alive ? p3 : 'p4') };
@@ -6773,8 +6851,8 @@
                 const bw1 = tResults.semi1?.loser, bw2 = tResults.semi2?.loser;
                 
                 if (tStatus.final !== 'finished' && fw1 && fw2) {
-                    const fw1Alive = workingTeams[fw1]?.some(c=>c.hp>0);
-                    const fw2Alive = workingTeams[fw2]?.some(c=>c.hp>0);
+                    const fw1Alive = workingTeams[fw1]?.some(c=>c.hp>0 && !c.isSummonOnly);
+                    const fw2Alive = workingTeams[fw2]?.some(c=>c.hp>0 && !c.isSummonOnly);
                     if (!fw1Alive || !fw2Alive) {
                         tStatus.final = 'finished';
                         tResults.final = { winner: fw1Alive ? fw1 : (fw2Alive ? fw2 : fw1), loser: fw1Alive ? fw2 : (fw2Alive ? fw1 : fw2) };
@@ -6782,17 +6860,24 @@
                 }
                 
                 if (tStatus.bronze !== 'finished' && bw1 && bw2) {
-                    const bw1Alive = workingTeams[bw1]?.some(c=>c.hp>0);
-                    const bw2Alive = workingTeams[bw2]?.some(c=>c.hp>0);
+                    const bw1Alive = workingTeams[bw1]?.some(c=>c.hp>0 && !c.isSummonOnly);
+                    const bw2Alive = workingTeams[bw2]?.some(c=>c.hp>0 && !c.isSummonOnly);
                     if (!bw1Alive || !bw2Alive) {
                         tStatus.bronze = 'finished';
                         tResults.bronze = { winner: bw1Alive ? bw1 : (bw2Alive ? bw2 : bw1), loser: bw1Alive ? bw2 : (bw2Alive ? bw1 : bw2) };
                     }
                 }
                 
-                if (tStatus.final === 'finished' && tStatus.bronze === 'finished') {
+                // FIX: Il torneo termina non appena si conclude la Finalissima, senza aspettare che finisca anche la sfida per il bronzo!
+                if (tStatus.final === 'finished') {
                     nextStatus = 'gameover';
                     winner = gameState.players[tResults.final?.winner];
+                    
+                    // Se la finale per il bronzo era ancora in corso (es. giocatori inattivi), la concludiamo forzatamente
+                    if (tStatus.bronze !== 'finished' && bw1 && bw2) {
+                        tStatus.bronze = 'finished';
+                        tResults.bronze = { winner: bw1, loser: bw2 };
+                    }
                 }
             }
             // Rimossa la chiamata doppia problematica a updateState qui!
@@ -6800,8 +6885,8 @@
         else if (gameState.gameMode === 'torneo_punti') {
             const pA = activeMatchPlayers[0];
             const pB = activeMatchPlayers[1];
-            const pA_Alive = workingTeams[pA].some(c=>c.hp>0);
-            const pB_Alive = workingTeams[pB].some(c=>c.hp>0);
+            const pA_Alive = workingTeams[pA].some(c=>c.hp>0 && !c.isSummonOnly);
+            const pB_Alive = workingTeams[pB].some(c=>c.hp>0 && !c.isSummonOnly);
             
             if (!pA_Alive || !pB_Alive) {
                 if (pA_Alive) newScores[pA] += 1;
@@ -6824,7 +6909,7 @@
             }
         }
         else if (gameState.gameMode === 'battleroyale') {
-            const alivePlayers = activeMatchPlayers.filter(p => workingTeams[p].some(c => c.hp > 0));
+            const alivePlayers = activeMatchPlayers.filter(p => workingTeams[p].some(c => c.hp > 0 && !c.isSummonOnly));
             if (alivePlayers.length === 0) { 
                 nextStatus = 'gameover'; 
                 winner = 'Pareggio'; 
@@ -8540,7 +8625,12 @@
         };
 
         const handleBuyChar = (char) => {
-            if (playerData.coins >= char.price) {
+            // --- LOGICA REGALO DELLA BETA ---
+            if (!playerData.freeUnlockUsed) {
+                updateLocalStats({ unlockChar: char.id, useFreeUnlock: true });
+                setGameState({...gameState}); 
+                setSystemAlert(`🎁 Hai sbloccato ${char.name} gratuitamente come Regalo della Beta!`);
+            } else if (playerData.coins >= char.price) {
                 updateLocalStats({ spendCoins: char.price, unlockChar: char.id });
                 setGameState({...gameState}); 
             } else {
@@ -8602,6 +8692,17 @@
 
                     {shopTab === 'chars' && (
                         <>
+                            {/* --- BANNER REGALO DELLA BETA --- */}
+                            {!playerData.freeUnlockUsed && (
+                                <div className="mb-4 shrink-0 px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl border border-emerald-400 flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.4)] animate-pulse">
+                                    <span className="text-3xl drop-shadow-md">🎁</span>
+                                    <div className="text-left">
+                                        <div className="font-black text-white text-lg drop-shadow-sm">Regalo della Beta!</div>
+                                        <div className="text-xs text-emerald-100 font-medium">Sblocca il tuo primo personaggio in modo completamente GRATUITO!</div>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="mb-4 shrink-0 px-2">
                                 <input
                                     type="text"
@@ -8614,7 +8715,8 @@
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 overflow-y-auto custom-scrollbar p-2">
                                 {CHARACTERS.filter(c => c.price && !c.isSummonOnly && c.name.toLowerCase().includes(shopCharSearch.toLowerCase())).sort((a,b) => a.price - b.price).map(char => {
                                     const isUnlocked = IS_PREVIEW || playerData.unlockedChars.includes(char.id);
-                                    const canAfford = playerData.coins >= char.price;
+                                    const hasFreeUnlock = !playerData.freeUnlockUsed; // <-- CONTROLLO SBLOCCO
+                                    const canAfford = hasFreeUnlock || playerData.coins >= char.price;
                                     
                                     return (
                                         <div key={char.id} className={`bg-slate-950/80 border ${isUnlocked ? 'border-emerald-500/50' : 'border-slate-700'} rounded-2xl p-4 flex flex-col justify-between transition-colors shadow-lg relative hover:-translate-y-1`}>
@@ -8634,9 +8736,13 @@
                                             <button 
                                                 onClick={() => handleBuyChar(char)}
                                                 disabled={!canAfford}
-                                                className={`w-full py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition-all text-xs ${canAfford ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-lg' : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'}`}
+                                                className={`w-full py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition-all text-xs ${hasFreeUnlock ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.6)] border border-emerald-300' : (canAfford ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-lg' : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700')}`}
                                             >
-                                                <Lock size={14}/> {char.price} <Coins size={12}/>
+                                                {hasFreeUnlock ? (
+                                                    <>🎁 Sblocca Gratis</>
+                                                ) : (
+                                                    <><Lock size={14}/> {char.price} <Coins size={12}/></>
+                                                )}
                                             </button>
                                         )}
                                     </div>
