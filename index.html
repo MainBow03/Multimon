@@ -178,10 +178,10 @@
           'Idropompa': { name: 'Idropompa', type: 'Acqua', power: 110, desc: "Travolge il bersaglio con un'enorme colonna d'acqua." },
           'Terremoto': { name: 'Terremoto', type: 'Terra', power: 100, desc: 'Scuote la terra violentemente, infliggendo ingenti danni.' },
           
-          'Riposo': { name: 'Riposo', type: 'Normale', power: 0, heal: 1.0, maxUses: 2, target: 'self', desc: 'Si addormenta per recuperare il 100% dei PS.' },
+          'Riposo': { name: 'Riposo', type: 'Normale', power: 0, heal: 1.0, removeNegativeStatuses: true, statusEffect: { type: 'Addormentato', turns: 2 }, maxUses: 2, target: 'self', desc: 'Si addormenta per recuperare il 100% dei PS e curare gli status negativi. (Addormentato 2 turni)' },
           'Doppia Sberla': { name: 'Doppia Sberla', type: 'Normale', power: 25, multiHit: { min: 2, max: 5 }, desc: 'Colpisce il bersaglio in rapida successione da 2 a 5 volte di fila.' },
-          'Corposcontro': { name: 'Corposcontro', type: 'Normale', power: 80, desc: 'Si lancia con tutto il peso e la mole sul nemico.' },
-          'Tuonopugno': { name: 'Tuonopugno', type: 'Elettro', power: 65, desc: 'Sferra un pugno caricato di pura elettricità statica.' },
+          'Corposcontro': { name: 'Corposcontro', type: 'Normale', power: 85, statusEffect: { type: 'Elettrizzato', chance: 0.15 }, desc: 'Si lancia con tutto il peso e la mole sul nemico. 15% di probabilità di paralizzare.' },
+          'Tuonopugno': { name: 'Tuonopugno', type: 'Elettro', power: 75, desc: 'Sferra un pugno caricato di pura elettricità statica.' },
           
           'Presa Militare': { name: 'Presa Militare', type: 'Lotta', power: 50, statusEffect: { type: 'Elettrizzato', chance: 0.3 }, desc: 'Una presa tecnica corpo a corpo. Ha il 30% di probabilità di paralizzare.' },
           'Kit Medico': { name: 'Kit Medico', type: 'Normale', power: 0, heal: 0.5, maxUses: 2, target: 'self', desc: 'Usa cure di primo soccorso per recuperare il 50% dei PS massimi.' },
@@ -462,13 +462,13 @@
           'Pugno Razzo': { name: 'Pugno Razzo', type: 'Lotta', power: 85, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Lancia i suoi guantoni con estrema violenza. 20% di probabilità di stordire.' },
           'Visione del Futuro': { name: 'Visione del Futuro', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 4, desc: 'Prevede l\'attacco nemico e lo evita, garantendo protezione per il turno.' },
           'Schianto Sismico': { name: 'Schianto Sismico', type: 'Roccia', power: 65, targetCount: 4, desc: 'Un colpo al suolo che fa tremare l\'arena, colpendo tutti i nemici in campo.' },
-          'Forza dell\'Amore': { name: 'Forza dell\'Amore', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5, def: 1.5 }, desc: 'Trae forza dall\'essere una fusione perfetta. Aumenta Attacco e Difesa del 50%.' },
+          'Forza dell\'Amore': { name: 'Forza dell\'Amore', type: 'Normale', power: 0, target: 'self', statBuff: { atk: 1.5, def: 1.5 }, desc: 'Trae forza dall\'essere una fusione perfetta. Aumenta Attacco e Difesa del 50.' },
 
           // NUOVE MOSSE LAPIS LAZULI
-          'Mano d\'Acqua': { name: 'Mano d\'Acqua', type: 'Acqua', power: 75, desc: 'Plasma l\'acqua in una massiccia mano che schiaccia l\'avversario.' },
-          'Catene Oceaniche': { name: 'Catene Oceaniche', type: 'Acqua', power: 50, targetCount: 2, targetStatDebuff: { spd: 0.5 }, desc: 'Avvolge fino a due nemici nell\'acqua, dimezzandone permanentemente la Velocità.' },
-          'Torre d\'Acqua': { name: 'Torre d\'Acqua', type: 'Acqua', power: 100, maxUses: 3, desc: 'Solleva un\'enorme colonna d\'acqua dal suolo. Utilizzabile solo 3 volte.' },
-          'Ali Liquide': { name: 'Ali Liquide', type: 'Acqua', power: 0, target: 'self', statBuff: { spd: 1.5 }, heal: 0.3, desc: 'Spiega le sue ali d\'acqua curandosi del 30% dei PS e aumentando la Velocità del 50%.' },
+          'Getto Bollente': { name: 'Getto Bollente', type: 'Acqua', power: 75, statusEffect: { type: 'Scottato', chance: 0.2 }, desc: 'Colpisce il bersaglio con acqua bollente. 20% di probabilità di scottare.' },
+          'Catene Oceaniche': { name: 'Catene Oceaniche', type: 'Acqua', power: 50, targetCount: 2, targetStatDebuff: { spd: 0.7 }, desc: 'Avvolge fino a due nemici nell\'acqua, riducendone la Velocità del 30%.' },
+          'Torre d\'Acqua': { name: 'Torre d\'Acqua', type: 'Acqua', power: 120, recharge: true, desc: 'Solleva un\'enorme colonna d\'acqua dal suolo. Devastante, ma richiede un turno di ricarica.' },
+          'Turbine Massiccio': { name: 'Turbine Massiccio', type: 'Aria', power: 60, hitStatDebuff: { spd: 0.7, chance: 0.3 }, desc: 'Con le sue ali evoca un turbine contro il bersaglio. 30% di probabilità di ridurre la Velocità.' },
 
           // NUOVE MOSSE AANG
           'Aliante Eolico': { name: 'Aliante Eolico', type: 'Aria', power: 0, target: 'self', statBuff: { spd: 2.0 }, desc: 'Sfrutta l\'aliante per librarsi in volo raddoppiando la sua Velocità.' },
@@ -495,10 +495,10 @@
           'Dangerous Woman': { name: 'Dangerous Woman', type: 'Oscuro', power: 50, statusEffect: { type: 'Stordito', chance: 1.0 }, maxUses: 2, desc: 'Sprigiona l\'aura di una femme fatale. Infligge 50 danni e stordisce infallibilmente il bersaglio. (2 utilizzi)' },
 
           // NUOVE MOSSE MARIO & LUIGI
-          'Salto Idraulico': { name: 'Salto Idraulico', type: 'Normale', power: 55, desc: 'Un classico salto sulla testa del nemico.' },
-          'Palla di Fuoco': { name: 'Palla di Fuoco', type: 'Fuoco', power: 65, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Lancia una palla di fuoco rimbalzante. 30% probabilità di scottare.' },
-          'Martellata': { name: 'Martellata', type: 'Normale', power: 85, accuracy: 0.85, desc: 'Un colpo potente col martello, ma leggermente impreciso.' },
-          'Super Fungo': { name: 'Super Fungo', type: 'Normale', power: 0, target: 'self', heal: 0.4, desc: 'Mangia un Super Fungo per recuperare il 40% dei PS.' },
+          'Salto Idraulico': { name: 'Salto Idraulico', type: 'Normale', power: 55, priority: 1, desc: 'Un classico salto sulla testa del nemico. Colpisce sempre per primo (Priorità +1).' },
+          'Palla di Fuoco': { name: 'Palla di Fuoco', type: 'Fuoco', power: 75, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Lancia una palla di fuoco rimbalzante. 30% probabilità di scottare.' },
+          'Martellata': { name: 'Martellata', type: 'Normale', power: 85, desc: 'Un colpo potente col martello, incredibilmente preciso.' },
+          'Super Fungo': { name: 'Super Fungo', type: 'Normale', power: 0, target: 'self', heal: 0.4, statBuff: { atk: 1.3 }, desc: 'Mangia un Super Fungo per recuperare il 40% dei PS e aumentare l\'Attacco del 30%.' },
           
           'Salto Svolazzante': { name: 'Salto Svolazzante', type: 'Aria', power: 50, multiHit: { min: 2, max: 2 }, desc: 'Due colpi rapidi saltando a mezz\'aria.' },
           'Poltergust 3000': { name: 'Poltergust 3000', type: 'Normale', power: 60, targetStatDebuff: { spd: 0.5 }, desc: 'Risucchia il nemico dimezzandone permanentemente la Velocità.' },
@@ -662,7 +662,7 @@
           'Pancia Rimbalzante': { name: 'Pancia Rimbalzante', type: 'Lotta', power: 85, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Sfrutta la sua pancia morbida per respingere il nemico. 30% di probabilità di stordire.' },
           'Presa del Dito Wuxi': { name: 'Presa del Dito Wuxi', type: 'Magico', power: 150, maxUses: 1, ignoreDefBuffs: true, desc: 'Skadoosh! Un colpo mistico devastante e imparabile. Ignora le difese. (Solo 1 utilizzo)' },
           'Maestro del Chi': { name: 'Maestro del Chi', type: 'Magico', power: 0, target: 'self', heal: 0.4, statBuff: { atk: 1.3, def: 1.3 }, desc: 'Canalizza l\'energia dell\'universo. Si cura del 40% e aumenta Attacco e Difesa del 30%.' },
-          'Rotolamento Furioso': { name: 'Rotolamento Furioso', type: 'Normale', power: 30, multiHit: { min: 2, max: 4 }, desc: 'Rotola a grande velocità travolgendo l\'avversario da 2 a 4 volte.' },
+          'Attacco mentale del panda impacciato': { name: 'Attacco mentale del panda impacciato', type: 'Psico', power: 80, desc: 'Un colpo tutto strano e impacciato che spiazza il nemico. Infligge 80 danni psichici.' },
 
           // NUOVE MOSSE ROBIN
           'Birdarang': { name: 'Birdarang', type: 'Robot', power: 65, targetCount: 2, desc: 'Lancia i suoi iconici gadget esplosivi. Colpisce fino a 2 nemici in campo.' },
@@ -731,7 +731,7 @@
           'Battuta Fuori Luogo': { name: 'Battuta Fuori Luogo', type: 'Normale', power: 0, targetStatDebuff: { atk: 0.6 }, desc: 'Una battuta inopportuna che irrita il nemico, riducendone drasticamente (40%) l\'Attacco.' },
           'Sguardo Omosessuale': { name: 'Sguardo Omosessuale', type: 'Magico', power: 0, statusEffect: { type: 'Infatuato', chance: 1.0 }, desc: 'Lancia un\'occhiata profonda che infatua infallibilmente il nemico (50% probabilità di non attaccare).' },
           'Tom difendimi!': { name: 'Tom difendimi!', type: 'Lotta', power: 85, targetCount: 2, desc: 'Chiama Tom in soccorso! Un potente attacco fisico che colpisce fino a 2 bersagli a scelta.' },
-          'Lanciafiamme Rubato': { name: "\'Ho preso un lanciafiamme!\'", type: 'Fuoco', power: 50, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Usa un lanciafiamme trovato per caso! Infligge 50 danni e scotta sicuramente il nemico.' },
+          'Lanciafiamme Rubato': { name: "\'Ho preso un lanciafiamme!\'", type: 'Fuoco', power: 70, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Usa un lanciafiamme trovato per caso! Infligge 70 danni e scotta sicuramente il nemico.' },
 
           // NUOVE MOSSE NIGHTWING E BUIO
           'Trappola d\'ombra': { name: 'Trappola d\'ombra', type: 'Buio', power: 30, removeBuffs: true, desc: 'Infligge danni e annulla tutti i potenziamenti alle statistiche (Atk, Def, Spd) del bersaglio.' },
@@ -1024,7 +1024,7 @@
         });
 
         const CHARACTERS = [
-          { id: 'snorlax', name: 'Snorlax', types: ['Normale'], hp: 160, maxHp: 160, atk: 110, def: 65, spd: 30, img: 'https://i.pinimg.com/736x/49/99/27/499927d6452845cbf3a5e65c116bbaca.jpg', moves: [MOVES_DB['Riposo'], MOVES_DB['Doppia Sberla'], MOVES_DB['Corposcontro'], MOVES_DB['Tuonopugno']] },
+          { id: 'snorlax', name: 'Snorlax', types: ['Normale'], hp: 160, maxHp: 160, atk: 110, def: 65, spd: 30, img: 'https://i.pinimg.com/736x/49/99/27/499927d6452845cbf3a5e65c116bbaca.jpg', passive: { name: 'Baccastagna', type: 'cure_sleep', desc: 'Questo Pokémon si sveglia sempre istantaneamente quando viene addormentato o si addormenta.' }, moves: [MOVES_DB['Riposo'], MOVES_DB['Doppia Sberla'], MOVES_DB['Corposcontro'], MOVES_DB['Tuonopugno']] },
           { id: 'carlos', name: 'Carlos Oliveira', types: ['Normale', 'Lotta'], hp: 100, maxHp: 100, atk: 90, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/3b/32/29/3b3229d97074aac59eceb564b01601e8.jpg', passive: { name: 'Sopravvissuto R.C.', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Presa Militare'], MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Tiro Rapido']] },
           { id: 'topolino', name: 'Topolino', types: ['Normale'], hp: 105, maxHp: 105, atk: 85, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/d8/f2/ef/d8f2efccf41766493727a5bf5c49e082.jpg', moves: [MOVES_DB['Colpo Cartoon'], MOVES_DB['Fischietto amico'], MOVES_DB['Tappeto scivoloso'], MOVES_DB['Magia Disney']] },
           { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 115, maxHp: 115, atk: 100, def: 77, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', passive: { name: 'Testa Calda', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando la vita scende sotto il 25%, aumenta il proprio Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
@@ -1054,7 +1054,7 @@
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Combo Fairy Tale'], MOVES_DB['Fairy Law']] },
           { id: 'strega', name: 'Strega', types: ['Oscuro', 'Psico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', passive: { name: 'Corteo Oscuro', type: 'on_enter', isSummon: ['scheletro', 'carta_guardia'], maxUses: 1, desc: 'Appena scende in campo, evoca immediatamente uno Scheletro e una Carta Guardia al suo fianco. (Si attiva 1 sola volta per battaglia)' }, moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
           { id: 'garnet', name: 'Garnet', types: ['Lotta', 'Roccia'], hp: 110, maxHp: 110, atk: 115, def: 100, spd: 75, img: 'https://i.pinimg.com/1200x/df/77/0f/df770ffb5866a4773afcd2f05d6fcd60.jpg', moves: [MOVES_DB['Pugno Razzo'], MOVES_DB['Visione del Futuro'], MOVES_DB['Schianto Sismico'], MOVES_DB['Forza dell\'Amore']] },
-          { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 70, spd: 95, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', moves: [MOVES_DB['Mano d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Ali Liquide']] },
+          { id: 'lapis', name: 'Lapis Lazuli', types: ['Acqua', 'Aria'], hp: 90, maxHp: 90, atk: 105, def: 74, spd: 116, img: 'https://i.pinimg.com/1200x/44/da/22/44da22e954d284b742aa96db10ca1d7b.jpg', passive: { name: 'Corpo Liquido', type: 'immune_multi_type', immuneTypes: ['Acqua', 'Normale'], desc: 'Il suo corpo fatto d\'acqua la rende completamente immune agli attacchi di tipo Acqua e Normale.' }, moves: [MOVES_DB['Getto Bollente'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Torre d\'Acqua'], MOVES_DB['Turbine Massiccio']] },
           { id: 'aang', name: 'Aang', types: ['Aria', 'Psico'], hp: 90, maxHp: 90, atk: 100, def: 85, spd: 120, img: 'https://i.pinimg.com/1200x/9c/09/a6/9c09a67511e3fd0e113f7acae9913384.jpg', passive: { name: 'Respiro dell\'Avatar', type: 'aura', immuneToType: 'Aria', boostMoveType: { type: 'Aria', multiplier: 1.2 }, desc: 'Garantisce immunità totale agli attacchi di tipo Aria e aumenta del 20% la potenza delle proprie mosse di tipo Aria.' }, moves: [MOVES_DB['Aliante Eolico'], MOVES_DB['Sfera d\'Aria'], MOVES_DB['Stato Avatar'], MOVES_DB['Dominio degli Elementi']] },
           { id: 'yugo', name: 'Yugo', types: ['Psico', 'Lotta'], hp: 85, maxHp: 85, atk: 110, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/fe/70/1b/fe701be8b99dc75256d1124778165a3d.jpg', moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Assalto Dimensionale'], MOVES_DB['Danza Eliatrope']] },
           { id: 'sage', name: 'Sage', types: ['Ghiaccio', 'Magico'], hp: 100, maxHp: 100, atk: 95, def: 80, spd: 90, img: 'https://i.pinimg.com/736x/25/39/cb/2539cbb0a04fbd92f3e4904359e9ea11.jpg', passive: { name: 'Resurrezione Vandalica', type: 'on_revive_ally', statBuff: { atk: 1.4 }, desc: 'Quando rianima un compagno caduto, la sua determinazione cresce vertiginosamente, aumentando il proprio Attacco del 40%.' }, moves: [MOVES_DB['Muro Protettivo'], MOVES_DB['Sfera rallentante'], MOVES_DB['Non ucciderai i miei alleati!'], MOVES_DB['Vandal']] },
@@ -1101,7 +1101,7 @@
           { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', passive: { name: 'Evocazione Suprema', type: 'on_hp_threshold', threshold: 0.25, isSummon: 'golem_pietra_supremo', maxUses: 1, desc: 'Quando i PS scendono al 25% o meno, evoca istantaneamente un Golem Supremo in sua difesa.' }, moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
           { id: 'shego', name: 'Shego', types: ['Lotta', 'Fuoco'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 110, img: 'https://i.pinimg.com/1200x/c6/01/cd/c601cd6606acb917e8a0507a671bee5c.jpg', moves: [MOVES_DB['Artigli di Plasma'], MOVES_DB['Calcio Acrobatico'], MOVES_DB['Sfera di Fuoco Verde'], MOVES_DB['Rigenerazione Cellulare']] },
           { id: 'hannibal', name: 'Hannibal', types: ['Oscuro', 'Normale'], hp: 105, maxHp: 105, atk: 110, def: 80, spd: 85, img: 'https://i.pinimg.com/1200x/01/ca/db/01cadbc63ec87dcfcb6e8cfe85e37f50.jpg', moves: [MOVES_DB['Banchetto Macabro'], MOVES_DB['Analisi Psicologica'], MOVES_DB['Colpo di Scalpello'], MOVES_DB['Buone Maniere']] },
-          { id: 'po', name: 'Po', types: ['Lotta', 'Psico'], hp: 130, maxHp: 130, atk: 115, def: 100, spd: 60, img: 'https://i.pinimg.com/736x/10/7e/7e/107e7e6950aa24fb10c0428eb4d2b63b.jpg', moves: [MOVES_DB['Pancia Rimbalzante'], MOVES_DB['Presa del Dito Wuxi'], MOVES_DB['Maestro del Chi'], MOVES_DB['Rotolamento Furioso']] },
+          { id: 'po', name: 'Po', types: ['Lotta', 'Psico'], hp: 130, maxHp: 130, atk: 115, def: 100, spd: 60, img: 'https://i.pinimg.com/736x/10/7e/7e/107e7e6950aa24fb10c0428eb4d2b63b.jpg', moves: [MOVES_DB['Pancia Rimbalzante'], MOVES_DB['Presa del Dito Wuxi'], MOVES_DB['Maestro del Chi'], MOVES_DB['Attacco mentale del panda impacciato']] },
           { id: 'robin', name: 'Robin', types: ['Lotta', 'Buio'], hp: 95, maxHp: 95, atk: 110, def: 80, spd: 115, img: 'https://i.pinimg.com/736x/a2/19/05/a219056712e870f76d8eb16e8948297f.jpg', moves: [MOVES_DB['Birdarang'], MOVES_DB['Bo Staff'], MOVES_DB['Bomba Fumogena'], MOVES_DB['Calcio Volante Tattico']] },
           { id: 'spongebob', name: 'Spongebob', types: ['Acqua', 'Normale'], hp: 100, maxHp: 100, atk: 95, def: 105, spd: 110, img: 'https://i.pinimg.com/736x/76/ca/24/76ca246c4fe5fd059992f380d707c84e.jpg', passive: { name: 'Corpo Spugnoso', type: 'resist_super_effective', reduction: 0.5, desc: 'Il suo corpo morbido assorbe gli urti: riduce del 50% i danni aggiuntivi subiti dalle mosse Superefficaci (il moltiplicatore scende da 2x a 1.5x).' }, moves: [MOVES_DB['Bolla di Sapone'], MOVES_DB['Risata Assordante'], MOVES_DB['Spugna Assorbente'], MOVES_DB['Karate Spugnoso'], MOVES_DB['A caccia di meduse']] },
           { id: 'patrick', name: 'Patrick Stella', types: ['Acqua', 'Roccia'], hp: 140, maxHp: 140, atk: 115, def: 110, spd: 40, img: 'https://i.pinimg.com/736x/60/80/69/60806924c9fa74a24fbeb4c4a81c344e.jpg', moves: [MOVES_DB['Schianto Stella'], MOVES_DB['Non sono Rick!'], MOVES_DB['Riposino sotto la Roccia'], MOVES_DB['Lancio del Sasso'], MOVES_DB['A caccia di meduse']] },
@@ -1240,6 +1240,18 @@
         CHARACTERS.forEach(c => {
             if(CHAR_PRICES[c.id]) c.price = CHAR_PRICES[c.id];
         });
+
+        // --- FUSION CHARACTERS (Roster alternativo Fusion Battle) ---
+        const FUSION_CHARACTERS = [
+          { id: 'danty', name: 'Danty', types: ['Spettro', 'Luce'], hp: 200, maxHp: 200, atk: 235, def: 155, spd: 220, img: 'https://i.postimg.cc/kBXhsxj1/Gemini-Generated-Image-89vqi489vqi489vq.png', fusionOf: ['dannyphantom', 'dante'], moves: [MOVES_DB['Raggio Ectoplasmatico'], MOVES_DB['Urlo Spettrale'], MOVES_DB['Rebellion Shine'], MOVES_DB['Ebony & Ivory Barrage']] },
+          { id: 'bloolli', name: 'Bloolli', types: ['Fuoco', 'Acqua'], hp: 170, maxHp: 170, atk: 195, def: 135, spd: 195, img: 'https://i.postimg.cc/BLpRZNYj/Gemini-Generated-Image-h12zach12zach12z-(1).png', fusionOf: ['bloom', 'dolli'], moves: [MOVES_DB['Fiamma del Drago'], MOVES_DB['Incanto Protettivo'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
+          { id: 'jackorb', name: 'Jackorb', types: ['Ghiaccio', 'Robot'], hp: 195, maxHp: 195, atk: 205, def: 165, spd: 195, img: 'https://i.postimg.cc/4m3dvSpx/Gemini-Generated-Image-qnof2xqnof2xqnof.png', fusionOf: ['jackfrost', 'cyborg'], moves: [MOVES_DB['Vento Invernale'], MOVES_DB['Scherzetto di Neve'], MOVES_DB['Cannone Sonico'], MOVES_DB['Booyah!']] },
+          { id: 'sughbell', name: 'Sugh Bell', types: ['Erba', 'Elettro'], hp: 185, maxHp: 185, atk: 220, def: 150, spd: 190, img: 'https://i.postimg.cc/ZCNQQT8F/Gemini-Generated-Image-c0krklc0krklc0kr.png', fusionOf: ['sugino', 'zatchbell'], moves: [MOVES_DB['Jugaru'], MOVES_DB['Juruku'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Zaker']] },
+          { id: 'barser', name: 'Barser', types: ['Oscuro', 'Fuoco'], hp: 210, maxHp: 210, atk: 220, def: 170, spd: 125, img: 'https://i.postimg.cc/QF0J4Pyg/Gemini-Generated-Image-b1u45xb1u45xb1u4.png', fusionOf: ['barry', 'bowser'], moves: [MOVES_DB['Gigano Zonisu'], MOVES_DB['Zorushirudo'], MOVES_DB['Lanciafiamme'], MOVES_DB['Dragartigli']] },
+          { id: 'jarlos', name: 'Jarlos', types: ['Lotta', 'Fuoco'], hp: 190, maxHp: 190, atk: 200, def: 160, spd: 165, img: 'https://i.postimg.cc/rw9ZKYhw/Gemini-Generated-Image-nfo799nfo799nfo7.png', fusionOf: ['jakedc', 'carlos'], moves: [MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Sguardo Omosessuale'], MOVES_DB['Lanciafiamme Rubato']] },
+          { id: 'yunn', name: 'Yunn', types: ['Psico', 'Lotta'], hp: 190, maxHp: 190, atk: 225, def: 155, spd: 210, img: 'https://i.postimg.cc/D8CtsCcW/Gemini-Generated-Image-24q7ku24q7ku24q7.png', fusionOf: ['yugo', 'finn'], moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Spada d\'Oro'], MOVES_DB['Eroe di Ooo']] },
+          { id: 'rosevoir', name: 'Rosevoir', types: ['Psico', 'Erba'], hp: 175, maxHp: 175, atk: 220, def: 145, spd: 200, img: 'https://i.postimg.cc/0KvqWb6K/Gemini-Generated-Image-j53cu3j53cu3j53c.png', fusionOf: ['gardevoir', 'roserade'], moves: [MOVES_DB['Psichico'], MOVES_DB['Schermoluce'], MOVES_DB['Gigassorbimento'], MOVES_DB['Fangobomba']] }
+        ];
 
           const CAMPAIGNS = [
           {
@@ -2718,7 +2730,7 @@
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
-          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false }, 
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false }, 
           draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
@@ -2737,7 +2749,8 @@
           tournamentResults: { semi1: null, semi2: null, bronze: null, final: null },
           roundRobinMatches: [],
           currentMatchIdx: 0,
-          playerScores: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 }
+          playerScores: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
+          turnExpiresAt: null // <--- AGGIUNTO PER IL TIMER GLOBALE
         });
 
         const getSavedSession = () => {
@@ -2853,19 +2866,20 @@
               }
           }, [combatLog, isLogOpen]);
 
-          // --- LOGICA TIMER 90 SECONDI DURANTE LA BATTAGLIA ---
+          // --- LOGICA TIMER SINCRONIZZATO DURANTE LA BATTAGLIA ---
           useEffect(() => {
               if (gameState.status === 'battling' && !isPlayingEvents && appMode !== 'menu') {
-                  setTimeLeft(90);
-                  battleTimerRef.current = setInterval(() => {
-                      setTimeLeft(prev => {
-                          if (prev <= 1) {
-                              clearInterval(battleTimerRef.current);
-                              return 0;
-                          }
-                          return prev - 1;
-                      });
-                  }, 1000);
+                  const updateTimer = () => {
+                      if (gameState.turnExpiresAt) {
+                          const remaining = Math.max(0, Math.ceil((gameState.turnExpiresAt - Date.now()) / 1000));
+                          setTimeLeft(remaining);
+                      } else {
+                          setTimeLeft(90); // Fallback di sicurezza
+                      }
+                  };
+                  
+                  updateTimer(); // Chiama subito per evitare lag
+                  battleTimerRef.current = setInterval(updateTimer, 1000);
               } else {
                   if (battleTimerRef.current) clearInterval(battleTimerRef.current);
               }
@@ -2873,18 +2887,18 @@
               return () => {
                   if (battleTimerRef.current) clearInterval(battleTimerRef.current);
               };
-          }, [gameState.status, isPlayingEvents, appMode]);
+          }, [gameState.status, isPlayingEvents, appMode, gameState.turnExpiresAt]);
 
-          // --- NUOVA FUNZIONE DI SALVATAGGIO / SKIP FORZATO (Anti-Blocco) ---
+          // --- NUOVA FUNZIONE DI SALVATAGGIO / SKIP FORZATO (Infallibile) ---
           const handleForceSkip = () => {
               let updates = {};
               let stateUpdated = false;
-              let finalActions = { ...gameState.actions };
+              let finalActions = JSON.parse(JSON.stringify(gameState.actions || {}));
               const activePlayers = getActivePlayers();
               
               activePlayers.forEach(p => {
                   const myField = gameState.field[p] || [];
-                  const myActions = gameState.actions[p] || {};
+                  const myActions = finalActions[p] || {};
                   let needsAction = false;
                   
                   myField.forEach(idx => {
@@ -2896,8 +2910,8 @@
 
                   if (needsAction) {
                       const autoActions = generateCPUActionsForPlayer(p, finalActions);
-                      updates[`actions.${p}`] = autoActions; 
-                      finalActions[p] = autoActions;
+                      updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
+                      finalActions[p] = { ...myActions, ...autoActions };
                       stateUpdated = true;
                   }
               });
@@ -2909,30 +2923,38 @@
                   } catch (e) {
                       console.error("Errore critico durante la forzatura del turno:", e);
                       isCalculatingRef.current = false;
+                      setSystemAlert("❌ Errore durante il calcolo forzato. Consulta la console.");
                   }
               };
 
+              // Pulisce l'UI del giocatore
+              setTargetingMoveIdx(null);
+              setActionMenuMode('moves');
+              setPendingHyper(false);
+              setCommandingIdx(-1);
+
               if (stateUpdated) {
                   updateState(updates).then(() => {
-                      setTargetingMoveIdx(null);
-                      setActionMenuMode('moves');
-                      setPendingHyper(false);
-                      setCommandingIdx(-1);
-                      setSystemAlert("⏩ Turno forzato! Sono state assegnate mosse automatiche.");
-                      setTimeout(doCalculate, 300);
+                      setTimeout(doCalculate, 300); // Attende il sync di firebase prima di colpire
                   });
               } else {
-                  setSystemAlert("⏩ Calcolo forzato del turno in corso...");
+                  // Se era già tutto pronto ma il gioco si era incartato, forza il calcolo ignorando ogni cosa!
                   doCalculate();
               }
           };
 
-          // Scadenza Timer: Forza le mosse automatiche per i giocatori AFK
+          // Scadenza Timer: Forza le mosse automatiche e sblocca il gioco
           useEffect(() => {
               if (timeLeft === 0 && gameState.status === 'battling' && !isPlayingEvents) {
-                  // Lo esegue in automatico l'host o il giocatore in locale
                   if (appMode === 'local_room' || playerRole === 'p1') {
                       handleForceSkip();
+                  } else if (appMode === 'online_room' && playerRole !== 'p1') {
+                      // Fallback Ospite: Se dopo 4 secondi l'Host non ha forzato lo skip (AFK/Disconnesso), ci pensa il Guest!
+                      setTimeout(() => {
+                          if (isCalculatingRef.current || gameState.status !== 'battling') return;
+                          setSystemAlert("L'Host sembra assente. Forzatura del turno in corso dal tuo dispositivo...");
+                          handleForceSkip();
+                      }, 4000);
                   }
               }
           }, [timeLeft, gameState.status, isPlayingEvents, appMode, playerRole]);
@@ -3794,7 +3816,8 @@
                           isCalculatingRef.current = false;
                       }
                   }
-              } else {
+              } else if (gameState.status !== 'battling') {
+                  // Resetta SEMPRE isCalculating quando non siamo più in battaglia per prevenire l'incastro a vita!
                   isCalculatingRef.current = false;
               }
           // Aggiunte dipendenze fondamentali per prevenire stale closures
@@ -3820,9 +3843,9 @@
                       // Aumentato il tempo totale della schermata per permettere la visione delle squadre (6 secondi)
                       timeout = setTimeout(() => {
                           if (gameState.events && gameState.events.length > 0) {
-                              updateState({ status: 'executing', postExecStatus: 'battling' });
+                              updateState({ status: 'executing', postExecStatus: 'battling', turnExpiresAt: Date.now() + 92000 });
                           } else {
-                              updateState({ status: 'battling' });
+                              updateState({ status: 'battling', turnExpiresAt: Date.now() + 92000 });
                           }
                           if (appMode === 'local_room') {
                               setPlayerRole('p1');
@@ -4046,7 +4069,7 @@
           const handleSurvivalStart = () => {
             const state = initialGameState();
             state.gameMode = 'survival';
-            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false }; 
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false }; 
             state.players.p1 = playerName || "Sopravvissuto";
             state.playerAvatars.p1 = playerAvatarUrl;
             state.inventory.p1 = getPlayerData().inventory;
@@ -4406,6 +4429,7 @@
               teams: teams,
               field: field,
               events: initialEvents,
+              turnExpiresAt: null,
               actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
               hyperUsed: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false }, // <--- AGGIUNTO PER FORMA IPER
               pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
@@ -5445,15 +5469,21 @@
 
               let sleepIdx = attacker.statuses.findIndex(s => s.type === 'Addormentato');
               if (sleepIdx !== -1) {
-                  attacker.statuses[sleepIdx].turns -= 1;
-                  if (attacker.statuses[sleepIdx].turns > 0) {
-                      events.push({ type: 'text', text: `${attacker.name} dorme profondamente e non può attaccare...` });
-                      updateStatusUI(player, charTeamIdx);
-                      canAttack = false;
-                  } else {
-                      events.push({ type: 'text', text: `${attacker.name} si è svegliato!` });
+                  if (attacker.passive && attacker.passive.type === 'cure_sleep') {
+                      events.push({ type: 'text', text: `✨ ${attacker.name} consuma la sua ${attacker.passive.name} e si sveglia immediatamente!`, isPassive: true, passiveChar: attacker.name, passiveName: attacker.passive.name });
                       attacker.statuses.splice(sleepIdx, 1);
                       updateStatusUI(player, charTeamIdx);
+                  } else {
+                      attacker.statuses[sleepIdx].turns -= 1;
+                      if (attacker.statuses[sleepIdx].turns > 0) {
+                          events.push({ type: 'text', text: `${attacker.name} dorme profondamente e non può attaccare...` });
+                          updateStatusUI(player, charTeamIdx);
+                          canAttack = false;
+                      } else {
+                          events.push({ type: 'text', text: `${attacker.name} si è svegliato!` });
+                          attacker.statuses.splice(sleepIdx, 1);
+                          updateStatusUI(player, charTeamIdx);
+                      }
                   }
               }
 
@@ -5838,7 +5868,7 @@
                     let isImmuneDueToPassive = false;
 
                     // --- GESTIONE PASSIVE: IMMUNITÀ E RESISTENZE ---
-                    if (!isAllyTargeted && t.char.passive && t.char.passive.immuneToType === move.type) {
+                    if (!isAllyTargeted && t.char.passive && (t.char.passive.immuneToType === move.type || (t.char.passive.immuneTypes && t.char.passive.immuneTypes.includes(move.type)))) {
                         multiplier = 0;
                         isImmuneDueToPassive = true;
                     }
@@ -6857,7 +6887,8 @@
                 // Il nemico è morto! Creiamo un nuovo nemico invece di finire il gioco
                 currentSurvivalRound++;
                 
-                const draftable = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+                const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                 const nextEnemyBase = draftable[Math.floor(Math.random() * draftable.length)];
                 
                 // Scala la potenza del nemico in base al round (+5% stats ogni round)
@@ -7234,7 +7265,7 @@
             setEventPlaybackText('Errore grafico superato.');
             setEventPlaybackPassive(null);
             await new Promise(r => setTimeout(r, 1000));
-        } finally {
+            } finally {
             setIsPlayingEvents(false);
             
             // FIX 3: Solo l'Host o il gioco in locale aggiornano lo stato per il turno successivo
@@ -7267,7 +7298,7 @@
                             setCommandingIdx(-1);
                         }
                     }
-                    updateState({ status: 'battling', events: [] });
+                    updateState({ status: 'battling', events: [], turnExpiresAt: Date.now() + 92000 });
                 }
             } else {
                 // I client ospiti si limitano a ripristinare la UI
@@ -7355,8 +7386,10 @@
                     nextSwitchState.status = 'executing';
                     nextSwitchState.postExecStatus = 'battling';
                     nextSwitchState.events = newEvents;
+                    nextSwitchState.turnExpiresAt = Date.now() + 92000;
                 } else {
                     nextSwitchState.status = 'battling';
+                    nextSwitchState.turnExpiresAt = Date.now() + 92000;
                 }
 
                 updateState(nextSwitchState).then(() => {
@@ -9103,8 +9136,13 @@
                 
                 return char;
             });
+        } else if (catalogFilter === 'Fusioni') {
+            displayedChars = FUSION_CHARACTERS.map(c => ({...c, isFusionInCatalog: true}));
         } else {
-            displayedChars = displayedChars.filter(c => !c.isSummonOnly && !c.isCampaignMonster);
+            displayedChars = [...CHARACTERS, ...FUSION_CHARACTERS].filter(c => !c.isSummonOnly && !c.isCampaignMonster);
+            displayedChars.forEach(c => {
+                if (FUSION_CHARACTERS.some(fc => fc.id === c.id)) c.isFusionInCatalog = true;
+            });
             if (catalogFilter !== 'Tutti') {
                 displayedChars = displayedChars.filter(c => c.types.includes(catalogFilter));
             }
@@ -9149,6 +9187,7 @@
                                 <option value="Evocazioni">Solo Evocazioni</option>
                                 <option value="Mostri Campagna">Mostri Campagna</option>
                                 <option value="Iper forme">Iper Forme</option>
+                                <option value="Fusioni">Fusioni</option>
                                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                             </select>
                         </div>
@@ -9164,16 +9203,35 @@
                     <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                             {displayedChars.map(char => (
-                                <div key={char.id} className={`bg-slate-900/80 backdrop-blur-md border ${char.isHyperInCatalog ? 'border-yellow-400/50 shadow-[0_0_15px_rgba(250,204,21,0.2)]' : 'border-slate-700/50'} rounded-2xl p-5 flex flex-col items-center hover:border-cyan-500/50 transition-colors shadow-lg relative`}>
-                                    <img src={char.img} alt={char.name} className={`w-24 h-24 rounded-full object-cover mb-4 border-2 ${char.isHyperInCatalog ? 'border-yellow-400' : 'border-slate-600/50'}`} />
-                                    {char.price && !char.isHyperInCatalog && (
+                                <div key={char.id} tabIndex="0" className={`bg-slate-900/80 backdrop-blur-md border ${char.isHyperInCatalog ? 'border-yellow-400/50 shadow-[0_0_15px_rgba(250,204,21,0.2)]' : (char.isFusionInCatalog ? 'border-fuchsia-500/50 shadow-[0_0_15px_rgba(217,70,239,0.2)]' : 'border-slate-700/50')} rounded-2xl p-5 flex flex-col items-center hover:border-cyan-500/50 transition-colors shadow-lg relative group cursor-pointer focus:outline-none`}>
+                                    <div className="relative">
+                                        <img src={char.img} alt={char.name} className={`w-24 h-24 rounded-full object-cover mb-4 border-2 ${char.isHyperInCatalog ? 'border-yellow-400' : (char.isFusionInCatalog ? 'border-fuchsia-500' : 'border-slate-600/50')} transition-transform group-hover:scale-105`} />
+                                        
+                                        {char.fusionOf && (
+                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900/95 backdrop-blur-xl p-3 rounded-2xl border-2 border-fuchsia-500 shadow-[0_0_30px_rgba(217,70,239,0.6)] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-2 w-max min-w-[140px] z-20 pointer-events-none">
+                                                <span className="font-black text-[10px] text-fuchsia-400 uppercase tracking-widest">Fusione di:</span>
+                                                <div className="flex gap-3">
+                                                    {char.fusionOf.map(id => {
+                                                        const base = CHARACTERS.find(c => c.id === id);
+                                                        return base && (
+                                                            <div key={id} className="flex flex-col items-center">
+                                                                <img src={base.img} className="w-12 h-12 rounded-full border-2 border-slate-500 object-cover bg-slate-900" />
+                                                                <span className="text-[9px] font-bold text-slate-200 mt-1 max-w-[55px] truncate text-center">{base.name}</span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {char.price && !char.isHyperInCatalog && !char.isFusionInCatalog && (
                                         <div className="absolute top-2 right-2 bg-amber-500/20 border border-amber-500/50 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                                             <Lock size={10}/> {char.price}
                                         </div>
                                     )}
-                                    {(char.isHyperInCatalog || char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard') && (
-                                        <div className="absolute top-2 left-2 bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(250,204,21,0.5)] cursor-help" title={char.isHyperInCatalog ? "Stai visualizzando le statistiche e le mosse della Forma Iper!" : "Questo personaggio possiede la Forma Iper in battaglia!"}>
-                                            ✨ IPER
+                                    {(char.isHyperInCatalog || char.isFusionInCatalog || hyperIds.includes(char.id)) && (
+                                        <div className={`absolute top-2 left-2 ${char.isFusionInCatalog ? 'bg-fuchsia-500/20 border-fuchsia-500/50 text-fuchsia-300 shadow-[0_0_10px_rgba(217,70,239,0.5)]' : 'bg-yellow-400/20 border-yellow-400/50 text-yellow-300 shadow-[0_0_10px_rgba(250,204,21,0.5)]'} text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 cursor-help`} title={char.isHyperInCatalog ? "Stai visualizzando le statistiche e le mosse della Forma Iper!" : (char.isFusionInCatalog ? "Questo è un personaggio Fusione originale!" : "Questo personaggio possiede la Forma Iper in battaglia!")}>
+                                            {char.isFusionInCatalog ? "🧬 FUSIONE" : "✨ IPER"}
                                         </div>
                                     )}
                                     <h4 className="font-bold text-lg mb-2 text-slate-100 text-center">{char.name}</h4>
@@ -9413,10 +9471,25 @@
                                 </button>
                             </div>
 
+                            {/* NUOVO: Fusion Battle */}
+                            <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-fuchsia-500/30 shadow-inner mt-4">
+                                <div className="flex flex-col text-left">
+                                    <span className="font-bold text-fuchsia-400">Fusion Battle</span>
+                                    <span className="text-[10px] text-fuchsia-200/70">Roster completamente originale di Fusioni!</span>
+                                </div>
+                                <button 
+                                    onClick={() => updateState({ settings: { ...gameState.settings, fusionMode: !gameState.settings.fusionMode } })} 
+                                    className={`w-12 h-6 rounded-full flex items-center transition-all p-1 ${gameState.settings.fusionMode ? 'bg-fuchsia-500' : 'bg-slate-700'}`}
+                                >
+                                    <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${gameState.settings.fusionMode ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                </button>
+                            </div>
+
                             <button disabled={!canStartDraft} onClick={() => {
                                 let hasBots = false;
                                 // FIX: Impedisce ai bot di usare personaggi e boss della campagna (isSecretUnlock)
-                                const draftable = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                                const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+                                const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                 const newDraft = { ...gameState.draft };
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
@@ -9528,8 +9601,9 @@
         });
 
         const currentPlayerName = gameState.players[playerRole] || "Player";
-        const myUnlocked = IS_PREVIEW ? CHARACTERS.map(c => c.id) : (getPlayerData().unlockedChars || []);
-        const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && ((!c.price && !c.isSecretUnlock) || myUnlocked.includes(c.id)));
+        const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+        const myUnlocked = IS_PREVIEW ? baseRoster.map(c => c.id) : (getPlayerData().unlockedChars || []);
+        const draftableChars = baseRoster.filter(c => !c.isSummonOnly && ((!c.price && !c.isSecretUnlock) || myUnlocked.includes(c.id)));
 
         let filteredDraftableChars = draftableChars.filter(c => {
             if (draftFilterType !== 'Tutti' && !c.types.includes(draftFilterType)) return false;
