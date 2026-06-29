@@ -2730,8 +2730,9 @@
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
-          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false }, 
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false, draftBattle: false }, 
           draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
+          draftChoices: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, // <--- AGGIUNTO PER DRAFT BATTLE
           teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
           actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} }, 
@@ -2803,6 +2804,9 @@
 
           const [teamSelectionDialogue, setTeamSelectionDialogue] = useState(null);
           const selectionDialogueTimerRef = useRef(null);
+
+          // Variabile Timer Draft Battle
+          const [draftTimeLeft, setDraftTimeLeft] = useState(30);
 
           // Variabili Registro Battaglia
           const [combatLog, setCombatLog] = useState([]);
@@ -2958,6 +2962,31 @@
                   }
               }
           }, [timeLeft, gameState.status, isPlayingEvents, appMode, playerRole]);
+          
+          // --- EFFETTO TIMER DRAFT BATTLE ---
+          useEffect(() => {
+              let timer;
+              const myTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && playerRole === (gameState.settings.juggernautPlayer || 'p1')) ? 1 : gameState.settings.teamSize;
+              const myDraft = gameState.draft[playerRole] || [];
+              const isReady = myDraft.length >= myTeamSize;
+
+              if (gameState.status === 'drafting' && gameState.settings.draftBattle && !isReady && appMode !== 'menu' && !gameState.isBot[playerRole] && playerRole !== 'spectator') {
+                  timer = setInterval(() => {
+                      setDraftTimeLeft(prev => {
+                          if (prev <= 1) {
+                              // Scelta Automatica se il tempo scade!
+                              const choices = gameState.draftChoices[playerRole] || [];
+                              if (choices.length > 0) {
+                                  handlePick(choices[Math.floor(Math.random() * choices.length)]);
+                              }
+                              return 30;
+                          }
+                          return prev - 1;
+                      });
+                  }, 1000);
+              }
+              return () => { if (timer) clearInterval(timer); };
+          }, [gameState.status, gameState.settings.draftBattle, gameState.draft, playerRole, appMode, gameState.draftChoices]);
           // ---------------------------------------------------
 
           // --- STATO CAMPAGNA ---
@@ -4069,7 +4098,7 @@
           const handleSurvivalStart = () => {
             const state = initialGameState();
             state.gameMode = 'survival';
-            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false }; 
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false, draftBattle: false }; 
             state.players.p1 = playerName || "Sopravvissuto";
             state.playerAvatars.p1 = playerAvatarUrl;
             state.inventory.p1 = getPlayerData().inventory;
@@ -4085,7 +4114,8 @@
 
           const handlePick = (char) => {
             const currentDraft = gameState.draft[playerRole] || [];
-            if (currentDraft.length >= gameState.settings.teamSize) return;
+            const myTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && playerRole === (gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1'))) ? 1 : gameState.settings.teamSize;
+            if (currentDraft.length >= myTeamSize) return;
             
             const charInstance = { 
                 ...char, 
@@ -4097,7 +4127,18 @@
                 moves: char.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
             };
 
-            updateState({ [`draft.${playerRole}`]: [...currentDraft, charInstance] });
+            let updates = { [`draft.${playerRole}`]: [...currentDraft, charInstance] };
+
+            // Se è Draft Battle e dobbiamo ancora scegliere, generiamo altre 3 carte
+            if (gameState.settings.draftBattle && currentDraft.length + 1 < myTeamSize) {
+                const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+                const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                const shuffled = [...draftable].sort(() => 0.5 - Math.random());
+                updates[`draftChoices.${playerRole}`] = shuffled.slice(0, 3);
+            }
+
+            updateState(updates);
+            setDraftTimeLeft(30); // Resetta il timer
           };
 
           const applyOnEnterPassive = (char, p, idx, workingTeams, workingField, eventsArr, gameMode, settings, isCampaign) => {
@@ -9485,12 +9526,27 @@
                                 </button>
                             </div>
 
+                            {/* NUOVO: Draft Battle */}
+                            <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-cyan-500/30 shadow-inner mt-4">
+                                <div className="flex flex-col text-left">
+                                    <span className="font-bold text-cyan-400">Modalità Draft Battle</span>
+                                    <span className="text-[10px] text-cyan-200/70">Seleziona a tempo tra 3 campioni scelti a caso!</span>
+                                </div>
+                                <button 
+                                    onClick={() => updateState({ settings: { ...gameState.settings, draftBattle: !gameState.settings.draftBattle, rentalMode: false } })} 
+                                    className={`w-12 h-6 rounded-full flex items-center transition-all p-1 ${gameState.settings.draftBattle ? 'bg-cyan-500' : 'bg-slate-700'}`}
+                                >
+                                    <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${gameState.settings.draftBattle ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                </button>
+                            </div>
+
                             <button disabled={!canStartDraft} onClick={() => {
                                 let hasBots = false;
                                 // FIX: Impedisce ai bot di usare personaggi e boss della campagna (isSecretUnlock)
                                 const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
                                 const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                 const newDraft = { ...gameState.draft };
+                                const newDraftChoices = { ...gameState.draftChoices };
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                 const activePlayersToDraft = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).filter(p => gameState.players[p]);
@@ -9521,17 +9577,23 @@
                                             }
                                             newDraft[p] = cpuDraft;
                                             hasBots = true;
+                                        } else if (gameState.settings.draftBattle) {
+                                            // Inizializza i 3 campioni casuali per i giocatori umani nella modalità Draft
+                                            const shuffled = [...draftable].sort(() => 0.5 - Math.random());
+                                            newDraftChoices[p] = shuffled.slice(0, 3);
                                         }
                                     });
 
+                                    setDraftTimeLeft(30); // Inizializza Timer!
+                                    
                                     if (hasBots) {
-                                         updateState({ status: 'drafting', draft: newDraft });
+                                         updateState({ status: 'drafting', draft: newDraft, draftChoices: newDraftChoices });
                                     } else {
-                                         updateState({ status: 'drafting' });
+                                         updateState({ status: 'drafting', draftChoices: newDraftChoices });
                                     }
                                 }
-                            }} className={`w-full disabled:opacity-50 disabled:grayscale text-white font-bold py-4 rounded-xl mt-6 shadow-lg text-lg ${gameState.settings.rentalMode ? 'bg-gradient-to-r from-amber-500 to-orange-600' : 'bg-gradient-to-r from-emerald-500 to-green-600'}`}>
-                                {gameState.settings.rentalMode ? 'Avvia Multimon in Nolo (Casuale)' : 'Procedi alla Scelta Personaggi'}
+                            }} className={`w-full disabled:opacity-50 disabled:grayscale text-white font-bold py-4 rounded-xl mt-6 shadow-lg text-lg ${gameState.settings.rentalMode ? 'bg-gradient-to-r from-amber-500 to-orange-600' : (gameState.settings.draftBattle ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-emerald-500 to-green-600')}`}>
+                                {gameState.settings.rentalMode ? 'Avvia Multimon in Nolo (Casuale)' : (gameState.settings.draftBattle ? 'Avvia Draft Battle!' : 'Procedi alla Scelta Personaggi')}
                             </button>
                         </div>
                     ) : (
@@ -9671,120 +9733,162 @@
                     </div>
                 ) : (
                     <div className="flex-1 flex flex-col bg-slate-950/60 rounded-3xl p-6 overflow-hidden border border-slate-800/50 z-10">
-                        <div className="flex flex-wrap gap-4 mb-4 bg-slate-900/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur-md items-center shrink-0">
-                            <div className="flex-1 min-w-[150px]">
-                                <input 
-                                    type="text" 
-                                    placeholder="Cerca campione..." 
-                                    value={draftSearch} 
-                                    onChange={e => setDraftSearch(e.target.value)} 
-                                    className="w-full bg-slate-800 text-white font-bold px-4 py-2 rounded-xl outline-none border border-slate-600 focus:border-cyan-500 placeholder-slate-400 text-sm"
-                                />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Tipo:</span>
-                                <select value={draftFilterType} onChange={e => setDraftFilterType(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
-                                    <option value="Tutti">Tutti</option>
-                                    {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                                </select>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Ordina:</span>
-                                <select value={draftSort} onChange={e => setDraftSort(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
-                                    <option value="default">Predefinito</option>
-                                    <option value="alpha">A-Z</option>
-                                    <option value="type">Per Tipo</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
-                            {filteredDraftableChars.map(char => {
-                                const isSelected = myDraft.some(c => c.id === char.id);
-                                return (
-                                    <div 
-                                        key={char.id} 
-                                        onMouseEnter={() => setDraftHoverInfo(char.id)} 
-                                        onMouseLeave={() => { setDraftHoverInfo(null); draftLongPressRef.current = false; }}
-                                        onTouchStart={() => {
-                                            draftLongPressRef.current = false;
-                                            draftPressTimerRef.current = setTimeout(() => {
-                                                draftLongPressRef.current = true;
-                                                setDraftHoverInfo(char.id);
-                                            }, 400); 
-                                        }}
-                                        onTouchEnd={(e) => {
-                                            clearTimeout(draftPressTimerRef.current);
-                                            if (draftLongPressRef.current) {
-                                                e.preventDefault();
-                                            } else {
-                                                setDraftHoverInfo(null);
-                                                // FIX MOBILE: Rimossa la selezione manuale qui! Ci pensa già l'onClick.
-                                                // In questo modo lo scroll non seleziona accidentalmente il personaggio.
-                                            }
-                                        }}
-                                        onTouchMove={() => {
-                                            clearTimeout(draftPressTimerRef.current);
-                                        }}
-                                        onClick={(e) => {
-                                            if (draftLongPressRef.current) {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                return; 
-                                            }
-                                            if (!isSelected) handlePick(char);
-                                        }}
-                                        className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)] opacity-50 grayscale' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
-                                    >
-                                        <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
-                                        <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
-                                        <div className="flex flex-wrap gap-1 justify-center mb-3">
-                                            {char.types.map(t => (
-                                                <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                            ))}
-                                        </div>
-                                        <div className="w-full grid grid-cols-2 gap-1 text-[10px] font-mono bg-slate-950/50 p-2 rounded-xl border border-slate-800 mb-1">
-                                            <div className="text-emerald-400">HP: {char.maxHp}</div>
-                                            <div className="text-rose-400">ATK: {char.atk}</div>
-                                            <div className="text-blue-400">DEF: {char.def}</div>
-                                            <div className="text-amber-400">SPD: {char.spd}</div>
-                                        </div>
-
-                                        {isSelected && (
-                                            <div className="absolute inset-0 flex items-center justify-center bg-emerald-900/40 backdrop-blur-sm z-10">
-                                                <div className="bg-emerald-500 text-white rounded-full p-2 shadow-lg"><Unlock size={24}/></div>
+                        {gameState.settings.draftBattle ? (
+                            // --- INTERFACCIA DRAFT BATTLE ---
+                            <div className="flex flex-col items-center justify-center w-full h-full">
+                                <div className={`text-4xl md:text-5xl font-black mb-8 animate-pulse ${draftTimeLeft <= 10 ? 'text-rose-500' : 'text-amber-400'}`}>
+                                    ⏳ {draftTimeLeft}s
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+                                    {(gameState.draftChoices[playerRole] || []).map((char, cIdx) => (
+                                        <div 
+                                            key={char.id + cIdx} 
+                                            onClick={() => handlePick(char)}
+                                            className="bg-slate-900/90 backdrop-blur-xl border border-cyan-500/50 hover:border-cyan-300 rounded-3xl p-6 text-center cursor-pointer transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 shadow-[0_0_30px_rgba(6,182,212,0.2)] hover:shadow-[0_0_40px_rgba(6,182,212,0.5)] flex flex-col items-center group"
+                                        >
+                                            <img src={char.img} alt={char.name} className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover mx-auto mb-4 border-4 border-slate-600 group-hover:border-cyan-400 transition-colors shadow-xl" />
+                                            <h3 className="text-2xl font-black text-white mb-2">{char.name}</h3>
+                                            <div className="flex flex-wrap gap-2 justify-center mb-6">
+                                                {char.types.map(t => (
+                                                    <span key={t} className={`text-xs font-black px-3 py-1 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                                ))}
                                             </div>
-                                        )}
-                                        
-                                        {draftHoverInfo === char.id && (
-                                            <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="font-bold text-amber-400">Statistiche</span>
-                                                    <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">HP: {char.maxHp}</span>
-                                                </div>
-                                                <div className="grid grid-cols-3 gap-1 text-[10px] text-center mb-3">
-                                                    <div className="bg-slate-800/50 p-1 rounded border border-rose-900/50"><div className="text-rose-400 font-bold">ATK</div><div>{char.atk}</div></div>
-                                                    <div className="bg-slate-800/50 p-1 rounded border border-blue-900/50"><div className="text-blue-400 font-bold">DEF</div><div>{char.def}</div></div>
-                                                    <div className="bg-slate-800/50 p-1 rounded border border-amber-900/50"><div className="text-amber-400 font-bold">SPD</div><div>{char.spd}</div></div>
-                                                </div>
-                                                <div className="font-bold text-amber-400 mb-1 text-xs">Mosse</div>
-                                                <div className="space-y-1.5 overflow-y-auto custom-scrollbar flex-1 pr-1">
-                                                    {char.moves.filter(Boolean).map((m, i) => (
-                                                        <div key={i} className="text-[9px] bg-slate-800/50 p-1.5 rounded border border-slate-700/50">
-                                                            <div className="flex justify-between items-center mb-0.5">
-                                                                <span className="font-bold text-slate-200">{m.name}</span>
-                                                                <span className={`px-1 rounded text-[8px] ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
-                                                            </div>
-                                                            <p className="text-slate-400 italic leading-tight line-clamp-2">{m.desc}</p>
-                                                        </div>
+                                            <div className="w-full grid grid-cols-2 gap-3 text-sm font-mono bg-black/40 p-4 rounded-xl border border-slate-700/50 mb-6">
+                                                <div className="text-emerald-400">HP: {char.maxHp}</div>
+                                                <div className="text-rose-400">ATK: {char.atk}</div>
+                                                <div className="text-blue-400">DEF: {char.def}</div>
+                                                <div className="text-amber-400">SPD: {char.spd}</div>
+                                            </div>
+                                            <div className="w-full text-left space-y-2 mt-auto">
+                                                <div className="font-bold text-cyan-400 border-b border-slate-700 pb-1 mb-2 uppercase tracking-widest text-xs">Set Mosse Principali</div>
+                                                {char.moves.slice(0, 3).map((m, mIdx) => (
+                                                    <div key={mIdx} className="bg-slate-800/80 p-2 rounded-lg text-xs flex justify-between items-center border border-slate-700">
+                                                        <span className="font-bold text-slate-200 truncate pr-2">{m.name}</span>
+                                                        <span className={`px-1.5 py-0.5 rounded text-[9px] ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            // --- INTERFACCIA SCELTA CLASSICA (GRIGLIA) ---
+                            <>
+                                <div className="flex flex-wrap gap-4 mb-4 bg-slate-900/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur-md items-center shrink-0">
+                                    <div className="flex-1 min-w-[150px]">
+                                        <input 
+                                            type="text" 
+                                            placeholder="Cerca campione..." 
+                                            value={draftSearch} 
+                                            onChange={e => setDraftSearch(e.target.value)} 
+                                            className="w-full bg-slate-800 text-white font-bold px-4 py-2 rounded-xl outline-none border border-slate-600 focus:border-cyan-500 placeholder-slate-400 text-sm"
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Tipo:</span>
+                                        <select value={draftFilterType} onChange={e => setDraftFilterType(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
+                                            <option value="Tutti">Tutti</option>
+                                            {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Ordina:</span>
+                                        <select value={draftSort} onChange={e => setDraftSort(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
+                                            <option value="default">Predefinito</option>
+                                            <option value="alpha">A-Z</option>
+                                            <option value="type">Per Tipo</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
+                                    {filteredDraftableChars.map(char => {
+                                        const isSelected = myDraft.some(c => c.id === char.id);
+                                        return (
+                                            <div 
+                                                key={char.id} 
+                                                onMouseEnter={() => setDraftHoverInfo(char.id)} 
+                                                onMouseLeave={() => { setDraftHoverInfo(null); draftLongPressRef.current = false; }}
+                                                onTouchStart={() => {
+                                                    draftLongPressRef.current = false;
+                                                    draftPressTimerRef.current = setTimeout(() => {
+                                                        draftLongPressRef.current = true;
+                                                        setDraftHoverInfo(char.id);
+                                                    }, 400); 
+                                                }}
+                                                onTouchEnd={(e) => {
+                                                    clearTimeout(draftPressTimerRef.current);
+                                                    if (draftLongPressRef.current) {
+                                                        e.preventDefault();
+                                                    } else {
+                                                        setDraftHoverInfo(null);
+                                                    }
+                                                }}
+                                                onTouchMove={() => {
+                                                    clearTimeout(draftPressTimerRef.current);
+                                                }}
+                                                onClick={(e) => {
+                                                    if (draftLongPressRef.current) {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        return; 
+                                                    }
+                                                    if (!isSelected) handlePick(char);
+                                                }}
+                                                className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)] opacity-50 grayscale' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
+                                            >
+                                                <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
+                                                <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
+                                                <div className="flex flex-wrap gap-1 justify-center mb-3">
+                                                    {char.types.map(t => (
+                                                        <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
                                                     ))}
                                                 </div>
+                                                <div className="w-full grid grid-cols-2 gap-1 text-[10px] font-mono bg-slate-950/50 p-2 rounded-xl border border-slate-800 mb-1">
+                                                    <div className="text-emerald-400">HP: {char.maxHp}</div>
+                                                    <div className="text-rose-400">ATK: {char.atk}</div>
+                                                    <div className="text-blue-400">DEF: {char.def}</div>
+                                                    <div className="text-amber-400">SPD: {char.spd}</div>
+                                                </div>
+
+                                                {isSelected && (
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-emerald-900/40 backdrop-blur-sm z-10">
+                                                        <div className="bg-emerald-500 text-white rounded-full p-2 shadow-lg"><Unlock size={24}/></div>
+                                                    </div>
+                                                )}
+                                                
+                                                {draftHoverInfo === char.id && (
+                                                    <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl p-4 overflow-y-auto custom-scrollbar z-20 flex flex-col text-left transition-opacity duration-300 opacity-100 rounded-2xl">
+                                                        <div className="flex justify-between items-center mb-2">
+                                                            <span className="font-bold text-amber-400">Statistiche</span>
+                                                            <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">HP: {char.maxHp}</span>
+                                                        </div>
+                                                        <div className="grid grid-cols-3 gap-1 text-[10px] text-center mb-3">
+                                                            <div className="bg-slate-800/50 p-1 rounded border border-rose-900/50"><div className="text-rose-400 font-bold">ATK</div><div>{char.atk}</div></div>
+                                                            <div className="bg-slate-800/50 p-1 rounded border border-blue-900/50"><div className="text-blue-400 font-bold">DEF</div><div>{char.def}</div></div>
+                                                            <div className="bg-slate-800/50 p-1 rounded border border-amber-900/50"><div className="text-amber-400 font-bold">SPD</div><div>{char.spd}</div></div>
+                                                        </div>
+                                                        <div className="font-bold text-amber-400 mb-1 text-xs">Mosse</div>
+                                                        <div className="space-y-1.5 overflow-y-auto custom-scrollbar flex-1 pr-1">
+                                                            {char.moves.filter(Boolean).map((m, i) => (
+                                                                <div key={i} className="text-[9px] bg-slate-800/50 p-1.5 rounded border border-slate-700/50">
+                                                                    <div className="flex justify-between items-center mb-0.5">
+                                                                        <span className="font-bold text-slate-200">{m.name}</span>
+                                                                        <span className={`px-1 rounded text-[8px] ${TYPE_STYLES[m.type] || 'bg-gray-500'}`}>{m.type}</span>
+                                                                    </div>
+                                                                    <p className="text-slate-400 italic leading-tight line-clamp-2">{m.desc}</p>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                        );
+                                    })}
+                                </div>
+                            </>
+                        )}
                     </div>
                 )}
             </div>
