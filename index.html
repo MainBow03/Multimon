@@ -2795,6 +2795,10 @@
           const [combatLog, setCombatLog] = useState([]);
           const [isLogOpen, setIsLogOpen] = useState(false);
           const logEndRef = useRef(null);
+          
+          // Variabili Timer Battaglia
+          const [timeLeft, setTimeLeft] = useState(90);
+          const battleTimerRef = useRef(null);
 
           // Variabili di stato e reference mancanti
           const [systemAlert, setSystemAlert] = useState(null);
@@ -2848,6 +2852,74 @@
                   logEndRef.current.scrollIntoView({ behavior: 'smooth' });
               }
           }, [combatLog, isLogOpen]);
+
+          // --- LOGICA TIMER 90 SECONDI DURANTE LA BATTAGLIA ---
+          useEffect(() => {
+              if (gameState.status === 'battling' && !isPlayingEvents && appMode !== 'menu') {
+                  setTimeLeft(90);
+                  battleTimerRef.current = setInterval(() => {
+                      setTimeLeft(prev => {
+                          if (prev <= 1) {
+                              clearInterval(battleTimerRef.current);
+                              return 0;
+                          }
+                          return prev - 1;
+                      });
+                  }, 1000);
+              } else {
+                  if (battleTimerRef.current) clearInterval(battleTimerRef.current);
+              }
+
+              return () => {
+                  if (battleTimerRef.current) clearInterval(battleTimerRef.current);
+              };
+          }, [gameState.status, isPlayingEvents, appMode]);
+
+          // Scadenza Timer: Forza le mosse automatiche per i giocatori AFK
+          useEffect(() => {
+              if (timeLeft === 0 && gameState.status === 'battling' && !isPlayingEvents) {
+                  let updates = {};
+                  let stateUpdated = false;
+
+                  const processAFKPlayer = (p) => {
+                      const myField = gameState.field[p] || [];
+                      const myActions = gameState.actions[p] || {};
+                      let needsAction = false;
+                      
+                      myField.forEach(idx => {
+                          if (gameState.teams[p]?.[idx]?.hp > 0 && !myActions[idx]) {
+                              needsAction = true;
+                          }
+                      });
+
+                      if (needsAction && !gameState.isBot[p]) {
+                          // Usa l'IA della CPU per generare mosse sensate al posto del giocatore
+                          const autoActions = generateCPUActionsForPlayer(p, gameState.actions);
+                          updates[`actions.${p}`] = { ...autoActions, ...myActions }; // Mantiene le mosse già inserite a mano
+                          stateUpdated = true;
+                      }
+                  };
+
+                  // In locale processa tutti gli umani, Online solo il client corrente
+                  if (appMode === 'local_room') {
+                      const activeHumans = getActivePlayers().filter(p => !gameState.isBot[p]);
+                      activeHumans.forEach(processAFKPlayer);
+                  } else if (playerRole !== 'spectator') {
+                      processAFKPlayer(playerRole);
+                  }
+
+                  if (stateUpdated) {
+                      updateState(updates).then(() => {
+                          setTargetingMoveIdx(null);
+                          setActionMenuMode('moves');
+                          setPendingHyper(false);
+                          setCommandingIdx(-1);
+                          setSystemAlert("⏱️ Tempo scaduto! Sono state assegnate mosse automatiche ai personaggi in attesa.");
+                      });
+                  }
+              }
+          }, [timeLeft, gameState.status, isPlayingEvents, playerRole, gameState.field, gameState.teams, gameState.actions, gameState.isBot, appMode]);
+          // ---------------------------------------------------
 
           // --- STATO CAMPAGNA ---
           const [activeCampaignId, setActiveCampaignId] = useState('crisi_varco');
@@ -10206,6 +10278,14 @@
                          </div>
                     )}
                     {/* ------------------------------------------------ */}
+                    
+                    {/* --- TIMER DI BATTAGLIA 90 SECONDI --- */}
+                    {gameState.status === 'battling' && !isPlayingEvents && !isSpectator && (
+                        <div className={`absolute top-16 left-1/2 -translate-x-1/2 z-[45] bg-slate-900/90 backdrop-blur-md px-5 py-1.5 rounded-full border shadow-[0_0_15px_rgba(0,0,0,0.6)] font-black tracking-widest flex items-center gap-2 transition-colors ${timeLeft <= 15 ? 'border-rose-500 text-rose-500 animate-pulse scale-110' : 'border-cyan-500/50 text-cyan-400'}`}>
+                            ⏱️ {timeLeft}s
+                        </div>
+                    )}
+                    {/* ----------------------------------- */}
 
                     {/* --- BARRA DELL'INIZIATIVA (ATB) VERTICALE DESTRA --- */}
                     <div className="absolute top-1/2 right-4 -translate-y-1/2 z-30 flex flex-col items-center gap-1 md:gap-2 bg-slate-900/90 backdrop-blur-md px-1.5 md:px-2 py-3 md:py-4 rounded-full border border-slate-700/50 shadow-[0_0_20px_rgba(0,0,0,0.6)] max-h-[80vh] overflow-y-auto custom-scrollbar" title="L'ordine di attacco stimato. Le mosse con priorità alta (es. Protezione) agiranno comunque per prime!">
