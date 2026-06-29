@@ -2895,8 +2895,6 @@
 
           // --- NUOVA FUNZIONE DI SALVATAGGIO / SKIP FORZATO (Infallibile) ---
           const handleForceSkip = () => {
-              // Rimosso il blocco isCalculatingRef per permettere lo sblocco forzato in ogni situazione
-
               let updates = {};
               let stateUpdated = false;
               let finalActions = JSON.parse(JSON.stringify(gameState.actions || {}));
@@ -2917,12 +2915,6 @@
                   if (needsAction) {
                       try {
                           const autoActions = generateCPUActionsForPlayer(p, finalActions);
-                          
-                          // Pulisce null o undefined generati per errore che causano crash
-                          Object.keys(autoActions).forEach(k => {
-                              if (!autoActions[k]) delete autoActions[k];
-                          });
-
                           updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
                           finalActions[p] = { ...myActions, ...autoActions };
                           stateUpdated = true;
@@ -2932,17 +2924,9 @@
                   }
               });
 
-              // Pulisce azioni null rimaste nel JSON (Spesso causate da Firebase Array/Object mapping)
-              activePlayers.forEach(p => {
-                  if (finalActions[p]) {
-                      Object.keys(finalActions[p]).forEach(k => {
-                          if (!finalActions[p][k]) delete finalActions[p][k];
-                      });
-                  }
-              });
-
               const doCalculate = () => {
                   try {
+                      isCalculatingRef.current = true;
                       calculateTurn(finalActions);
                   } catch (e) {
                       console.error("Errore critico durante la forzatura del turno:", e);
@@ -2957,12 +2941,9 @@
               setPendingHyper(false);
               setCommandingIdx(-1);
 
-              // FIX CRITICO: Blocco immediato per prevenire che l'useEffect elabori i dati simultaneamente!
-              isCalculatingRef.current = true;
-
               if (stateUpdated) {
                   updateState(updates).then(() => {
-                      setTimeout(doCalculate, 50); // Attende il sync di firebase prima di colpire
+                      setTimeout(doCalculate, 300); // Attende il sync di firebase prima di colpire
                   });
               } else {
                   // Se era già tutto pronto ma il gioco si era incartato, forza il calcolo ignorando ogni cosa!
@@ -2971,7 +2952,6 @@
           };
 
           const handleHardSkip = () => {
-              // Rimosso il blocco isCalculatingRef per permettere lo sblocco forzato in ogni situazione
               const emptyActions = { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} };
               
               // Pulisce l'UI del giocatore
@@ -5282,7 +5262,6 @@
                 if (!char) return; // FIX: Safety Check 
                 
                 const action = currentActions[player][charTeamIdxStr];
-                if (!action) return; // FIX CRITICO: evita il crash del parser se un'azione è stata corrosa in 'null' o 'undefined'!
                 
                 let effSpd = char.spd;
                 if (char.statuses && char.statuses.some(s => s.type === 'Elettrizzato')) effSpd = Math.floor(effSpd / 2);
@@ -6933,11 +6912,6 @@
              events.push({ type: 'text', text: textEvt });
              events.push({ type: 'summon', text: '', player: 'p1', newChar: returningChar, fieldIdx: newIdx, putOnField: putOnField });
         });
-
-        // --- FIX: Aggiunto evento fittizio per evitare loop infinito se gli eventi sono vuoti (Es. in Hard Skip) ---
-        if (events.length === 0) {
-            events.push({ type: 'text', text: 'Nessuna mossa offensiva eseguita in questo turno.' });
-        }
 
         let nextStatus = 'battling';
         let winner = null;
@@ -11822,106 +11796,6 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Starter Kit</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #1a1a1a; }
-        canvas { display: block; touch-action: none; }
-    </style>
-</head>
-<body>
-
-    <div id="ui-layer" class="absolute top-4 left-4 text-white bg-black/50 p-4 rounded-lg pointer-events-none">
-        <h1 class="text-xl font-bold">Game Starter</h1>
-        <p>Usa i tasti freccia per muoverti</p>
-        <p id="score">Posizione: 0, 0</p>
-    </div>
-
-    <canvas id="gameCanvas"></canvas>
-
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('score');
-
-        // Impostazioni iniziali
-        let width, height;
-        const player = {
-            x: 100,
-            y: 100,
-            size: 40,
-            speed: 5,
-            dx: 0,
-            dy: 0,
-            color: '#3b82f6'
-        };
-
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        const keys = {};
-        window.addEventListener('keydown', (e) => keys[e.code] = true);
-        window.addEventListener('keyup', (e) => keys[e.code] = false);
-
-        function update() {
-            // Movimento basato sui tasti
-            if (keys['ArrowUp']) player.dy = -player.speed;
-            else if (keys['ArrowDown']) player.dy = player.speed;
-            else player.dy = 0;
-
-            if (keys['ArrowLeft']) player.dx = -player.speed;
-            else if (keys['ArrowRight']) player.dx = player.speed;
-            else player.dx = 0;
-
-            // Aggiorna posizione
-            player.x += player.dx;
-            player.y += player.dy;
-
-            // Limiti del bordo
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.size > width) player.x = width - player.size;
-            if (player.y < 0) player.y = 0;
-            if (player.y + player.size > height) player.y = height - player.size;
-
-            scoreEl.innerText = `Posizione: ${Math.round(player.x)}, ${Math.round(player.y)}`;
-        }
-
-        function draw() {
-            // Pulisce lo schermo
-            ctx.clearRect(0, 0, width, height);
-
-            // Disegna il giocatore (puoi sostituirlo con un'immagine o altro)
-            ctx.fillStyle = player.color;
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = player.color;
-            ctx.fillRect(player.x, player.y, player.size, player.size);
-            ctx.shadowBlur = 0; // Reset shadow
-        }
-
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Avvio del gioco al caricamento
-        window.onload = () => {
-            gameLoop();
-        };
     </script>
 </body>
 </html>
