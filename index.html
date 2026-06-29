@@ -2902,6 +2902,16 @@
                   }
               });
 
+              const doCalculate = () => {
+                  try {
+                      isCalculatingRef.current = true;
+                      calculateTurn(finalActions);
+                  } catch (e) {
+                      console.error("Errore critico durante la forzatura del turno:", e);
+                      isCalculatingRef.current = false;
+                  }
+              };
+
               if (stateUpdated) {
                   updateState(updates).then(() => {
                       setTargetingMoveIdx(null);
@@ -2909,20 +2919,11 @@
                       setPendingHyper(false);
                       setCommandingIdx(-1);
                       setSystemAlert("⏩ Turno forzato! Sono state assegnate mosse automatiche.");
-                      
-                      // Se l'host è bloccato o assente, forziamo il calcolo da questo client!
-                      if (appMode === 'online_room' && playerRole !== 'p1') {
-                           setTimeout(() => calculateTurn(finalActions), 500);
-                      }
+                      setTimeout(doCalculate, 300);
                   });
               } else {
-                  // Tutti hanno già scelto. Se è bloccato, calcolo io!
-                  if (appMode === 'online_room' && playerRole !== 'p1') {
-                      setSystemAlert("Forzatura calcolo turno in corso (Bypass Host)...");
-                      calculateTurn(finalActions);
-                  } else {
-                      setSystemAlert("Tutti hanno già scelto! Il turno sta per essere calcolato.");
-                  }
+                  setSystemAlert("⏩ Calcolo forzato del turno in corso...");
+                  doCalculate();
               }
           };
 
@@ -4771,8 +4772,8 @@
                   setCommandingIdx(-1);
                 }
               }
-              
-              isSubmittingActionRef.current = false; // Sblocca per il prossimo personaggio
+            }).catch(e => console.error(e)).finally(() => {
+                isSubmittingActionRef.current = false; // Sblocca SEMPRE per il prossimo personaggio o in caso di errore
             });
           };
 
