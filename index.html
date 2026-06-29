@@ -2875,50 +2875,66 @@
               };
           }, [gameState.status, isPlayingEvents, appMode]);
 
+          // --- NUOVA FUNZIONE DI SALVATAGGIO / SKIP FORZATO (Anti-Blocco) ---
+          const handleForceSkip = () => {
+              let updates = {};
+              let stateUpdated = false;
+              let finalActions = { ...gameState.actions };
+              const activePlayers = getActivePlayers();
+              
+              activePlayers.forEach(p => {
+                  const myField = gameState.field[p] || [];
+                  const myActions = gameState.actions[p] || {};
+                  let needsAction = false;
+                  
+                  myField.forEach(idx => {
+                      const char = gameState.teams[p]?.[idx];
+                      if (char && char.hp > 0 && !myActions[idx]) {
+                          needsAction = true;
+                      }
+                  });
+
+                  if (needsAction) {
+                      const autoActions = generateCPUActionsForPlayer(p, finalActions);
+                      updates[`actions.${p}`] = autoActions; 
+                      finalActions[p] = autoActions;
+                      stateUpdated = true;
+                  }
+              });
+
+              if (stateUpdated) {
+                  updateState(updates).then(() => {
+                      setTargetingMoveIdx(null);
+                      setActionMenuMode('moves');
+                      setPendingHyper(false);
+                      setCommandingIdx(-1);
+                      setSystemAlert("⏩ Turno forzato! Sono state assegnate mosse automatiche.");
+                      
+                      // Se l'host è bloccato o assente, forziamo il calcolo da questo client!
+                      if (appMode === 'online_room' && playerRole !== 'p1') {
+                           setTimeout(() => calculateTurn(finalActions), 500);
+                      }
+                  });
+              } else {
+                  // Tutti hanno già scelto. Se è bloccato, calcolo io!
+                  if (appMode === 'online_room' && playerRole !== 'p1') {
+                      setSystemAlert("Forzatura calcolo turno in corso (Bypass Host)...");
+                      calculateTurn(finalActions);
+                  } else {
+                      setSystemAlert("Tutti hanno già scelto! Il turno sta per essere calcolato.");
+                  }
+              }
+          };
+
           // Scadenza Timer: Forza le mosse automatiche per i giocatori AFK
           useEffect(() => {
               if (timeLeft === 0 && gameState.status === 'battling' && !isPlayingEvents) {
-                  let updates = {};
-                  let stateUpdated = false;
-
-                  const processAFKPlayer = (p) => {
-                      const myField = gameState.field[p] || [];
-                      const myActions = gameState.actions[p] || {};
-                      let needsAction = false;
-                      
-                      myField.forEach(idx => {
-                          if (gameState.teams[p]?.[idx]?.hp > 0 && !myActions[idx]) {
-                              needsAction = true;
-                          }
-                      });
-
-                      if (needsAction && !gameState.isBot[p]) {
-                          // Usa l'IA della CPU per generare mosse sensate al posto del giocatore
-                          const autoActions = generateCPUActionsForPlayer(p, gameState.actions);
-                          updates[`actions.${p}`] = { ...autoActions, ...myActions }; // Mantiene le mosse già inserite a mano
-                          stateUpdated = true;
-                      }
-                  };
-
-                  // In locale processa tutti gli umani, Online solo il client corrente
-                  if (appMode === 'local_room') {
-                      const activeHumans = getActivePlayers().filter(p => !gameState.isBot[p]);
-                      activeHumans.forEach(processAFKPlayer);
-                  } else if (playerRole !== 'spectator') {
-                      processAFKPlayer(playerRole);
-                  }
-
-                  if (stateUpdated) {
-                      updateState(updates).then(() => {
-                          setTargetingMoveIdx(null);
-                          setActionMenuMode('moves');
-                          setPendingHyper(false);
-                          setCommandingIdx(-1);
-                          setSystemAlert("⏱️ Tempo scaduto! Sono state assegnate mosse automatiche ai personaggi in attesa.");
-                      });
+                  // Lo esegue in automatico l'host o il giocatore in locale
+                  if (appMode === 'local_room' || playerRole === 'p1') {
+                      handleForceSkip();
                   }
               }
-          }, [timeLeft, gameState.status, isPlayingEvents, playerRole, gameState.field, gameState.teams, gameState.actions, gameState.isBot, appMode]);
+          }, [timeLeft, gameState.status, isPlayingEvents, appMode, playerRole]);
           // ---------------------------------------------------
 
           // --- STATO CAMPAGNA ---
@@ -4489,6 +4505,12 @@
 
                 gameState.field[cpuPlayer].forEach((charTeamIdx, fieldIdx) => {
                     if (cpuActions[charTeamIdx]) return; // FIX: Se ha già un'azione (es. combo_assist del compagno), salta la valutazione
+                    
+                    // FIX CRITICO: Se il giocatore ha già scelto una mossa (e stiamo completando i buchi), la conserviamo!
+                    if (currentActions[cpuPlayer] && currentActions[cpuPlayer][charTeamIdx]) {
+                        cpuActions[charTeamIdx] = currentActions[cpuPlayer][charTeamIdx];
+                        return;
+                    }
                     
                     const cpuChar = gameState.teams[cpuPlayer]?.[charTeamIdx];
                     if (!cpuChar || cpuChar.hp <= 0) return; // FIX: Sicurezza aggiuntiva contro morti in tempo reale
@@ -10210,6 +10232,11 @@
                     {/* PULSANTE TOGGLE REGISTRO BATTAGLIA */}
                     <button onClick={() => setIsLogOpen(true)} className="absolute top-16 left-4 flex items-center gap-2 text-cyan-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-cyan-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
                          <ScrollText size={16} /> Registro
+                    </button>
+
+                    {/* PULSANTE FORZA SKIP */}
+                    <button onClick={handleForceSkip} className="absolute top-28 left-4 flex items-center gap-2 text-yellow-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-yellow-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm" title="Usa questo tasto se la partita si blocca o se l'host scompare!">
+                         ⏩ Forza Skip
                     </button>
 
                     {/* SIDEBAR REGISTRO BATTAGLIA */}
