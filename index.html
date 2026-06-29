@@ -2895,6 +2895,8 @@
 
           // --- NUOVA FUNZIONE DI SALVATAGGIO / SKIP FORZATO (Infallibile) ---
           const handleForceSkip = () => {
+              if (isCalculatingRef.current) return; // FIX: Evita doppie esecuzioni sovrapposte!
+
               let updates = {};
               let stateUpdated = false;
               let finalActions = JSON.parse(JSON.stringify(gameState.actions || {}));
@@ -2915,6 +2917,12 @@
                   if (needsAction) {
                       try {
                           const autoActions = generateCPUActionsForPlayer(p, finalActions);
+                          
+                          // Pulisce null o undefined generati per errore che causano crash
+                          Object.keys(autoActions).forEach(k => {
+                              if (!autoActions[k]) delete autoActions[k];
+                          });
+
                           updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
                           finalActions[p] = { ...myActions, ...autoActions };
                           stateUpdated = true;
@@ -2924,9 +2932,17 @@
                   }
               });
 
+              // Pulisce azioni null rimaste nel JSON (Spesso causate da Firebase Array/Object mapping)
+              activePlayers.forEach(p => {
+                  if (finalActions[p]) {
+                      Object.keys(finalActions[p]).forEach(k => {
+                          if (!finalActions[p][k]) delete finalActions[p][k];
+                      });
+                  }
+              });
+
               const doCalculate = () => {
                   try {
-                      isCalculatingRef.current = true;
                       calculateTurn(finalActions);
                   } catch (e) {
                       console.error("Errore critico durante la forzatura del turno:", e);
@@ -2941,9 +2957,12 @@
               setPendingHyper(false);
               setCommandingIdx(-1);
 
+              // FIX CRITICO: Blocco immediato per prevenire che l'useEffect elabori i dati simultaneamente!
+              isCalculatingRef.current = true;
+
               if (stateUpdated) {
                   updateState(updates).then(() => {
-                      setTimeout(doCalculate, 300); // Attende il sync di firebase prima di colpire
+                      setTimeout(doCalculate, 50); // Attende il sync di firebase prima di colpire
                   });
               } else {
                   // Se era già tutto pronto ma il gioco si era incartato, forza il calcolo ignorando ogni cosa!
@@ -2952,6 +2971,8 @@
           };
 
           const handleHardSkip = () => {
+              if (isCalculatingRef.current) return; // FIX: Evita doppie esecuzioni
+              
               const emptyActions = { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} };
               
               // Pulisce l'UI del giocatore
@@ -5262,6 +5283,7 @@
                 if (!char) return; // FIX: Safety Check 
                 
                 const action = currentActions[player][charTeamIdxStr];
+                if (!action) return; // FIX CRITICO: evita il crash del parser se un'azione è stata corrosa in 'null' o 'undefined'!
                 
                 let effSpd = char.spd;
                 if (char.statuses && char.statuses.some(s => s.type === 'Elettrizzato')) effSpd = Math.floor(effSpd / 2);
