@@ -2913,10 +2913,14 @@
                   });
 
                   if (needsAction) {
-                      const autoActions = generateCPUActionsForPlayer(p, finalActions);
-                      updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
-                      finalActions[p] = { ...myActions, ...autoActions };
-                      stateUpdated = true;
+                      try {
+                          const autoActions = generateCPUActionsForPlayer(p, finalActions);
+                          updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
+                          finalActions[p] = { ...myActions, ...autoActions };
+                          stateUpdated = true;
+                      } catch(err) {
+                          console.error("Errore generazione autoActions: ", err);
+                      }
                   }
               });
 
@@ -2944,6 +2948,25 @@
               } else {
                   // Se era già tutto pronto ma il gioco si era incartato, forza il calcolo ignorando ogni cosa!
                   doCalculate();
+              }
+          };
+
+          const handleHardSkip = () => {
+              const emptyActions = { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} };
+              
+              // Pulisce l'UI del giocatore
+              setTargetingMoveIdx(null);
+              setActionMenuMode('moves');
+              setPendingHyper(false);
+              setCommandingIdx(-1);
+              
+              try {
+                  isCalculatingRef.current = true;
+                  calculateTurn(emptyActions); // Passando azioni vuote, nessuno attaccherà
+              } catch (e) {
+                  console.error("Errore critico durante l'Hard Skip:", e);
+                  isCalculatingRef.current = false;
+                  setSystemAlert("❌ Errore durante l'Hard Skip. Consulta la console.");
               }
           };
 
@@ -10416,6 +10439,11 @@
                     {/* PULSANTE FORZA SKIP */}
                     <button onClick={handleForceSkip} className="absolute top-28 left-4 flex items-center gap-2 text-yellow-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-yellow-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm" title="Usa questo tasto se la partita si blocca o se l'host scompare!">
                          ⏩ Forza Skip
+                    </button>
+
+                    {/* PULSANTE HARD SKIP */}
+                    <button onClick={handleHardSkip} className="absolute top-40 left-4 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-rose-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm" title="Skippa completamente il turno senza attacchi.">
+                         ⏭️ Hard Skip
                     </button>
 
                     {/* SIDEBAR REGISTRO BATTAGLIA */}
