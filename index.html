@@ -3067,7 +3067,8 @@
                   const timer = setInterval(() => {
                       setDraftTimeLeft(prev => {
                           if (prev <= 1) {
-                              if ((appMode === 'local_room' && activePlayerTurn === playerRole) || (appMode === 'online_room' && activePlayerTurn === playerRole)) {
+                              // FIX: In locale, chiunque può veder scattare l'autoscelta se scade il tempo
+                              if (appMode === 'local_room' || (appMode === 'online_room' && activePlayerTurn === playerRole)) {
                                   const available = gameState.sharedDraftPool.map((c, i) => ({ c, i })).filter(x => !x.c.pickedBy);
                                   if (available.length > 0) {
                                       const pick = available[Math.floor(Math.random() * available.length)];
@@ -9784,15 +9785,14 @@
                                     });
                                     startBattle(newDraft);
                                 } else if (gameState.settings.sharedDraft) {
-                                    // LOGICA DRAFT CONDIVISO (Snake Draft)
+                                    // LOGICA DRAFT CONDIVISO (Ordine Lineare Costante)
                                     let sequence = [];
-                                    const shuffledPlayers = [...activePlayersToDraft].sort(() => 0.5 - Math.random());
+                                    const shuffledPlayers = [...activePlayersToDraft].sort(() => 0.5 - Math.random()); // Mescola solo al primo turno
                                     const maxPicks = Math.max(...activePlayersToDraft.map(p => getTeamSizeForPlayer(p)));
                                     
-                                    // Genera andamento a serpente: 1-2-3-4 -> 4-3-2-1
+                                    // Genera andamento lineare: A-B-C -> A-B-C
                                     for(let i=0; i<maxPicks; i++) {
-                                        let roundOrder = i % 2 === 0 ? [...shuffledPlayers] : [...shuffledPlayers].reverse();
-                                        roundOrder.forEach(p => {
+                                        shuffledPlayers.forEach(p => {
                                             if (sequence.filter(x => x === p).length < getTeamSizeForPlayer(p)) {
                                                 sequence.push(p);
                                             }
@@ -10011,14 +10011,16 @@
                                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 overflow-y-auto custom-scrollbar p-2 w-full max-w-7xl pb-8">
                                     {gameState.sharedDraftPool.map((item, pIdx) => {
                                         const isPicked = item.pickedBy !== null;
-                                        const isMyTurn = !gameState.isBot[playerRole] && playerRole === gameState.draftSequence[gameState.currentDraftTurn];
+                                        // FIX LOCALE: Controlliamo se è il turno dell'utente attivo senza curarci di playerRole in Locale!
+                                        const activeTurnPlayer = gameState.draftSequence[gameState.currentDraftTurn];
+                                        const isMyTurn = appMode === 'local_room' ? !gameState.isBot[activeTurnPlayer] : (!gameState.isBot[playerRole] && playerRole === activeTurnPlayer);
                                         
                                         return (
                                             <div 
                                                 key={pIdx} 
                                                 onClick={() => {
                                                     if (!isPicked && isMyTurn) {
-                                                        handleSharedPick(pIdx, playerRole);
+                                                        handleSharedPick(pIdx, activeTurnPlayer);
                                                     } else if (!isMyTurn && !isPicked) {
                                                         setSystemAlert("Non è il tuo turno!");
                                                     }
@@ -10027,6 +10029,12 @@
                                             >
                                                 <img src={item.char.img} alt={item.char.name} className={`w-14 h-14 rounded-full object-cover mb-2 border-2 ${isPicked ? 'border-slate-600' : 'border-indigo-500/50'}`} />
                                                 <h4 className="font-bold text-xs mb-1 truncate text-slate-100 w-full">{item.char.name}</h4>
+                                                
+                                                <div className="flex flex-wrap gap-1 justify-center w-full mb-1">
+                                                    {item.char.types.map(t => (
+                                                        <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
+                                                    ))}
+                                                </div>
                                                 
                                                 {/* Overlay se è stato scelto */}
                                                 {isPicked && (
