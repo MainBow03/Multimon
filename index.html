@@ -3929,7 +3929,8 @@
                           myField.forEach(idx => {
                                const char = gameState.teams[p]?.[idx];
                                if (char && char.hp > 0) {
-                                    if (!gameState.actions[p] || !gameState.actions[p][idx]) {
+                                    // FIX ANTI-BLOCCO: Controllo esatto sia con indice Number che String (per Firebase)
+                                    if (!gameState.actions[p] || (gameState.actions[p][idx] === undefined && gameState.actions[p][idx.toString()] === undefined)) {
                                          humansReady = false;
                                     }
                                }
@@ -3941,17 +3942,25 @@
                       isCalculatingRef.current = true;
                       let finalActions = { ...gameState.actions };
                       
-                      // FIX: Aggiunto blocco try-catch. Se la CPU sbaglia, il gioco si sblocca!
+                      // FIX ANTI-BLOCCO: Avvolge tutto in try-catch a prova di bomba
                       try {
                           activePlayers.forEach(p => {
                               if (gameState.isBot[p]) {
                                    finalActions[p] = generateCPUActionsForPlayer(p, finalActions);
                               }
                           });
+                          
                           // Aggiunto ritardo di sicurezza per evitare blocchi del main thread
-                          setTimeout(() => calculateTurn(finalActions), 50);
+                          setTimeout(() => {
+                              try {
+                                  calculateTurn(finalActions);
+                              } catch (calcError) {
+                                  console.error("Errore critico durante il calculateTurn. Sblocco forzato:", calcError);
+                                  isCalculatingRef.current = false;
+                              }
+                          }, 50);
                       } catch (error) {
-                          console.error("Errore critico durante il calcolo CPU. Sblocco turno:", error);
+                          console.error("Errore critico durante la generazione azioni CPU. Sblocco turno:", error);
                           isCalculatingRef.current = false;
                       }
                   }
@@ -3959,8 +3968,15 @@
                   // Resetta SEMPRE isCalculating quando non siamo più in battaglia per prevenire l'incastro a vita!
                   isCalculatingRef.current = false;
               }
-          // Aggiunte dipendenze fondamentali per prevenire stale closures
-          }, [gameState.actions, gameState.status, appMode, playerRole, gameState.field, gameState.teams, gameState.isBot]);
+          // FIX ANTI-BLOCCO: Aggiunte tutte le dipendenze vitali per far funzionare correttamente getActivePlayers() senza "Stale Closures" (dati vecchi)
+          }, [
+              gameState.actions, gameState.status, appMode, playerRole, 
+              gameState.field, gameState.teams, gameState.isBot,
+              gameState.gameMode, gameState.settings, gameState.players,
+              gameState.tournamentBracket, gameState.tournamentPhase, 
+              gameState.tournamentMatchStatus, gameState.tournamentResults,
+              gameState.roundRobinMatches, gameState.currentMatchIdx
+          ]);
 
           useEffect(() => {
             if (!isPlayingEvents && gameState.teams.p1) {
@@ -4706,6 +4722,9 @@
           // --- INTELLIGENZA ARTIFICIALE CPU (Migliorata per Tutti i Bot) ---
           const generateCPUActionsForPlayer = (cpuPlayer, currentActions) => {
                 let cpuActions = {};
+                // FIX: Previene crash se il field del giocatore è assente
+                if (!gameState.field[cpuPlayer]) return cpuActions;
+
                 const activeMatchPlayers = getActivePlayers(); // FIX: Spostato fuori per evitare ReferenceError
                 
                 let enemyTeams = [];
