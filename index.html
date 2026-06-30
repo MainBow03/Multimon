@@ -147,7 +147,9 @@
         const SOUNDTRACKS = [
             { id: 'wpEBouFcwqI', name: 'LB : heroes day' },
             { id: 'rXefFHRgyE0', name: 'Cynthia theme' },
-            { id: 'bUG_NS0xqSY', name: 'Dandel theme' }
+            { id: 'bUG_NS0xqSY', name: 'Dandel theme' },
+            { id: 'hcV6xVukj60', name: 'Gym Leader Opal' },
+            { id: 'Mpi0wyVRP0I', name: 'Disobedient' }
         ];
 
         // --- GAME DATA ---
@@ -226,6 +228,7 @@
           'Yo-Yo Devastante': { name: 'Yo-Yo Devastante', type: 'Insetto', power: 80, desc: 'Colpisce il nemico con il suo inseparabile yo-yo magico.' },
           'Lucky Charm': { name: 'Lucky Charm', type: 'Magico', power: 0, targetMode: 'ally', targetStatBuff: { atk: 1.5, def: 1.5 }, desc: 'Evoca l\'oggetto perfetto per la situazione! Aumenta Attacco e Difesa di un alleato del 50%.' },
           'Miraculous Ladybug': { name: 'Miraculous Ladybug', type: 'Magico', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, maxUses: 2, desc: 'Lancia in aria il Lucky Charm riparando i danni! Cura tutto il team in campo del 50% dei PS.' },
+          'Miraculous Juviabug': { name: 'Miraculous Juviabug', type: 'Magico', power: 0, targetMode: 'team_smart_heal', healAlone: 0.5, healTeam: 0.5, maxUses: 2, desc: 'Lancia in aria il Lucky Charm riparando i danni! Cura tutto il team in campo del 50% dei PS.' },
           'Mi serve un aiutante!': { name: 'Mi serve un aiutante!', type: 'Magico', power: 0, maxUses: 2, strictUses: true, selfStatBuff: { def: 1.1 }, randomSummon: ['summon_chatnoir', 'summon_renarouge', 'viperion', 'summon_carapace', 'summon_ryuko', 'summon_kingmonkey'], desc: 'Aumenta la Difesa del 10% ed evoca un aiutante casuale tra gli eroi di Parigi. (2 utilizzi)' },
           'Lucky Charm Illusorio!': { name: 'Lucky Charm Illusorio!', type: 'Magico', power: 100, maxUses: 1, isCombo: ['ladybug', 'renarouge'], selfHeal: 1.0, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Mossa Combinata: 100 danni, brucia il bersaglio e cura al 100% Ladybug e Rena Rouge! Consuma il turno di entrambe.' },
 
@@ -954,6 +957,15 @@
           'Raggio della Morte Concentrato': { name: 'Raggio della Morte Concentrato', type: 'Fuoco', power: 130, recharge: true, desc: 'Usa l\'energia concentrata del sole per un raggio devastante. Richiede un turno per ricaricarsi.' },
           
           // NUOVE MOSSE CHARIZARD
+          'Dragopulsar': { name: 'Dragopulsar', type: 'Drago', power: 85, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Un raggio di aura draconica. 20% di probabilità di confondere il bersaglio.' },
+          'Valanga': { name: 'Valanga', type: 'Roccia', power: 100, targetCount: 4, desc: 'Una pioggia di massi infuocati che colpisce tutti i nemici in campo.' },
+
+          // NUOVE MOSSE SUMO
+          'Sumo Slam': { name: 'Sumo Slam', type: 'Lotta', power: 95, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Un salto devastante con tutto il suo peso. 30% di probabilità di stordire il nemico.' },
+          'Mangia-tutto': { name: 'Mangia-tutto', type: 'Normale', power: 0, target: 'self', heal: 0.4, statBuff: { atk: 1.3 }, desc: 'Mangia qualsiasi cosa trovi a portata di mano! Recupera il 40% dei PS e aumenta l\'Attacco del 30%.' },
+          'Spinta Da Wrestler': { name: 'Spinta Da Wrestler', type: 'Lotta', power: 75, targetCount: 2, desc: 'Una spinta tremenda che travolge fino a 2 avversari contemporaneamente.' },
+          'Sgranocchio': { name: 'Sgranocchio', type: 'Oscuro', power: 80, hitStatDebuff: { def: 0.8, chance: 0.2 }, desc: 'Un morso formidabile con i suoi dentoni. 20% di probabilità di ridurre la Difesa avversaria.' },
+
           // NUOVA MOSSA SUMO IPER
           'Sguardo Luminoso': { name: 'Sguardo Luminoso', type: 'Luce', power: 90, targetStatDebuff: { atk: 0.7 }, desc: 'Uno sguardo accecante di pura luce. Infligge danni e riduce permanentemente l\'Attacco del bersaglio del 30%.' },
 
@@ -976,6 +988,12 @@
           'Raggio luminoso': { name: 'Raggio luminoso', type: 'Luce', power: 80, targetCount: 4, desc: 'Emette un bagliore accecante che colpisce tutti gli avversari in campo.' },
           'Sguardo imperiale': { name: 'Sguardo imperiale', type: 'Luce', power: 0, accuracy: 0.80, statusEffect: { type: 'Infatuato', chance: 1.0 }, desc: 'Sottomette la mente avversaria infatuando infallibilmente il bersaglio, ma ha l\'80% di precisione.' },
 
+          // NUOVE MOSSE PERLA
+          'Lancia Perlescente': { name: 'Lancia Perlescente', type: 'Luce', power: 85, critChance: 0.3, critPower: 120, desc: 'Un fendente rapido e precisissimo con la lancia. 30% di probabilità di critico.' },
+          'Danza delle Lame': { name: 'Danza delle Lame', type: 'Lotta', power: 30, multiHit: { min: 2, max: 4 }, speedScaling: true, desc: 'Una serie di attacchi aggraziati. Colpisce da 2 a 4 volte e il danno scala con la Velocità.' },
+          'Olo-Perla': { name: 'Olo-Perla', type: 'Luce', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 3, desc: 'Crea un ologramma per deviare e schivare l\'attacco nemico. (3 utilizzi)' },
+          'Eleganza Tattica': { name: 'Eleganza Tattica', type: 'Normale', power: 0, targetMode: 'team', targetStatBuff: { spd: 1.5, atk: 1.3 }, desc: 'Coordina la squadra con precisione militare. Aumenta Velocità (+50%) e Attacco (+30%) degli alleati.' },
+
           // NUOVE MOSSE SUGINO
           'Jugaru': { name: 'Jugaru', type: 'Erba', power: 25, multiHit: { min: 3, max: 3 }, desc: 'Evoca tre fiori giganteschi che sparano semi. Colpisce 3 volte.' },
           'Diojugaro': { name: 'Diojugaro', type: 'Veleno', power: 50, statusEffects: [{ type: 'Avvelenato', chance: 1.0 }, { type: 'Confuso', chance: 0.4 }], desc: 'Spruzza polline velenoso. Infligge danni, avvelena sempre e ha il 40% di confondere.' },
@@ -993,7 +1011,31 @@
           'Palla di Fuoco Suprema': { name: 'Palla di Fuoco Suprema', type: 'Fuoco', power: 75, statusEffect: { type: 'Scottato', chance: 0.3 }, desc: 'Sputa un\'enorme sfera di fuoco. 30% di probabilità di scottare il bersaglio.' },
           'Mille Falchi': { name: 'Mille Falchi', type: 'Elettro', power: 90, statusEffect: { type: 'Elettrizzato', chance: 0.2 }, desc: 'Concentra il fulmine nella mano per un colpo letale. 20% di probabilità di paralizzare.' },
           'Genjutsu: Sharingan': { name: 'Genjutsu: Sharingan', type: 'Magico', power: 0, targetStatDebuff: { def: 0.6, accFlat: 0.2 }, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Intrappola la mente del nemico. Ne riduce la Difesa (-40%) e Precisione (-20%), con il 30% di stordire.' },
-          'Amaterasu': { name: 'Amaterasu', type: 'Oscuro', power: 120, ignoreDefBuffs: true, statusEffect: { type: 'Scottato', chance: 1.0 }, recharge: true, desc: 'Fiamme nere inestinguibili. Ignora le difese, scotta sempre, ma richiede ricarica nel turno successivo.' }
+          'Amaterasu': { name: 'Amaterasu', type: 'Oscuro', power: 120, ignoreDefBuffs: true, statusEffect: { type: 'Scottato', chance: 1.0 }, recharge: true, desc: 'Fiamme nere inestinguibili. Ignora le difese, scotta sempre, ma richiede ricarica nel turno successivo.' },
+          
+          // NUOVE MOSSE MELIODAS
+          'Full Counter': { name: 'Full Counter', type: 'Magico', power: 0, target: 'self', isProtect: true, priority: 5, protectStatus: 'Rashield', maxUses: 4, desc: 'Respinge l\'attacco al mittente! Protegge e riflette il 25% del danno. Se usato di fila, la probabilità di successo si dimezza. (4 utilizzi)' },
+          'Fiamme del Purgatorio': { name: 'Fiamme del Purgatorio', type: 'Oscuro', power: 85, statusEffect: { type: 'Scottato', chance: 0.5 }, desc: 'Fiamme nere inestinguibili. 50% di probabilità di scottare il bersaglio.' },
+          'Kami Chigiri': { name: 'Kami Chigiri', type: 'Lotta', power: 30, multiHit: { min: 3, max: 4 }, desc: 'I Mille Tagli Divini. Una raffica di fendenti velocissimi che colpisce da 3 a 4 volte.' },
+          'Revenge Counter': { name: 'Revenge Counter', type: 'Oscuro', power: 150, maxUses: 1, ignoreDefBuffs: true, desc: 'Assorbe i danni subiti e li rilascia in un colpo devastante che ignora le difese. (1 utilizzo)' },
+
+          // NUOVE MOSSE BAN
+          'Caccia della Volpe': { name: 'Caccia della Volpe', type: 'Lotta', power: 75, ignoreDefBuffs: true, desc: 'Usa la sua frusta per colpire ignorando i potenziamenti difensivi avversari.' },
+          'Furto Fisico': { name: 'Furto Fisico', type: 'Oscuro', power: 65, drain: 0.5, desc: 'Ruba l\'energia vitale del nemico. Recupera il 50% dei danni inflitti in PS.' },
+          'Hunter Fest': { name: 'Hunter Fest', type: 'Magico', power: 40, targetCount: 4, targetStatDebuff: { atk: 0.8, def: 0.8 }, selfStatBuff: { atk: 1.3, def: 1.3 }, desc: 'Ruba l\'energia di tutti i nemici! Infligge danni, ne riduce Attacco e Difesa (-20%) e aumenta i propri (+30%).' },
+          'Colpo Letale di Ban': { name: 'Colpo Letale di Ban', type: 'Buio', power: 100, critChance: 0.3, critPower: 150, desc: 'Un attacco fulmineo e letale. 30% di probabilità di infliggere un colpo critico devastante.' },
+
+          // NUOVE MOSSE SANS
+          'Ossa Perforanti': { name: 'Ossa Perforanti', type: 'Buio', power: 25, multiHit: { min: 3, max: 5 }, desc: 'Una raffica imprevedibile di ossa appuntite. Colpisce in sequenza da 3 a 5 volte.' },
+          'Karmic Retribution': { name: 'Karmic Retribution', type: 'Suono', power: 85, ignoreDefBuffs: true, statusEffect: { type: 'Avvelenato', chance: 0.3 }, desc: 'Il peso dei peccati schiaccia il nemico. Ignora i potenziamenti difensivi e ha il 30% di avvelenare l\'anima (KARMIC).' },
+          'Gaster Blaster Assoluto': { name: 'Gaster Blaster Assoluto', type: 'Buio', power: 110, targetCount: 4, recharge: true, desc: 'Evoca teschi demoniaci che sparano raggi oscuri su tutti i nemici. Richiede un turno di ricarica.' },
+          'Pausa Ketchup': { name: 'Pausa Ketchup', type: 'Normale', power: 0, target: 'self', heal: 0.5, statBuff: { spd: 1.3 }, desc: 'Beve un\'intera bottiglia di ketchup! Si cura del 50% e aumenta la sua già alta Velocità del 30%.' },
+
+          // NUOVE MOSSE ROXY
+          'Assolo di Keytar': { name: 'Assolo di Keytar', type: 'Suono', power: 85, targetCount: 2, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Suona un accordo assordante con il suo keytar. Colpisce fino a 2 nemici con il 30% di confonderli.' },
+          'Scatto Predatorio': { name: 'Scatto Predatorio', type: 'Robot', power: 75, speedScaling: true, desc: 'Un balzo letale verso la preda. Il danno aumenta in base alla sua Velocità.' },
+          'Occhi a Raggi X': { name: 'Occhi a Raggi X', type: 'Robot', power: 0, targetStatDebuff: { def: 0.7, accFlat: 0.2 }, desc: 'Analizza i punti deboli del nemico. Ne diminuisce la Difesa (-30%) e la Precisione.' },
+          'La Preferita': { name: 'La Preferita', type: 'Suono', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Si auto-incoraggia ad alta voce! Aumenta il suo Attacco e Velocità del 50%.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1145,13 +1187,18 @@
           { id: 'chloeprice', name: 'Chloe Price', types: ['Suono', 'Normale'], hp: 100, maxHp: 100, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/c0/95/1a/c0951ab8f88e25c6cf1f076f3f26dcbb.jpg', passive: { name: 'Sfortuna Cronica', type: 'on_enter', maxUses: 3, randomStatDebuffToRandomEnemy: { chance: 0.5, multiplier: 0.7 }, desc: 'Appena scende in campo, la sua sfiga colpisce un nemico casuale: c\'è il 50% di probabilità per ogni statistica (Attacco, Difesa, Velocità) di essere ridotta del 30%.' }, moves: [MOVES_DB['Riff Ribelle'], MOVES_DB['Caos Punk'], MOVES_DB['Testa Calda'], MOVES_DB['Ride Or Die'], MOVES_DB['Love is Strange']] },
 
           { id: 'miku', name: 'Hatsune Miku', types: ['Suono', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 115, img: 'https://i.pinimg.com/736x/51/cf/f4/51cff4f1b602b7220d4eaeccf558ffbf.jpg', moves: [MOVES_DB['Vocal Burst'], MOVES_DB['Melodia Curativa'], MOVES_DB['Risonanza Mentale'], MOVES_DB['Canto Armonico']] },
-          { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Soundwave&backgroundColor=1e293b', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
+          { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://i.pinimg.com/1200x/ef/88/3f/ef883f8a53bb3f86cf934a9001da8f1f.jpg', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
 
           { id: 'alphonse', name: 'Alphonse Elric', types: ['Robot', 'Terra'], hp: 110, maxHp: 110, atk: 95, def: 125, spd: 70, img: 'https://i.pinimg.com/1200x/6b/02/53/6b0253e74a2738939cf60840ff6c73df.jpg', moves: [MOVES_DB['Alchimia Metallica'], MOVES_DB['Pugno d\'Acciaio'], MOVES_DB['Muro Terrestre'], MOVES_DB['Pilastro di Terra']] },
           { id: 'diamantebianco', name: 'Diamante Bianco', types: ['Luce'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 85, img: 'https://i.pinimg.com/736x/f8/57/5f/f8575f776adac7111faebf0e6d48bb95.jpg', passive: { name: 'Il Capo del Pianeta Natale', type: 'first_hit_immunity', desc: 'La sua aura di supremazia è intoccabile. Il primo attacco nemico che subisce in battaglia viene completamente annullato (0 danni e nessun malus).' }, moves: [MOVES_DB['Pianeta natale'], MOVES_DB['Colpo di tacco'], MOVES_DB['Raggio luminoso'], MOVES_DB['Sguardo imperiale']] },
           { id: 'sugino', name: 'Sugino', types: ['Erba'], hp: 100, maxHp: 100, atk: 105, def: 85, spd: 95, img: 'https://ami.animecharactersdatabase.com/uploads/chars/43057-1906525683.png', passive: { name: 'Piante Curative', type: 'aura', immuneToNegativeStatuses: true, desc: 'Le theme piante lo curano istantaneamente da ogni malus: è immune a tutte le alterazioni di stato negative.' }, moves: [MOVES_DB['Jugaru'], MOVES_DB['Diojugaro'], MOVES_DB['Juruku'], MOVES_DB['Barujuron']] },
           { id: 'naruto', name: 'Naruto Uzumaki', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 120, img: 'https://i.pinimg.com/736x/cd/4e/a1/cd4ea18dfd17257a575dfe671faba4f9.jpg', passive: { name: 'Chakra della Volpe', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.3, spd: 1.3 }, heal: 0.2, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, attinge al chakra di Kurama: recupera il 20% dei PS e aumenta Attacco e Velocità del 30%.' }, moves: [MOVES_DB['Rasengan'], MOVES_DB['Moltiplicazione Superiore'], MOVES_DB['Combo Uzumaki'], MOVES_DB['Rasenshuriken']] },
           { id: 'sasuke', name: 'Sasuke Uchiha', types: ['Fuoco', 'Elettro'], hp: 100, maxHp: 100, atk: 120, def: 75, spd: 125, img: 'https://i.pinimg.com/736x/bc/8b/b1/bc8bb101895ed8f2beff898258665942.jpg', passive: { name: 'Risveglio del Susanoo', type: 'on_hp_threshold', threshold: 0.3, statBuff: { def: 2.0 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, evoca l\'armatura spirituale del Susanoo, raddoppiando istantaneamente la propria Difesa.' }, moves: [MOVES_DB['Palla di Fuoco Suprema'], MOVES_DB['Mille Falchi'], MOVES_DB['Genjutsu: Sharingan'], MOVES_DB['Amaterasu']] },
+          { id: 'meliodas', name: 'Meliodas', types: ['Oscuro', 'Lotta'], hp: 110, maxHp: 110, atk: 125, def: 85, spd: 115, img: 'https://i.pinimg.com/736x/96/27/db/9627db761bc5d7bb6dae411885a8a215.jpg', passive: { name: 'Marchio Demoniaco', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, risveglia il potere demoniaco aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Full Counter'], MOVES_DB['Fiamme del Purgatorio'], MOVES_DB['Kami Chigiri'], MOVES_DB['Revenge Counter']] },
+          { id: 'ban', name: 'Ban l\'Immortale', types: ['Buio', 'Oscuro'], hp: 130, maxHp: 130, atk: 115, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/ec/4e/fd/ec4efd87e8565b316ddc9e4e5a12113f.jpg', passive: { name: 'Fonte della Giovinezza', type: 'on_turn_end', healPercentRandom: { min: 0.03, max: 0.05 }, desc: 'Il suo corpo immortale si rigenera in continuazione. Alla fine di ogni turno recupera dal 3% al 5% dei PS massimi.' }, moves: [MOVES_DB['Caccia della Volpe'], MOVES_DB['Furto Fisico'], MOVES_DB['Hunter Fest'], MOVES_DB['Colpo Letale di Ban']] },
+          { id: 'sans', name: 'Sans', types: ['Suono', 'Buio'], hp: 60, maxHp: 60, atk: 125, def: 65, spd: 150, img: 'https://i.pinimg.com/736x/4f/82/6b/4f826ba76449e56ad4ea373d0536e41d.jpg', passive: { name: 'Schivata Pigra', type: 'first_hit_immunity', desc: 'È così veloce e pigro che schiva sempre il primo attacco della battaglia in automatico (0 danni e nessun malus).' }, moves: [MOVES_DB['Ossa Perforanti'], MOVES_DB['Karmic Retribution'], MOVES_DB['Gaster Blaster Assoluto'], MOVES_DB['Pausa Ketchup']] },
+          { id: 'roxy', name: 'Roxy', types: ['Robot', 'Suono'], hp: 95, maxHp: 95, atk: 115, def: 80, spd: 125, img: 'https://i.pinimg.com/736x/4f/68/09/4f68097b813df074ef15709fbdb1eb43.jpg', passive: { name: 'Nessuno è meglio di me!', type: 'first_strike_bonus', damageBonus: 1.20, desc: 'Vuole essere sempre la prima in tutto. Se attacca per prima nel turno, infligge il 20% di danni extra.' }, moves: [MOVES_DB['Assolo di Keytar'], MOVES_DB['Scatto Predatorio'], MOVES_DB['Occhi a Raggi X'], MOVES_DB['La Preferita']] },
+          { id: 'perla', name: 'Perla', types: ['Luce', 'Lotta'], hp: 90, maxHp: 90, atk: 105, def: 80, spd: 130, img: 'https://i.pinimg.com/1200x/ae/46/59/ae4659a339bc086dcd454dd897efeaa8.jpg', passive: { name: 'Dedizione Assoluta', type: 'first_hit_immunity', desc: 'La sua determinazione a proteggere ciò che ama la rende intoccabile. Il primo attacco nemico della battaglia viene completamente annullato (0 danni e nessun malus).' }, moves: [MOVES_DB['Lancia Perlescente'], MOVES_DB['Danza delle Lame'], MOVES_DB['Olo-Perla'], MOVES_DB['Eleganza Tattica']] },
 
           { id: 'summon_chatnoir', name: 'Chat Noir (Aiutante)', types: ['Buio', 'Lotta'], hp: 47, maxHp: 47, atk: 115, def: 37, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', moves: [MOVES_DB['Cataclisma']], isSummonOnly: true },
           { id: 'summon_renarouge', name: 'Rena Rouge (Aiutante)', types: ['Normale'], hp: 45, maxHp: 45, atk: 100, def: 40, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Volpe rabbiosa']], isSummonOnly: true },
@@ -1233,7 +1280,7 @@
 
         const CHAR_PRICES = {
             'diamantebianco': 350, 'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
-            'laxus': 250, 'zabuza': 250, 'naruto': 250, 'sasuke': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250, 'arievicente': 250,
+            'laxus': 250, 'zabuza': 250, 'naruto': 250, 'sasuke': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250, 'arievicente': 250, 'meliodas': 250, 'ban': 250, 'sans': 250, 'roxy': 250, 'perla': 250,
             'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200, 'elly': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150, 'sugino': 150
         };
@@ -1250,7 +1297,10 @@
           { id: 'barser', name: 'Barser', types: ['Oscuro', 'Fuoco'], hp: 210, maxHp: 210, atk: 220, def: 170, spd: 125, img: 'https://i.postimg.cc/QF0J4Pyg/Gemini-Generated-Image-b1u45xb1u45xb1u4.png', fusionOf: ['barry', 'bowser'], moves: [MOVES_DB['Gigano Zonisu'], MOVES_DB['Zorushirudo'], MOVES_DB['Lanciafiamme'], MOVES_DB['Dragartigli']] },
           { id: 'jarlos', name: 'Jarlos', types: ['Lotta', 'Fuoco'], hp: 190, maxHp: 190, atk: 200, def: 160, spd: 165, img: 'https://i.postimg.cc/rw9ZKYhw/Gemini-Generated-Image-nfo799nfo799nfo7.png', fusionOf: ['jakedc', 'carlos'], moves: [MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Sguardo Omosessuale'], MOVES_DB['Lanciafiamme Rubato']] },
           { id: 'yunn', name: 'Yunn', types: ['Psico', 'Lotta'], hp: 190, maxHp: 190, atk: 225, def: 155, spd: 210, img: 'https://i.postimg.cc/D8CtsCcW/Gemini-Generated-Image-24q7ku24q7ku24q7.png', fusionOf: ['yugo', 'finn'], moves: [MOVES_DB['Raggio Wakfu'], MOVES_DB['Riflesso del Portale'], MOVES_DB['Spada d\'Oro'], MOVES_DB['Eroe di Ooo']] },
-          { id: 'rosevoir', name: 'Rosevoir', types: ['Psico', 'Erba'], hp: 175, maxHp: 175, atk: 220, def: 145, spd: 200, img: 'https://i.postimg.cc/0KvqWb6K/Gemini-Generated-Image-j53cu3j53cu3j53c.png', fusionOf: ['gardevoir', 'roserade'], moves: [MOVES_DB['Psichico'], MOVES_DB['Schermoluce'], MOVES_DB['Gigassorbimento'], MOVES_DB['Fangobomba']] }
+          { id: 'rosevoir', name: 'Rosevoir', types: ['Psico', 'Erba'], hp: 175, maxHp: 175, atk: 220, def: 145, spd: 200, img: 'https://i.postimg.cc/0KvqWb6K/Gemini-Generated-Image-j53cu3j53cu3j53c.png', fusionOf: ['gardevoir', 'roserade'], moves: [MOVES_DB['Psichico'], MOVES_DB['Schermoluce'], MOVES_DB['Gigassorbimento'], MOVES_DB['Fangobomba']] },
+          { id: 'lapiscaster', name: 'Lapiscaster', types: ['Acqua', 'Magico'], hp: 180, maxHp: 180, atk: 215, def: 150, spd: 210, img: 'https://i.postimg.cc/67TqwmGt/Gemini-Generated-Image-uvfye2uvfye2uvfy-(1).png', fusionOf: ['lapis', 'charmcaster'], moves: [MOVES_DB['Torre d\'Acqua'], MOVES_DB['Catene Oceaniche'], MOVES_DB['Fulmine Viola'], MOVES_DB['Maledizione']] },
+          { id: 'juviabug', name: 'JuviaBug', types: ['Acqua', 'Insetto'], hp: 185, maxHp: 185, atk: 200, def: 155, spd: 185, img: 'https://i.postimg.cc/tYYXmmwc/Gemini-Generated-Image-dertu4dertu4dert.png', fusionOf: ['juvia', 'ladybug'], moves: [MOVES_DB['Colpo impetuoso'], MOVES_DB['Flirt'], MOVES_DB['Yo-Yo Devastante'], MOVES_DB['Miraculous Juviabug']] },
+          { id: 'robinnoir', name: 'Robinnoir', types: ['Lotta', 'Buio'], hp: 190, maxHp: 190, atk: 225, def: 155, spd: 230, img: 'https://i.postimg.cc/ZvLy7sQn/Gemini-Generated-Image-unq7qjunq7qjunq7.png', fusionOf: ['robin', 'chatnoir'], moves: [MOVES_DB['Bo Staff'], MOVES_DB['Bomba Fumogena'], MOVES_DB['Cataclisma'], MOVES_DB['Bastone Estendibile']] }
         ];
 
           const CAMPAIGNS = [
@@ -2730,9 +2780,13 @@
           players: { p1: null, p2: null, p3: null, p4: null, p5: null, p6: null, p7: null, p8: null },
           playerAvatars: { p1: '', p2: '', p3: '', p4: '', p5: '', p6: '', p7: '', p8: '' },
           isBot: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false },
-          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false, draftBattle: false }, 
+          settings: { teamSize: 4, fieldSize: 1, maxPlayers: 4, juggernautPlayer: 'p1', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false, draftBattle: false, sharedDraft: false }, 
           draft: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           draftChoices: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, // <--- AGGIUNTO PER DRAFT BATTLE
+          draftRerolls: { p1: 2, p2: 2, p3: 2, p4: 2, p5: 2, p6: 2, p7: 2, p8: 2 }, // <--- AGGIUNTO PER REROLL DRAFT
+          sharedDraftPool: [], // <--- AGGIUNTO PER DRAFT CONDIVISO
+          draftSequence: [], // <--- AGGIUNTO PER DRAFT CONDIVISO (Ordine turni)
+          currentDraftTurn: 0, // <--- AGGIUNTO PER DRAFT CONDIVISO
           teams: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] },
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
           actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} }, 
@@ -2843,6 +2897,7 @@
           
           // --- YOUTUBE BGM PLAYER ---
           const [isMuted, setIsMuted] = useState(false);
+          const [bgmVolume, setBgmVolume] = useState(40); // Stato per controllare il volume
           const ytRef = useRef(null);
           // La musica si attiva solo durante le fasi di lotta
           const shouldPlayMusic = ['pre_battle', 'battling', 'executing', 'switching_phase', 'intermission'].includes(gameState.status);
@@ -2851,17 +2906,17 @@
               if (ytRef.current && ytRef.current.contentWindow) {
                   if (shouldPlayMusic) {
                       ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
+                      ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [bgmVolume] }), '*');
                       if (isMuted) {
                           ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute' }), '*');
                       } else {
                           ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute' }), '*');
-                          ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [40] }), '*'); // Volume bilanciato al 40%
                       }
                   } else {
                       ytRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
                   }
               }
-          }, [shouldPlayMusic, isMuted, gameState.status]);
+          }, [shouldPlayMusic, isMuted, bgmVolume, gameState.status]);
           
           // Auto-scroll per il registro battaglia
           useEffect(() => {
@@ -2913,14 +2968,10 @@
                   });
 
                   if (needsAction) {
-                      try {
-                          const autoActions = generateCPUActionsForPlayer(p, finalActions);
-                          updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
-                          finalActions[p] = { ...myActions, ...autoActions };
-                          stateUpdated = true;
-                      } catch(err) {
-                          console.error("Errore generazione autoActions: ", err);
-                      }
+                      const autoActions = generateCPUActionsForPlayer(p, finalActions);
+                      updates[`actions.${p}`] = { ...myActions, ...autoActions }; 
+                      finalActions[p] = { ...myActions, ...autoActions };
+                      stateUpdated = true;
                   }
               });
 
@@ -2948,25 +2999,6 @@
               } else {
                   // Se era già tutto pronto ma il gioco si era incartato, forza il calcolo ignorando ogni cosa!
                   doCalculate();
-              }
-          };
-
-          const handleHardSkip = () => {
-              const emptyActions = { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} };
-              
-              // Pulisce l'UI del giocatore
-              setTargetingMoveIdx(null);
-              setActionMenuMode('moves');
-              setPendingHyper(false);
-              setCommandingIdx(-1);
-              
-              try {
-                  isCalculatingRef.current = true;
-                  calculateTurn(emptyActions); // Passando azioni vuote, nessuno attaccherà
-              } catch (e) {
-                  console.error("Errore critico durante l'Hard Skip:", e);
-                  isCalculatingRef.current = false;
-                  setSystemAlert("❌ Errore durante l'Hard Skip. Consulta la console.");
               }
           };
 
@@ -3010,6 +3042,57 @@
               }
               return () => { if (timer) clearInterval(timer); };
           }, [gameState.status, gameState.settings.draftBattle, gameState.draft, playerRole, appMode, gameState.draftChoices]);
+          // ---------------------------------------------------
+
+          // --- EFFETTO BOT E TIMER PER DRAFT CONDIVISO ---
+          useEffect(() => {
+              if (gameState.status !== 'drafting' || !gameState.settings.sharedDraft) return;
+              
+              const activePlayerTurn = gameState.draftSequence[gameState.currentDraftTurn];
+              if (!activePlayerTurn) return; // Draft finito
+
+              if (gameState.isBot[activePlayerTurn]) {
+                  if (appMode === 'local_room' || playerRole === 'p1') {
+                      const timer = setTimeout(() => {
+                          const available = gameState.sharedDraftPool.map((c, i) => ({ c, i })).filter(x => !x.c.pickedBy);
+                          if (available.length > 0) {
+                              const pick = available[Math.floor(Math.random() * available.length)];
+                              handleSharedPick(pick.i, activePlayerTurn);
+                          }
+                      }, 1500); // Ritardo per far "pensare" il bot
+                      return () => clearTimeout(timer);
+                  }
+              } else {
+                  // Timer per l'umano di turno (15 secondi)
+                  const timer = setInterval(() => {
+                      setDraftTimeLeft(prev => {
+                          if (prev <= 1) {
+                              if ((appMode === 'local_room' && activePlayerTurn === playerRole) || (appMode === 'online_room' && activePlayerTurn === playerRole)) {
+                                  const available = gameState.sharedDraftPool.map((c, i) => ({ c, i })).filter(x => !x.c.pickedBy);
+                                  if (available.length > 0) {
+                                      const pick = available[Math.floor(Math.random() * available.length)];
+                                      handleSharedPick(pick.i, activePlayerTurn);
+                                  }
+                              } else if (appMode === 'online_room' && playerRole === 'p1') {
+                                  // Fallback: se l'ospite crasha e non invia la scelta, l'host la fa per lui dopo qualche secondo in più
+                                  setTimeout(() => {
+                                      if (gameState.currentDraftTurn === gameState.currentDraftTurn) { // Se il turno non è cambiato
+                                          const available = gameState.sharedDraftPool.map((c, i) => ({ c, i })).filter(x => !x.c.pickedBy);
+                                          if (available.length > 0) {
+                                              const pick = available[Math.floor(Math.random() * available.length)];
+                                              handleSharedPick(pick.i, activePlayerTurn);
+                                          }
+                                      }
+                                  }, 2000);
+                              }
+                              return 15; // Reset timer
+                          }
+                          return prev - 1;
+                      });
+                  }, 1000);
+                  return () => clearInterval(timer);
+              }
+          }, [gameState.status, gameState.settings.sharedDraft, gameState.currentDraftTurn, gameState.sharedDraftPool, gameState.isBot]);
           // ---------------------------------------------------
 
           // --- STATO CAMPAGNA ---
@@ -3246,7 +3329,9 @@
                       { h: 'natsu', b: 'juvia', t: "Juvia! Smettila di fare fiumi di lacrime e datti una mossa, dobbiamo rompere questo incantesimo!" },
                       { h: 'kratos', b: 'nito', t: "Un altro signore dei morti che brama anime. Le mie lame conoscono bene il tuo tipo." },
                       { h: 'carlos', b: 'hannibal', t: "Hai l'aria del mostro psicopatico... Ho affrontato gli zombie, non ho paura di te!" },
-                      { h: 'corvina', b: 'trigon', t: "Padre... pensavi di potermi manipolare di nuovo nascondendoti dietro quel burattino di Cell? Questa volta la tua fine sarà definitiva!" }
+                      { h: 'corvina', b: 'trigon', t: "Padre... pensavi di potermi manipolare di nuovo nascondendoti dietro quel burattino di Cell? Questa volta la tua fine sarà definitiva!" },
+                      { h: 'meliodas', b: 'ban', t: "Ban! Ehi, svegliati! Non farti comandare da quell'insetto troppo cresciuto!" },
+                      { h: 'ban', b: 'meliodas', t: "Capitano! Sembra che tu stia combinando dei guai. Ti darò una raddrizzata!" }
                   ];
 
                   let injected = false;
@@ -3354,7 +3439,9 @@
                       { s: 'chloeprice', f: 'Max Caulfield', t: "Max! Brutti bastardi, me la pagherete cara per averle fatto del male!" },
                       { s: 'stewie', f: 'Plankton', t: "Bene, l'organismo monocellulare è fuori uso. Un peso in meno per me." },
                       { s: 'cyborg', f: 'Robin', t: "Robin è a terra! Squadra, copritelo finché non lo curiamo!" },
-                      { s: 'corvina', f: 'Stellarubia', t: "Stella... la sua luce si è spenta. La farò pagare a chi le ha fatto questo." }
+                      { s: 'corvina', f: 'Stellarubia', t: "Stella... la sua luce si è spenta. La farò pagare a chi le ha fatto questo." },
+                      { s: 'meliodas', f: 'Ban l\'Immortale', t: "Ban! Non fare finta di dormire, so che ti rigeneri! ...Ban?!" },
+                      { s: 'ban', f: 'Meliodas', t: "Capitano! Tsk... me la pagheranno cara per questo!" }
                   ];
 
                   const genericSpeakerLines = {
@@ -4121,7 +4208,7 @@
           const handleSurvivalStart = () => {
             const state = initialGameState();
             state.gameMode = 'survival';
-            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false, draftBattle: false }; 
+            state.settings = { teamSize: 4, fieldSize: 1, maxPlayers: 2, juggernautPlayer: 'p2', soundtrack: 'wpEBouFcwqI', rentalMode: false, fusionMode: false, draftBattle: false, sharedDraft: false }; 
             state.players.p1 = playerName || "Sopravvissuto";
             state.playerAvatars.p1 = playerAvatarUrl;
             state.inventory.p1 = getPlayerData().inventory;
@@ -4156,13 +4243,73 @@
             if (gameState.settings.draftBattle && currentDraft.length + 1 < myTeamSize) {
                 const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
                 const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
-                const shuffled = [...draftable].sort(() => 0.5 - Math.random());
+                
+                // Esclude chi hai già scelto dalle future scelte
+                const pickedIds = [...currentDraft.map(c => c.id), char.id];
+                const availableDraftable = draftable.filter(c => !pickedIds.includes(c.id));
+
+                const shuffled = [...availableDraftable].sort(() => 0.5 - Math.random());
                 updates[`draftChoices.${playerRole}`] = shuffled.slice(0, 3);
             }
 
             updateState(updates);
             setDraftTimeLeft(30); // Resetta il timer
           };
+
+          const handleDraftReroll = () => {
+              const currentRerolls = gameState.draftRerolls?.[playerRole] !== undefined ? gameState.draftRerolls[playerRole] : 2;
+              if (currentRerolls <= 0) return;
+
+              const currentDraft = gameState.draft[playerRole] || [];
+              const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+              const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+              
+              const pickedIds = currentDraft.map(c => c.id);
+              const currentChoicesIds = (gameState.draftChoices[playerRole] || []).map(c => c.id);
+              
+              // Esclude chi è già in squadra e (se possibile) le 3 scelte attuali per dare vera varietà
+              let availableDraftable = draftable.filter(c => !pickedIds.includes(c.id) && !currentChoicesIds.includes(c.id));
+              
+              if (availableDraftable.length < 3) {
+                  availableDraftable = draftable.filter(c => !pickedIds.includes(c.id));
+              }
+
+              const shuffled = [...availableDraftable].sort(() => 0.5 - Math.random());
+              
+              updateState({
+                  [`draftChoices.${playerRole}`]: shuffled.slice(0, 3),
+                  [`draftRerolls.${playerRole}`]: currentRerolls - 1
+              });
+              setDraftTimeLeft(30); // Resetta timer su reroll
+          };
+
+          // --- GESTIONE PICK DRAFT CONDIVISO ---
+          const handleSharedPick = (poolIdx, pRole) => {
+              const item = gameState.sharedDraftPool[poolIdx];
+              if (!item || item.pickedBy) return; // Già scelto
+
+              const charInstance = { 
+                  ...item.char, 
+                  statuses: [],
+                  consecutiveProtect: 0,
+                  baseAtk: item.char.atk,
+                  baseDef: item.char.def,
+                  baseSpd: item.char.spd,
+                  moves: item.char.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+              };
+
+              let newDraft = [...(gameState.draft[pRole] || []), charInstance];
+              let newPool = [...gameState.sharedDraftPool];
+              newPool[poolIdx] = { ...newPool[poolIdx], pickedBy: pRole };
+
+              updateState({
+                  [`draft.${pRole}`]: newDraft,
+                  sharedDraftPool: newPool,
+                  currentDraftTurn: gameState.currentDraftTurn + 1
+              });
+              setDraftTimeLeft(15); // Timer più veloce per il draft condiviso
+          };
+          // -------------------------------------
 
           const applyOnEnterPassive = (char, p, idx, workingTeams, workingField, eventsArr, gameMode, settings, isCampaign) => {
               if (char.passive.isSummon) {
@@ -6634,8 +6781,12 @@
                 const triggers = char.passive.chance === undefined || Math.random() < char.passive.chance;
 
                 if (triggers) {
-                    if (char.passive.healPercent && char.hp < char.maxHp) {
-                        const healAmount = Math.max(1, Math.floor(char.maxHp * char.passive.healPercent));
+                    if ((char.passive.healPercent || char.passive.healPercentRandom) && char.hp < char.maxHp) {
+                        let hPercent = char.passive.healPercent || 0;
+                        if (char.passive.healPercentRandom) {
+                            hPercent = char.passive.healPercentRandom.min + Math.random() * (char.passive.healPercentRandom.max - char.passive.healPercentRandom.min);
+                        }
+                        const healAmount = Math.max(1, Math.floor(char.maxHp * hPercent));
                         char.hp = Math.min(char.maxHp, char.hp + healAmount);
                         events.push({ type: 'damage', text: `✨ ${char.name} attiva ${char.passive.name}: recupera ${healAmount} PS!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp, isPassive: true, passiveChar: char.name, passiveName: char.passive.name });
                     }
@@ -8165,6 +8316,11 @@
                 'sugino': "I miei fiori vi mostreranno il potere della natura!",
                 'naruto': "Non mi arrenderò mai! Questo è il mio credo ninja!",
                 'sasuke': "Taglierò ogni legame ostile per raggiungere la vittoria.",
+                'meliodas': "Sate sate sate! Facciamo sul serio!",
+                'ban': "Hehe... preparatevi, vi ruberò anche le mutande!",
+                'sans': "che bella giornata fuori. gli uccellini cantano... i fiori sbocciano...",
+                'roxy': "Sono la migliore! Tutti mi adorano!",
+                'perla': "Mostrerò loro la vera eleganza in combattimento! Per Rose!",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -8253,6 +8409,11 @@
                 'sugino': "D'accordo, tornerò a prendermi cura dei miei germogli.",
                 'naruto': "Uffa... va bene, vado a mangiare del ramen da Ichiraku.",
                 'sasuke': "Tsk. Non avete il potere necessario per comprendermi.",
+                'meliodas': "Nessun problema, torno a servire birra al Boar Hat.",
+                'ban': "Tsk, vado a farmi una bella bevuta di birra allora. Non disturbatemi.",
+                'sans': "ok. vado da grillby's.",
+                'roxy': "Pff, perdenti. Andate a piangere altrove.",
+                'perla': "Come volete. Ma la vostra tecnica è a dir poco approssimativa.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -9350,7 +9511,7 @@
         const reqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const canStartDraft = isAllPlayersJoined();
 
-        const newArrivals = ['sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
+        const newArrivals = ['perla', 'roxy', 'sans', 'ban', 'meliodas', 'sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
 
         return (
             <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 relative">
@@ -9556,29 +9717,45 @@
                                     <span className="text-[10px] text-cyan-200/70">Seleziona a tempo tra 3 campioni scelti a caso!</span>
                                 </div>
                                 <button 
-                                    onClick={() => updateState({ settings: { ...gameState.settings, draftBattle: !gameState.settings.draftBattle, rentalMode: false } })} 
+                                    onClick={() => updateState({ settings: { ...gameState.settings, draftBattle: !gameState.settings.draftBattle, rentalMode: false, sharedDraft: false } })} 
                                     className={`w-12 h-6 rounded-full flex items-center transition-all p-1 ${gameState.settings.draftBattle ? 'bg-cyan-500' : 'bg-slate-700'}`}
                                 >
                                     <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${gameState.settings.draftBattle ? 'translate-x-6' : 'translate-x-0'}`}></div>
                                 </button>
                             </div>
 
+                            {/* NUOVO: Draft Condiviso */}
+                            <div className="flex justify-between items-center bg-slate-950/50 p-4 rounded-xl border border-indigo-500/30 shadow-inner mt-4">
+                                <div className="flex flex-col text-left">
+                                    <span className="font-bold text-indigo-400">Draft Condiviso</span>
+                                    <span className="text-[10px] text-indigo-200/70">Scelta a turni da un roster casuale unico. Chi lo prende per primo lo tiene!</span>
+                                </div>
+                                <button 
+                                    onClick={() => updateState({ settings: { ...gameState.settings, sharedDraft: !gameState.settings.sharedDraft, draftBattle: false, rentalMode: false } })} 
+                                    className={`w-12 h-6 rounded-full flex items-center transition-all p-1 ${gameState.settings.sharedDraft ? 'bg-indigo-500' : 'bg-slate-700'}`}
+                                >
+                                    <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${gameState.settings.sharedDraft ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                </button>
+                            </div>
+
                             <button disabled={!canStartDraft} onClick={() => {
                                 let hasBots = false;
-                                // FIX: Impedisce ai bot di usare personaggi e boss della campagna (isSecretUnlock)
                                 const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
                                 const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                 const newDraft = { ...gameState.draft };
                                 const newDraftChoices = { ...gameState.draftChoices };
+                                const newDraftRerolls = { ...gameState.draftRerolls }; // <--- AGGIUNTO
                                 const req = getRequiredPlayers(gameState.gameMode, gameState.settings);
                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                 const activePlayersToDraft = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, req).filter(p => gameState.players[p]);
                                 
+                                const getTeamSizeForPlayer = (p) => ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+
                                 if (gameState.settings.rentalMode) {
                                     activePlayersToDraft.forEach(p => {
                                         const cpuDraft = [];
                                         const shuffled = [...draftable].sort(() => 0.5 - Math.random());
-                                        let cpuTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                                        let cpuTeamSize = getTeamSizeForPlayer(p);
                                         
                                         for(let i=0; i<cpuTeamSize; i++) {
                                             let c = {...shuffled[i], statuses: [], consecutiveProtect: 0, baseAtk: shuffled[i].atk, baseDef: shuffled[i].def, baseSpd: shuffled[i].spd, moves: shuffled[i].moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))};
@@ -9587,12 +9764,36 @@
                                         newDraft[p] = cpuDraft;
                                     });
                                     startBattle(newDraft);
+                                } else if (gameState.settings.sharedDraft) {
+                                    // LOGICA DRAFT CONDIVISO (Snake Draft)
+                                    let sequence = [];
+                                    const shuffledPlayers = [...activePlayersToDraft].sort(() => 0.5 - Math.random());
+                                    const maxPicks = Math.max(...activePlayersToDraft.map(p => getTeamSizeForPlayer(p)));
+                                    
+                                    // Genera andamento a serpente: 1-2-3-4 -> 4-3-2-1
+                                    for(let i=0; i<maxPicks; i++) {
+                                        let roundOrder = i % 2 === 0 ? [...shuffledPlayers] : [...shuffledPlayers].reverse();
+                                        roundOrder.forEach(p => {
+                                            if (sequence.filter(x => x === p).length < getTeamSizeForPlayer(p)) {
+                                                sequence.push(p);
+                                            }
+                                        });
+                                    }
+
+                                    // Genera Pool
+                                    const poolSize = sequence.length;
+                                    const shuffledDraftable = [...draftable].sort(() => 0.5 - Math.random());
+                                    const pool = shuffledDraftable.slice(0, poolSize).map(c => ({ char: c, pickedBy: null }));
+
+                                    setDraftTimeLeft(15);
+                                    updateState({ status: 'drafting', sharedDraftPool: pool, draftSequence: sequence, currentDraftTurn: 0 });
+
                                 } else {
                                     activePlayersToDraft.forEach(p => {
                                         if (gameState.isBot[p]) {
                                             const cpuDraft = [];
                                             const shuffled = [...draftable].sort(() => 0.5 - Math.random());
-                                            let cpuTeamSize = ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) ? 1 : gameState.settings.teamSize;
+                                            let cpuTeamSize = getTeamSizeForPlayer(p);
                                             
                                             for(let i=0; i<cpuTeamSize; i++) {
                                                 let c = {...shuffled[i], statuses: [], consecutiveProtect: 0, baseAtk: shuffled[i].atk, baseDef: shuffled[i].def, baseSpd: shuffled[i].spd, moves: shuffled[i].moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))};
@@ -9604,19 +9805,20 @@
                                             // Inizializza i 3 campioni casuali per i giocatori umani nella modalità Draft
                                             const shuffled = [...draftable].sort(() => 0.5 - Math.random());
                                             newDraftChoices[p] = shuffled.slice(0, 3);
+                                            newDraftRerolls[p] = 2; // Reset rerolls all'avvio
                                         }
                                     });
 
                                     setDraftTimeLeft(30); // Inizializza Timer!
                                     
                                     if (hasBots) {
-                                         updateState({ status: 'drafting', draft: newDraft, draftChoices: newDraftChoices });
+                                         updateState({ status: 'drafting', draft: newDraft, draftChoices: newDraftChoices, draftRerolls: newDraftRerolls });
                                     } else {
-                                         updateState({ status: 'drafting', draftChoices: newDraftChoices });
+                                         updateState({ status: 'drafting', draftChoices: newDraftChoices, draftRerolls: newDraftRerolls });
                                     }
                                 }
-                            }} className={`w-full disabled:opacity-50 disabled:grayscale text-white font-bold py-4 rounded-xl mt-6 shadow-lg text-lg ${gameState.settings.rentalMode ? 'bg-gradient-to-r from-amber-500 to-orange-600' : (gameState.settings.draftBattle ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-emerald-500 to-green-600')}`}>
-                                {gameState.settings.rentalMode ? 'Avvia Multimon in Nolo (Casuale)' : (gameState.settings.draftBattle ? 'Avvia Draft Battle!' : 'Procedi alla Scelta Personaggi')}
+                            }} className={`w-full disabled:opacity-50 disabled:grayscale text-white font-bold py-4 rounded-xl mt-6 shadow-lg text-lg ${gameState.settings.rentalMode ? 'bg-gradient-to-r from-amber-500 to-orange-600' : (gameState.settings.sharedDraft ? 'bg-gradient-to-r from-indigo-600 to-purple-600' : (gameState.settings.draftBattle ? 'bg-gradient-to-r from-cyan-600 to-blue-600' : 'bg-gradient-to-r from-emerald-500 to-green-600'))}`}>
+                                {gameState.settings.rentalMode ? 'Avvia Multimon in Nolo (Casuale)' : (gameState.settings.sharedDraft ? 'Avvia Draft Condiviso!' : (gameState.settings.draftBattle ? 'Avvia Draft Battle!' : 'Procedi alla Scelta Personaggi'))}
                             </button>
                         </div>
                     ) : (
@@ -9718,12 +9920,18 @@
                 </div>
 
                 <div className="flex gap-4 mb-6 z-10 min-h-[80px] overflow-x-auto pb-2 custom-scrollbar">
-                     {myDraft.map((char, i) => (
-                         <div key={i} className="relative group cursor-pointer flex-shrink-0 animate-fade-in" onClick={() => updateState({ [`draft.${playerRole}`]: myDraft.filter((_, idx) => idx !== i) })}>
-                             <img src={char.img} alt={char.name} className="w-20 h-20 rounded-full object-cover border-4 border-emerald-400" />
-                             <div className="absolute inset-0 bg-red-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"><span className="font-black text-xl">X</span></div>
-                         </div>
-                     ))}
+                     {myDraft.map((char, i) => {
+                         // IMPEDISCE DI RIMUOVERE I PERSONAGGI NELLE MODALITÀ DRAFT
+                         const canRemoveFromDraft = !gameState.settings.draftBattle && !gameState.settings.sharedDraft;
+                         return (
+                             <div key={i} className={`relative flex-shrink-0 animate-fade-in ${canRemoveFromDraft ? 'group cursor-pointer' : ''}`} onClick={() => { if(canRemoveFromDraft) updateState({ [`draft.${playerRole}`]: myDraft.filter((_, idx) => idx !== i) }) }}>
+                                 <img src={char.img} alt={char.name} className="w-20 h-20 rounded-full object-cover border-4 border-emerald-400" />
+                                 {canRemoveFromDraft && (
+                                     <div className="absolute inset-0 bg-red-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"><span className="font-black text-xl">X</span></div>
+                                 )}
+                             </div>
+                         );
+                     })}
                 </div>
 
                 {isReady ? (
@@ -9756,11 +9964,77 @@
                     </div>
                 ) : (
                     <div className="flex-1 flex flex-col bg-slate-950/60 rounded-3xl p-6 overflow-hidden border border-slate-800/50 z-10">
-                        {gameState.settings.draftBattle ? (
+                        {gameState.settings.sharedDraft ? (
+                            // --- INTERFACCIA DRAFT CONDIVISO (SNAKE DRAFT) ---
+                            <div className="flex flex-col items-center justify-start w-full h-full">
+                                {/* Barra dei turni in alto */}
+                                <div className="w-full bg-slate-900/80 p-4 rounded-2xl border border-indigo-500/50 mb-6 flex flex-col items-center shadow-lg">
+                                    <h3 className="text-indigo-400 font-bold uppercase tracking-widest text-xs mb-3">Ordine di Scelta</h3>
+                                    <div className="flex gap-2 overflow-x-auto max-w-full pb-2 custom-scrollbar justify-start md:justify-center px-4">
+                                        {gameState.draftSequence.map((pID, idx) => {
+                                            const isCurrentTurn = idx === gameState.currentDraftTurn;
+                                            const isPastTurn = idx < gameState.currentDraftTurn;
+                                            return (
+                                                <div key={idx} className={`relative flex-shrink-0 transition-all ${isCurrentTurn ? 'scale-125 mx-2 z-10' : (isPastTurn ? 'opacity-40 grayscale' : 'opacity-80 scale-90')}`}>
+                                                    <img src={gameState.playerAvatars[pID] || getDefaultAvatar(gameState.players[pID])} className={`w-10 h-10 rounded-full border-2 ${isCurrentTurn ? 'border-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.8)]' : 'border-slate-600'} object-cover bg-slate-900`} title={gameState.players[pID]}/>
+                                                    {isCurrentTurn && <div className="absolute -bottom-1 -right-1 bg-yellow-400 w-3 h-3 rounded-full border border-black animate-ping"></div>}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                    <div className={`mt-4 text-2xl font-black flex items-center gap-4 ${draftTimeLeft <= 5 ? 'text-rose-500 animate-pulse' : 'text-white'}`}>
+                                        <span>Turno di: <span className="text-indigo-400">{gameState.players[gameState.draftSequence[gameState.currentDraftTurn]]}</span></span>
+                                        <span className="bg-slate-950 px-3 py-1 rounded-lg border border-slate-700 text-amber-400 font-mono">⏳ {draftTimeLeft}s</span>
+                                    </div>
+                                </div>
+
+                                {/* Griglia dei Personaggi Disponibili */}
+                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 overflow-y-auto custom-scrollbar p-2 w-full max-w-7xl pb-8">
+                                    {gameState.sharedDraftPool.map((item, pIdx) => {
+                                        const isPicked = item.pickedBy !== null;
+                                        const isMyTurn = !gameState.isBot[playerRole] && playerRole === gameState.draftSequence[gameState.currentDraftTurn];
+                                        
+                                        return (
+                                            <div 
+                                                key={pIdx} 
+                                                onClick={() => {
+                                                    if (!isPicked && isMyTurn) {
+                                                        handleSharedPick(pIdx, playerRole);
+                                                    } else if (!isMyTurn && !isPicked) {
+                                                        setSystemAlert("Non è il tuo turno!");
+                                                    }
+                                                }}
+                                                className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-3 text-center transition-all duration-300 flex flex-col items-center justify-center ${isPicked ? 'border-slate-700 opacity-60 grayscale' : (isMyTurn ? 'border-indigo-400/50 hover:border-indigo-300 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.2)] hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] hover:-translate-y-1' : 'border-slate-700/50 shadow-md')}`}
+                                            >
+                                                <img src={item.char.img} alt={item.char.name} className={`w-14 h-14 rounded-full object-cover mb-2 border-2 ${isPicked ? 'border-slate-600' : 'border-indigo-500/50'}`} />
+                                                <h4 className="font-bold text-xs mb-1 truncate text-slate-100 w-full">{item.char.name}</h4>
+                                                
+                                                {/* Overlay se è stato scelto */}
+                                                {isPicked && (
+                                                    <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
+                                                        <img src={gameState.playerAvatars[item.pickedBy] || getDefaultAvatar(gameState.players[item.pickedBy])} className="w-10 h-10 rounded-full border-2 border-slate-400 shadow-lg object-cover bg-slate-900 mb-1" />
+                                                        <span className="bg-slate-800 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm">{gameState.players[item.pickedBy]}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ) : gameState.settings.draftBattle ? (
                             // --- INTERFACCIA DRAFT BATTLE ---
                             <div className="flex flex-col items-center justify-center w-full h-full">
-                                <div className={`text-4xl md:text-5xl font-black mb-8 animate-pulse ${draftTimeLeft <= 10 ? 'text-rose-500' : 'text-amber-400'}`}>
+                                <div className={`text-4xl md:text-5xl font-black mb-4 animate-pulse ${draftTimeLeft <= 10 ? 'text-rose-500' : 'text-amber-400'}`}>
                                     ⏳ {draftTimeLeft}s
+                                </div>
+                                <div className="flex justify-center mb-8">
+                                    <button 
+                                        onClick={handleDraftReroll}
+                                        disabled={(gameState.draftRerolls?.[playerRole] ?? 2) <= 0}
+                                        className={`px-6 py-2 rounded-full font-black uppercase tracking-widest transition-all ${(gameState.draftRerolls?.[playerRole] ?? 2) > 0 ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] hover:scale-105 hover:-translate-y-1' : 'bg-slate-800 text-slate-600 cursor-not-allowed border border-slate-700'}`}
+                                    >
+                                        🔄 Reroll Scelte ({gameState.draftRerolls?.[playerRole] ?? 2} Rimasti)
+                                    </button>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
                                     {(gameState.draftChoices[playerRole] || []).map((char, cIdx) => (
@@ -10439,11 +10713,6 @@
                     {/* PULSANTE FORZA SKIP */}
                     <button onClick={handleForceSkip} className="absolute top-28 left-4 flex items-center gap-2 text-yellow-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-yellow-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm" title="Usa questo tasto se la partita si blocca o se l'host scompare!">
                          ⏩ Forza Skip
-                    </button>
-
-                    {/* PULSANTE HARD SKIP */}
-                    <button onClick={handleHardSkip} className="absolute top-40 left-4 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-3 py-1.5 rounded-xl border border-rose-500/50 z-[60] shadow-lg text-xs font-bold uppercase tracking-widest backdrop-blur-sm" title="Skippa completamente il turno senza attacchi.">
-                         ⏭️ Hard Skip
                     </button>
 
                     {/* SIDEBAR REGISTRO BATTAGLIA */}
@@ -11765,15 +12034,26 @@
                 title="BGM"
             ></iframe>
 
-            {/* Pulsante Toggle Musica Globale */}
+            {/* Pulsante Toggle Musica Globale e Regolazione Volume */}
             {shouldPlayMusic && (
-                <button 
-                    onClick={() => setIsMuted(!isMuted)}
-                    className="fixed top-4 right-4 z-[200] bg-slate-900/80 p-3 rounded-full border border-cyan-500/50 text-cyan-400 hover:text-white transition-all shadow-[0_0_15px_rgba(6,182,212,0.5)] backdrop-blur-md hover:scale-110"
-                    title={isMuted ? "Attiva Musica" : "Disattiva Musica"}
-                >
-                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                </button>
+                <div className="fixed top-4 right-4 z-[200] flex items-center gap-2 bg-slate-900/80 p-2 rounded-full border border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.5)] backdrop-blur-md group transition-all">
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        value={bgmVolume} 
+                        onChange={(e) => setBgmVolume(parseInt(e.target.value))}
+                        className="w-0 opacity-0 group-hover:w-24 group-hover:opacity-100 transition-all duration-300 origin-right cursor-pointer accent-cyan-400 ml-2"
+                        title="Regola Volume"
+                    />
+                    <button 
+                        onClick={() => setIsMuted(!isMuted)}
+                        className="p-1 text-cyan-400 hover:text-white transition-all hover:scale-110 mr-1"
+                        title={isMuted ? "Attiva Musica" : "Disattiva Musica"}
+                    >
+                        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                    </button>
+                </div>
             )}
 
             {/* PULSANTE SKIP (Visibile SOLO nell'Anteprima/Canvas per il Testing) */}
