@@ -880,7 +880,7 @@
           'Fallen Down': { name: 'Fallen Down', type: 'Magico', power: 150, recharge: true, ignoreDefBuffs: true, desc: 'Magia di livello Super. Un pilastro di luce devastante che ignora le difese ma richiede ricarica.' },
 
           // NUOVE MOSSE TERRA
-          'Onda Sismica': { name: 'Onda Sismica', type: 'Terra', power: 75, targetCount: 4, desc: 'Un violento tremore che fa tremare il campo. Colpisce tutti i nemici.' },
+          'Rocce Sismiche': { name: 'Rocce Sismiche', type: 'Roccia', power: 75, targetCount: 4, desc: 'Un violento tremore che fa emergere rocce appuntite dal suolo. Colpisce tutti i nemici.' },
           'Mano di Pietra': { name: 'Mano di Pietra', type: 'Terra', power: 90, statusEffect: { type: 'Stordito', chance: 0.2 }, desc: 'Plasma la terra in un enorme pugno. 20% di probabilità di stordire il bersaglio.' },
           'Liane Stritolanti': { name: 'Liane Stritolanti', type: 'Erba', power: 65, drain: 0.3, targetStatDebuff: { spd: 0.7 }, desc: 'Evoca radici che stritolano, rallentando il nemico e assorbendo il 30% del danno in PS.' },
           'Levitazione Rocciosa': { name: 'Levitazione Rocciosa', type: 'Roccia', power: 0, target: 'self', statBuff: { atk: 1.3, def: 1.5 }, desc: 'Si solleva su un disco di pietra. Aumenta il proprio Attacco (+30%) e Difesa (+50%).' },
@@ -1174,7 +1174,7 @@
           { id: 'kai', name: 'Kai', types: ['Fuoco', 'Lotta'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 110, img: 'https://i.pinimg.com/1200x/34/40/8d/34408dce289c5d1885077104b70c5742.jpg', passive: { name: 'Vero Potenziale', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, risveglia il suo vero potenziale aumentando Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Spada di Fuoco'], MOVES_DB['Spinjitzu (Kai)'], MOVES_DB['Fiamma Interiore'], MOVES_DB['Calcio Volante Ninja']] },
           { id: 'ainz', name: 'Ainz Ooal Gown', types: ['Buio', 'Psico'], hp: 120, maxHp: 120, atk: 130, def: 95, spd: 75, img: 'https://i.pinimg.com/1200x/2d/23/88/2d23889e9f387524d2cbcaf6b5213fd3.jpg', passive: { name: 'Aura di Disperazione', type: 'on_enter', maxUses: 1, enemyStatDebuff: { atk: 0.8, spd: 0.8 }, desc: 'Appena scende in campo, la sua aura spaventosa riduce Attacco e Velocità di tutti i nemici in campo del 20%.' }, moves: [MOVES_DB['Grasp Heart'], MOVES_DB['Black Hole'], MOVES_DB['Fermare il Tempo'], MOVES_DB['Fallen Down']] },
 
-          { id: 'terra', name: 'Terra', types: ['Terra', 'Roccia'], hp: 100, maxHp: 100, atk: 115, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/19/44/9b/19449bd66aef08eec7c122162b316bad.jpg', passive: { name: 'Geocinesi', type: 'aura', boostMoveType: { type: 'Terra', multiplier: 1.2 }, desc: 'Il suo profondo legame con la terra aumenta passivamente la potenza delle sue mosse di tipo Terra del 20%.' }, moves: [MOVES_DB['Onda Sismica'], MOVES_DB['Mano di Pietra'], MOVES_DB['Liane Stritolanti'], MOVES_DB['Levitazione Rocciosa']] },
+          { id: 'terra', name: 'Terra', types: ['Terra', 'Roccia'], hp: 100, maxHp: 100, atk: 115, def: 90, spd: 85, img: 'https://i.pinimg.com/736x/19/44/9b/19449bd66aef08eec7c122162b316bad.jpg', passive: { name: 'Geocinesi', type: 'aura', boostMoveType: { type: 'Terra', multiplier: 1.2 }, desc: 'Il suo profondo legame con la terra aumenta passivamente la potenza delle sue mosse di tipo Terra del 20%.' }, moves: [MOVES_DB['Rocce Sismiche'], MOVES_DB['Mano di Pietra'], MOVES_DB['Liane Stritolanti'], MOVES_DB['Levitazione Rocciosa']] },
           { id: 'weiss', name: 'Weiss', types: ['Ghiaccio', 'Magico'], hp: 90, maxHp: 90, atk: 115, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/79/3e/0e/793e0ed43f708ad10db2789082cca1f9.jpg', moves: [MOVES_DB['Stoccata di Ghiaccio'], MOVES_DB['Frammenti di Neve Weiss'], MOVES_DB['Glifo di Barriera'], MOVES_DB['Glifo di Accelerazione']] },
           { id: 'neon', name: 'Neon', types: ['Elettro'], hp: 90, maxHp: 90, atk: 115, def: 70, spd: 135, img: 'https://i.pinimg.com/1200x/bc/a2/eb/bca2eb15e235e22e08530c22d6c332f1.jpg', moves: [MOVES_DB['Scia Elettrica!'], MOVES_DB['Shotgun'], MOVES_DB['Relay Bolt'], MOVES_DB['Overdrive']] },
 
@@ -3211,7 +3211,7 @@
               if (saved) {
                   try { return JSON.parse(saved); } catch(e){}
               }
-              return { isStarted: false, floor: 1, roster: [], rosterStats: {}, maxFloor: 10 };
+              return { isStarted: false, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: {}, isMerchantNext: false };
           });
 
           // Autosave Roguelike
@@ -3570,10 +3570,10 @@
                       statsUpdates.playtime = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
                   }
                   
-                  if (gameState.isCampaignBattle) {
+                  if (gameState.isCampaignBattle || gameState.isRoguelikeBattle) {
                       const isWin = gameState.winner === gameState.players.p1;
                       if (isWin) {
-                          statsUpdates.addCoins = 20;
+                          if (gameState.isCampaignBattle) statsUpdates.addCoins = 20;
                           statsUpdates.win = true;
                       }
                       if (Object.keys(statsUpdates).length > 0) updateLocalStats(statsUpdates);
@@ -3840,6 +3840,25 @@
               }
               
               localStorage.setItem(key, JSON.stringify(current));
+          };
+
+          const cashOutRoguelikeRewards = (floorsCompleted) => {
+              if (floorsCompleted <= 0) {
+                  setTimeout(() => {
+                      setSystemAlert("💀 Spedizione Fallita.\nNon hai completato nessun piano, quindi non hai ottenuto Monete Globali.");
+                  }, 100);
+                  return;
+              }
+              let totalGlobalCoins = 0;
+              for (let i = 0; i < floorsCompleted; i++) {
+                  totalGlobalCoins += Math.floor(Math.random() * 6) + 10; // 10-15 monete per piano
+              }
+              if (totalGlobalCoins > 0) {
+                  updateLocalStats({ addCoins: totalGlobalCoins });
+                  setTimeout(() => {
+                      setSystemAlert(`🏆 Spedizione Conclusa!\nHai completato ${floorsCompleted} piani e recuperato un bottino di ${totalGlobalCoins} Monete Globali da spendere nel Negozio!`);
+                  }, 100);
+              }
           };
 
           const leaveRoom = () => {
@@ -7875,7 +7894,7 @@
                                 const available = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                 const shuffled = [...available].sort(() => 0.5 - Math.random());
                                 setRoguelikeDraftChoices(shuffled.slice(0, 6)); // Scegli 3 tra 6 casuali
-                                setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 10 });
+                                setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: { pozione: 1 }, isMerchantNext: false });
                                 setAppMode('roguelike_draft');
                             }
                         }} className="relative w-full mb-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
@@ -7903,10 +7922,10 @@
                              <Users size={20}/> Gioca in Locale (Stesso PC)
                         </button>
                         <div className="grid grid-cols-2 gap-3 mt-4">
-                            <button onClick={() => setAppMode('catalog')} className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3 rounded-xl flex flex-col items-center justify-center gap-1 transition-all hover:-translate-y-0.5 text-sm shadow-md">
+                            <button onClick={() => setAppMode('catalog')} className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-bold py-3 rounded-xl flex flex-col items-center justify-center gap-1 transition-all hover:-translate-y-0.5 text-sm shadow-md">
                                  <BookOpen size={20}/> Catalogo
                             </button>
-                            <button onClick={() => setAppMode('type_chart')} className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3 rounded-xl flex flex-col items-center justify-center gap-1 transition-all hover:-translate-y-0.5 text-sm shadow-md">
+                            <button onClick={() => setAppMode('type_chart')} className="bg-stone-200 hover:bg-stone-300 border border-stone-300 text-stone-900 font-bold py-3 rounded-xl flex flex-col items-center justify-center gap-1 transition-all hover:-translate-y-0.5 text-sm shadow-md">
                                  <GridIcon size={20}/> Tabella Tipi
                             </button>
                         </div>
@@ -7927,1336 +7946,21 @@
     if (appMode === 'campaign_select') {
         return (
             <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                 <button onClick={() => setAppMode('menu')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
-                     <ArrowLeft size={20} /> Torna al Menu
-                </button>
-                <h1 className="text-5xl font-black mb-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center z-10 drop-shadow-md">Scegli la tua Avventura</h1>
-                
-                <div className="flex flex-col md:flex-row gap-8 max-w-5xl w-full z-10">
-                    {CAMPAIGNS.map(camp => {
-                        const saved = localStorage.getItem(`multiverse_rpg_campaign_save_${camp.id}`);
-                        const isInProgress = !!saved;
-                        return (
-                            <div key={camp.id} className={`flex-1 rounded-3xl p-8 border border-slate-700/50 relative overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform shadow-2xl bg-gradient-to-br ${camp.bg}`}
-                                onClick={() => {
-                                    const state = loadCampaign(camp.id);
-                                    if (state.isStarted) {
-                                        setAppMode('campaign_map');
-                                    } else {
-                                        setAppMode('campaign_intro');
-                                    }
-                                }}
-                            >
-                                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
-                                <div className="relative z-10 flex flex-col h-full text-center items-center">
-                                    <span className="text-sm font-bold uppercase tracking-widest text-emerald-400 mb-2">{camp.shortTitle}</span>
-                                    <h2 className="text-3xl font-black text-white mb-4">{camp.title}</h2>
-                                    <p className="text-slate-300 mb-8 flex-1">{camp.description}</p>
-                                    <button className="bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full backdrop-blur-sm border border-white/20 transition-colors w-full uppercase tracking-widest shadow-lg mt-auto">
-                                        {isInProgress ? 'Continua Partita' : 'Nuova Partita'}
-                                    </button>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_intro') {
-        const introData = activeCampaign.intro;
-        return (
-            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                 <div className="bg-slate-900/80 p-8 rounded-3xl max-w-2xl text-center border border-emerald-500/30 z-10 shadow-2xl">
-                      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-4">{introData.title}</h1>
-                      <h2 className="text-xl text-emerald-400 font-bold mb-6">{introData.subtitle}</h2>
-                      <p className="text-slate-300 mb-4 text-left leading-relaxed">{introData.p1}</p>
-                      <p className="text-slate-300 mb-8 text-left leading-relaxed">{introData.p2}</p>
-                      
-                      <div className="flex justify-center gap-4 mb-8">
-                          <button onClick={() => setCampaignState(p => ({...p, difficulty: 'Normal'}))} className={`px-6 py-3 rounded-xl font-bold border-2 transition-all ${campaignState.difficulty === 'Normal' ? 'border-blue-500 bg-blue-500/20 text-blue-400' : 'border-slate-700 text-slate-500'}`}>Normale</button>
-                          <button onClick={() => setCampaignState(p => ({...p, difficulty: 'Insane'}))} className={`px-6 py-3 rounded-xl font-bold border-2 transition-all ${campaignState.difficulty === 'Insane' ? 'border-rose-500 bg-rose-500/20 text-rose-400' : 'border-slate-700 text-slate-500'}`}>Multiverso Folle</button>
-                      </div>
-                      
-                      <button onClick={() => {
-                          if (activeCampaignId === 'torneo_assoluto' && !campaignState.protagonist) {
-                              setAppMode('campaign_select_protagonist');
-                          } else {
-                              setCampaignState(p => ({...p, isStarted: true}));
-                              setAppMode('campaign_map');
-                          }
-                      }} className="bg-gradient-to-r from-emerald-500 to-teal-600 px-10 py-4 rounded-full font-black text-xl hover:scale-105 transition-transform shadow-lg">Inizia Avventura</button>
-                 </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_select_protagonist') {
-        const storyChars = getCampaignStoryCharacters('torneo_assoluto');
-        const draftableChars = CHARACTERS.filter(c => !c.isSummonOnly && !storyChars.includes(c.id));
-        return (
-            <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 relative overflow-hidden items-center justify-center">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                <div className="relative z-10 w-full max-w-6xl">
-                    <h2 className="text-4xl md:text-5xl font-black mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 drop-shadow-md">
-                        Scegli il tuo Protagonista
-                    </h2>
-                    <p className="text-center text-slate-300 mb-10 text-lg">Guiderai l'alleanza prendendo il posto di Topolino.<br/><span className="text-sm text-amber-400">Nota: I personaggi che fanno già parte della storia del Torneo non possono essere scelti.</span></p>
-                    
-                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 overflow-y-auto custom-scrollbar max-h-[60vh] p-2">
-                        {draftableChars.map(char => (
-                            <div key={char.id} onClick={() => {
-                                let newRoster = [...campaignState.roster];
-                                newRoster = newRoster.filter(id => id !== 'topolino');
-                                if (newRoster.includes(char.id)) {
-                                    newRoster = newRoster.filter(id => id !== char.id);
-                                }
-                                newRoster.unshift(char.id);
-                                
-                                setCampaignState(p => ({...p, protagonist: char.id, roster: newRoster, isStarted: true}));
-                                setAppMode('campaign_map');
-                            }} className="bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border border-slate-700/50 hover:border-amber-400 hover:bg-slate-800 cursor-pointer text-center hover:scale-105 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(245,158,11,0.2)] transition-all group">
-                                <img src={char.img} className="w-20 h-20 rounded-full mx-auto mb-3 object-cover border-2 border-slate-600 group-hover:border-amber-400 shadow-md"/>
-                                <div className="font-bold text-xs truncate text-slate-100">{char.name}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_map') {
-        const sector = activeSector;
-        const mission = activeMission;
-        
-        // Calcolo per l'avviso salute
-        const aliveHeroes = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
-        const totalHpPercentage = aliveHeroes.reduce((acc, id) => acc + (campaignState.rosterStats[id] / CHARACTERS.find(c=>c.id===id).maxHp), 0) / Math.max(1, aliveHeroes.length);
-        const lowHealthWarning = aliveHeroes.length > 0 && totalHpPercentage < 0.4;
-        
-        return (
-            <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
-                <button onClick={() => setAppMode('menu')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
-                     <ArrowLeft size={20} /> Abbandona Campagna
-                </button>
                 <button onClick={() => { 
-                    setCampaignSelectedTeam([]); // FIX: Svuota la squadra
-                    const freshState = loadCampaign(activeCampaignId);
-                    freshState.isStarted = false;
-                    setCampaignState(freshState);
-                    localStorage.removeItem(`multiverse_rpg_campaign_save_${activeCampaignId}`);
+                    const completed = roguelikeState.floor - 1;
+                    cashOutRoguelikeRewards(completed);
+                    setRoguelikeState({ isStarted: false, roster: [] }); 
                     setAppMode('menu'); 
-                }} className="absolute top-6 right-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 text-sm font-bold shadow-lg">
-                     Resetta Progressi
-                </button>
-                <div className="flex justify-center items-center bg-black/50 p-4 rounded-2xl mb-4 backdrop-blur-md border border-white/10 mt-14 max-w-4xl mx-auto w-full relative">
-                    <div className="absolute -top-3 left-4 bg-slate-900 border border-slate-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-slate-400">
-                        Difficoltà: <span className={campaignState.difficulty === 'Insane' ? 'text-rose-400' : 'text-blue-400'}>{campaignState.difficulty === 'Insane' ? 'Folle' : 'Normale'}</span>
-                    </div>
-                    <div className="flex-1 text-center">
-                        <h2 className="text-3xl font-black text-emerald-400">{sector.name}</h2>
-                        <p className="text-slate-300 text-sm">{sector.description}</p>
-                        
-                        {/* BARRA DI PROGRESSO SETTORE */}
-                        <div className="flex justify-center items-center gap-2 mt-3">
-                            {sector.missions.map((m, i) => (
-                                <div key={i} className="flex items-center">
-                                    <div className={`w-3 h-3 rounded-full border-2 ${i < campaignState.missionIdx ? 'bg-emerald-500 border-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : i === campaignState.missionIdx ? 'bg-yellow-400 border-yellow-200 animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.8)]' : 'bg-slate-800 border-slate-600'}`} title={`Missione ${i+1}`}></div>
-                                    {i < sector.missions.length - 1 && <div className={`w-4 h-0.5 ${i < campaignState.missionIdx ? 'bg-emerald-500/50' : 'bg-slate-700'}`}></div>}
-                                </div>
-                            ))}
-                            <div className="flex items-center ml-1">
-                                <div className="w-4 h-0.5 bg-slate-700"></div>
-                                <div className={`w-4 h-4 rounded border-2 rotate-45 ml-1 ${campaignState.missionIdx >= sector.missions.length ? 'bg-amber-500 border-amber-300' : 'bg-slate-800 border-slate-600'}`} title="Accampamento / Negozio"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-xl border border-yellow-500/50 absolute right-8">
-                        <Coins className="text-yellow-400" size={24} />
-                        <span className="font-bold text-yellow-400 text-xl">{campaignState.coins}</span>
-                    </div>
-                </div>
-                
-                {lowHealthWarning && (
-                    <div className="max-w-4xl mx-auto w-full bg-rose-900/40 border border-rose-500/50 text-rose-200 p-2 rounded-xl text-center text-sm font-bold animate-pulse mb-4">
-                        ⚠️ Attenzione: La salute media della squadra è molto bassa! Sfrutta i curatori o sii cauto!
-                    </div>
-                )}
-                
-                <div className="flex-1 flex flex-col md:flex-row gap-8 max-w-6xl w-full mx-auto">
-                    <div className="flex-1 bg-black/40 rounded-3xl p-8 border border-white/10 flex flex-col justify-center items-center text-center relative">
-                        <h3 className="text-sm text-slate-400 font-bold uppercase tracking-widest mb-2">Prossima Missione</h3>
-                        <h1 className="text-5xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">{mission.title}</h1>
-                        <div className="flex flex-col items-center justify-center gap-4 mb-8 bg-black/30 p-4 rounded-2xl w-full">
-                            <div className="flex items-center justify-center gap-4">
-                                <span className="text-slate-400 font-bold uppercase tracking-widest text-sm mr-2">Boss:</span>
-                                {(() => {
-                                    let activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
-                                    if (mission.isAnomaly && mission.id === 'm12_5' && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
-                                    return activeBosses.map((bId, idx) => {
-                                        const b = CHARACTERS.find(c=>c.id===bId);
-                                        return b ? <img key={`${bId}-${idx}`} src={b.img} className={`w-16 h-16 rounded-full border-2 ${mission.isAnomaly ? 'border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.8)] filter sepia-[0.3] hue-rotate-[280deg]' : 'border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]'} object-cover`} title={b.name} alt={b.name} /> : null;
-                                    });
-                                })()}
-                            </div>
-                            
-                            {/* ANTEPRIMA TIPI BOSS */}
-                            <div className="flex gap-2 justify-center flex-wrap mt-1">
-                                {(() => {
-                                    let activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
-                                    if (mission.isAnomaly && mission.id === 'm12_5' && activeBosses.includes('dynamic_anomaly_1')) activeBosses = ['scheletro'];
-                                    
-                                    const allTypes = new Set();
-                                    activeBosses.forEach(bId => {
-                                        const b = CHARACTERS.find(c=>c.id===bId);
-                                        if (b) b.types.forEach(t => allTypes.add(t));
-                                    });
-                                    
-                                    return Array.from(allTypes).map(t => (
-                                        <span key={t} className={`text-[10px] font-black px-2 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                    ));
-                                })()}
-                            </div>
-                        </div>
-                        <button onClick={() => { setCampaignDialogueIdx(0); setAppMode('campaign_dialogue'); }} className="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-xl font-bold text-xl flex items-center gap-2 shadow-lg hover:-translate-y-1 transition-all">Avvia Missione <ArrowLeft className="rotate-180"/></button>
-                    </div>
-                    
-                    <div className="w-full md:w-1/3 bg-black/40 rounded-3xl p-6 border border-white/10 flex flex-col">
-                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-emerald-400"><Users size={20}/> La Tua Resistenza</h3>
-                        <div className="space-y-3 overflow-y-auto max-h-[400px] custom-scrollbar pr-2 flex-1">
-                            {campaignState.roster.map(id => {
-                                const char = CHARACTERS.find(c=>c.id===id);
-                                const hp = campaignState.rosterStats[id];
-                                if(!char) return null;
-                                return (
-                                    <div key={id} className={`bg-slate-900/80 p-3 rounded-xl border ${hp <= 0 ? 'border-rose-900 grayscale opacity-75' : 'border-slate-700/50'} flex items-center gap-3`}>
-                                        <img src={char.img} className="w-12 h-12 rounded-full border border-slate-600 object-cover" />
-                                        <div className="flex-1">
-                                            <div className="font-bold text-sm truncate">{char.name} {hp <= 0 && <span className="text-rose-500 text-[10px] ml-1">(Esausto)</span>}</div>
-                                            {renderHealthBar(hp, char.maxHp)}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_dialogue') {
-        const sector = activeSector;
-        const mission = activeMission;
-        
-        const fullDialogue = campaignDialogueMemo;
-
-        const dialogue = fullDialogue[campaignDialogueIdx];
-        
-        const nextDialogue = () => {
-            if (dialogue && campaignDialogueIdx < fullDialogue.length - 1) {
-                setCampaignDialogueIdx(p => p + 1);
-            } else {
-                const isSecondCampaign = activeCampaignId === 'torneo_assoluto';
-                const isFinalRaid = activeCampaignId === 'crisi_varco' && campaignState.sectorIdx >= activeCampaign.sectors.length - 1;
-                let maxTeamSize = 4;
-                if (isFinalRaid) maxTeamSize = 20;
-                if (isSecondCampaign) maxTeamSize = 8;
-                
-                if (isSecondCampaign) {
-                    if (campaignState.roster.length <= maxTeamSize) {
-                        const alive = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
-                        setCampaignSelectedTeam(alive);
-                    } else if (campaignState.protagonist) {
-                        setCampaignSelectedTeam([campaignState.protagonist]);
-                    }
-                } else if (mission.forcedRoster) {
-                    // LOGICA SQUADRA FORZATA (Assicura che i personaggi siano vivi e nel roster)
-                    let newStats = {...campaignState.rosterStats};
-                    let newRoster = [...campaignState.roster];
-                    
-                    mission.forcedRoster.forEach(id => {
-                        if (!newRoster.includes(id)) newRoster.push(id);
-                        if (!newStats[id] || newStats[id] <= 0) {
-                            const c = CHARACTERS.find(x => x.id === id);
-                            if (c) newStats[id] = Math.floor(c.maxHp * 0.3); // Li rianima al 30% per la trama se erano esausti
-                        }
-                    });
-                    setCampaignState(p => ({...p, rosterStats: newStats, roster: newRoster}));
-                    setCampaignSelectedTeam(mission.forcedRoster);
-                } else if (campaignState.roster.length <= maxTeamSize) {
-                    const alive = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0);
-                    setCampaignSelectedTeam(alive);
-                }
-                
-                setAppMode('campaign_team_select');
-            }
-        };
-
-        if (!dialogue) {
-             setTimeout(nextDialogue, 0);
-             return <div className="min-h-screen bg-slate-950"></div>;
-        }
-
-        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '').replace(' (Sottomessa)', '');
-        let speakerChar = CHARACTERS.find(c => c.name === speakerName);
-        if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
-        
-        return (
-            <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
-                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
-                 {speakerChar && (
-                     <div className={`absolute bottom-0 left-4 md:left-24 transition-all duration-500 pointer-events-none drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]`}>
-                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-emerald-500 opacity-100" />
-                     </div>
-                 )}
-                 <div className="bg-slate-900/95 border-2 border-emerald-400 p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer shadow-[0_0_40px_rgba(16,185,129,0.2)] relative mb-12 animate-fade-in">
-                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md bg-emerald-500 text-white`}>{dialogue.s}</div>
-                      <p className="text-xl md:text-2xl mt-4 leading-relaxed font-medium text-white italic">"{dialogue.t}"</p>
-                      <p className="text-right text-xs text-emerald-400 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
-                 </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_post_dialogue') {
-        const sector = activeSector;
-        const mission = activeMission;
-        
-        const fullDialogue = campaignPostDialogueMemo;
-
-        const dialogue = fullDialogue[campaignDialogueIdx];
-        
-        const nextDialogue = () => {
-            if (dialogue && campaignDialogueIdx < fullDialogue.length - 1) {
-                setCampaignDialogueIdx(p => p + 1);
-            } else {
-                if (mission.choiceUnlock) {
-                    setAppMode('campaign_choice');
-                } else {
-                    advanceCampaign(150);
-                }
-            }
-        };
-
-        if (!dialogue) {
-             setTimeout(nextDialogue, 0);
-             return <div className="min-h-screen bg-slate-950"></div>;
-        }
-
-        const speakerName = dialogue.s.replace(' (Corrotto)', '').replace(' (Corrotta)', '').replace(' (Sottomessa)', '');
-        let speakerChar = CHARACTERS.find(c => c.name === speakerName);
-        if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
-        
-        return (
-            <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
-                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
-                 {speakerChar && (
-                     <div className={`absolute bottom-0 left-4 md:left-24 transition-all duration-500 pointer-events-none drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]`}>
-                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-cyan-500 opacity-100" />
-                     </div>
-                 )}
-                 <div className="bg-slate-900/95 border-2 border-cyan-400 p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer shadow-[0_0_40px_rgba(34,211,238,0.2)] relative mb-12 animate-fade-in">
-                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md bg-cyan-500 text-black`}>{dialogue.s}</div>
-                      <p className="text-xl md:text-2xl mt-4 leading-relaxed font-medium text-white italic">"{dialogue.t}"</p>
-                      <p className="text-right text-xs text-cyan-400 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
-                 </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_choice') {
-        const sector = activeSector;
-        const mission = activeMission;
-
-        const handleChoice = (pickedId) => {
-            const resDialogues = mission.choiceDialogues[pickedId];
-            setResolutionDialogues(resDialogues);
-            setResolutionDialogueIdx(0);
-
-            const newRoster = [...campaignState.roster, pickedId];
-            const newRosterStats = { ...campaignState.rosterStats };
-            newRosterStats[pickedId] = CHARACTERS.find(c=>c.id===pickedId).maxHp;
-
-            setCampaignState(prev => ({
-                ...prev,
-                roster: newRoster,
-                rosterStats: newRosterStats
-            }));
-            updateLocalStats({ unlockChar: pickedId });
-
-            setAppMode('campaign_resolution_dialogue');
-        };
-
-        return (
-            <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden items-center justify-center`}>
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-0"></div>
-                <div className="relative z-10 text-center max-w-5xl w-full">
-                    <h2 className="text-5xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 drop-shadow-md">Scegli chi Reclutare!</h2>
-                    <p className="text-xl text-slate-300 mb-12 font-medium">Puoi accogliere solo uno di loro nella Resistenza.<br/>L'altro tornerà alla sua dimensione d'origine.</p>
-                    
-                    <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch w-full">
-                        {mission.choiceUnlock.map(id => {
-                            const char = CHARACTERS.find(c => c.id === id);
-                            if(!char) return null;
-                            return (
-                                <div key={id} onClick={() => handleChoice(id)} className="bg-slate-900/80 border-2 border-slate-600 hover:border-emerald-400 hover:bg-slate-800 p-8 rounded-3xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(16,185,129,0.3)] flex-1 flex flex-col items-center group">
-                                    <img src={char.img} className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover border-4 border-slate-700 group-hover:border-emerald-400 transition-colors mb-6 shadow-xl" alt={char.name} />
-                                    <h3 className="text-3xl font-black text-white mb-4">{char.name}</h3>
-                                    <div className="flex gap-2 justify-center mb-6">
-                                        {char.types.map(t => (
-                                            <span key={t} className={`text-xs font-black px-3 py-1 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                        ))}
-                                    </div>
-                                    <div className="w-full grid grid-cols-2 gap-3 text-sm font-mono bg-black/40 p-4 rounded-xl border border-slate-700/50 mt-auto">
-                                        <div className="text-emerald-400">HP: {char.maxHp}</div>
-                                        <div className="text-rose-400">ATK: {char.atk}</div>
-                                        <div className="text-blue-400">DEF: {char.def}</div>
-                                        <div className="text-amber-400">SPD: {char.spd}</div>
-                                    </div>
-                                    <button className="mt-8 bg-emerald-600 group-hover:bg-emerald-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-colors w-full uppercase tracking-widest text-sm">Scegli {char.name}</button>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_resolution_dialogue') {
-        const sector = activeSector;
-        const dialogue = resolutionDialogues[resolutionDialogueIdx];
-        
-        const nextDialogue = () => {
-            if (dialogue && resolutionDialogueIdx < resolutionDialogues.length - 1) {
-                setResolutionDialogueIdx(p => p + 1);
-            } else {
-                advanceCampaign(150);
-            }
-        };
-
-        if (!dialogue) {
-             setTimeout(nextDialogue, 0);
-             return <div className="min-h-screen bg-slate-950"></div>;
-        }
-
-        const speakerName = dialogue.s;
-        let speakerChar = CHARACTERS.find(c => c.name === speakerName);
-        if (!speakerChar) speakerChar = CHARACTERS.find(c => c.name.includes(speakerName));
-        
-        return (
-            <div className={`min-h-screen flex flex-col justify-end p-8 ${sector.bg} relative overflow-hidden`} onClick={nextDialogue}>
-                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent pointer-events-none opacity-50"></div>
-                 {speakerChar && (
-                     <div className={`absolute bottom-0 left-4 md:left-24 transition-all duration-500 pointer-events-none drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]`}>
-                         <img src={speakerChar.img} className="w-48 h-48 md:w-80 md:h-80 object-cover rounded-t-full border-t-4 border-x-4 border-amber-500 opacity-100" />
-                     </div>
-                 )}
-                 <div className="bg-slate-900/95 border-2 border-amber-400 p-8 rounded-2xl max-w-4xl w-full mx-auto z-10 cursor-pointer shadow-[0_0_40px_rgba(245,158,11,0.2)] relative mb-12 animate-fade-in">
-                      <div className={`absolute -top-4 left-6 px-4 py-1 rounded-full font-black text-sm uppercase tracking-widest shadow-md bg-amber-500 text-white`}>{dialogue.s}</div>
-                      <p className="text-xl md:text-2xl mt-4 leading-relaxed font-medium text-white italic">"{dialogue.t}"</p>
-                      <p className="text-right text-xs text-amber-400 mt-4 animate-pulse font-bold">Clicca per continuare...</p>
-                 </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_team_select') {
-        const isSecondCampaign = activeCampaignId === 'torneo_assoluto';
-        const isFinalRaid = activeCampaignId === 'crisi_varco' && campaignState.sectorIdx >= activeCampaign.sectors.length - 1;
-        
-        // MODIFICA TEAM SIZE: 8 per il Torneo Assoluto, 20 per il Final Raid della prima, 4 normale
-        let maxTeamSize = 4;
-        if (isFinalRaid) maxTeamSize = 20;
-        if (isSecondCampaign) maxTeamSize = 8;
-        
-        const sector = activeCampaign.sectors[campaignState.sectorIdx] || activeCampaign.sectors[0];
-        const mission = sector.missions[campaignState.missionIdx] || sector.missions[0];
-        const activeBosses = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.length > 0 ? campaignState.anomalyTargets : mission.boss;
-
-        const showSelectionDialogue = (charId, isDeselect = false) => {
-            const TEAM_SELECTION_QUOTES = {
-                // Eroi classici & Cartoon Network
-                'finn': "Matematico! La mia spada è pronta per il torneo!",
-                'jake': "Mi allungherò fino alla vittoria, fratello!",
-                'topolino': "Ah-ah! Insieme siamo una squadra imbattibile!",
-                'spongebob': "Sono pronto! Sono pronto! Vinceremo la coppa!",
-                'patrick': "Posso usare la maionese come arma in questo torneo?",
-                'mario': "Mamma mia! Let's-a go! Salteremo in testa a tutti!",
-                'luigi': "O-okey dokey... spero non ci siano fantasmi sul ring.",
-                'crash': "Whoa! *Gira su se stesso e fa pollice in su*",
-                'rainbowdash': "Sarà tutto fatto in 10 secondi netti! Più figo del 20%!",
-                'darwin': "Andiamo a spaccare tutto, amico!",
-                'po': "Skadoosh! Il Guerriero Dragone è in campo!",
-
-                // Anime & Shonen
-                'goku': "Evvai! Non vedo l'ora di sfidare tipi fortissimi!",
-                'natsu': "Sono tutto un fuoco! Spacchiamo tutto!",
-                'zatchbell': "Zaker! Dimostrerò di essere un re valoroso!",
-                'zuko': "Ripristinerò il mio onore su questo ring. Non fallirò.",
-                'aang': "Manterremo l'equilibrio. Yip yip, andiamo!",
-                'katara': "Vi coprirò le spalle con il potere dell'acqua curativa.",
-                'laxus': "Fatevi da parte. Ci penserà il mio fulmine a spazzarli via.",
-                'sanemi': "Tsk. Levatevi di mezzo, li farò a fette in un secondo.",
-                'shinobu': "Ara ara~ Li avvelenerò con estrema dolcezza.",
-                'juvia': "Juvia combatterà con la forza del suo amore!",
-                'brago': "Schiaccerò i miei nemici con la pura gravità.",
-                'ponygon': "Meru meru meee!",
-                'penny': "Amore mio, vincerò per te! Akur!",
-                'yusei': "La nostra accelerazione supererà ogni limite!",
-                'astral': "Formuliamo la tattica vincente. Osservazione: vinceremo.",
-
-                // Supereroi & Maghetti
-                'ladybug': "Miraculous! La fortuna è dalla nostra parte.",
-                'chatnoir': "Pronto a graffiare, M'lady! Sarà un gioco da gatti.",
-                'cyborg': "Booyah! Sistemi tattici e cannoni sonici operativi!",
-                'corvina': "Basta che ci sbrighiamo. Ho un libro da finire.",
-                'robin': "Titani, uniti! Sincronizziamo gli attacchi e vinceremo.",
-                'stellarubia': "Amici! Che gioia meravigliosa lottare insieme a voi!",
-                'nightwing': "Ottima scelta. Colpiremo dai punti ciechi.",
-                'bumblebee': "Pronta a pungere! Non vi deluderò!",
-                'bloom': "La Fiamma del Drago brucia per la nostra squadra!",
-                'iris': "Cristallo di Ephedia! Sono pronta!",
-                'charmcaster': "Vi aiuterò io. Evidentemente avete un disperato bisogno di magia vera.",
-
-                // Villain & Antieroi
-                'kratos': "Hmph. Le mie lame non conoscono pietà. Nessuno sopravviverà.",
-                'bowser': "BWAHAHAH! Ridurrò in cenere gli altri team! Il Re è qui!",
-                'wario': "Wah! Se vinciamo, il montepremi in monete d'oro è tutto MIO!",
-                'plankton': "Userò i soldi del premio per rubare la ricetta segreta! Ahahah!",
-                'cell': "Vi mostrerò cosa significa affrontare la vera Perfezione.",
-                'trigon': "Schiaccerò questi vermi mortali per te... ma solo per stavolta.",
-                'gaston': "Nessuno combatte, colpisce o vince in un torneo come Gaston!",
-                'shego': "Ugh, va bene. Ma se perdiamo vi friggo col plasma.",
-                'hannibal': "Un banchetto eccellente. Spero che i nostri avversari siano... saporiti.",
-                'zazan': "Una Regina merita solo la vittoria assoluta. Inchinatevi!",
-                'barry': "AHAHAH! Li farò a fettine magiche!",
-                'juri': "Hehehe... facciamoli a pezzi e divertiamoci un po'.",
-                'reboo': "BWAHAHAH! Intrappolerò tutti nei miei quadri!",
-                'metalsonic': "Obiettivo: Annientamento totale.",
-                'ursula': "Oh, tesoro! Siete venuti dalla strega del mare giusta!",
-                'strega': "Le mie magie oscure e i miei servitori vi saranno utili.",
-
-                // Magia, Fantasy e Mostri
-                'marceline': "Ottima scelta. Facciamo un po' di rumore con il basso!",
-                'reghiaccio': "Evviva! Se vinciamo mi regalate una Principessa in premio?!",
-                'elsa': "Il freddo non mi ha mai disturbata. Congelerò l'arena.",
-                'pyra': "L'Egida brucerà per la nostra alleanza. Contate su di me.",
-                'dannyphantom': "Diventerò fantasma e non sapranno nemmeno cosa li ha colpiti!",
-                'godzilla': "*RUGGITO ASSORDANTE CHE FA TREMARE L'INTERA ARENA!*",
-                'sdentato': "*Soffia un po' di plasma felice e scodinzola pronto alla lotta*",
-                'spyro': "Pronto a scaldare l'atmosfera! Lasciateli a me!",
-                'ryuk': "Hehehe... va bene combattere, ma dopo mi compri delle mele succose?",
-                'jackfrost': "Pronto a portare un po' di gelo in questa festa!",
-                'yukionna': "Li congelerò con la mia bellezza e il mio alito di ghiaccio.",
-                'zabuza': "La nebbia della morte li avvolgerà, e poi colpirò.",
-                'nito': "Tutti finiranno nella tomba, prima o poi. Vi mostrerò la via.",
-                'zergling': "*Stridio di battaglia acutissimo e feroce!*",
-                'polterpup': "*Abbaia felicemente e lecca lo schermo!*",
-
-                // Supporti, Robot e Bizzarri
-                'sage': "Dimostrerò di non essere solo una guaritrice!",
-                'ariana': "YUH!",
-                'entoma': "Oh... nuovi spuntini per me e per le mie amiche mosche.",
-                'stewie': "La vittoria è calcolata al 100%. Le mie armi sono pronte.",
-                'carlos': "Ricevuto. Armi cariche. Coprirò le vostre spalle.",
-                'bulma': "Lasciate fare ai miei gadget! La tecnologia Capsule Corp vince sempre!",
-                'peridot': "Ahah! Siete fortunati ad avere una mente superiore e certificata come la mia!",
-                'snorlax': "Zzz... mh? Devo alzarmi? Va bene... ma dopo si mangia!",
-                'groot': "Io sono Groot!",
-                'miku': "La mia voce vi guiderà alla vittoria! One, two, tre, let's go!",
-                'maxcaulfield': "Pronta! E se le cose vanno male... beh, riavvolgerò il tempo.",
-                'chloeprice': "Hella yes! Andiamo a spaccare qualche muso là fuori!",
-                'gaster': "I... n... t... e... r... e... s... s... a... n... t... e...",
-                'utopia': "Luce della Speranza, guidaci alla vittoria!",
-                'cosmo': "Speriamo di non trasformare nessuno in un budino al cioccolato!",
-                'mantide': "Velocità e precisione. Non mi vedranno arrivare.",
-                'yugo': "Uso i miei portali per portarvi la vittoria in un lampo!",
-                'spike': "*Agita un cactus felice verso di voi*",
-                'whisper': "Il mio Yo-kai Pad dice che abbiamo il 100% di probabilità di vittoria!",
-                'leslie': "Cercherò di non fare appassire nessuno! Sono delicato!",
-                'roserade': "*Si esibisce in un inchino elegante spargendo petali*",
-                'dolli': "Un sorriso luminoso e spacchiamo tutto!",
-                'kevin': "Vi mostrerò la vera durezza della roccia, a suon di pugni.",
-                'cuoredipietra': "Schiaccerò l'imperfezione in mille pezzi!",
-                'shifu': "La pace interiore guiderà i nostri colpi verso il trionfo.",
-                'gardevoir': "Proteggerò i miei alleati a costo della mia stessa vita.",
-                'jakedc': "Ho preso un lanciafiamme! Andiamo!",
-                'shrek': "Meglio fuori che dentro! La palude dominerà il ring!",
-                'kai': "Il fuoco è la mia forza! Vi farò vedere di cosa è capace un vero Ninja!",
-                'ainz': "Dimostrerò il potere supremo della Grande Tomba di Nazarick.",
-                'terra': "Posso spostare le montagne. Letteralmente. Contate su di me!",
-                'weiss': "Myrtenaster è pronta. Mostreremo a questa gentaglia la nostra eleganza.",
-                'neon': "Pronti? Io sono nata pronta. Vado a fulminarli!",
-                'doraemon': "Lasciate fare a me e ai miei gadget dal 22° secolo!",
-                'ilcavaliere': "*Il Cavaliere ti fissa in silenzio, poi si ritira nell'ombra.*",
-                'dante': "Jackpot! Facciamoli a pezzi con stile.",
-                'megamind': "La differenza tra un cattivo e un supercattivo? La PRESENTAZIONE!",
-                'sumo': "Nessuno può spostarmi dal ring!",
-                'elly': "Bau! Bau bau bau! (Pronta a mordere le caviglie!)",
-                'arievicente': "La mia lama non conosce imperfezioni. Affronteremo il torneo con eleganza assoluta.",
-                'diamantebianco': "La vostra luce impallidisce di fronte alla mia perfezione.",
-                'sugino': "I miei fiori vi mostreranno il potere della natura!",
-                'naruto': "Non mi arrenderò mai! Questo è il mio credo ninja!",
-                'sasuke': "Taglierò ogni legame ostile per raggiungere la vittoria.",
-                'meliodas': "Sate sate sate! Facciamo sul serio!",
-                'ban': "Hehe... preparatevi, vi ruberò anche le mutande!",
-                'sans': "che bella giornata fuori. gli uccellini cantano... i fiori sbocciano...",
-                'roxy': "Sono la migliore! Tutti mi adorano!",
-                'perla': "Mostrerò loro la vera eleganza in combattimento! Per Rose!",
-
-                'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
-            };
-
-            const DESELECT_QUOTES = {
-                // Eroi
-                'goku': "Ah, va bene. Vado a fare un po' di flessioni in panchina!",
-                'spongebob': "Ok! Aspetterò qui e preparerò dei Krabby Patty per la squadra!",
-                'mario': "Mamma mia... farò il tifo-a per voi da qui!",
-                'natsu': "Eh?! Ma io voglio combattere!! Uffa, che noia!",
-                'crash': "Aww... *Fa una faccia triste e si siede*",
-                'ladybug': "Nessun problema, vi fornirò supporto strategico da fuori.",
-                'aang': "D'accordo, mediterò per inviarvi energie positive.",
-                'darwin': "Oh... okay. Farò il tifo per voi dagli spalti.",
-                'po': "Ottimo! Vado a mangiarmi dei ravioli al vapore. Avvisatemi se serve!",
-                'sage': "Tornerò a concentrarmi sulle cure, allora.",
-                'ariana': "Thank u, next.",
-
-                // Cattivi / Antieroi
-                'bowser': "COSA?! Come osi mettere da parte il potente Re dei Koopa?!",
-                'kratos': "Come desideri. Ma la mia ira dovrà essere sfogata prima o poi.",
-                'wario': "Wah?! Pesciferi! Spero perdiate così tengo io i soldi di consolazione!",
-                'cell': "Tsk. Sciocchi imperfetti. Vi pentirete di non aver usato il mio potere.",
-                'stewie': "Scelta deplorevole. Ma mi gusterò lo spettacolo della vostra disfatta.",
-                'sanemi': "Tsk. Peggio per voi. Mi limiterò a guardare le vostre facce da perdenti.",
-                'gaston': "Pazzesco! Lasciare Gaston in panchina?! Siete ciechi?!",
-                'barry': "Tsk, non sapete cosa vi perdete. Andrò ad affettare qualcosa.",
-                'reboo': "Grrr! La pagherete per avermi escluso!",
-                'metalsonic': "Modalità standby attivata. In attesa.",
-                'ursula': "Poveri, infelici sventurati! Rimpiangerete questa scelta!",
-                'strega': "Tsk. Peggio per voi, stolti. La mia magia mi terrà compagnia.",
-
-                // Altri
-                'snorlax': "Zzz... meglio così... torno a dormire... Zzz...",
-                'groot': "*Sguardo tristissimo* Io... sono Groot...",
-                'reghiaccio': "Cosa?! E la mia Principessa?! Uff, vado a parlare con Gunter.",
-                'chloeprice': "Che palla. Vado a farmi un giro dietro gli spalti allora.",
-                'ryuk': "Peccato. Niente lotte, niente mele. Che noia il mondo degli umani.",
-                'leslie': "Oh, bene. Vado a farmi innaffiare da qualche parte.",
-                'roserade': "*Si gira sdegnata e se ne va spargendo foglie secche*",
-                'juvia': "Juvia è così triste di essere esclusa... pioverà per giorni.",
-                'dolli': "Uff, vado a rifarmi il trucco allora.",
-                'kevin': "Vabbè. Ritorno a essere un normale pezzo di strada.",
-                'cuoredipietra': "La mia roccia attenderà il suo momento.",
-                'utopia': "Compreso. Ritorno nell'Extra Deck.",
-                'cosmo': "Evviva! Torno da Wanda a mangiare i cereali!",
-                'mantide': "La pazienza è la virtù del guerriero. Aspetterò nell'ombra.",
-                'garnet': "Rispetto la tua scelta. Ritornerò al Tempio.",
-                'lapis': "Torno a volare da sola. È più tranquillo.",
-                'yugo': "Okay, vado a salutare Amalia e gli altri nel frattempo.",
-                'spike': "*Si siede triste a terra pungendo un palloncino*",
-                'nito': "Il riposo eterno attende me e le mie ossa.",
-                'entoma': "Peccato... tornerò a mangiare qualche insetto di passaggio.",
-                'jackfrost': "Che noiosi. Vado a fare a palle di neve con qualcun altro.",
-                'yukionna': "Il mio cuore di ghiaccio si spezza un po' di più...",
-                'zabuza': "Come vuoi. La mia mannaia riposa.",
-                'polterpup': "*Guaisce mestamente e scompare attraverso un muro*",
-                'rias': "Peccato. Tornerò a bere del tè con i miei servitori.",
-                'zergling': "*Ringhia sommessamente e si rintana nel terreno*",
-                'whisper': "Come?! Il mio Pad diceva che ero il membro più indispensabile!",
-                'astral': "Comprendo. Ritorno nella Chiave dell'Imperatore in meditazione.",
-                'yusei': "Il motore è spento, per ora. Sono ai box se vi servo.",
-                'juri': "Che noia, volevo proprio spaccare qualche osso oggi.",
-                'iris': "Vado a fare le prove con le Lolirock, allora! Ciao!",
-                'bumblebee': "Beh, fatemi sapere se vi serve una scossa di energia.",
-                'penny': "Uffa! Io volevo combattere insieme al mio amato Zatch!",
-                'brago': "Hmph. Patetico scartare la vera forza.",
-                'ponygon': "Meru... :(",
-                'shifu': "Mediterò sul vostro futuro e forse sul vostro fallimento.",
-                'gardevoir': "*Fa un inchino profondamente rispettoso e svanisce nel nulla*",
-                'jakedc': "Vado a fare battute altrove, gente senza umorismo.",
-                'shrek': "Fate come volete. Io me ne torno nella mia palude!",
-                'kai': "Tsk, il fuoco non si spegne così facilmente. Vi aspetterò qui.",
-                'ainz': "Una mossa saggia. Osserverò le capacità di questi esseri inferiori.",
-                'terra': "Come volete. Torno a fare una passeggiata tra le rocce.",
-                'weiss': "Tsk. Non avete alcun gusto per la vera arte della spada.",
-                'neon': "Uffa, ma siete lentissimi! Fatemi sapere quando vi serve una vera scossa.",
-                'doraemon': "Oh, d'accordo... vado a mangiarmi dei dorayaki in panchina.",
-                'ilcavaliere': "*Il Cavaliere ti fissa in silenzio, poi si ritira nell'ombra.*",
-                'dante': "Niente demoni da cacciare? Allora mi vado a mangiare una pizza.",
-                'megamind': "Tsk, il mio genio era sprecato qui in panchina.",
-                'sumo': "Uff, vado a mangiarmi qualcosa allora.",
-                'elly': "*Guaisce e va a cuccia offesa.*",
-                'arievicente': "Una scelta priva di eleganza. Tornerò ad affilare la mia lama nell'ombra.",
-                'diamantebianco': "Come osate ignorare la mia luce? Scomparite.",
-                'sugino': "D'accordo, tornerò a prendermi cura dei miei germogli.",
-                'naruto': "Uffa... va bene, vado a mangiare del ramen da Ichiraku.",
-                'sasuke': "Tsk. Non avete il potere necessario per comprendermi.",
-                'meliodas': "Nessun problema, torno a servire birra al Boar Hat.",
-                'ban': "Tsk, vado a farmi una bella bevuta di birra allora. Non disturbatemi.",
-                'sans': "ok. vado da grillby's.",
-                'roxy': "Pff, perdenti. Andate a piangere altrove.",
-                'perla': "Come volete. Ma la vostra tecnica è a dir poco approssimativa.",
-
-                'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
-            };
-
-            const char = CHARACTERS.find(c => c.id === charId);
-            if (char) {
-                const text = isDeselect ? (DESELECT_QUOTES[charId] || DESELECT_QUOTES['default']) : (TEAM_SELECTION_QUOTES[charId] || TEAM_SELECTION_QUOTES['default']);
-                setTeamSelectionDialogue({
-                    name: char.name,
-                    img: char.img,
-                    text: text
-                });
-                
-                if (selectionDialogueTimerRef.current) clearTimeout(selectionDialogueTimerRef.current);
-                selectionDialogueTimerRef.current = setTimeout(() => {
-                    setTeamSelectionDialogue(null);
-                }, 3500); // Nasconde il popup dopo 3.5 secondi
-            }
-        };
-
-        const toggleChar = (id) => {
-            const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
-            if (isAnomalyTarget) {
-                setSystemAlert("Questo personaggio è stato infettato dall'Anomalia e non può essere schierato! Lo affronterai a breve!");
-                return;
-            }
-
-            if (mission.forcedRoster) {
-                setSystemAlert("Questa missione richiede una squadra fissa per motivi di trama!");
-                return;
-            }
-
-            if (activeCampaignId === 'torneo_assoluto' && id === campaignState.protagonist && campaignState.roster.length > 8) {
-                setSystemAlert("Il tuo protagonista deve guidare l'alleanza, non puoi rimuoverlo dalla selezione base!");
-                return;
-            }
-
-            if (campaignSelectedTeam.includes(id)) {
-                setCampaignSelectedTeam(campaignSelectedTeam.filter(c => c !== id));
-                if (activeCampaignId === 'torneo_assoluto') {
-                    showSelectionDialogue(id, true);
-                }
-            } else {
-                if (campaignSelectedTeam.length < maxTeamSize) {
-                    setCampaignSelectedTeam([...campaignSelectedTeam, id]);
-                    if (activeCampaignId === 'torneo_assoluto') {
-                        showSelectionDialogue(id, false);
-                    }
-                }
-            }
-        };
-        
-        const handleStartCampaignBattle = () => {
-            const aliveCount = campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).length;
-            const requiredCount = Math.min(maxTeamSize, aliveCount);
-
-            if (campaignSelectedTeam.length === 0) return setSystemAlert("Seleziona almeno un personaggio!");
-            
-            if (activeCampaignId === 'torneo_assoluto') {
-                if (campaignState.roster.length > maxTeamSize && campaignSelectedTeam.length !== maxTeamSize) {
-                    return setSystemAlert(`Devi formare un'alleanza di esattamente ${maxTeamSize} campioni!`);
-                }
-                if (campaignState.roster.length <= maxTeamSize && campaignSelectedTeam.length !== requiredCount) {
-                    return setSystemAlert(`Devi schierare tutti i tuoi ${requiredCount} campioni in vita!`);
-                }
-            }
-            
-            // Fissa l'Alleanza nel Torneo Assoluto alla prima battaglia
-            if (activeCampaignId === 'torneo_assoluto' && campaignState.roster.length > maxTeamSize) {
-                const newRosterStats = {};
-                campaignSelectedTeam.forEach(id => {
-                    newRosterStats[id] = campaignState.rosterStats[id] || CHARACTERS.find(c=>c.id===id).maxHp;
-                });
-                
-                setCampaignState(p => ({
-                    ...p,
-                    roster: [...campaignSelectedTeam],
-                    rosterStats: newRosterStats
-                }));
-            }
-            
-            const p1Team = campaignSelectedTeam.map(id => {
-                const baseChar = CHARACTERS.find(c => c.id === id);
-                if (!baseChar) return null; // FIX: Previene crash fatali
-                const hp = campaignState.rosterStats[id] || 100;
-                return {
-                    ...JSON.parse(JSON.stringify(baseChar)), hp: hp, statuses: [], consecutiveProtect: 0,
-                    baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                    moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
-                };
-            }).filter(Boolean); // Rimuove i null per sicurezza
-
-            let p2Team = [];
-            let isValidSavedBoss = false;
-
-            if (campaignState.currentBossState && campaignState.currentBossState.length > 0) {
-                // FIX CRITICO: Ignora il salvataggio vecchio se avevi già perso contro Groot e Snorlax PRIMA dell'aggiornamento
-                const isOldM24Save = mission.id === 'm24' && campaignState.currentBossState.length <= 2 && !campaignState.currentBossState.some(c => ['piantacarnivora', 'cespugliomaledetto', 'alberto', 'fioretenebroso'].includes(c.id));
-                
-                if (!isOldM24Save) {
-                    isValidSavedBoss = (mission.isAnomaly && mission.id === 'm12_5') || campaignState.currentBossState.some(c => activeBosses.includes(c.id));
-                }
-            }
-
-            if (isValidSavedBoss) {
-                p2Team = campaignState.currentBossState.map(savedC => {
-                    let baseChar = CHARACTERS.find(c => c.id === savedC.id);
-                    if (!baseChar) baseChar = CHARACTERS.find(c => c.id === 'scheletro');
-                    
-                    let charInst = {
-                        ...JSON.parse(JSON.stringify(baseChar)), 
-                        hp: savedC.hp, 
-                        maxHp: savedC.maxHp, 
-                        statuses: savedC.statuses || [], 
-                        consecutiveProtect: 0,
-                        atk: savedC.atk, 
-                        baseAtk: savedC.atk, 
-                        def: savedC.def, 
-                        baseDef: savedC.def, 
-                        spd: savedC.spd, 
-                        baseSpd: savedC.spd,
-                        moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
-                    };
-                    
-                    charInst.isSummonOnly = false; // FIX: I boss della campagna sono sempre considerati combattenti principali
-
-                    // Riassegna il filtro immagine
-                    if (activeCampaignId === 'crisi_varco') {
-                        if (!isFinalRaid) {
-                             charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
-                        } else {
-                             charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; 
-                        }
-                    } else {
-                        charInst.imageFilter = baseChar.imageFilter || 'none';
-                    }
-                    
-                    // RIPRISTINO ABILITA' DA SUPER-BOSS (JUGGERNAUT, SCUDO E PURIFICAZIONE PASSIVA)
-                    if (savedC.isJuggernaut || (isFinalRaid && (charInst.id === 'trigon' || charInst.id === 'gaster'))) {
-                         charInst.isJuggernaut = true;
-                         charInst.juggTurnCount = savedC.juggTurnCount || 0;
-                         charInst.juggHitsRemaining = savedC.juggHitsRemaining || 0;
-                         charInst.shieldGrantedHits = 15;
-                         
-                         const hpRatio = charInst.hp / charInst.maxHp;
-                         charInst.juggShieldHpThresholds = [0.75, 0.50, 0.25].filter(t => t < hpRatio);
-                    }
-
-                    return charInst;
-                });
-            } else {
-                // Calcolo scaling progressivo (ogni settore aumenta HP del 5% e Stat del 3%)
-                let progressiveScale = 1 + (campaignState.sectorIdx * 0.05);
-
-                p2Team = activeBosses.map(id => {
-                    let baseChar = CHARACTERS.find(c => c.id === id);
-                    
-                    // FIX CRITICO: Se l'id del boss manca (es. anomalia non salvata bene), usa uno scheletro per evitare lo SCHERMO NERO
-                    if (!baseChar) {
-                        baseChar = CHARACTERS.find(c => c.id === 'scheletro');
-                    }
-                    
-                    let hpMultiplier = progressiveScale;
-                    if (isFinalRaid) hpMultiplier = 25; // Aumentato da 15 a 25 per resistere a 20 PG
-                    else if (campaignState.difficulty === 'Insane') hpMultiplier *= 1.5; 
-                    
-                    let hp = Math.floor(baseChar.maxHp * hpMultiplier);
-                    
-                    let charInst = {
-                        ...JSON.parse(JSON.stringify(baseChar)), hp: hp, maxHp: hp, statuses: [], consecutiveProtect: 0,
-                        baseAtk: baseChar.atk, baseDef: baseChar.def, baseSpd: baseChar.spd,
-                        moves: baseChar.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
-                    };
-
-                    charInst.isSummonOnly = false; // FIX: I boss della campagna sono sempre considerati combattenti principali
-                    
-                    // Buff Alle Statistiche (Attacco e Difesa scalano in base al settore)
-                    if (!isFinalRaid) {
-                         charInst.atk = Math.floor(charInst.atk * (1 + (campaignState.sectorIdx * 0.03)));
-                         charInst.baseAtk = charInst.atk;
-                         charInst.def = Math.floor(charInst.def * (1 + (campaignState.sectorIdx * 0.03)));
-                         charInst.baseDef = charInst.def;
-                         if (activeCampaignId === 'crisi_varco') {
-                             if (baseChar.imageFilter) {
-                                 charInst.imageFilter = baseChar.imageFilter; // Mantieni il colore base per i Cell Jr
-                             } else {
-                                 charInst.imageFilter = mission.isAnomaly ? 'sepia(0.3) hue-rotate(280deg) saturate(3) brightness(0.6) contrast(1.5) drop-shadow(0 0 15px rgba(217,70,239,0.9))' : 'sepia(0.6) hue-rotate(250deg) saturate(3) brightness(0.7) contrast(1.3) drop-shadow(0 0 10px rgba(168,85,247,0.8))';
-                             }
-                         } else {
-                             charInst.imageFilter = baseChar.imageFilter || 'none';
-                         }
-                    } else {
-                         charInst.atk = Math.floor(charInst.atk * 1.5); // Final raid buff
-                         charInst.baseAtk = charInst.atk;
-                         charInst.def = Math.floor(charInst.def * 1.2);
-                         charInst.baseDef = charInst.def;
-                         if (activeCampaignId === 'crisi_varco') {
-                             charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
-                         } else {
-                             charInst.imageFilter = baseChar.imageFilter || 'none';
-                         }
-                    }
-
-                    if (campaignState.difficulty === 'Insane' || isFinalRaid) {
-                        charInst.statuses.push({ type: 'Protetto', turns: 1 });
-                        charInst.statuses.push({ type: 'Scudo Team', turns: 2 });
-                    }
-                    
-                    // Buff Alle Statistiche dei Super Boss
-                    if (isFinalRaid) {
-                         charInst.atk = Math.floor(charInst.atk * 2.0); // Aumentato da 1.5 a 2.0
-                         charInst.baseAtk = charInst.atk;
-                         charInst.def = Math.floor(charInst.def * 1.5); // Aumentato da 1.2 a 1.5
-                         charInst.baseDef = charInst.def;
-                         charInst.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))'; // Aura rossa oscura per i boss finali
-                         
-                         // Aggiunta meccanica Scudo da Raid per Trigon e Gaster
-                         if (charInst.id === 'trigon' || charInst.id === 'gaster') {
-                             charInst.juggShieldHpThresholds = [0.75, 0.50, 0.25];
-                             charInst.juggHitsRemaining = 0;
-                             charInst.shieldGrantedHits = 15; // Aumentato da 1 a 15 colpi
-                             charInst.isJuggernaut = true; // Attiva la purificazione passiva ogni 2 turni
-                         }
-                    }
-
-                    return charInst;
-                });
-            }
-
-            const state = initialGameState();
-            state.gameMode = 'classica';
-            state.isCampaignBattle = true;
-            
-            // MODIFICA REGOLE ARENA: Se è il torneo assoluto, forza 6 in campo (6vs6). Altrimenti logica standard.
-            let fSize = 1;
-            if (activeCampaignId === 'torneo_assoluto') {
-                fSize = 6;
-            } else {
-                fSize = Math.min(4, Math.max(p1Team.length > 4 ? 4 : p1Team.length, p2Team.length));
-                if (mission.forceFieldSize) fSize = mission.forceFieldSize;
-            }
-            
-            state.settings = { teamSize: p1Team.length, fieldSize: fSize };
-            
-            state.players.p1 = playerName || "Resistenza";
-            state.playerAvatars.p1 = p1Team.length > 0 ? p1Team[0].img : '';
-            state.isBot.p1 = false;
-            
-            state.players.p2 = mission.isAnomaly && mission.id === 'm12_5' ? "Team Infetto" : activeBosses.map(id => {
-                 const b = CHARACTERS.find(c=>c.id===id);
-                 return b ? b.name : "Sconosciuto";
-            }).join(" & ");
-            state.playerAvatars.p2 = p2Team.length > 0 ? p2Team[0].img : '';
-            state.isBot.p2 = true;
-
-            state.teams = { p1: p1Team, p2: p2Team, p3: [], p4: [] };
-            state.field = { 
-                p1: p1Team.slice(0, state.settings.fieldSize).map((_, i) => i), 
-                p2: p2Team.slice(0, state.settings.fieldSize).map((_, i) => i),
-                p3: [], p4: []
-            };
-            state.field.p1.forEach(idx => { if(state.teams.p1[idx]) state.teams.p1[idx].revealed = true; });
-            state.field.p2.forEach(idx => { if(state.teams.p2[idx]) state.teams.p2[idx].revealed = true; });
-            state.status = 'pre_battle';
-            
-            setCombatLog([]);
-            setIsLogOpen(false);
-
-            setGameState(state);
-            setPlayerRole('p1');
-            setAppMode('local_room');
-        };
-
-        return (
-            <div className={`min-h-screen flex flex-col p-6 text-white ${sector.bg} relative overflow-hidden`}>
-                
-                {/* TOAST MINIDIALOGHI SELEZIONE TORNEO */}
-                {teamSelectionDialogue && !mission.forcedRoster && (
-                    <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-slate-900/95 border-2 border-indigo-500 p-4 rounded-2xl max-w-xl w-[90%] z-50 shadow-[0_0_30px_rgba(99,102,241,0.5)] animate-bounce-in flex items-center gap-4 transition-all">
-                        <img src={teamSelectionDialogue.img} className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-indigo-400 shrink-0 shadow-lg" alt={teamSelectionDialogue.name} />
-                        <div>
-                            <div className="text-indigo-400 font-black text-xs uppercase tracking-widest mb-0.5">{teamSelectionDialogue.name}</div>
-                            <div className="text-white italic text-sm md:text-base font-medium">"{teamSelectionDialogue.text}"</div>
-                        </div>
-                    </div>
-                )}
-
-                <div className="flex-1 flex flex-col items-center justify-center mt-6 w-full z-10">
-                    <h2 className="text-4xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center">
-                        {mission.forcedRoster 
-                            ? "Squadra Tattica Obbligatoria!"
-                            : (activeCampaignId === 'torneo_assoluto' && campaignState.roster.length <= maxTeamSize 
-                                ? `Schiera i tuoi Campioni (${campaignSelectedTeam.length}/${Math.min(maxTeamSize, campaignState.roster.filter(id => campaignState.rosterStats[id] > 0).length)})` 
-                                : `Seleziona la tua Resistenza (${campaignSelectedTeam.length}/${maxTeamSize})`
-                            )
-                        }
-                        {activeCampaignId === 'torneo_assoluto' && campaignState.roster.length > maxTeamSize && !mission.forcedRoster && <span className="block text-sm text-indigo-400 mt-2">Forma l'Alleanza fissa da 8 (5 Membri + 3 Riserve)</span>}
-                    </h2>
-                    
-                    {/* HINT TIPI NEMICI NELLA SELEZIONE */}
-                    <div className="mb-6 bg-slate-900/80 px-6 py-2 rounded-full border border-rose-500/30 flex items-center gap-3 backdrop-blur-md shadow-lg">
-                        <span className="text-xs text-slate-300 font-bold uppercase tracking-widest">Tipi Nemici:</span>
-                        <div className="flex gap-1.5">
-                            {(() => {
-                                let bossesToEval = activeBosses;
-                                if (mission.isAnomaly && mission.id === 'm12_5' && activeBosses.includes('dynamic_anomaly_1')) bossesToEval = ['scheletro'];
-                                const allTypes = new Set();
-                                bossesToEval.forEach(bId => {
-                                    const b = CHARACTERS.find(c=>c.id===bId);
-                                    if (b) b.types.forEach(t => allTypes.add(t));
-                                });
-                                return Array.from(allTypes).map(t => (
-                                    <span key={t} className={`text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                ));
-                            })()}
-                        </div>
-                    </div>
-
-                <div className="flex flex-wrap gap-4 mb-4 w-full max-w-5xl bg-slate-900/60 p-3 rounded-2xl border border-slate-700/50 backdrop-blur-md items-center">
-                    <div className="flex-1 min-w-[150px]">
-                        <input 
-                            type="text" 
-                            placeholder="Cerca campione..." 
-                            value={draftSearch} 
-                            onChange={e => setDraftSearch(e.target.value)} 
-                            className="w-full bg-slate-800 text-white font-bold px-4 py-2 rounded-xl outline-none border border-slate-600 focus:border-cyan-500 placeholder-slate-400 text-sm"
-                        />
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Tipo:</span>
-                        <select value={draftFilterType} onChange={e => setDraftFilterType(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
-                            <option value="Tutti">Tutti</option>
-                            {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                        </select>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Ordina:</span>
-                        <select value={draftSort} onChange={e => setDraftSort(e.target.value)} className="bg-slate-800 text-white font-bold p-2 rounded-lg outline-none border border-slate-600 focus:border-cyan-500 text-xs">
-                            <option value="default">Predefinito</option>
-                            <option value="alpha">A-Z</option>
-                            <option value="type">Per Tipo</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6 max-w-5xl w-full max-h-[50vh] overflow-y-auto custom-scrollbar p-2">
-                    {(() => {
-                        let rosterChars = campaignState.roster.map(id => CHARACTERS.find(c => c.id === id)).filter(Boolean);
-                        
-                        let filteredRoster = rosterChars.filter(c => {
-                            if (draftFilterType !== 'Tutti' && !c.types.includes(draftFilterType)) return false;
-                            if (draftSearch.trim() !== '' && !c.name.toLowerCase().includes(draftSearch.toLowerCase())) return false;
-                            return true;
-                        });
-
-                        if (draftSort === 'alpha') {
-                            filteredRoster.sort((a, b) => a.name.localeCompare(b.name));
-                        } else if (draftSort === 'type') {
-                            filteredRoster.sort((a, b) => a.types[0].localeCompare(b.types[0]));
-                        }
-
-                        return filteredRoster.map(char => {
-                            const id = char.id;
-                            const hp = campaignState.rosterStats[id] || 0;
-                            const isDead = hp <= 0;
-                            const isSelected = campaignSelectedTeam.includes(id);
-                            const isAnomalyTarget = mission.isAnomaly && mission.id === 'm12_5' && campaignState.anomalyTargets && campaignState.anomalyTargets.includes(id);
-
-                            return (
-                                <div 
-                                    key={id} 
-                                    onClick={() => {
-                                        if (isDead) {
-                                            setSystemAlert("Questo personaggio è esausto! Curarlo all'accampamento prima di poterlo schierare in battaglia.");
-                                            return;
-                                        }
-                                        toggleChar(id);
-                                    }}
-                                    className={`relative overflow-hidden bg-slate-900/80 backdrop-blur-md border rounded-2xl p-4 text-center transition-all duration-300 ${isDead ? 'opacity-50 grayscale border-rose-900 cursor-not-allowed' : isAnomalyTarget ? 'border-fuchsia-500 opacity-50 cursor-not-allowed' : isSelected ? 'border-emerald-400 bg-emerald-900/30 scale-105 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'border-slate-700/50 hover:border-cyan-500/50 hover:-translate-y-1 cursor-pointer shadow-lg'}`}
-                                >
-                                    <img src={char.img} alt={char.name} className={`w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 ${isSelected ? 'border-emerald-400' : 'border-slate-600/50'}`} />
-                                    <h4 className="font-bold text-sm mb-2 truncate text-slate-100">{char.name}</h4>
-                                    <div className="flex flex-wrap gap-1 justify-center mb-3">
-                                        {char.types.map(t => (
-                                            <span key={t} className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>
-                                        ))}
-                                    </div>
-                                    {renderHealthBar(hp, char.maxHp)}
-                                    
-                                    {isSelected && (
-                                        <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-black text-xs shadow-md">✓</div>
-                                    )}
-                                    {isAnomalyTarget && (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-fuchsia-900/80 backdrop-blur-sm z-10">
-                                            <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Infetto</span>
-                                        </div>
-                                    )}
-                                    {isDead && !isAnomalyTarget && (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-rose-900/60 backdrop-blur-sm z-10">
-                                            <span className="text-white font-black text-[10px] uppercase -rotate-12 border-2 border-white px-2 py-1 bg-black/50 rounded shadow-lg">Esausto</span>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        });
-                    })()}
-                </div>
-                <button onClick={handleStartCampaignBattle} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 px-12 py-5 rounded-full font-black text-2xl shadow-[0_10px_30px_rgba(59,130,246,0.4)] hover:-translate-y-1 transition-all flex items-center gap-3">
-                    <Swords size={28}/> Inizia Battaglia!
-                </button>
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_shop') {
-        const buyFullHeal = () => {
-            if (campaignState.coins >= 600) {
-                const newStats = {...campaignState.rosterStats};
-                campaignState.roster.forEach(id => {
-                    newStats[id] = CHARACTERS.find(c=>c.id===id).maxHp;
-                });
-                setCampaignState(p => ({...p, coins: p.coins - 600, rosterStats: newStats}));
-            } else {
-                setSystemAlert("Non hai abbastanza monete!");
-            }
-        };
-
-        const buyRevive = (id) => {
-            if (campaignState.coins >= 100) {
-                const newStats = {...campaignState.rosterStats};
-                const maxHp = CHARACTERS.find(c=>c.id===id).maxHp;
-                newStats[id] = Math.floor(maxHp * 0.5);
-                setCampaignState(p => ({...p, coins: p.coins - 100, rosterStats: newStats}));
-            } else {
-                setSystemAlert("Non hai abbastanza monete!");
-            }
-        };
-
-        const buyPotion = (id) => {
-            if (campaignState.coins >= 50) {
-                const newStats = {...campaignState.rosterStats};
-                const maxHp = CHARACTERS.find(c=>c.id===id).maxHp;
-                newStats[id] = Math.min(maxHp, newStats[id] + Math.floor(maxHp * 0.5));
-                setCampaignState(p => ({...p, coins: p.coins - 50, rosterStats: newStats}));
-            } else {
-                setSystemAlert("Non hai abbastanza monete!");
-            }
-        };
-
-        return (
-            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/40 via-amber-950 to-black pointer-events-none opacity-80"></div>
-                
-                {/* Animazione Fuoco di bivacco nello sfondo */}
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-9xl opacity-10 animate-pulse pointer-events-none blur-sm filter">🔥</div>
-
-                <div className="bg-slate-900/90 border border-orange-500/50 p-8 rounded-3xl max-w-2xl w-full text-center shadow-[0_0_50px_rgba(249,115,22,0.15)] z-10 max-h-[95vh] flex flex-col">
-                    <div className="shrink-0">
-                        <div className="flex items-center justify-center gap-3 mb-2">
-                            <span className="text-4xl">⛺</span>
-                            <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500">Accampamento</h2>
-                            <span className="text-4xl animate-pulse">🔥</span>
-                        </div>
-                        <p className="text-orange-200/70 text-sm mb-4 font-medium">Riposa, cura le ferite e organizza la squadra prima del prossimo settore.</p>
-                        
-                        <div className="flex items-center justify-center gap-3 mb-6 text-xl font-black bg-black/40 py-2 rounded-xl border border-slate-800">
-                            Bilancio: <Coins className="text-yellow-400" size={24} /> <span className="text-yellow-400">{campaignState.coins} Monete</span>
-                        </div>
-
-                        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 mb-6 flex justify-between items-center shadow-inner">
-                             <div className="text-left flex items-center gap-4">
-                                 <div className="bg-emerald-500/20 p-2 rounded-xl text-emerald-400"><Heart size={24}/></div>
-                                 <div>
-                                     <div className="font-black text-lg text-white">Cura Totale Squadra</div>
-                                     <div className="text-xs text-slate-400 mt-1">Ripristina tutti gli HP al massimo</div>
-                                 </div>
-                             </div>
-                             <button onClick={buyFullHeal} className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-black px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg hover:-translate-y-0.5 transition-all"><Coins size={16}/> 600</button>
-                        </div>
-                    </div>
-                    
-                    <div className="text-left text-sm font-bold text-slate-400 mb-2 px-2">Cure Individuali:</div>
-                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 mb-6 space-y-3 text-left">
-                        {campaignState.roster.map(id => {
-                            const char = CHARACTERS.find(c=>c.id===id);
-                            const hp = campaignState.rosterStats[id] || 0;
-                            if(!char) return null;
-                            const isDead = hp <= 0;
-                            const isFull = hp >= char.maxHp;
-
-                            return (
-                                <div key={id} className={`bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 flex items-center gap-3`}>
-                                    <img src={char.img} className={`w-12 h-12 rounded-full border border-slate-600 object-cover ${isDead ? 'grayscale' : ''}`} />
-                                    <div className="flex-1 min-w-0">
-                                        <div className="font-bold text-sm truncate">{char.name} {isDead && <span className="text-rose-500 text-[10px] ml-1">(Esausto)</span>}</div>
-                                        {renderHealthBar(hp, char.maxHp)}
-                                    </div>
-                                    <div className="shrink-0 flex gap-2">
-                                        {isDead ? (
-                                            <button onClick={() => buyRevive(id)} className="bg-rose-600 hover:bg-rose-500 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 text-xs shadow-md transition-all">
-                                                <Heart size={12}/> Revitalizza <Coins size={10}/> 100
-                                            </button>
-                                        ) : (
-                                            <button disabled={isFull} onClick={() => buyPotion(id)} className={`font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 text-xs shadow-md transition-all ${isFull ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-500 text-white'}`}>
-                                                <Heart size={12}/> Pozione (+50%) <Coins size={10}/> 50
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    
-                    <button onClick={() => setAppMode('campaign_map')} className="w-full shrink-0 bg-blue-600 hover:bg-blue-500 py-4 rounded-full font-black text-xl transition-all shadow-lg hover:-translate-y-1">Avanza al Prossimo Settore</button>
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'campaign_ending') {
-        return (
-            <div className="min-h-screen bg-gradient-to-t from-blue-950 to-slate-950 text-white flex flex-col items-center justify-center p-6 text-center">
-                <Trophy size={80} className="text-yellow-400 mb-6 drop-shadow-[0_0_30px_rgba(234,179,8,0.8)] animate-bounce" />
-                <h1 className="text-6xl md:text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 drop-shadow-md tracking-tighter">IL MULTIVERSO È LIBERO!</h1>
-                <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mb-12 font-medium leading-relaxed">
-                    Cell Perfetto è stato sconfitto e il suo influsso spezzato. Il varco rimane aperto, ma ora eroi e cattivi di ogni dimensione possono convivere in pace. Hai salvato innumerevoli mondi!
-                </p>
-                <div className="bg-slate-900/50 p-6 rounded-3xl border border-white/10 mb-12 w-full max-w-4xl backdrop-blur-md">
-                    <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-6">La Resistenza Finale</h3>
-                    <div className="flex flex-wrap justify-center gap-4">
-                         {campaignState.roster.map(id => {
-                              const char = CHARACTERS.find(c=>c.id===id);
-                              if(!char) return null;
-                              return <img key={id} src={char.img} className="w-16 h-16 rounded-full border-2 border-emerald-500 object-cover shadow-lg" title={char.name} alt={char.name} />;
-                         })}
-                    </div>
-                </div>
-                <button onClick={() => { 
-                    setCampaignSelectedTeam([]); // FIX: Svuota la squadra
-                    const freshState = loadCampaign(activeCampaignId);
-                    freshState.isStarted = false;
-                    setCampaignState(freshState);
-                    localStorage.removeItem(`multiverse_rpg_campaign_save_${activeCampaignId}`);
-                    setAppMode('menu'); 
-                }} className="bg-white text-black px-12 py-5 rounded-full font-black text-xl hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.4)]">Torna al Menu Principale</button>
-            </div>
-        );
-    }
-
-    // --- NUOVE PAGINE ROGUELIKE ---
-    if (appMode === 'roguelike_draft') {
-        const handlePick = (id) => {
-            if (roguelikeState.roster.includes(id)) return;
-            const newRoster = [...roguelikeState.roster, id];
-            const newStats = { ...roguelikeState.rosterStats };
-            newStats[id] = CHARACTERS.find(c => c.id === id).maxHp;
-            
-            setRoguelikeState(prev => ({ ...prev, roster: newRoster, rosterStats: newStats }));
-            
-            if (newRoster.length >= 3) {
-                setTimeout(() => setAppMode('roguelike_map'), 500);
-            }
-        };
-
-        return (
-            <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 relative overflow-hidden items-center justify-center">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-fuchsia-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                <div className="relative z-10 w-full max-w-4xl text-center">
-                    <h2 className="text-5xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 drop-shadow-md">Draft Iniziale</h2>
-                    <p className="text-xl text-slate-300 mb-8 font-medium">Scegli 3 campioni. La vita NON si rigenera dopo le battaglie. Se muoiono tutti, la spedizione finisce. ({roguelikeState.roster.length}/3)</p>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                        {roguelikeDraftChoices.map(char => {
-                            const isPicked = roguelikeState.roster.includes(char.id);
-                            return (
-                                <div key={char.id} onClick={() => handlePick(char.id)} className={`bg-slate-900/80 border-2 ${isPicked ? 'border-fuchsia-500 opacity-50 grayscale' : 'border-slate-600 hover:border-fuchsia-400 hover:bg-slate-800 hover:-translate-y-2 cursor-pointer'} p-6 rounded-3xl transition-all shadow-xl flex flex-col items-center`}>
-                                    <img src={char.img} className="w-24 h-24 rounded-full object-cover border-4 border-slate-700 mb-4" />
-                                    <h3 className="font-black text-xl mb-2">{char.name}</h3>
-                                    <div className="flex gap-2 justify-center mb-2">
-                                        {char.types.map(t => <span key={t} className={`text-[10px] font-black px-2 py-0.5 rounded uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>)}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appMode === 'roguelike_map') {
-        const isRestFloor = roguelikeState.floor % 3 === 0 && roguelikeState.floor !== roguelikeState.maxFloor;
-        const isBossFloor = roguelikeState.floor === roguelikeState.maxFloor;
-
-        const startRoguelikeCombat = () => {
-            const myTeam = roguelikeState.roster.map(id => {
-                const base = CHARACTERS.find(c => c.id === id);
-                return { ...JSON.parse(JSON.stringify(base)), hp: roguelikeState.rosterStats[id], statuses: [], consecutiveProtect: 0, baseAtk: base.atk, baseDef: base.def, baseSpd: base.spd, moves: base.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
-            });
-
-            // Generazione Nemici (Scala in base al piano)
-            let enemyCount = 1;
-            if (roguelikeState.floor >= 4) enemyCount = 2;
-            if (roguelikeState.floor >= 7) enemyCount = 3;
-            if (isBossFloor) enemyCount = 1; // 1 Super Boss
-
-            const availableEnemies = CHARACTERS.filter(c => !c.isSummonOnly && (isBossFloor ? c.isSecretUnlock || c.id === 'cell' || c.id === 'trigon' : !c.isSecretUnlock));
-            const shuffledEnemies = [...availableEnemies].sort(() => 0.5 - Math.random());
-            
-            const enemyTeam = shuffledEnemies.slice(0, enemyCount).map(base => {
-                const scale = 1 + (roguelikeState.floor * 0.1); // +10% stats ogni piano
-                let e = { ...JSON.parse(JSON.stringify(base)), hp: Math.floor(base.maxHp * scale), maxHp: Math.floor(base.maxHp * scale), atk: Math.floor(base.atk * scale), def: Math.floor(base.def * scale), baseAtk: Math.floor(base.atk * scale), baseDef: Math.floor(base.def * scale), statuses: [], consecutiveProtect: 0, moves: base.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
-                if (isBossFloor) {
-                    e.atk = Math.floor(e.atk * 1.5); e.hp *= 2; e.maxHp *= 2; e.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))';
-                    e.statuses.push({ type: 'Protetto', turns: 1 });
-                }
-                return e;
-            });
-
-            const state = initialGameState();
-            state.gameMode = 'classica';
-            state.isRoguelikeBattle = true; // Flag fondamentale
-            state.settings = { teamSize: myTeam.length, fieldSize: Math.min(4, Math.max(myTeam.length, enemyTeam.length)) };
-            state.players = { p1: playerName || "Spedizione", p2: isBossFloor ? "Guardiano del Piano" : "Abitanti del Piano" };
-            state.playerAvatars = { p1: myTeam[0].img, p2: enemyTeam[0].img };
-            state.isBot = { p1: false, p2: true };
-            state.teams = { p1: myTeam, p2: enemyTeam };
-            state.field = { p1: myTeam.slice(0, state.settings.fieldSize).map((_, i) => i), p2: enemyTeam.slice(0, state.settings.fieldSize).map((_, i) => i) };
-            state.field.p1.forEach(idx => { if(state.teams.p1[idx]) state.teams.p1[idx].revealed = true; });
-            state.field.p2.forEach(idx => { if(state.teams.p2[idx]) state.teams.p2[idx].revealed = true; });
-            state.status = 'pre_battle';
-            setGameState(state);
-            setPlayerRole('p1');
-            setAppMode('local_room');
-        };
-
-        const handleRest = () => {
-            const newStats = { ...roguelikeState.rosterStats };
-            roguelikeState.roster.forEach(id => {
-                const max = CHARACTERS.find(c=>c.id===id).maxHp;
-                if (newStats[id] > 0) { // Cura solo chi è vivo
-                    newStats[id] = Math.min(max, newStats[id] + Math.floor(max * 0.4)); // Cura 40%
-                }
-            });
-            setRoguelikeState(p => ({ ...p, rosterStats: newStats, floor: p.floor + 1 }));
-        };
-
-        return (
-            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                <button onClick={() => { setRoguelikeState({ isStarted: false, roster: [] }); setAppMode('menu'); }} className="absolute top-6 left-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 font-bold">
+                }} className="absolute top-6 left-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 font-bold">
                      <LogOut size={16} /> Abbandona Run
                 </button>
                 
                 <h2 className="text-4xl font-black mb-2 text-fuchsia-400">Piano {roguelikeState.floor} / {roguelikeState.maxFloor}</h2>
+                <div className="flex items-center gap-2 mb-6 bg-slate-900/80 px-4 py-1.5 rounded-xl border border-yellow-500/30">
+                    <Coins className="text-yellow-400" size={16} />
+                    <span className="font-bold text-yellow-400 text-sm">{roguelikeState.coins || 0} Monete</span>
+                </div>
+                
                 <div className="w-full max-w-2xl bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 mb-8 flex gap-4 overflow-x-auto custom-scrollbar">
                     {roguelikeState.roster.map(id => {
                         const char = CHARACTERS.find(c=>c.id===id);
@@ -9280,8 +7984,8 @@
                         </div>
                     ) : (
                         <div className={`bg-rose-900/40 border border-rose-500 p-8 rounded-3xl text-center max-w-sm`}>
-                            <h3 className="text-2xl font-black text-rose-400 mb-2">{isBossFloor ? 'Stanza del Boss' : 'Stanza di Combattimento'}</h3>
-                            <p className="text-slate-300 mb-6">{isBossFloor ? 'Il guardiano finale ti attende.' : 'Dei nemici bloccano la via. Preparati a lottare.'}</p>
+                            <h3 className="text-2xl font-black text-rose-400 mb-2">{isFinalBossFloor ? 'Stanza del Super Boss' : (isBossFloor ? 'Stanza del Boss' : 'Stanza di Combattimento')}</h3>
+                            <p className="text-slate-300 mb-6">{isFinalBossFloor ? 'Il guardiano finale ti attende.' : (isBossFloor ? 'Un potente nemico blocca il passaggio verso i prossimi piani.' : 'Dei nemici bloccano la via. Preparati a lottare.')}</p>
                             <button onClick={startRoguelikeCombat} className="bg-rose-600 hover:bg-rose-500 text-white font-black py-4 px-8 rounded-full w-full transition-all flex items-center justify-center gap-2"><Swords size={20}/> Entra in Battaglia</button>
                         </div>
                     )}
@@ -11779,6 +10483,7 @@
         // --- GESTIONE VITTORIA/SCONFITTA ROGUELIKE ---
         if (gameState.isRoguelikeBattle) {
             const isWin = gameState.winner === gameState.players.p1;
+            const earnedCoins = Math.floor(Math.random() * 21) + 10; // Da 10 a 30 monete
             
             return (
                 <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
@@ -11788,31 +10493,67 @@
                             {isWin ? (roguelikeState.floor === roguelikeState.maxFloor ? 'SPEDIZIONE COMPLETATA!' : 'VITTORIA!') : 'SPEDIZIONE FALLITA'}
                         </h1>
                         
-                        <p className="text-xl text-slate-300 mb-8 font-medium">
+                        <p className="text-xl text-slate-300 mb-6 font-medium">
                             {isWin 
-                                ? (roguelikeState.floor === roguelikeState.maxFloor ? 'Hai superato l\'ultimo piano. Sei una leggenda del Multiverso!' : 'I nemici sono stati sconfitti. Saliamo al prossimo piano.') 
+                                ? (roguelikeState.floor === roguelikeState.maxFloor ? 'Hai superato l\'ultimo piano. Sei una leggenda del Multiverso!' : 'I nemici sono stati sconfitti! Ti prepari al prossimo piano.') 
                                 : 'Il tuo team è caduto. Dovrai ricominciare la scalata da zero.'}
                         </p>
                         
+                        {isWin && roguelikeState.floor !== roguelikeState.maxFloor && (
+                             <div className="flex items-center justify-center gap-2 mb-8 text-2xl font-black text-yellow-400 bg-yellow-500/10 py-3 rounded-full border border-yellow-500/30">
+                                 <Coins size={28} /> +{earnedCoins} Monete Trovate!
+                             </div>
+                        )}
+                        
                         <button onClick={() => {
                             if (isWin) {
-                                // Salva gli HP attuali
+                                // Salva gli HP attuali e l'inventario rimasto
                                 const newStats = { ...roguelikeState.rosterStats };
                                 gameState.teams.p1.forEach(c => {
                                     if (!c.isSummonOnly) newStats[c.id] = c.hp;
                                 });
+                                const leftoverInventory = gameState.inventory.p1 || {};
                                 
                                 if (roguelikeState.floor === roguelikeState.maxFloor) {
                                     // Ha finito il gioco
+                                    cashOutRoguelikeRewards(roguelikeState.floor);
                                     setRoguelikeState({ isStarted: false, roster: [] });
                                     setAppMode('menu');
                                 } else {
+                                    // --- LOGICA RECLUTAMENTO NEMICO E CHANCE MERCANTE ---
+                                    let recruitedId = null;
+                                    if (Math.random() < 0.20 && gameState.teams.p2) {
+                                        const possibleRecruits = gameState.teams.p2.filter(c => !c.isSummonOnly && !roguelikeState.roster.includes(c.id));
+                                        if (possibleRecruits.length > 0) {
+                                            recruitedId = possibleRecruits[Math.floor(Math.random() * possibleRecruits.length)].id;
+                                        }
+                                    }
+                                    
+                                    const chanceMerchant = Math.random() < 0.15; // 15% di apparizione
+                                    
                                     // Prossimo piano
-                                    setRoguelikeState(p => ({ ...p, rosterStats: newStats, floor: p.floor + 1 }));
+                                    setRoguelikeState(p => {
+                                        const nextRoster = [...p.roster];
+                                        const nextStats = { ...newStats };
+                                        
+                                        if (recruitedId) {
+                                            nextRoster.push(recruitedId);
+                                            const baseChar = CHARACTERS.find(c => c.id === recruitedId);
+                                            if (baseChar) nextStats[recruitedId] = baseChar.maxHp; 
+                                        }
+                                        
+                                        return { ...p, rosterStats: nextStats, roster: nextRoster, floor: p.floor + 1, coins: (p.coins || 0) + earnedCoins, inventory: leftoverInventory, isMerchantNext: chanceMerchant };
+                                    });
                                     setAppMode('roguelike_map');
+                                    
+                                    if (recruitedId) {
+                                        const charName = CHARACTERS.find(c => c.id === recruitedId).name;
+                                        setTimeout(() => setSystemAlert(`🎉 Reclutamento Inaspettato! Colpito dalla tua incredibile forza, ${charName} ha deciso di unirsi al tuo team per il resto della Spedizione con i PS al massimo!`), 300);
+                                    }
                                 }
                             } else {
                                 // Sconfitta = Reset
+                                cashOutRoguelikeRewards(roguelikeState.floor - 1);
                                 setRoguelikeState({ isStarted: false, roster: [] });
                                 setAppMode('menu');
                             }
