@@ -1144,7 +1144,7 @@
           { id: 'juri', name: 'Juri', types: ['Oscuro', 'Aria'], hp: 95, maxHp: 95, atk: 105, def: 80, spd: 125, img: 'https://i.pinimg.com/736x/1f/45/62/1f456243b70b1088b021f8b471143014.jpg', passive: { name: 'Tifo del Pubblico', type: 'on_ko', statBuff: { atk: 1.3, def: 1.3, spd: 1.3 }, desc: 'Il pubblico la adora e la potenzia. Ogni volta che manda KO un nemico, aumenta Attacco, Difesa e Velocità del 30%!' }, moves: [MOVES_DB['Via all Incontro!'], MOVES_DB['Coda Demoniaca'], MOVES_DB['Fuga Tattica'], MOVES_DB['Chiamata Fuori Campo']] },
           { id: 'gaston', name: 'Gaston', types: ['Normale', 'Lotta'], hp: 120, maxHp: 120, atk: 110, def: 95, spd: 60, img: 'https://i.pinimg.com/736x/98/30/29/9830297f26d087e173f1cae8f928523b.jpg', moves: [MOVES_DB['Fucile da Caccia'], MOVES_DB['Cinque Dozzine di Uova'], MOVES_DB['Nessuno è come Gaston!'], MOVES_DB['Schianto del Bullo']] },
           { id: 'chatnoir', name: 'Chat Noir', types: ['Buio', 'Lotta'], hp: 95, maxHp: 95, atk: 115, def: 75, spd: 115, img: 'https://i.pinimg.com/736x/24/96/dc/2496dca077bd8dbb2c42702aa52deae2.jpg', passive: { name: 'Miracolous Chat Noir', type: 'on_hp_threshold', threshold: 0.5, maxUses: 1, resetEnemyBuffs: true, desc: 'Quando i PS scendono al 50% o meno, sprigiona il potere del Miraculous, azzerando tutti i potenziamenti alle statistiche degli avversari in campo.' }, moves: [MOVES_DB['Bastone Estendibile'], MOVES_DB['Cataclisma'], MOVES_DB['Balzo Felino'], MOVES_DB['Fascino Sfacciato']] },
-          { id: 'iris', name: 'Iris', types: ['Magico'], hp: 90, maxHp: 90, atk: 120, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/73/97/82/7397829809c9e0cfef827e17b4b97967.jpg', moves: [MOVES_DB['Cristallo di Ephedia'], MOVES_DB['Scudo Cristallino'], MOVES_DB['Voce della Principessa'], MOVES_DB['Trasformazione Shanila']] },
+          { id: 'iris', name: 'Iris', types: ['Magico', 'Cristallo'], hp: 90, maxHp: 90, atk: 120, def: 65, spd: 100, img: 'https://i.pinimg.com/736x/73/97/82/7397829809c9e0cfef827e17b4b97967.jpg', moves: [MOVES_DB['Cristallo di Ephedia'], MOVES_DB['Scudo Cristallino'], MOVES_DB['Voce della Principessa'], MOVES_DB['Trasformazione Shanila']] },
           { id: 'stellarubia', name: 'Stellarubia', types: ['Fuoco', 'Aria'], hp: 95, maxHp: 95, atk: 120, def: 80, spd: 105, img: 'https://i.pinimg.com/736x/33/a3/49/33a3490d7dee9b8c2d4187ca1f503573.jpg', moves: [MOVES_DB['Starbolts'], MOVES_DB['Volo Supersonico'], MOVES_DB['Furia Tamaraniana'], MOVES_DB['Raggio Oculare']] },
           { id: 'bumblebee', name: 'Bumblebee', types: ['Elettro', 'Insetto'], hp: 85, maxHp: 85, atk: 105, def: 75, spd: 120, img: 'https://i.pinimg.com/736x/03/d0/b7/03d0b7b67992985d3d18e7171e645680.jpg', passive: { name: 'Punge come un\'ape', type: 'first_strike_bonus', damageBonus: 1.05, desc: 'Se è la prima ad attaccare nel turno, infligge il 5% di danni extra.' }, moves: [MOVES_DB['Pungiglione Elettrico'], MOVES_DB['Pungiglione'], MOVES_DB['Raffica Sonica'], MOVES_DB['Raggio Esplosivo']] },
           { id: 'charmcaster', name: 'Charmcaster', types: ['Magico', 'Oscuro'], hp: 90, maxHp: 90, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/60/d7/52/60d752265ac544bf27e6ce886f4b334d.jpg', passive: { name: 'Evocazione Suprema', type: 'on_hp_threshold', threshold: 0.25, isSummon: 'golem_pietra_supremo', maxUses: 1, desc: 'Quando i PS scendono al 25% o meno, evoca istantaneamente un Golem Supremo in sua difesa.' }, moves: [MOVES_DB['Mostro di Pietra'], MOVES_DB['Fulmine Viola'], MOVES_DB['Borsa Magica'], MOVES_DB['Maledizione']] },
@@ -1197,7 +1197,7 @@
           { id: 'soundwave', name: 'Soundwave', types: ['Robot', 'Suono'], hp: 110, maxHp: 110, atk: 105, def: 105, spd: 85, img: 'https://i.pinimg.com/1200x/ef/88/3f/ef883f8a53bb3f86cf934a9001da8f1f.jpg', moves: [MOVES_DB['Onda d\'Urto'], MOVES_DB['Laserbeak, all\'attacco!'], MOVES_DB['Jammer di Frequenza'], MOVES_DB['Scudo Acustico']] },
 
           { id: 'alphonse', name: 'Alphonse Elric', types: ['Robot', 'Terra'], hp: 110, maxHp: 110, atk: 95, def: 125, spd: 70, img: 'https://i.pinimg.com/1200x/6b/02/53/6b0253e74a2738939cf60840ff6c73df.jpg', moves: [MOVES_DB['Alchimia Metallica'], MOVES_DB['Pugno d\'Acciaio'], MOVES_DB['Muro Terrestre'], MOVES_DB['Pilastro di Terra']] },
-          { id: 'diamantebianco', name: 'Diamante Bianco', types: ['Luce'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 85, img: 'https://i.pinimg.com/736x/f8/57/5f/f8575f776adac7111faebf0e6d48bb95.jpg', passive: { name: 'Il Capo del Pianeta Natale', type: 'first_hit_immunity', desc: 'La sua aura di supremazia è intoccabile. Il primo attacco nemico che subisce in battaglia viene completamente annullato (0 danni e nessun malus).' }, moves: [MOVES_DB['Pianeta natale'], MOVES_DB['Colpo di tacco'], MOVES_DB['Raggio luminoso'], MOVES_DB['Sguardo imperiale']] },
+          { id: 'diamantebianco', name: 'Diamante Bianco', types: ['Luce', 'Cristallo'], hp: 130, maxHp: 130, atk: 120, def: 100, spd: 85, img: 'https://i.pinimg.com/736x/f8/57/5f/f8575f776adac7111faebf0e6d48bb95.jpg', passive: { name: 'Il Capo del Pianeta Natale', type: 'first_hit_immunity', desc: 'La sua aura di supremazia è intoccabile. Il primo attacco nemico che subisce in battaglia viene completamente annullato (0 danni e nessun malus).' }, moves: [MOVES_DB['Pianeta natale'], MOVES_DB['Colpo di tacco'], MOVES_DB['Raggio luminoso'], MOVES_DB['Sguardo imperiale']] },
           { id: 'sugino', name: 'Sugino', types: ['Erba'], hp: 100, maxHp: 100, atk: 105, def: 85, spd: 95, img: 'https://ami.animecharactersdatabase.com/uploads/chars/43057-1906525683.png', passive: { name: 'Piante Curative', type: 'aura', immuneToNegativeStatuses: true, desc: 'Le theme piante lo curano istantaneamente da ogni malus: è immune a tutte le alterazioni di stato negative.' }, moves: [MOVES_DB['Jugaru'], MOVES_DB['Diojugaro'], MOVES_DB['Juruku'], MOVES_DB['Barujuron']] },
           { id: 'naruto', name: 'Naruto Uzumaki', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 120, img: 'https://i.pinimg.com/736x/cd/4e/a1/cd4ea18dfd17257a575dfe671faba4f9.jpg', passive: { name: 'Chakra della Volpe', type: 'on_hp_threshold', threshold: 0.3, statBuff: { atk: 1.3, spd: 1.3 }, heal: 0.2, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, attinge al chakra di Kurama: recupera il 20% dei PS e aumenta Attacco e Velocità del 30%.' }, moves: [MOVES_DB['Rasengan'], MOVES_DB['Moltiplicazione Superiore'], MOVES_DB['Combo Uzumaki'], MOVES_DB['Rasenshuriken']] },
           { id: 'sasuke', name: 'Sasuke Uchiha', types: ['Fuoco', 'Elettro'], hp: 100, maxHp: 100, atk: 120, def: 75, spd: 125, img: 'https://i.pinimg.com/736x/bc/8b/b1/bc8bb101895ed8f2beff898258665942.jpg', passive: { name: 'Risveglio del Susanoo', type: 'on_hp_threshold', threshold: 0.3, statBuff: { def: 2.0 }, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, evoca l\'armatura spirituale del Susanoo, raddoppiando istantaneamente la propria Difesa.' }, moves: [MOVES_DB['Palla di Fuoco Suprema'], MOVES_DB['Mille Falchi'], MOVES_DB['Genjutsu: Sharingan'], MOVES_DB['Amaterasu']] },
@@ -3204,6 +3204,26 @@
           const [campaignDialogueIdx, setCampaignDialogueIdx] = useState(0);
           const [campaignSelectedTeam, setCampaignSelectedTeam] = useState([]);
           
+          // --- NUOVI STATI: ROGUELIKE ---
+          const [roguelikeDraftChoices, setRoguelikeDraftChoices] = useState([]);
+          const [roguelikeState, setRoguelikeState] = useState(() => {
+              const saved = localStorage.getItem('multiverse_rpg_roguelike_save');
+              if (saved) {
+                  try { return JSON.parse(saved); } catch(e){}
+              }
+              return { isStarted: false, floor: 1, roster: [], rosterStats: {}, maxFloor: 10 };
+          });
+
+          // Autosave Roguelike
+          useEffect(() => {
+              if (roguelikeState.isStarted) {
+                  localStorage.setItem('multiverse_rpg_roguelike_save', JSON.stringify(roguelikeState));
+              } else {
+                  localStorage.removeItem('multiverse_rpg_roguelike_save');
+              }
+          }, [roguelikeState]);
+          // ------------------------------
+
           // --- LOGICA UPLOAD IMMAGINE AVATAR ---
           const handleAvatarUpload = (e) => {
               const file = e.target.files[0];
@@ -7847,6 +7867,27 @@
                              <Target size={20}/> Gioca vs CPU (Bot IA)
                         </button>
                         
+                        {/* --- NUOVO BOTTONE ROGUELIKE --- */}
+                        <button onClick={() => {
+                            if (roguelikeState.isStarted && roguelikeState.roster.length > 0) {
+                                setAppMode('roguelike_map');
+                            } else {
+                                const available = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                                const shuffled = [...available].sort(() => 0.5 - Math.random());
+                                setRoguelikeDraftChoices(shuffled.slice(0, 6)); // Scegli 3 tra 6 casuali
+                                setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 10 });
+                                setAppMode('roguelike_draft');
+                            }
+                        }} className="relative w-full mb-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
+                             <Trophy size={20}/> Spedizione Roguelike (Hardcore)
+                             {roguelikeState.isStarted && roguelikeState.roster.length > 0 && (
+                                 <div className="absolute right-4 text-xs font-black bg-black/40 border border-fuchsia-400/50 px-2 py-1 rounded-lg text-fuchsia-200 shadow-inner">
+                                     Piano {roguelikeState.floor}
+                                 </div>
+                             )}
+                        </button>
+                        {/* ------------------------------- */}
+
                         {/* --- AGGIUNTO IL PULSANTE SOPRAVVIVENZA --- */}
                          <button onClick={handleSurvivalStart} className="relative w-full mb-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
                              <Shield size={20}/> Modalità Sopravvivenza (Infinita)
@@ -9110,6 +9151,145 @@
             </div>
         );
     }
+
+    // --- NUOVE PAGINE ROGUELIKE ---
+    if (appMode === 'roguelike_draft') {
+        const handlePick = (id) => {
+            if (roguelikeState.roster.includes(id)) return;
+            const newRoster = [...roguelikeState.roster, id];
+            const newStats = { ...roguelikeState.rosterStats };
+            newStats[id] = CHARACTERS.find(c => c.id === id).maxHp;
+            
+            setRoguelikeState(prev => ({ ...prev, roster: newRoster, rosterStats: newStats }));
+            
+            if (newRoster.length >= 3) {
+                setTimeout(() => setAppMode('roguelike_map'), 500);
+            }
+        };
+
+        return (
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col p-6 relative overflow-hidden items-center justify-center">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-fuchsia-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
+                <div className="relative z-10 w-full max-w-4xl text-center">
+                    <h2 className="text-5xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 drop-shadow-md">Draft Iniziale</h2>
+                    <p className="text-xl text-slate-300 mb-8 font-medium">Scegli 3 campioni. La vita NON si rigenera dopo le battaglie. Se muoiono tutti, la spedizione finisce. ({roguelikeState.roster.length}/3)</p>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        {roguelikeDraftChoices.map(char => {
+                            const isPicked = roguelikeState.roster.includes(char.id);
+                            return (
+                                <div key={char.id} onClick={() => handlePick(char.id)} className={`bg-slate-900/80 border-2 ${isPicked ? 'border-fuchsia-500 opacity-50 grayscale' : 'border-slate-600 hover:border-fuchsia-400 hover:bg-slate-800 hover:-translate-y-2 cursor-pointer'} p-6 rounded-3xl transition-all shadow-xl flex flex-col items-center`}>
+                                    <img src={char.img} className="w-24 h-24 rounded-full object-cover border-4 border-slate-700 mb-4" />
+                                    <h3 className="font-black text-xl mb-2">{char.name}</h3>
+                                    <div className="flex gap-2 justify-center mb-2">
+                                        {char.types.map(t => <span key={t} className={`text-[10px] font-black px-2 py-0.5 rounded uppercase ${TYPE_STYLES[t] || 'bg-gray-500'}`}>{t}</span>)}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (appMode === 'roguelike_map') {
+        const isRestFloor = roguelikeState.floor % 3 === 0 && roguelikeState.floor !== roguelikeState.maxFloor;
+        const isBossFloor = roguelikeState.floor === roguelikeState.maxFloor;
+
+        const startRoguelikeCombat = () => {
+            const myTeam = roguelikeState.roster.map(id => {
+                const base = CHARACTERS.find(c => c.id === id);
+                return { ...JSON.parse(JSON.stringify(base)), hp: roguelikeState.rosterStats[id], statuses: [], consecutiveProtect: 0, baseAtk: base.atk, baseDef: base.def, baseSpd: base.spd, moves: base.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
+            });
+
+            // Generazione Nemici (Scala in base al piano)
+            let enemyCount = 1;
+            if (roguelikeState.floor >= 4) enemyCount = 2;
+            if (roguelikeState.floor >= 7) enemyCount = 3;
+            if (isBossFloor) enemyCount = 1; // 1 Super Boss
+
+            const availableEnemies = CHARACTERS.filter(c => !c.isSummonOnly && (isBossFloor ? c.isSecretUnlock || c.id === 'cell' || c.id === 'trigon' : !c.isSecretUnlock));
+            const shuffledEnemies = [...availableEnemies].sort(() => 0.5 - Math.random());
+            
+            const enemyTeam = shuffledEnemies.slice(0, enemyCount).map(base => {
+                const scale = 1 + (roguelikeState.floor * 0.1); // +10% stats ogni piano
+                let e = { ...JSON.parse(JSON.stringify(base)), hp: Math.floor(base.maxHp * scale), maxHp: Math.floor(base.maxHp * scale), atk: Math.floor(base.atk * scale), def: Math.floor(base.def * scale), baseAtk: Math.floor(base.atk * scale), baseDef: Math.floor(base.def * scale), statuses: [], consecutiveProtect: 0, moves: base.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
+                if (isBossFloor) {
+                    e.atk = Math.floor(e.atk * 1.5); e.hp *= 2; e.maxHp *= 2; e.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))';
+                    e.statuses.push({ type: 'Protetto', turns: 1 });
+                }
+                return e;
+            });
+
+            const state = initialGameState();
+            state.gameMode = 'classica';
+            state.isRoguelikeBattle = true; // Flag fondamentale
+            state.settings = { teamSize: myTeam.length, fieldSize: Math.min(4, Math.max(myTeam.length, enemyTeam.length)) };
+            state.players = { p1: playerName || "Spedizione", p2: isBossFloor ? "Guardiano del Piano" : "Abitanti del Piano" };
+            state.playerAvatars = { p1: myTeam[0].img, p2: enemyTeam[0].img };
+            state.isBot = { p1: false, p2: true };
+            state.teams = { p1: myTeam, p2: enemyTeam };
+            state.field = { p1: myTeam.slice(0, state.settings.fieldSize).map((_, i) => i), p2: enemyTeam.slice(0, state.settings.fieldSize).map((_, i) => i) };
+            state.field.p1.forEach(idx => { if(state.teams.p1[idx]) state.teams.p1[idx].revealed = true; });
+            state.field.p2.forEach(idx => { if(state.teams.p2[idx]) state.teams.p2[idx].revealed = true; });
+            state.status = 'pre_battle';
+            setGameState(state);
+            setPlayerRole('p1');
+            setAppMode('local_room');
+        };
+
+        const handleRest = () => {
+            const newStats = { ...roguelikeState.rosterStats };
+            roguelikeState.roster.forEach(id => {
+                const max = CHARACTERS.find(c=>c.id===id).maxHp;
+                if (newStats[id] > 0) { // Cura solo chi è vivo
+                    newStats[id] = Math.min(max, newStats[id] + Math.floor(max * 0.4)); // Cura 40%
+                }
+            });
+            setRoguelikeState(p => ({ ...p, rosterStats: newStats, floor: p.floor + 1 }));
+        };
+
+        return (
+            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+                <button onClick={() => { setRoguelikeState({ isStarted: false, roster: [] }); setAppMode('menu'); }} className="absolute top-6 left-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 font-bold">
+                     <LogOut size={16} /> Abbandona Run
+                </button>
+                
+                <h2 className="text-4xl font-black mb-2 text-fuchsia-400">Piano {roguelikeState.floor} / {roguelikeState.maxFloor}</h2>
+                <div className="w-full max-w-2xl bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 mb-8 flex gap-4 overflow-x-auto custom-scrollbar">
+                    {roguelikeState.roster.map(id => {
+                        const char = CHARACTERS.find(c=>c.id===id);
+                        const hp = roguelikeState.rosterStats[id];
+                        return (
+                            <div key={id} className={`flex-1 min-w-[150px] bg-slate-800 p-4 rounded-xl flex flex-col items-center border ${hp <= 0 ? 'border-rose-900 grayscale' : 'border-slate-600'}`}>
+                                <img src={char.img} className="w-16 h-16 rounded-full object-cover mb-2 border-2 border-slate-500" />
+                                <span className="font-bold text-sm truncate w-full text-center">{char.name}</span>
+                                {renderHealthBar(hp, char.maxHp)}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div className="flex gap-6">
+                    {isRestFloor ? (
+                        <div className="bg-emerald-900/40 border border-emerald-500 p-8 rounded-3xl text-center max-w-sm">
+                            <h3 className="text-2xl font-black text-emerald-400 mb-2">Accampamento</h3>
+                            <p className="text-slate-300 mb-6">Un'area sicura. Cura il 40% dei PS a tutti i membri del team ancora in vita.</p>
+                            <button onClick={handleRest} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 px-8 rounded-full w-full transition-all">Riposa e Prosegui</button>
+                        </div>
+                    ) : (
+                        <div className={`bg-rose-900/40 border border-rose-500 p-8 rounded-3xl text-center max-w-sm`}>
+                            <h3 className="text-2xl font-black text-rose-400 mb-2">{isBossFloor ? 'Stanza del Boss' : 'Stanza di Combattimento'}</h3>
+                            <p className="text-slate-300 mb-6">{isBossFloor ? 'Il guardiano finale ti attende.' : 'Dei nemici bloccano la via. Preparati a lottare.'}</p>
+                            <button onClick={startRoguelikeCombat} className="bg-rose-600 hover:bg-rose-500 text-white font-black py-4 px-8 rounded-full w-full transition-all flex items-center justify-center gap-2"><Swords size={20}/> Entra in Battaglia</button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+    // --- FINE NUOVE PAGINE ---
 
     if (appMode === 'shop') {
         const playerData = getPlayerData();
@@ -11595,6 +11775,55 @@
                 </div>
             );
         }
+
+        // --- GESTIONE VITTORIA/SCONFITTA ROGUELIKE ---
+        if (gameState.isRoguelikeBattle) {
+            const isWin = gameState.winner === gameState.players.p1;
+            
+            return (
+                <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
+                    <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isWin ? 'from-fuchsia-900/40' : 'from-rose-900/40'} via-slate-950 to-black pointer-events-none`}></div>
+                    <div className="relative z-10 bg-slate-900/80 p-12 rounded-3xl border border-slate-700/50 shadow-2xl backdrop-blur-xl max-w-2xl">
+                        <h1 className={`text-6xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r ${isWin ? 'from-fuchsia-400 to-purple-500' : 'from-rose-500 to-red-600'}`}>
+                            {isWin ? (roguelikeState.floor === roguelikeState.maxFloor ? 'SPEDIZIONE COMPLETATA!' : 'VITTORIA!') : 'SPEDIZIONE FALLITA'}
+                        </h1>
+                        
+                        <p className="text-xl text-slate-300 mb-8 font-medium">
+                            {isWin 
+                                ? (roguelikeState.floor === roguelikeState.maxFloor ? 'Hai superato l\'ultimo piano. Sei una leggenda del Multiverso!' : 'I nemici sono stati sconfitti. Saliamo al prossimo piano.') 
+                                : 'Il tuo team è caduto. Dovrai ricominciare la scalata da zero.'}
+                        </p>
+                        
+                        <button onClick={() => {
+                            if (isWin) {
+                                // Salva gli HP attuali
+                                const newStats = { ...roguelikeState.rosterStats };
+                                gameState.teams.p1.forEach(c => {
+                                    if (!c.isSummonOnly) newStats[c.id] = c.hp;
+                                });
+                                
+                                if (roguelikeState.floor === roguelikeState.maxFloor) {
+                                    // Ha finito il gioco
+                                    setRoguelikeState({ isStarted: false, roster: [] });
+                                    setAppMode('menu');
+                                } else {
+                                    // Prossimo piano
+                                    setRoguelikeState(p => ({ ...p, rosterStats: newStats, floor: p.floor + 1 }));
+                                    setAppMode('roguelike_map');
+                                }
+                            } else {
+                                // Sconfitta = Reset
+                                setRoguelikeState({ isStarted: false, roster: [] });
+                                setAppMode('menu');
+                            }
+                        }} className={`px-10 py-5 rounded-full font-black text-2xl transition-all shadow-lg hover:-translate-y-1 ${isWin ? 'bg-gradient-to-r from-fuchsia-500 to-purple-600' : 'bg-gradient-to-r from-rose-600 to-red-600'}`}>
+                            {isWin ? (roguelikeState.floor === roguelikeState.maxFloor ? 'Torna al Menu' : 'Prosegui la Scalata') : 'Accetta la Sconfitta'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        // ---------------------------------------------
 
         let rewardText = "";
         let rankText = "";
