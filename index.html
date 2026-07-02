@@ -156,10 +156,11 @@
         const TYPES = ['Normale', 'Lotta', 'Fuoco', 'Acqua', 'Erba', 'Aria', 'Roccia', 'Ghiaccio', 'Robot', 'Drago', 'Magico', 'Veleno', 'Insetto', 'Elettro', 'Oscuro', 'Spettro', 'Buio', 'Suono', 'Psico', 'Terra', 'Luce'];
 
         const ITEMS_DB = {
-            'pozione': { id: 'pozione', name: 'Pozione', desc: 'Cura il 50% dei PS del personaggio in campo.', price: 200, type: 'heal', value: 0.5, icon: '🧪' },
-            'cura_totale': { id: 'cura_totale', name: 'Cura Totale', desc: 'Ripristina il 100% dei PS del personaggio.', price: 400, type: 'heal', value: 1.0, icon: '💊' },
-            'resurrezione': { id: 'resurrezione', name: 'Revitalizzante', desc: 'Riporta in vita il primo alleato sconfitto (50% PS).', price: 500, type: 'revive', value: 0.5, icon: '✨' },
-            'cura_status': { id: 'cura_status', name: 'Cura Status', desc: 'Rimuove ogni alterazione di stato negativa.', price: 100, type: 'heal_status', icon: '🌿' }
+            'pozione': { id: 'pozione', name: 'Pozione', desc: 'Cura il 50% dei PS del personaggio in campo.', price: 100, type: 'heal', value: 0.5, icon: '🧪' },
+            'cura_totale': { id: 'cura_totale', name: 'Cura Totale', desc: 'Ripristina il 100% dei PS del personaggio.', price: 300, type: 'heal', value: 1.0, icon: '💊' },
+            'resurrezione': { id: 'resurrezione', name: 'Revitalizzante', desc: 'Riporta in vita il primo alleato sconfitto (50% PS).', price: 400, type: 'revive', value: 0.5, icon: '✨' },
+            'cura_status': { id: 'cura_status', name: 'Cura Status', desc: 'Rimuove ogni alterazione di stato negativa.', price: 100, type: 'heal_status', icon: '🌿' },
+            'pozione_rigenerante': { id: 'pozione_rigenerante', name: 'Pozione Rigenerante', desc: 'Cura il 15% dei PS alla fine di ogni turno per 4 turni.', price: 150, type: 'regen', turns: 4, value: 0.15, icon: '🧴' }
         };
 
         const MOVES_DB = {
@@ -429,6 +430,7 @@
           'Radici Avvolgenti': { name: 'Radici Avvolgenti', type: 'Erba', power: 70, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Evoca possenti radici che stritolano il nemico. 30% di probabilità di stordirlo.' },
           'Spore Soporifere': { name: 'Spore Soporifere', type: 'Erba', power: 0, targetCount: 2, statusEffect: { type: 'Addormentato', chance: 0.6 }, desc: 'Soffia polveri ipnotiche. Ha il 60% di probabilità di addormentare fino a due bersagli.' },
           'Fascino Botanico': { name: 'Fascino Botanico', type: 'Normale', power: 0, statusEffect: { type: 'Infatuato', chance: 1.0 }, targetStatDebuff: { atk: 0.7 }, desc: 'Ammalia il bersaglio infatuandolo (50% prob. di non attaccare) e ne riduce l\'Attacco del 30%.' },
+          'Polline scottante': { name: 'Polline scottante', type: 'Fuoco', power: 70, statusEffect: { type: 'Scottato', chance: 1.0 }, desc: 'Soffia un polline infuocato. Infligge 70 danni e scotta infallibilmente il bersaglio.' },
 
           // NUOVE MOSSE MANTIDE
           'Colpo della Mantide': { name: 'Colpo della Mantide', type: 'Insetto', power: 50, priority: 1, desc: 'Un colpo fulmineo di arti marziali. Colpisce sempre per primo (Priorità +1).' },
@@ -758,10 +760,12 @@
           'Missile': { name: 'Missile', type: 'Robot', power: 80, desc: 'Spara un piccolo missile a ricerca che infligge 80 danni.' },
 
           // NUOVE MOSSE MAX CAULFIELD E CHLOE PRICE
+          'Tempesta di Farfalle': { name: 'Tempesta di Farfalle', type: 'Insetto', power: 90, targetMode: 'any', targetCount: 2, healAlliesByDamage: true, desc: 'Evoca uno sciame mistico. Puoi bersagliare liberamente alleati o nemici (2 in totale). Ai nemici infligge 90 danni; se colpisce un alleato, lo cura per un valore pari al danno calcolato!' },
           'Rewind': { name: 'Rewind', type: 'Magico', power: 0, target: 'self', priority: 2, maxUses: 3, heal: 0.5, removeNegativeStatuses: true, desc: 'Riavvolge il tempo con priorità +2 per annullare i danni! Recupera il 50% dei PS e cura gli status. (3 utilizzi)' },
           'Eco Temporale': { name: 'Eco Temporale', type: 'Magico', power: 0, target: 'self', statBuff: { atk: 2.0 }, desc: 'Altera la linea temporale. Raddoppia il proprio Attacco per il prossimo colpo.' },
           'Polaroid Anomala': { name: 'Polaroid Anomala', type: 'Normale', power: 80, statusEffects: [{ type: 'Confuso', chance: 0.2 }, { type: 'Scottato', chance: 0.1 }], desc: 'Scatta una foto con un flash abbagliante. 20% di probabilità di confondere e 10% di scottare il bersaglio.' },
           'Tempesta di Arcadia Bay': { name: 'Tempesta di Arcadia Bay', type: 'Aria', power: 110, targetCount: 2, maxUses: 2, recharge: true, desc: 'Evoca un tornado devastante su 2 nemici. Richiede ricarica nel turno successivo.' },
+          'Caos Assoluto': { name: 'Caos Assoluto', type: 'Luce', power: 120, targetCount: 4, maxUses: 2, statusEffect: { type: 'Confuso', chance: 0.5 }, desc: 'Un assolo ribelle di pura luce dalla potenza inaudita. Colpisce tutti i nemici con il 50% di probabilità di confonderli. (2 utilizzi)' },
 
           'Riff Ribelle': { name: 'Riff Ribelle', type: 'Suono', power: 80, statusEffect: { type: 'Confuso', chance: 0.1 }, desc: 'Colpo sonoro punk con la chitarra. 10% di probabilità di confondere.' },
           'Caos Punk': { name: 'Caos Punk', type: 'Suono', power: 50, statusEffects: [{ type: 'Avvelenato', chance: 0.25 }, { type: 'Scottato', chance: 0.25 }, { type: 'Confuso', chance: 0.25 }, { type: 'Infatuato', chance: 0.25 }], desc: 'Causa caos totale! Infligge 50 danni e può infliggere a caso veleno, scottatura, confusione o infatuazione.' },
@@ -859,7 +863,7 @@
           'VAI A LETTO.': { name: 'VAI A LETTO.', type: 'Lotta', power: 75, statusEffect: { type: 'Addormentato', chance: 0.15 }, desc: 'Spedisce il nemico a dormire a suon di sberle. 15% di prob. di addormentare.' },
 
           'Nyop-nyop': { name: 'Nyop-nyop', type: 'Drago', power: 40, drain: 0.5, statusEffect: { type: 'Elettrizzato', chance: 1.0 }, desc: 'Afferra il nemico con la lingua! Recupera il 50% dei danni inflitti e paralizza al 100% per il trauma.' },
-          'Uovo boomerang': { name: 'Uovo boomerang', type: 'Normale', power: 20, multiHit: { min: 2, max: 5 }, desc: 'Lancia uova a ripetizione. Colpisce da 2 a 5 volte.' },
+          'Uovo boomerang': { name: 'Uovo boomerang', type: 'Normale', power: 20, multiHit: { min: 2, max: 7 }, desc: 'Lancia uova a ripetizione. Colpisce da 2 a 7 volte.' },
           'Sali sulla mia schiena': { name: 'Sali sulla mia schiena', type: 'Normale', power: 0, priority: 2, targetMode: 'ally', statusEffect: { type: 'In_Groppa', turns: 1 }, desc: 'Prende in groppa un alleato per un turno! Gli attacchi a bersaglio singolo rivolti a lui colpiranno Yoshi, che subirà il 50% dei danni in meno.' },
           'Colpo salterino': { name: 'Colpo salterino', type: 'Drago', power: 80, desc: 'Un balzo potentissimo seguito da uno schianto sul nemico.' },
 
@@ -1035,7 +1039,10 @@
           'Assolo di Keytar': { name: 'Assolo di Keytar', type: 'Suono', power: 85, targetCount: 2, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Suona un accordo assordante con il suo keytar. Colpisce fino a 2 nemici con il 30% di confonderli.' },
           'Scatto Predatorio': { name: 'Scatto Predatorio', type: 'Robot', power: 75, speedScaling: true, desc: 'Un balzo letale verso la preda. Il danno aumenta in base alla sua Velocità.' },
           'Occhi a Raggi X': { name: 'Occhi a Raggi X', type: 'Robot', power: 0, targetStatDebuff: { def: 0.7, accFlat: 0.2 }, desc: 'Analizza i punti deboli del nemico. Ne diminuisce la Difesa (-30%) e la Precisione.' },
-          'La Preferita': { name: 'La Preferita', type: 'Suono', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Si auto-incoraggia ad alta voce! Aumenta il suo Attacco e Velocità del 50%.' }
+          'La Preferita': { name: 'La Preferita', type: 'Suono', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Si auto-incoraggia ad alta voce! Aumenta il suo Attacco e Velocità del 50%.' },
+          
+          // NUOVE MOSSE DOLLI
+          'Incubo di Pezza': { name: 'Incubo di Pezza', type: 'Spettro', power: 100, targetCount: 4, targetStatDebuff: { atk: 0.7 }, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'La bambola si trasforma in un incubo! Colpisce tutti i nemici riducendone l\'Attacco e ha il 20% di confonderli.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1077,7 +1084,7 @@
           { id: 'darwin', name: 'Darwin', types: ['Acqua', 'Normale'], hp: 95, maxHp: 95, atk: 85, def: 80, spd: 100, img: 'https://i.pinimg.com/1200x/5a/cf/9c/5acf9c886678411963046b04051e610e.jpg', passive: { name: 'Regime del Sorriso', type: 'on_turn_end', teamStatBuff: { def: 1.3 }, teamStatBuffChance: 0.50, enemyStatusEffect: { type: 'Confuso', chance: 0.20 }, desc: 'Alla fine di ogni turno, impone a tutti di "essere felici": ha il 50% di probabilità di aumentare del 30% la Difesa degli alleati in campo, e ogni nemico ha il 20% di probabilità di finire confuso.' }, moves: [MOVES_DB['Bolla Turbo'], MOVES_DB['Onda Amica'], MOVES_DB['Brutto, brutto e cattivo!'], MOVES_DB['Onda Travolgente']] },
           { id: 'juvia', name: 'Juvia', types: ['Acqua'], hp: 90, maxHp: 90, atk: 100, def: 70, spd: 80, img: 'https://i.pinimg.com/736x/5b/ba/7c/5bba7c154e41cf9d8a3905ca7020ac3b.jpg', moves: [MOVES_DB['Tempesta emotiva'], MOVES_DB['Colpo impetuoso'], MOVES_DB['Amore devoto'], MOVES_DB['Flirt']] },
           { id: 'sanemi', name: 'Sanemi', types: ['Aria', 'Lotta'], hp: 105, maxHp: 105, atk: 115, def: 80, spd: 100, img: 'https://i.pinimg.com/736x/54/49/7f/54497f3c2cfb1a3467f996f942c4f812.jpg', moves: [MOVES_DB['Primo Kata'], MOVES_DB['Terzo Kata'], MOVES_DB['Settimo Kata'], MOVES_DB['Colpo Karate']] },
-          { id: 'dolli', name: 'Dolli', types: ['Aria', 'Acqua'], hp: 90, maxHp: 90, atk: 85, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/5c/dd/8d/5cdd8d89ce9d32e38f97c50ccece9933.jpg', passive: { name: 'Bambola di Pezza', type: 'on_faint', maxUses: 1, applyStatusToTeam: { type: 'Scudo Team', turns: 3 }, desc: 'Quando viene sconfitta, applica Scudo Team (Difesa x3) agli alleati in campo per 3 turni.' }, moves: [MOVES_DB['Riflesso Team'], MOVES_DB['Sorriso Luminoso'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
+          { id: 'dolli', name: 'Dolli', types: ['Aria', 'Acqua'], hp: 110, maxHp: 110, atk: 85, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/5c/dd/8d/5cdd8d89ce9d32e38f97c50ccece9933.jpg', passive: { name: 'Bambola di Pezza', type: 'on_faint', maxUses: 1, applyStatusToTeam: { type: 'Scudo Team', turns: 3 }, desc: 'Quando viene sconfitta, applica Scudo Team (Difesa x3) agli alleati in campo per 3 turni.' }, moves: [MOVES_DB['Riflesso Team'], MOVES_DB['Sorriso Luminoso'], MOVES_DB['Faccino carino!'], MOVES_DB['Tsunami dolce']] },
           { id: 'kevin', name: 'Kevin', types: ['Terra', 'Roccia'], hp: 110, maxHp: 110, atk: 90, def: 100, spd: 50, img: 'https://i.pinimg.com/736x/a6/c1/a5/a6c1a5535bcc84e78886d6e6f29a560a.jpg', moves: [MOVES_DB['Pugno Minerale'], MOVES_DB['Frana Impattante'], MOVES_DB['Assorbimento grezzo'], MOVES_DB['Carica selvaggia']] },
           { id: 'cuoredipietra', name: 'Cuore di Pietra', types: ['Roccia', 'Terra'], hp: 120, maxHp: 120, atk: 105, def: 130, spd: 30, img: 'https://i.pinimg.com/736x/3d/91/a9/3d91a9f4d2e605b15a70289b5e0045e7.jpg', passive: { name: 'Vigore', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Ruggito di Pietra'], MOVES_DB['Pugno di Macigno'], MOVES_DB['Scaglie di Roccia'], MOVES_DB['Presa Schiacciante']] },
           { id: 'elsa', name: 'Elsa', types: ['Ghiaccio'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 90, img: 'https://i.pinimg.com/1200x/4d/fa/e0/4dfae0259d23b33d9a4b90f7848f9ed8.jpg', passive: { name: 'Cuore di Ghiaccio', type: 'on_move_use', requiredMoveType: 'Ghiaccio', chance: 0.50, targetStatDebuff: { spd: 0.8 }, desc: 'Quando usa una mossa di tipo Ghiaccio, ha il 50% di probabilità di rallentare i nemici colpiti del 20%.' }, moves: [MOVES_DB['Gelo Eterno'], MOVES_DB['Frammenti di Neve'], MOVES_DB['Canto dell Inverno'], MOVES_DB['Luce Cristallina']] },
@@ -1091,7 +1098,7 @@
           { id: 'poisonivy', name: 'Poison Ivy', types: ['Veleno', 'Erba'], hp: 95, maxHp: 95, atk: 100, def: 80, spd: 75, img: 'https://i.pinimg.com/736x/d4/6d/c1/d46dc1e0c93db1696dbe77af5903bb50.jpg', moves: [MOVES_DB['Bacio Tossico'], MOVES_DB['Radici Avvolgenti'], MOVES_DB['Spore Soporifere'], MOVES_DB['Fascino Botanico']] },
           { id: 'mantide', name: 'Mantide', types: ['Insetto'], hp: 70, maxHp: 70, atk: 110, def: 60, spd: 115, img: 'https://i.pinimg.com/736x/ec/13/e7/ec13e73634b743dda5723d1fbe45c5e4.jpg', moves: [MOVES_DB['Colpo della Mantide'], MOVES_DB['Agopuntura'], MOVES_DB['Raffica di Pugni'], MOVES_DB['Schivata Acrobatica']] },
           { id: 'zazan', name: 'Zazan', types: ['Insetto', 'Veleno'], hp: 110, maxHp: 110, atk: 105, def: 90, spd: 85, img: 'https://i1-e.pinimg.com/736x/78/73/6c/78736c10dfdeaf9491b5e7a56ac3b880.jpg', passive: { name: 'Corazza Mutante', type: 'on_hp_threshold', threshold: 0.3, statBuff: { def: 2.0 }, removeNegativeStatuses: true, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, muta in un mostro orrendo: raddoppia la Difesa e si purifica da tutti gli status negativi.' }, moves: [MOVES_DB['Aculeo Letale'], MOVES_DB['Metamorfosi Regina'], MOVES_DB['Seta Imprigionante'], MOVES_DB['Raggio del Giudizio']] },
-          { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 65, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', passive: { name: 'Voglio diventare un re gentile!', type: 'on_ally_faint', statBuff: { atk: 1.15 }, desc: 'Se un alleato viene mandato K.O., si infiamma per vendicarlo: il suo Attacco aumenta del 15% per ogni compagno caduto (cumulativo).' }, moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Carica del Re Fulmine']] },
+          { id: 'zatchbell', name: 'Zatch bell', types: ['Elettro', 'Magico'], hp: 85, maxHp: 85, atk: 115, def: 75, spd: 95, img: 'https://i.pinimg.com/1200x/6c/88/20/6c8820d0e1f2a40f354c17ec1d0cbb8c.jpg', passive: { name: 'Voglio diventare un re gentile!', type: 'on_ally_faint', statBuff: { atk: 1.15 }, desc: 'Se un alleato viene mandato K.O., si infiamma per vendicarlo: il suo Attacco aumenta del 15% per ogni compagno caduto (cumulativo).' }, moves: [MOVES_DB['Zaker'], MOVES_DB['Rashield'], MOVES_DB['Zagurzem'], MOVES_DB['Baou Zakeruga'], MOVES_DB['Carica del Re Fulmine']] },
           { id: 'renarouge', name: 'Rena Rouge', types: ['Normale'], hp: 90, maxHp: 90, atk: 100, def: 80, spd: 110, img: 'https://i.pinimg.com/736x/69/cd/9d/69cd9d033e9b909110a2938030bea842.jpg', moves: [MOVES_DB['Miraggio!'], MOVES_DB['Zuffa di colpi'], MOVES_DB['Devia-colpi'], MOVES_DB['Volpe rabbiosa'], MOVES_DB['Lucky Charm Illusorio!']] },
           { id: 'laxus', name: 'Laxus', types: ['Elettro', 'Lotta'], hp: 105, maxHp: 105, atk: 120, def: 85, spd: 90, img: 'https://i.pinimg.com/1200x/e5/6e/8d/e56e8d20b78d5fab428b389d13907b3d.jpg', moves: [MOVES_DB['Ruggito del Drago Fulmine'], MOVES_DB['Alabarda del Cielo'], MOVES_DB['Combo Fairy Tale'], MOVES_DB['Fairy Law']] },
           { id: 'strega', name: 'Strega', types: ['Oscuro', 'Psico'], hp: 85, maxHp: 85, atk: 110, def: 60, spd: 95, img: 'https://i.pinimg.com/736x/1d/12/a7/1d12a7fb833d37085816d72f4d231d05.jpg', passive: { name: 'Corteo Oscuro', type: 'on_enter', isSummon: ['scheletro', 'carta_guardia'], maxUses: 1, desc: 'Appena scende in campo, evoca immediatamente uno Scheletro e una Carta Guardia al suo fianco. (Si attiva 1 sola volta per battaglia)' }, moves: [MOVES_DB['Raggio Avvelenato'], MOVES_DB['Evocazione!'], MOVES_DB['Guardie!']] },
@@ -1183,7 +1190,7 @@
 
           { id: 'jakedc', name: 'Jake (DC)', types: ['Normale', 'Fuoco'], hp: 90, maxHp: 90, atk: 90, def: 75, spd: 85, img: 'https://i.pinimg.com/736x/28/3b/2d/283b2d85ccb4762668e7d6138c6684f9.jpg', moves: [MOVES_DB['Battuta Fuori Luogo'], MOVES_DB['Sguardo Omosessuale'], MOVES_DB['Tom difendimi!'], MOVES_DB['Lanciafiamme Rubato']] },
 
-          { id: 'maxcaulfield', name: 'Max Caulfield', types: ['Normale'], hp: 95, maxHp: 95, atk: 90, def: 80, spd: 85, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay'], MOVES_DB['Love is Strange']] },
+          { id: 'maxcaulfield', name: 'Max Caulfield', types: ['Normale'], hp: 95, maxHp: 95, atk: 92, def: 95, spd: 94, img: 'https://i.pinimg.com/736x/03/61/b2/0361b2be66c2086a3203aa1f0c15f0c3.jpg', moves: [MOVES_DB['Rewind'], MOVES_DB['Eco Temporale'], MOVES_DB['Polaroid Anomala'], MOVES_DB['Tempesta di Arcadia Bay'], MOVES_DB['Love is Strange']] },
           { id: 'chloeprice', name: 'Chloe Price', types: ['Suono', 'Normale'], hp: 100, maxHp: 100, atk: 110, def: 75, spd: 95, img: 'https://i.pinimg.com/736x/c0/95/1a/c0951ab8f88e25c6cf1f076f3f26dcbb.jpg', passive: { name: 'Sfortuna Cronica', type: 'on_enter', maxUses: 3, randomStatDebuffToRandomEnemy: { chance: 0.5, multiplier: 0.7 }, desc: 'Appena scende in campo, la sua sfiga colpisce un nemico casuale: c\'è il 50% di probabilità per ogni statistica (Attacco, Difesa, Velocità) di essere ridotta del 30%.' }, moves: [MOVES_DB['Riff Ribelle'], MOVES_DB['Caos Punk'], MOVES_DB['Testa Calda'], MOVES_DB['Ride Or Die'], MOVES_DB['Love is Strange']] },
 
           { id: 'miku', name: 'Hatsune Miku', types: ['Suono', 'Magico'], hp: 90, maxHp: 90, atk: 110, def: 70, spd: 115, img: 'https://i.pinimg.com/736x/51/cf/f4/51cff4f1b602b7220d4eaeccf558ffbf.jpg', moves: [MOVES_DB['Vocal Burst'], MOVES_DB['Melodia Curativa'], MOVES_DB['Risonanza Mentale'], MOVES_DB['Canto Armonico']] },
@@ -2892,8 +2899,9 @@
           const pressTimerRef = useRef(null);
           const isCalculatingRef = useRef(false);
           
-          // NUOVO: Ref per bloccare i doppi click veloci
+          // NUOVO: Ref per bloccare i doppi click veloci e fix timer
           const isSubmittingActionRef = useRef(false);
+          const currentDraftTurnRef = useRef(0);
           
           // --- YOUTUBE BGM PLAYER ---
           const [isMuted, setIsMuted] = useState(false);
@@ -3017,6 +3025,11 @@
                   }
               }
           }, [timeLeft, gameState.status, isPlayingEvents, appMode, playerRole]);
+
+          // --- FIX: TIENI TRACCIA DEL TURNO DRAFT REALE ---
+          useEffect(() => {
+              currentDraftTurnRef.current = gameState.currentDraftTurn;
+          }, [gameState.currentDraftTurn]);
           
           // --- EFFETTO TIMER DRAFT BATTLE ---
           useEffect(() => {
@@ -3051,6 +3064,10 @@
               const activePlayerTurn = gameState.draftSequence[gameState.currentDraftTurn];
               if (!activePlayerTurn) return; // Draft finito
 
+              // FIX CRITICO: Resetta SEMPRE il timer locale a 15 quando inizia un nuovo turno.
+              // Impedisce che il timer scatti a zero istantaneamente se l'avversario ha impiegato troppo tempo!
+              setDraftTimeLeft(15);
+
               if (gameState.isBot[activePlayerTurn]) {
                   if (appMode === 'local_room' || playerRole === 'p1') {
                       const timer = setTimeout(() => {
@@ -3063,11 +3080,11 @@
                       return () => clearTimeout(timer);
                   }
               } else {
+                  const expectedTurn = gameState.currentDraftTurn;
                   // Timer per l'umano di turno (15 secondi)
                   const timer = setInterval(() => {
                       setDraftTimeLeft(prev => {
                           if (prev <= 1) {
-                              // FIX: In locale, chiunque può veder scattare l'autoscelta se scade il tempo
                               if (appMode === 'local_room' || (appMode === 'online_room' && activePlayerTurn === playerRole)) {
                                   const available = gameState.sharedDraftPool.map((c, i) => ({ c, i })).filter(x => !x.c.pickedBy);
                                   if (available.length > 0) {
@@ -3075,9 +3092,10 @@
                                       handleSharedPick(pick.i, activePlayerTurn);
                                   }
                               } else if (appMode === 'online_room' && playerRole === 'p1') {
-                                  // Fallback: se l'ospite crasha e non invia la scelta, l'host la fa per lui dopo qualche secondo in più
+                                  // Fallback: se l'ospite crasha e non invia la scelta, l'host la fa per lui
                                   setTimeout(() => {
-                                      if (gameState.currentDraftTurn === gameState.currentDraftTurn) { // Se il turno non è cambiato
+                                      // FIX: Usa la ref per assicurarsi che il turno non sia già cambiato nel frattempo
+                                      if (currentDraftTurnRef.current === expectedTurn) { 
                                           const available = gameState.sharedDraftPool.map((c, i) => ({ c, i })).filter(x => !x.c.pickedBy);
                                           if (available.length > 0) {
                                               const pick = available[Math.floor(Math.random() * available.length)];
@@ -3659,6 +3677,7 @@
               if (!user || !playerName.trim()) return;
               const updatePresence = async () => {
                   try {
+                      const stats = getPlayerData(); // Recuperiamo le stats correnti per sincronizzarle online
                       const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'online_users', sessionId);
                       await setDoc(userRef, {
                           uid: user.uid,
@@ -3667,7 +3686,9 @@
                           avatar: playerAvatarUrl,
                           status: (appMode === 'online_room' && roomId) ? 'In Partita' : 'Nel Menu',
                           roomId: appMode === 'online_room' ? roomId : null,
-                          timestamp: Date.now()
+                          timestamp: Date.now(),
+                          wins: stats.wins || 0,
+                          matches: stats.matches || 0
                       });
                   } catch (err) {
                       console.error("Errore aggiornamento presenza:", err);
@@ -3703,7 +3724,7 @@
               setAppMode('online_room');
           };
 
-          const getPlayerData = () => {
+          function getPlayerData() {
               const key = `multiverse_rpg_global_profile`;
               const raw = localStorage.getItem(key);
               if (raw) {
@@ -3760,7 +3781,7 @@
               }
 
               return { matches: 0, wins: 0, playtime: 0, chars: {}, moves: {}, coins: 500, inventory: { cura_totale: 1 }, unlockedChars: [], apologyGiftReceived: true, bugFixCompensation200: true, maxSurvivalRound: 0 };
-          };
+          }
 
           const updateLocalStats = (updates) => {
               const key = `multiverse_rpg_global_profile`;
@@ -4302,6 +4323,9 @@
 
           // --- GESTIONE PICK DRAFT CONDIVISO ---
           const handleSharedPick = (poolIdx, pRole) => {
+              const activeTurnPlayer = gameState.draftSequence[gameState.currentDraftTurn];
+              if (pRole !== activeTurnPlayer) return; // FIX ANTI-LAG: Impedisce doppie scelte simultanee
+
               const item = gameState.sharedDraftPool[poolIdx];
               if (!item || item.pickedBy) return; // Già scelto
 
@@ -4324,7 +4348,7 @@
                   sharedDraftPool: newPool,
                   currentDraftTurn: gameState.currentDraftTurn + 1
               });
-              setDraftTimeLeft(15); // Timer più veloce per il draft condiviso
+              // rimosso il setDraftTimeLeft(15) da qui perché ora è gestito in sicurezza all'inizio dell'effetto
           };
           // -------------------------------------
 
@@ -4781,6 +4805,9 @@
                     } else if (gameState.inventory[cpuPlayer].pozione > 0 && cpuChar.hp < (cpuChar.maxHp * 0.50)) {
                         bestAction = { type: 'use_item', itemId: 'pozione', targetIdx: charTeamIdx };
                         bestScore = 8000;
+                    } else if (gameState.inventory[cpuPlayer].pozione_rigenerante > 0 && !cpuChar.statuses.some(s => s.type === 'Rigenerazione') && cpuChar.hp < (cpuChar.maxHp * 0.70)) {
+                        bestAction = { type: 'use_item', itemId: 'pozione_rigenerante', targetIdx: charTeamIdx };
+                        bestScore = 7500;
                     }
 
                     // 2. Valutazione Mosse Strategiche
@@ -4946,7 +4973,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard' || char.id === 'maxcaulfield' || char.id === 'chloeprice' || char.id === 'dolli' || char.id === 'zatchbell' || char.id === 'yoshi' || char.id === 'poisonivy') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -5132,6 +5159,9 @@
             }
             if (attacker.passive && attacker.passive.type === 'first_strike_bonus' && isFirstAttackOfTurn) {
                 pwr = Math.floor(pwr * attacker.passive.damageBonus);
+            }
+            if (attacker.passive && attacker.passive.type === 'global_damage_boost') {
+                pwr = Math.floor(pwr * attacker.passive.multiplier);
             }
             
             // PASSIVA YOSHI (Buff In Groppa)
@@ -5548,6 +5578,30 @@
                             char.moves.push({ ...MOVES_DB['Valanga'], remainingUses: MOVES_DB['Valanga'].maxUses !== undefined ? MOVES_DB['Valanga'].maxUses : null });
                         }
 
+                        if (char.id === 'maxcaulfield') {
+                            char.types = ['Insetto', 'Aria'];
+                            char.moves.push({ ...MOVES_DB['Tempesta di Farfalle'], remainingUses: MOVES_DB['Tempesta di Farfalle'].maxUses !== undefined ? MOVES_DB['Tempesta di Farfalle'].maxUses : null });
+                        }
+
+                        if (char.id === 'chloeprice') {
+                            char.types = ['Suono', 'Luce'];
+                            char.moves.push({ ...MOVES_DB['Caos Assoluto'], remainingUses: MOVES_DB['Caos Assoluto'].maxUses !== undefined ? MOVES_DB['Caos Assoluto'].maxUses : null });
+                        }
+
+                        if (char.id === 'dolli') {
+                            char.types = ['Spettro', 'Acqua'];
+                            char.moves.push({ ...MOVES_DB['Incubo di Pezza'], remainingUses: MOVES_DB['Incubo di Pezza'].maxUses !== undefined ? MOVES_DB['Incubo di Pezza'].maxUses : null });
+                        }
+
+                        if (char.id === 'zatchbell') {
+                            char.passive = { name: 'Kiyomaro: Zatch non sei solo', type: 'global_damage_boost', multiplier: 1.15, desc: 'Kiyomaro lo aiuta a combattere leggendo il libro rosso: tutte le sue mosse ricevono un potenziamento del 15% ai danni!' };
+                        }
+
+                        if (char.id === 'poisonivy') {
+                            char.types = ['Veleno', 'Fuoco'];
+                            char.moves.push({ ...MOVES_DB['Polline scottante'], remainingUses: MOVES_DB['Polline scottante'].maxUses !== undefined ? MOVES_DB['Polline scottante'].maxUses : null });
+                        }
+
                         workingHyperUsed[order.player] = true;
                         
                         // Genera evento speciale per innescare l'animazione di trasformazione!
@@ -5634,6 +5688,15 @@
                               attacker.statuses = attacker.statuses.filter(s => !negatives.includes(s.type));
                               updateStatusUI(player, charTeamIdx);
                               events.push({ type: 'text', text: `${gameState.players[player]} usa ${itemDef.name}! Gli status di ${attacker.name} sono curati.` });
+                          } else if (itemDef.type === 'regen') {
+                              const existingIdx = attacker.statuses.findIndex(s => s.type === 'Rigenerazione');
+                              if (existingIdx === -1) {
+                                  attacker.statuses.push({ type: 'Rigenerazione', turns: itemDef.turns, healFactor: itemDef.value });
+                              } else {
+                                  attacker.statuses[existingIdx].turns = itemDef.turns;
+                              }
+                              updateStatusUI(player, charTeamIdx);
+                              events.push({ type: 'text', text: `${gameState.players[player]} usa ${itemDef.name}! ${attacker.name} inizierà a rigenerare PS ad ogni turno.` });
                           }
                       }
                   }
@@ -6334,6 +6397,15 @@
                             }
                             // -----------------------------------------------------------
 
+                            // --- GESTIONE CURE SU ALLEATI CON DANNO (es. Tempesta di Farfalle) ---
+                            if (!isEnemyTarget && move.healAlliesByDamage) {
+                                const healAmount = hitDmg;
+                                t.char.hp = Math.min(t.char.maxHp, t.char.hp + healAmount);
+                                events.push({ type: 'damage', text: `✨ ${attacker.name} usa ${move.name} su ${t.char.name}! La magia lo cura di ${healAmount} PS!${effectivenessText}`, targetPlayer: t.player, targetIdx: t.idx, newHp: t.char.hp });
+                                attackSucceeded = true;
+                                break; // Usciamo dal loop dei colpi multipli (le cure sono istantanee)
+                            }
+
                             totalDmg += hitDmg;
                             actualHits++;
                             
@@ -6628,11 +6700,12 @@
                     }
                 } // FINE CICLO SUI BERSAGLI (resolvedTargets)
                 
-                if (attackSucceeded && move.selfStatBuff && attacker.hp > 0) {
+                const buffToApply = move.selfStatBuff || move.statBuff;
+                if (attackSucceeded && buffToApply && attacker.hp > 0) {
                     let statTexts = [];
-                    if (move.selfStatBuff.def) { attacker.def = Math.floor(attacker.def * move.selfStatBuff.def); statTexts.push("Difesa"); }
-                    if (move.selfStatBuff.spd) { attacker.spd = Math.floor(attacker.spd * move.selfStatBuff.spd); statTexts.push("Velocità"); }
-                    if (move.selfStatBuff.atk) { attacker.atk = Math.floor(attacker.atk * move.selfStatBuff.atk); statTexts.push("Attacco"); }
+                    if (buffToApply.def) { attacker.def = Math.floor(attacker.def * buffToApply.def); statTexts.push("Difesa"); }
+                    if (buffToApply.spd) { attacker.spd = Math.floor(attacker.spd * buffToApply.spd); statTexts.push("Velocità"); }
+                    if (buffToApply.atk) { attacker.atk = Math.floor(attacker.atk * buffToApply.atk); statTexts.push("Attacco"); }
                     if (statTexts.length > 0) {
                         events.push({ type: 'text', text: `La ${statTexts.join(" e ")} di ${attacker.name} aumenta per via dell'attacco!` });
                     }
@@ -7034,6 +7107,21 @@
                 applyDamage(char, psnDmg, target.player, target.charTeamIdx, `${char.name} subisce ${psnDmg} danni a causa del veleno!`);
                 char.statuses[psnIdx].turns += 1;
                 updateStatusUI(target.player, target.charTeamIdx);
+            }
+
+            let regenIdx = char.statuses.findIndex(s => s.type === 'Rigenerazione');
+            if (regenIdx !== -1) {
+                if (char.hp > 0 && char.hp < char.maxHp) {
+                    const healAmount = Math.max(1, Math.floor(char.maxHp * (char.statuses[regenIdx].healFactor || 0.15)));
+                    char.hp = Math.min(char.maxHp, char.hp + healAmount);
+                    events.push({ type: 'damage', text: `✨ ${char.name} rigenera ${healAmount} PS grazie alla Pozione!`, targetPlayer: target.player, targetIdx: target.charTeamIdx, newHp: char.hp });
+                }
+                char.statuses[regenIdx].turns -= 1;
+                if (char.statuses[regenIdx].turns <= 0) {
+                    char.statuses.splice(regenIdx, 1);
+                    updateStatusUI(target.player, target.charTeamIdx);
+                    events.push({ type: 'text', text: `L'effetto rigenerante su ${char.name} è svanito!` });
+                }
             }
 
             char.damageTakenLastTurn = char.damageTakenThisTurn || 0;
@@ -7655,6 +7743,18 @@
     const renderView = () => {
         if (appMode === 'menu') {
             const playerData = getPlayerData();
+            
+            // Calcolo Leaderboard Live
+            const me = {
+                sessionId: sessionId,
+                name: playerName || "Tu",
+                avatar: playerAvatarUrl || getDefaultAvatar(playerName || "Tu"),
+                wins: playerData.wins || 0,
+                matches: playerData.matches || 0,
+                isMe: true
+            };
+            const allForLeaderboard = playerName.trim() ? [...onlineUsers, me] : onlineUsers;
+            const top5Users = allForLeaderboard.sort((a, b) => (b.wins || 0) - (a.wins || 0)).slice(0, 5);
 
             return (
                 <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
@@ -7674,6 +7774,31 @@
                         🛠️ MODALITÀ ANTEPRIMA ATTIVA<br/>Tutti i personaggi sono temporaneamente sbloccati per i test!
                     </div>
                 )}
+                
+                {/* --- TOP 5 ONLINE UMANI --- */}
+                <div className="absolute top-20 right-6 w-72 bg-slate-900/80 backdrop-blur-xl border border-amber-500/50 rounded-2xl p-4 shadow-[0_0_30px_rgba(245,158,11,0.15)] hidden xl:block z-20 transition-all hover:scale-[1.02]">
+                    <h3 className="text-amber-400 font-black flex items-center justify-between mb-4 border-b border-amber-500/30 pb-2 uppercase tracking-widest text-sm">
+                        <span className="flex items-center gap-2"><Trophy size={18}/> Top 5 Online</span>
+                        <span className="text-[10px] bg-amber-900/50 px-2 py-0.5 rounded text-amber-200 border border-amber-500/30 animate-pulse">Live</span>
+                    </h3>
+                    <div className="flex flex-col gap-2.5">
+                        {top5Users.length === 0 ? (
+                            <div className="text-xs text-slate-500 italic text-center py-4">Nessun giocatore online...</div>
+                        ) : top5Users.map((p, i) => (
+                            <div key={p.sessionId} className={`flex items-center gap-3 p-2 rounded-xl border transition-colors ${p.isMe ? 'bg-amber-900/40 border-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.2)]' : 'bg-slate-950/60 border-slate-800 hover:border-slate-600'}`}>
+                                <div className={`font-black text-xl w-6 text-center ${i === 0 ? 'text-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.8)]' : i === 1 ? 'text-slate-300' : i === 2 ? 'text-orange-500' : 'text-slate-600'}`}>{i + 1}°</div>
+                                <img src={p.avatar} className={`w-10 h-10 rounded-full border-2 ${p.isMe ? 'border-amber-400' : (i===0 ? 'border-yellow-400' : i===1 ? 'border-slate-300' : i===2 ? 'border-orange-500' : 'border-slate-600')} object-cover bg-slate-900 shrink-0`} />
+                                <div className="flex-1 min-w-0">
+                                    <div className={`font-bold text-xs truncate ${p.isMe ? 'text-amber-300' : 'text-slate-200'}`}>{p.name}</div>
+                                    <div className="text-[10px] text-slate-400 font-medium mt-0.5 flex justify-between">
+                                        <span>Vittorie:</span> <span className="text-emerald-400 font-black">{p.wins || 0}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                {/* --------------------------- */}
                 
                 <div className="bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl w-full max-w-md border border-slate-700/50 shadow-[0_0_50px_rgba(0,0,0,0.5)] space-y-5 z-10">
                     <div>
@@ -9311,7 +9436,7 @@
 
     if (appMode === 'catalog') {
         let displayedChars = [...CHARACTERS];
-        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash', 'elsa', 'sheldon', 'charizard'];
+        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash', 'elsa', 'sheldon', 'charizard', 'maxcaulfield', 'chloeprice', 'dolli', 'zatchbell', 'yoshi', 'poisonivy'];
         
         if (catalogFilter === 'Evocazioni') {
             displayedChars = displayedChars.filter(c => c.isSummonOnly);
@@ -9346,6 +9471,11 @@
                 if (char.id === 'elsa') { char.moves.push(MOVES_DB['Gelo Definitivo']); }
                 if (char.id === 'sheldon') { char.types = ['Drago', 'Roccia']; char.moves.push(MOVES_DB['Meteora Devastante']); }
                 if (char.id === 'charizard') { char.types = ['Roccia', 'Aria']; char.moves.push(MOVES_DB['Valanga']); }
+                if (char.id === 'maxcaulfield') { char.types = ['Insetto', 'Aria']; char.moves.push(MOVES_DB['Tempesta di Farfalle']); }
+                if (char.id === 'chloeprice') { char.types = ['Suono', 'Luce']; char.moves.push(MOVES_DB['Caos Assoluto']); }
+                if (char.id === 'dolli') { char.types = ['Spettro', 'Acqua']; char.moves.push(MOVES_DB['Incubo di Pezza']); }
+                if (char.id === 'zatchbell') { char.passive = { name: 'Kiyomaro: Zatch non sei solo', type: 'global_damage_boost', multiplier: 1.15, desc: 'Kiyomaro lo aiuta a combattere leggendo il libro rosso: tutte le sue mosse ricevono un potenziamento del 15% ai danni!' }; }
+                if (char.id === 'poisonivy') { char.types = ['Veleno', 'Fuoco']; char.moves.push(MOVES_DB['Polline scottante']); }
 
                 // --- APPLICA IMMAGINE IPER ---
                 if (char.id === 'barry') char.img = "https://i.redd.it/le0qp8fednsc1.jpeg";
@@ -9378,6 +9508,12 @@
                 else if (char.id === 'elsa') char.img = "https://i.pinimg.com/1200x/fa/2e/ed/fa2eed50fb89e9ea97d9252aa349a979.jpg";
                 else if (char.id === 'sheldon') char.img = "https://i.postimg.cc/FdLNqMxk/Gemini-Generated-Image-85dys085dys085dy.png";
                 else if (char.id === 'charizard') char.img = "https://i.postimg.cc/v1kj6cd6/Gemini-Generated-Image-zd38yrzd38yrzd38.png";
+                else if (char.id === 'maxcaulfield') char.img = "https://i.postimg.cc/xXLNqLB9/Copilot-20260701-040119.jpg";
+                else if (char.id === 'chloeprice') char.img = "https://i.postimg.cc/NLm1TZKZ/Gemini-Generated-Image-okh29cokh29cokh2.png";
+                else if (char.id === 'dolli') char.img = "https://i.pinimg.com/1200x/a2/4e/80/a24e807c05f25fa984e59ab0b44d952c.jpg";
+                else if (char.id === 'zatchbell') char.img = "https://i.pinimg.com/736x/ff/5c/4c/ff5c4c6f0dbd938e1bbc34d3a98e890e.jpg";
+                else if (char.id === 'yoshi') char.img = "https://i.postimg.cc/4H1dN6WR/Gemini-Generated-Image-b3jjfwb3jjfwb3jj.png";
+                else if (char.id === 'poisonivy') char.img = "https://i.postimg.cc/w339Gs8Y/Gemini-Generated-Image-ll2m1sll2m1sll2m.png";
                 
                 return char;
             });
@@ -10434,7 +10570,7 @@
             return (
                 <div className="flex gap-1 justify-center mt-1 flex-wrap">
                     {statuses.map((s, i) => {
-                        const colors = { 'Confuso': 'bg-fuchsia-500 text-white', 'Protetto': 'bg-sky-400 text-black', 'Riflesso': 'bg-gray-300 text-black', 'Scudo Team': 'bg-teal-400 text-black', 'Stordito': 'bg-amber-600 text-white', 'Infatuato': 'bg-pink-400', 'Elettrizzato': 'bg-yellow-400 text-black', 'Scottato': 'bg-red-500', 'Avvelenato': 'bg-purple-500', 'Congelato': 'bg-cyan-400 text-black', 'Addormentato': 'bg-slate-400', 'Indebolito': 'bg-stone-500 text-white', 'Ricarica': 'bg-orange-500 text-white', 'Magnetico': 'bg-indigo-500 text-white', 'Rashield': 'bg-yellow-200 text-black', 'Shudoruku': 'bg-orange-600 text-white', 'Dioemuru': 'bg-red-600 text-white', 'In_Groppa': 'bg-emerald-600 text-white', 'Ombra Rapida': 'bg-slate-700 text-cyan-300' };
+                        const colors = { 'Confuso': 'bg-fuchsia-500 text-white', 'Protetto': 'bg-sky-400 text-black', 'Riflesso': 'bg-gray-300 text-black', 'Scudo Team': 'bg-teal-400 text-black', 'Stordito': 'bg-amber-600 text-white', 'Infatuato': 'bg-pink-400', 'Elettrizzato': 'bg-yellow-400 text-black', 'Scottato': 'bg-red-500', 'Avvelenato': 'bg-purple-500', 'Congelato': 'bg-cyan-400 text-black', 'Addormentato': 'bg-slate-400', 'Indebolito': 'bg-stone-500 text-white', 'Ricarica': 'bg-orange-500 text-white', 'Magnetico': 'bg-indigo-500 text-white', 'Rashield': 'bg-yellow-200 text-black', 'Shudoruku': 'bg-orange-600 text-white', 'Dioemuru': 'bg-red-600 text-white', 'In_Groppa': 'bg-emerald-600 text-white', 'Ombra Rapida': 'bg-slate-700 text-cyan-300', 'Rigenerazione': 'bg-emerald-400 text-black' };
                         return <span key={i} className={`text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm uppercase ${colors[s.type] || 'bg-gray-500'}`}>{s.type.substring(0, 3)}</span>;
                     })}
                 </div>
@@ -10593,6 +10729,18 @@
                     displayImg = "https://i.postimg.cc/FdLNqMxk/Gemini-Generated-Image-85dys085dys085dy.png"; // Sheldon Iper
                 } else if (char.id === 'charizard') {
                     displayImg = "https://i.postimg.cc/v1kj6cd6/Gemini-Generated-Image-zd38yrzd38yrzd38.png"; // Charizard Iper
+                } else if (char.id === 'maxcaulfield') {
+                    displayImg = "https://i.postimg.cc/xXLNqLB9/Copilot-20260701-040119.jpg"; // Max Iper
+                } else if (char.id === 'chloeprice') {
+                    displayImg = "https://i.postimg.cc/NLm1TZKZ/Gemini-Generated-Image-okh29cokh29cokh2.png"; // Chloe Iper
+                } else if (char.id === 'dolli') {
+                    displayImg = "https://i.pinimg.com/1200x/a2/4e/80/a24e807c05f25fa984e59ab0b44d952c.jpg"; // Dolli Iper
+                } else if (char.id === 'zatchbell') {
+                    displayImg = "https://i.pinimg.com/736x/ff/5c/4c/ff5c4c6f0dbd938e1bbc34d3a98e890e.jpg"; // Zatch Iper
+                } else if (char.id === 'yoshi') {
+                    displayImg = "https://i.postimg.cc/4H1dN6WR/Gemini-Generated-Image-b3jjfwb3jjfwb3jj.png"; // Yoshi Iper
+                } else if (char.id === 'poisonivy') {
+                    displayImg = "https://i.postimg.cc/w339Gs8Y/Gemini-Generated-Image-ll2m1sll2m1sll2m.png"; // Poison Ivy Iper
                 }
             }
 
@@ -10943,16 +11091,42 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash' || activeCommandChar.id === 'elsa' || activeCommandChar.id === 'sheldon' || activeCommandChar.id === 'charizard')) && (
-                                                    <div className="col-span-2 mb-1">
-                                                        <button
-                                                            onClick={() => setPendingHyper(!pendingHyper)}
-                                                            className={`w-full py-3 rounded-xl font-black uppercase tracking-widest transition-all shadow-md ${pendingHyper ? 'bg-gradient-to-r from-yellow-300 to-yellow-500 text-black shadow-[0_0_25px_rgba(250,204,21,0.8)] scale-[1.02]' : 'bg-slate-800 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-900/30'}`}
-                                                        >
-                                                            {pendingHyper ? '✨ FORMA IPER SELEZIONATA! Scegli una mossa! ✨' : '⚡ ATTIVA FORMA IPER (1 Uso) ⚡'}
-                                                        </button>
-                                                    </div>
-                                                )}
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash' || activeCommandChar.id === 'elsa' || activeCommandChar.id === 'sheldon' || activeCommandChar.id === 'charizard' || activeCommandChar.id === 'maxcaulfield' || activeCommandChar.id === 'chloeprice' || activeCommandChar.id === 'dolli' || activeCommandChar.id === 'zatchbell' || activeCommandChar.id === 'yoshi' || activeCommandChar.id === 'poisonivy')) && (() => {
+                                                    let hyperTypeText = "";
+                                                    const hyperTypesMap = {
+                                                        'gardevoir': 'Psico-Erba',
+                                                        'astral': 'Oscuro',
+                                                        'spongebob': 'Acqua-Lotta',
+                                                        'ariana': 'Suono-Oscuro',
+                                                        'jake': 'Magico-Buio',
+                                                        'finn': 'Elettro-Fuoco',
+                                                        'juvia': 'Acqua-Buio',
+                                                        'corvina': 'Magico',
+                                                        'darwin': 'Acqua-Oscuro',
+                                                        'brago': 'Oscuro-Psico',
+                                                        'sdentato': 'Drago-Elettro',
+                                                        'sheldon': 'Drago-Roccia',
+                                                        'charizard': 'Roccia-Aria',
+                                                        'maxcaulfield': 'Insetto-Aria',
+                                                        'chloeprice': 'Suono-Luce',
+                                                        'dolli': 'Spettro-Acqua',
+                                                        'poisonivy': 'Veleno-Fuoco'
+                                                    };
+                                                    if (hyperTypesMap[activeCommandChar.id]) {
+                                                        hyperTypeText = ` [${hyperTypesMap[activeCommandChar.id].toUpperCase()}]`;
+                                                    }
+                                                    
+                                                    return (
+                                                        <div className="col-span-2 mb-1">
+                                                            <button
+                                                                onClick={() => setPendingHyper(!pendingHyper)}
+                                                                className={`w-full py-3 rounded-xl font-black uppercase tracking-widest transition-all shadow-md ${pendingHyper ? 'bg-gradient-to-r from-yellow-300 to-yellow-500 text-black shadow-[0_0_25px_rgba(250,204,21,0.8)] scale-[1.02]' : 'bg-slate-800 text-yellow-400 border border-yellow-500/50 hover:bg-yellow-900/30'}`}
+                                                            >
+                                                                {pendingHyper ? '✨ FORMA IPER SELEZIONATA! Scegli una mossa! ✨' : `⚡ ATTIVA FORMA IPER${hyperTypeText} (1 Uso) ⚡`}
+                                                            </button>
+                                                        </div>
+                                                    );
+                                                })()}
                                                 {/* --------------------------- */}
                                                 {activeCommandChar.moves.map((move, idx) => {
                                                     let isDisabled = move.remainingUses === 0 || (move.currentCooldown && move.currentCooldown > 0);
