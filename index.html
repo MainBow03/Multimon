@@ -1042,7 +1042,16 @@
           'La Preferita': { name: 'La Preferita', type: 'Suono', power: 0, target: 'self', statBuff: { atk: 1.5, spd: 1.5 }, desc: 'Si auto-incoraggia ad alta voce! Aumenta il suo Attacco e Velocità del 50%.' },
           
           // NUOVE MOSSE DOLLI
-          'Incubo di Pezza': { name: 'Incubo di Pezza', type: 'Spettro', power: 100, targetCount: 4, targetStatDebuff: { atk: 0.7 }, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'La bambola si trasforma in un incubo! Colpisce tutti i nemici riducendone l\'Attacco e ha il 20% di confonderli.' }
+          'Incubo di Pezza': { name: 'Incubo di Pezza', type: 'Spettro', power: 100, targetCount: 4, targetStatDebuff: { atk: 0.7 }, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'La bambola si trasforma in un incubo! Colpisce tutti i nemici riducendone l\'Attacco e ha il 20% di confonderli.' },
+
+          // NUOVE MOSSE CARLOS IPER
+          'Pugno infuocato del survivor': { name: 'Pugno infuocato del survivor', type: 'Fuoco', power: 120, selfStatBuff: { def: 0.7 }, desc: 'Un pugno letale avvolto dalle fiamme della sopravvivenza. Infligge danni immensi ma riduce la propria Difesa del 30%.' },
+
+          // NUOVE MOSSE LEON KENNEDY
+          'Silver Ghost': { name: 'Silver Ghost', type: 'Normale', power: 70, critChance: 0.2, critPower: 110, desc: 'Spara con la sua iconica pistola. Ha il 20% di probabilità di infliggere un colpo critico.' },
+          'Suplex': { name: 'Suplex', type: 'Lotta', power: 85, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Afferra il nemico e lo schianta a terra con violenza. 30% di probabilità di stordire il bersaglio.' },
+          'Flashbang': { name: 'Flashbang', type: 'Luce', power: 0, targetCount: 4, targetStatDebuff: { accFlat: 0.1 }, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Acceca tutti i nemici, riducendone la precisione del 10% e con il 30% di probabilità di confonderli.' },
+          'Fucile a Pompa': { name: 'Fucile a Pompa', type: 'Normale', power: 100, targetCount: 2, desc: 'Spara una potente cartuccia a distanza ravvicinata che colpisce fino a 2 nemici.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1075,6 +1084,7 @@
         const CHARACTERS = [
           { id: 'snorlax', name: 'Snorlax', types: ['Normale'], hp: 160, maxHp: 160, atk: 110, def: 65, spd: 30, img: 'https://i.pinimg.com/736x/49/99/27/499927d6452845cbf3a5e65c116bbaca.jpg', passive: { name: 'Baccastagna', type: 'cure_sleep', desc: 'Questo Pokémon si sveglia sempre istantaneamente quando viene addormentato o si addormenta.' }, moves: [MOVES_DB['Riposo'], MOVES_DB['Doppia Sberla'], MOVES_DB['Corposcontro'], MOVES_DB['Tuonopugno']] },
           { id: 'carlos', name: 'Carlos Oliveira', types: ['Normale', 'Lotta'], hp: 100, maxHp: 100, atk: 90, def: 80, spd: 70, img: 'https://i.pinimg.com/736x/3b/32/29/3b3229d97074aac59eceb564b01601e8.jpg', passive: { name: 'Sopravvissuto R.C.', type: 'survive_ko', maxUses: 1, desc: 'Una volta per battaglia resiste a un colpo che lo avrebbe mandato KO e resta con 1 PS.' }, moves: [MOVES_DB['Presa Militare'], MOVES_DB['Kit Medico'], MOVES_DB['Assalto Frontale'], MOVES_DB['Tiro Rapido']] },
+          { id: 'leon', name: 'Leon Kennedy', types: ['Normale', 'Lotta'], hp: 105, maxHp: 105, atk: 95, def: 85, spd: 93, img: 'https://i.pinimg.com/736x/79/58/02/795802a22de6fb716eec4d12fd06e09a.jpg', passive: { name: 'Erba Mista (V/R)', type: 'on_hp_threshold', threshold: 0.3, heal: 0.4, maxUses: 1, desc: 'Quando i PS scendono sotto il 30%, usa un\'erba verde e rossa per curarsi del 40% dei PS massimi.' }, moves: [MOVES_DB['Silver Ghost'], MOVES_DB['Suplex'], MOVES_DB['Flashbang'], MOVES_DB['Fucile a Pompa']] },
           { id: 'topolino', name: 'Topolino', types: ['Normale'], hp: 105, maxHp: 105, atk: 85, def: 75, spd: 105, img: 'https://i.pinimg.com/736x/d8/f2/ef/d8f2efccf41766493727a5bf5c49e082.jpg', moves: [MOVES_DB['Colpo Cartoon'], MOVES_DB['Fischietto amico'], MOVES_DB['Tappeto scivoloso'], MOVES_DB['Magia Disney']] },
           { id: 'barry', name: 'Barry', types: ['Oscuro', 'Magico'], hp: 115, maxHp: 115, atk: 100, def: 77, spd: 85, img: 'https://i.pinimg.com/736x/ae/01/6c/ae016c6828620c2b981bbf92fd1219d4.jpg', passive: { name: 'Testa Calda', type: 'on_hp_threshold', threshold: 0.25, statBuff: { atk: 1.5, spd: 1.5 }, maxUses: 1, desc: 'Quando la vita scende sotto il 25%, aumenta il proprio Attacco e Velocità del 50%.' }, moves: [MOVES_DB['Doruzonisu'], MOVES_DB['Gigano Zonisu'], MOVES_DB['Dioga zonisudon'], MOVES_DB['Zorushirudo']] },
           { id: 'bloom', name: 'Bloom', types: ['Fuoco', 'Magico'], hp: 80, maxHp: 80, atk: 110, def: 60, spd: 100, img: 'https://i.pinimg.com/736x/d6/c1/38/d6c138c9b4720da37aa07f8ae69b158c.jpg', passive: { name: 'Cuore di Fenice', type: 'on_faint', reviveHpPercent: 0.3, maxUses: 1, desc: 'La prima volta che i PS scendono a 0, rinasce immediatamente recuperando il 30% della salute.' }, moves: [MOVES_DB['Fiamma del Drago'], MOVES_DB['Esplosione Solare'], MOVES_DB['Aura Stellare'], MOVES_DB['Incanto Protettivo']] },
@@ -1288,7 +1298,7 @@
         const CHAR_PRICES = {
             'diamantebianco': 350, 'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
             'laxus': 250, 'zabuza': 250, 'naruto': 250, 'sasuke': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250, 'arievicente': 250, 'meliodas': 250, 'ban': 250, 'sans': 250, 'roxy': 250, 'perla': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200, 'elly': 200,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200, 'elly': 200, 'leon': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150, 'sugino': 150
         };
         CHARACTERS.forEach(c => {
@@ -2830,6 +2840,7 @@
           const [playerName, setPlayerName] = useState(() => localStorage.getItem('multiverse_rpg_saved_name') || '');
           const [playerAvatarUrl, setPlayerAvatarUrl] = useState(() => localStorage.getItem('multiverse_rpg_saved_avatar') || ''); 
           const [roomIdInput, setRoomIdInput] = useState('');
+          const [coopRoomId, setCoopRoomId] = useState(null);
 
           const sessionRef = useRef(getSavedSession());
           
@@ -3746,6 +3757,14 @@
               setAppMode('online_room');
           };
 
+          // --- EFFETTO TRANSIZIONE CO-OP LOBBY -> DRAFT ONLINE ---
+          useEffect(() => {
+              if (appMode === 'roguelike_coop_lobby' && gameState.status === 'drafting') {
+                  setAppMode('online_room');
+              }
+          }, [appMode, gameState.status]);
+          // -------------------------------------------------------
+
           function getPlayerData() {
               const key = `multiverse_rpg_global_profile`;
               const raw = localStorage.getItem(key);
@@ -4197,6 +4216,29 @@
             if (!snap.exists()) return setSystemAlert("Stanza non trovata!");
             
             const data = snap.data();
+
+            // --- GESTIONE ACCESSO REALE ALLA STANZA ROGUELIKE CO-OP ---
+            if (data.isRoguelikeCoop) {
+                let assignedRole = null;
+                if (!data.players.p2) assignedRole = 'p2';
+                else if (!data.players.p3) assignedRole = 'p3';
+                
+                if (!assignedRole) return setSystemAlert("Stanza Co-op piena o spedizione già iniziata!");
+
+                await updateDoc(roomRef, {
+                    [`players.${assignedRole}`]: playerName,
+                    [`playerAvatars.${assignedRole}`]: playerAvatarUrl,
+                    [`isBot.${assignedRole}`]: false,
+                    [`inventory.${assignedRole}`]: { pozione: 2, resurrezione: 1 } // FIX: Oggetti iniziali
+                });
+                setRoomId(roomIdInput.toUpperCase());
+                setPlayerRole(assignedRole);
+                setCoopRoomId(roomIdInput.toUpperCase());
+                setAppMode('roguelike_coop_lobby');
+                return;
+            }
+            // ----------------------------------------------------------
+
             let assignedRole = null;
             const req = getRequiredPlayers(data.gameMode, data.settings);
             
@@ -4995,7 +5037,7 @@
                         if (cpuActions[idxStr].type !== 'attack') return false;
                         const char = gameState.teams[cpuPlayer][parseInt(idxStr)];
                         // Verifica che il personaggio che sta per attaccare sia specifico per la Forma Iper
-                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard' || char.id === 'maxcaulfield' || char.id === 'chloeprice' || char.id === 'dolli' || char.id === 'zatchbell' || char.id === 'yoshi' || char.id === 'poisonivy') && !char.isHyper;
+                        return char && (char.id === 'barry' || char.id === 'gardevoir' || char.id === 'astral' || char.id === 'polterpup' || char.id === 'spongebob' || char.id === 'patrick' || char.id === 'alphonse' || char.id === 'ariana' || char.id === 'bloom' || char.id === 'gaston' || char.id === 'jake' || char.id === 'marceline' || char.id === 'finn' || char.id === 'natsu' || char.id === 'juvia' || char.id === 'laxus' || char.id === 'bumblebee' || char.id === 'corvina' || char.id === 'entoma' || char.id === 'garnet' || char.id === 'darwin' || char.id === 'brago' || char.id === 'iris' || char.id === 'sdentato' || char.id === 'ladybug' || char.id === 'bowser' || char.id === 'rainbowdash' || char.id === 'elsa' || char.id === 'sheldon' || char.id === 'charizard' || char.id === 'maxcaulfield' || char.id === 'chloeprice' || char.id === 'dolli' || char.id === 'zatchbell' || char.id === 'yoshi' || char.id === 'poisonivy' || char.id === 'carlos' || char.id === 'leon') && !char.isHyper;
                     });
                     
                     if (firstAttackerIdxStr) {
@@ -5622,6 +5664,15 @@
                         if (char.id === 'poisonivy') {
                             char.types = ['Veleno', 'Fuoco'];
                             char.moves.push({ ...MOVES_DB['Polline scottante'], remainingUses: MOVES_DB['Polline scottante'].maxUses !== undefined ? MOVES_DB['Polline scottante'].maxUses : null });
+                        }
+
+                        if (char.id === 'carlos') {
+                            char.types = ['Fuoco', 'Lotta'];
+                            char.moves.push({ ...MOVES_DB['Pugno infuocato del survivor'], remainingUses: MOVES_DB['Pugno infuocato del survivor'].maxUses !== undefined ? MOVES_DB['Pugno infuocato del survivor'].maxUses : null });
+                        }
+
+                        if (char.id === 'leon') {
+                            char.types = ['Fuoco', 'Normale'];
                         }
 
                         workingHyperUsed[order.player] = true;
@@ -7257,20 +7308,27 @@
                 workingTeams[juggPlayer] = [nextEnemy];
                 workingField[juggPlayer] = [0]; 
                 
-                // Cura i personaggi dei giocatori in campo del 20% come premio
+                // Cura i personaggi dei giocatori in campo del 20% come premio (e rianima chi è morto in Co-op!)
                 humansPlayers.forEach(p => {
-                    if (workingField[p]) {
-                        workingField[p].forEach(idx => {
-                            let char = workingTeams[p][idx];
-                            if (char && char.hp > 0) {
-                                const heal = Math.floor(char.maxHp * 0.2);
-                                char.hp = Math.min(char.maxHp, char.hp + heal);
+                    if (workingTeams[p]) {
+                        workingTeams[p].forEach((char, idx) => {
+                            if (char && !char.isSummonOnly) {
+                                if (char.hp <= 0) {
+                                    char.hp = Math.max(1, Math.floor(char.maxHp * 0.2));
+                                    char.statuses = [];
+                                    if (workingField[p] && !workingField[p].includes(idx)) {
+                                        workingField[p].push(idx);
+                                    }
+                                } else {
+                                    const heal = Math.floor(char.maxHp * 0.2);
+                                    char.hp = Math.min(char.maxHp, char.hp + heal);
+                                }
                             }
                         });
                     }
                 });
 
-                events.push({ type: 'text', text: `🌟 Round ${currentSurvivalRound - 1} superato! La squadra in campo recupera il 20% dei PS!` });
+                events.push({ type: 'text', text: `🌟 Round ${currentSurvivalRound - 1} superato! La squadra recupera il 20% dei PS! I caduti si rialzano!` });
                 events.push({ type: 'text', text: `⚠️ Un nuovo sfidante appare: ${nextEnemy.name} (Livello ${currentSurvivalRound})!` });
 
                 nextStatus = 'battling'; // Continua la lotta!
@@ -7868,28 +7926,64 @@
                         </button>
                         
                         {/* --- NUOVO BOTTONE ROGUELIKE --- */}
-                        <button onClick={() => {
-                            if (roguelikeState.isStarted && roguelikeState.roster.length > 0) {
-                                setAppMode('roguelike_map');
-                            } else {
-                                const available = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
-                                const shuffled = [...available].sort(() => 0.5 - Math.random());
-                                setRoguelikeDraftChoices(shuffled.slice(0, 6)); // Scegli 3 tra 6 casuali
-                                setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: { pozione: 1 }, isMerchantNext: false });
-                                setAppMode('roguelike_draft');
-                            }
-                        }} className="relative w-full mb-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
-                             <Trophy size={20}/> Spedizione Roguelike (Hardcore)
-                             {roguelikeState.isStarted && roguelikeState.roster.length > 0 && (
-                                 <div className="absolute right-4 text-xs font-black bg-black/40 border border-fuchsia-400/50 px-2 py-1 rounded-lg text-fuchsia-200 shadow-inner">
-                                     Piano {roguelikeState.floor}
+                        <div className="flex flex-col sm:flex-row gap-3 mb-3 w-full">
+                            <button onClick={() => {
+                                if (roguelikeState.isStarted && roguelikeState.roster.length > 0) {
+                                    setAppMode('roguelike_map');
+                                } else {
+                                    const available = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                                    const shuffled = [...available].sort(() => 0.5 - Math.random());
+                                    setRoguelikeDraftChoices(shuffled.slice(0, 6)); // Scegli 3 tra 6 casuali
+                                    setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: { pozione: 1 }, isMerchantNext: false });
+                                    setAppMode('roguelike_draft');
+                                }
+                            }} className="relative flex-1 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all shadow-lg hover:-translate-y-0.5 text-xs sm:text-sm">
+                                 <div className="flex items-center gap-1.5"><Trophy size={16}/> Roguelike (Solo)</div>
+                                 {roguelikeState.isStarted && roguelikeState.roster.length > 0 && (
+                                     <div className="text-[10px] font-black bg-black/40 border border-fuchsia-400/50 px-2 py-0.5 rounded-lg text-fuchsia-200 shadow-inner">
+                                         Piano {roguelikeState.floor}
+                                     </div>
+                                 )}
+                            </button>
+                            
+                            <button onClick={() => {
+                                if(!playerName.trim()) return setSystemAlert("Inserisci prima il tuo nome!");
+                                
+                                const newRoomId = Math.random().toString(36).substring(2, 7).toUpperCase();
+                                const state = initialGameState();
+                                state.isRoguelikeCoop = true;
+                                state.gameMode = 'survival'; // FIX: Usa il motore Sopravvivenza ma in Co-op!
+                                state.settings = { teamSize: 1, fieldSize: 3, maxPlayers: 4, juggernautPlayer: 'p4', draftBattle: true };
+                                state.players.p1 = playerName;
+                                state.playerAvatars.p1 = playerAvatarUrl;
+                                state.isBot.p1 = false;
+                                state.inventory.p1 = { pozione: 2, resurrezione: 1 };
+                                
+                                // Genera p4 (L'Orda gestita dalla CPU)
+                                state.players.p4 = "Orda del Dungeon";
+                                state.playerAvatars.p4 = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
+                                state.isBot.p4 = true;
+                                state.inventory.p4 = {};
+                                state.survivalRound = 1;
+
+                                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', newRoomId);
+                                setDoc(roomRef, state).then(() => {
+                                    setRoomId(newRoomId);
+                                    setPlayerRole('p1');
+                                    setCoopRoomId(newRoomId);
+                                    setAppMode('roguelike_coop_lobby');
+                                }).catch(() => setSystemAlert("Errore di connessione a Firebase."));
+                            }} className="relative flex-1 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all shadow-lg hover:-translate-y-0.5 text-xs sm:text-sm">
+                                 <div className="flex items-center gap-1.5"><Users size={16}/> Roguelike Co-op</div>
+                                 <div className="text-[10px] font-black bg-black/40 border border-pink-400/50 px-2 py-0.5 rounded-lg text-pink-200 shadow-inner">
+                                     3 Giocatori
                                  </div>
-                             )}
-                        </button>
+                            </button>
+                        </div>
                         {/* ------------------------------- */}
 
                         {/* --- AGGIUNTO IL PULSANTE SOPRAVVIVENZA --- */}
-                         <button onClick={handleSurvivalStart} className="relative w-full mb-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
+                         <button onClick={handleSurvivalStart} className="relative w-full mb-3 bg-gradient-to-r from-violet-700 to-purple-700 hover:from-violet-600 hover:to-purple-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg hover:-translate-y-0.5">
                              <Shield size={20}/> Modalità Sopravvivenza (Infinita)
                              {playerData.maxSurvivalRound > 0 && (
                                  <div className="absolute right-4 text-xs font-black bg-black/40 border border-violet-400/50 px-2 py-1 rounded-lg text-violet-200 shadow-inner">
@@ -8465,6 +8559,7 @@
                 'entoma': "Oh... nuovi spuntini per me e per le mie amiche mosche.",
                 'stewie': "La vittoria è calcolata al 100%. Le mie armi sono pronte.",
                 'carlos': "Ricevuto. Armi cariche. Coprirò le vostre spalle.",
+                'leon': "Niente panico. Ho la situazione sotto controllo.",
                 'bulma': "Lasciate fare ai miei gadget! La tecnologia Capsule Corp vince sempre!",
                 'peridot': "Ahah! Siete fortunati ad avere una mente superiore e certificata come la mia!",
                 'snorlax': "Zzz... mh? Devo alzarmi? Va bene... ma dopo si mangia!",
@@ -8602,6 +8697,7 @@
                 'sans': "ok. vado da grillby's.",
                 'roxy': "Pff, perdenti. Andate a piangere altrove.",
                 'perla': "Come volete. Ma la vostra tecnica è a dir poco approssimativa.",
+                'leon': "Ricevuto. Mi posiziono nelle retrovie e tengo d'occhio il perimetro.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -9436,6 +9532,108 @@
     }
     // --- FINE NUOVE PAGINE ---
 
+    if (appMode === 'roguelike_coop_lobby') {
+        const isHost = playerRole === 'p1';
+
+        const handleStartSpedizione = () => {
+            const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+            const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+            
+            let updates = { status: 'drafting' };
+            
+            // Genera le 3 scelte per il draft contemporaneo per tutti i giocatori presenti
+            ['p1', 'p2', 'p3'].forEach(p => {
+                if (gameState.players[p]) {
+                    const shuffled = [...draftable].sort(() => 0.5 - Math.random());
+                    updates[`draftChoices.${p}`] = shuffled.slice(0, 3);
+                    updates[`draftRerolls.${p}`] = 2;
+                }
+            });
+
+            // Assegna il primo mostro nemico a p4
+            const enemyBase = draftable[Math.floor(Math.random() * draftable.length)];
+            let enemy = { ...JSON.parse(JSON.stringify(enemyBase)), statuses: [], consecutiveProtect: 0, baseAtk: enemyBase.atk, baseDef: enemyBase.def, baseSpd: enemyBase.spd, moves: enemyBase.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
+            updates['draft.p4'] = [enemy];
+
+            updateState(updates);
+        };
+
+        return (
+            <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-900/20 via-slate-900 to-black pointer-events-none"></div>
+                
+                <button onClick={() => { setAppMode('menu'); setCoopRoomId(null); }} className="absolute top-6 left-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors bg-slate-800/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-slate-700/50 z-20">
+                     <ArrowLeft size={20} /> Torna al Menu
+                </button>
+                
+                <div className="bg-slate-800/80 backdrop-blur-xl p-8 rounded-3xl w-full max-w-3xl border border-pink-500/50 text-center shadow-[0_0_50px_rgba(236,72,153,0.3)] z-10 flex flex-col items-center">
+                    <h2 className="text-4xl md:text-5xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-rose-500 drop-shadow-md">Roguelike Co-op</h2>
+                    <p className="text-slate-300 mb-8 font-medium max-w-lg">Invita altri 2 giocatori. Ognuno guiderà un campione. Se uno di voi cade in battaglia, non rinascerà fino al prossimo accampamento!</p>
+                    
+                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-10 flex flex-col md:flex-row items-center justify-center gap-4 bg-slate-900/80 px-6 py-4 rounded-2xl border border-slate-700/50">
+                         <div className="flex items-center gap-2">
+                             <Wifi size={20} className="text-pink-400"/> Codice Stanza:
+                         </div>
+                         <span className="text-white text-3xl font-mono tracking-widest bg-black px-4 py-2 rounded-xl border border-pink-500/50 shadow-[0_0_15px_rgba(236,72,153,0.4)] select-all">{coopRoomId}</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-8">
+                         {/* Host */}
+                         <div className="bg-slate-950/50 rounded-2xl p-6 border border-pink-500/50 flex flex-col items-center justify-center relative shadow-inner">
+                             <div className="absolute top-3 left-3 text-[10px] font-black text-pink-400 uppercase tracking-widest">Host</div>
+                             <img src={gameState.playerAvatars.p1 || getDefaultAvatar(gameState.players.p1)} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(gameState.players.p1); }} className="w-20 h-20 rounded-full border-4 border-pink-500 mb-3 object-cover bg-slate-900 shadow-[0_0_15px_rgba(236,72,153,0.5)]" alt="Avatar" />
+                             <div className="font-bold text-lg text-white text-center w-full truncate">{gameState.players.p1}</div>
+                         </div>
+                         {/* Slot 2 */}
+                         <div className="bg-slate-950/50 rounded-2xl p-6 border border-slate-700/50 flex flex-col items-center justify-center relative border-dashed">
+                             <div className="absolute top-3 left-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Guest 1</div>
+                             {gameState.players.p2 ? (
+                                 <>
+                                     <img src={gameState.playerAvatars.p2 || getDefaultAvatar(gameState.players.p2)} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(gameState.players.p2); }} className="w-20 h-20 rounded-full border-4 border-slate-400 mb-3 object-cover bg-slate-900 shadow-[0_0_15px_rgba(255,255,255,0.2)]" alt="Avatar" />
+                                     <div className="font-bold text-lg text-white text-center w-full truncate">{gameState.players.p2}</div>
+                                 </>
+                             ) : (
+                                 <>
+                                     <Loader2 className="animate-spin text-slate-600 mb-4" size={32}/> 
+                                     <span className="text-slate-500 font-bold">In attesa...</span>
+                                 </>
+                             )}
+                         </div>
+                         {/* Slot 3 */}
+                         <div className="bg-slate-950/50 rounded-2xl p-6 border border-slate-700/50 flex flex-col items-center justify-center relative border-dashed">
+                             <div className="absolute top-3 left-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Guest 2</div>
+                             {gameState.players.p3 ? (
+                                 <>
+                                     <img src={gameState.playerAvatars.p3 || getDefaultAvatar(gameState.players.p3)} onError={(e) => { e.target.onerror = null; e.target.src = getDefaultAvatar(gameState.players.p3); }} className="w-20 h-20 rounded-full border-4 border-slate-400 mb-3 object-cover bg-slate-900 shadow-[0_0_15px_rgba(255,255,255,0.2)]" alt="Avatar" />
+                                     <div className="font-bold text-lg text-white text-center w-full truncate">{gameState.players.p3}</div>
+                                 </>
+                             ) : (
+                                 <>
+                                     <Loader2 className="animate-spin text-slate-600 mb-4" size={32}/> 
+                                     <span className="text-slate-500 font-bold">In attesa...</span>
+                                 </>
+                             )}
+                         </div>
+                    </div>
+
+                    {isHost ? (
+                        <button 
+                            disabled={!gameState.players.p2} 
+                            onClick={handleStartSpedizione}
+                            className="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-black py-4 px-12 rounded-full shadow-lg transition-all hover:-translate-y-1 disabled:opacity-50 disabled:grayscale text-xl"
+                        >
+                            Inizia Spedizione!
+                        </button>
+                    ) : (
+                        <div className="text-pink-400 font-bold animate-pulse text-lg border border-pink-500/30 bg-pink-950/30 px-6 py-3 rounded-full">
+                            In attesa che l'Host avvii la spedizione...
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
     if (appMode === 'shop') {
         const playerData = getPlayerData();
         
@@ -9763,7 +9961,7 @@
 
     if (appMode === 'catalog') {
         let displayedChars = [...CHARACTERS];
-        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash', 'elsa', 'sheldon', 'charizard', 'maxcaulfield', 'chloeprice', 'dolli', 'zatchbell', 'yoshi', 'poisonivy'];
+        const hyperIds = ['barry', 'gardevoir', 'astral', 'polterpup', 'spongebob', 'patrick', 'alphonse', 'ariana', 'bloom', 'gaston', 'jake', 'marceline', 'finn', 'natsu', 'juvia', 'laxus', 'bumblebee', 'corvina', 'entoma', 'garnet', 'darwin', 'brago', 'iris', 'sdentato', 'ladybug', 'bowser', 'rainbowdash', 'elsa', 'sheldon', 'charizard', 'maxcaulfield', 'chloeprice', 'dolli', 'zatchbell', 'yoshi', 'poisonivy', 'carlos', 'leon'];
         
         if (catalogFilter === 'Evocazioni') {
             displayedChars = displayedChars.filter(c => c.isSummonOnly);
@@ -9803,6 +10001,8 @@
                 if (char.id === 'dolli') { char.types = ['Spettro', 'Acqua']; char.moves.push(MOVES_DB['Incubo di Pezza']); }
                 if (char.id === 'zatchbell') { char.passive = { name: 'Kiyomaro: Zatch non sei solo', type: 'global_damage_boost', multiplier: 1.15, desc: 'Kiyomaro lo aiuta a combattere leggendo il libro rosso: tutte le sue mosse ricevono un potenziamento del 15% ai danni!' }; }
                 if (char.id === 'poisonivy') { char.types = ['Veleno', 'Fuoco']; char.moves.push(MOVES_DB['Polline scottante']); }
+                if (char.id === 'carlos') { char.types = ['Fuoco', 'Lotta']; char.moves.push(MOVES_DB['Pugno infuocato del survivor']); }
+                if (char.id === 'leon') { char.types = ['Fuoco', 'Normale']; }
 
                 // --- APPLICA IMMAGINE IPER ---
                 if (char.id === 'barry') char.img = "https://i.redd.it/le0qp8fednsc1.jpeg";
@@ -9841,6 +10041,8 @@
                 else if (char.id === 'zatchbell') char.img = "https://i.pinimg.com/736x/ff/5c/4c/ff5c4c6f0dbd938e1bbc34d3a98e890e.jpg";
                 else if (char.id === 'yoshi') char.img = "https://i.postimg.cc/4H1dN6WR/Gemini-Generated-Image-b3jjfwb3jjfwb3jj.png";
                 else if (char.id === 'poisonivy') char.img = "https://i.postimg.cc/w339Gs8Y/Gemini-Generated-Image-ll2m1sll2m1sll2m.png";
+                else if (char.id === 'carlos') char.img = "https://i.postimg.cc/mhmqbMVW/Gemini-Generated-Image-1wl7sn1wl7sn1wl7-(1).png";
+                else if (char.id === 'leon') char.img = "https://i.postimg.cc/N540GdVZ/834bde13bf771897729c8fc78dfcb7cd-(1).jpg";
                 
                 return char;
             });
@@ -9994,7 +10196,7 @@
         const reqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const canStartDraft = isAllPlayersJoined();
 
-        const newArrivals = ['perla', 'roxy', 'sans', 'ban', 'meliodas', 'sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
+        const newArrivals = ['leon', 'perla', 'roxy', 'sans', 'ban', 'meliodas', 'sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
 
         return (
             <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 relative">
@@ -11068,6 +11270,10 @@
                     displayImg = "https://i.postimg.cc/4H1dN6WR/Gemini-Generated-Image-b3jjfwb3jjfwb3jj.png"; // Yoshi Iper
                 } else if (char.id === 'poisonivy') {
                     displayImg = "https://i.postimg.cc/w339Gs8Y/Gemini-Generated-Image-ll2m1sll2m1sll2m.png"; // Poison Ivy Iper
+                } else if (char.id === 'carlos') {
+                    displayImg = "https://i.postimg.cc/mhmqbMVW/Gemini-Generated-Image-1wl7sn1wl7sn1wl7-(1).png"; // Carlos Iper
+                } else if (char.id === 'leon') {
+                    displayImg = "https://i.postimg.cc/N540GdVZ/834bde13bf771897729c8fc78dfcb7cd-(1).jpg"; // Leon Iper
                 }
             }
 
@@ -11418,7 +11624,7 @@
                                         {actionMenuMode === 'moves' && (
                                             <div className="grid grid-cols-2 gap-4">
                                                 {/* --- PULSANTE FORMA IPER --- */}
-                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash' || activeCommandChar.id === 'elsa' || activeCommandChar.id === 'sheldon' || activeCommandChar.id === 'charizard' || activeCommandChar.id === 'maxcaulfield' || activeCommandChar.id === 'chloeprice' || activeCommandChar.id === 'dolli' || activeCommandChar.id === 'zatchbell' || activeCommandChar.id === 'yoshi' || activeCommandChar.id === 'poisonivy')) && (() => {
+                                                {(!gameState.hyperUsed[playerRole] && !activeCommandChar.isHyper && (activeCommandChar.id === 'barry' || activeCommandChar.id === 'gardevoir' || activeCommandChar.id === 'astral' || activeCommandChar.id === 'polterpup' || activeCommandChar.id === 'spongebob' || activeCommandChar.id === 'patrick' || activeCommandChar.id === 'alphonse' || activeCommandChar.id === 'ariana' || activeCommandChar.id === 'bloom' || activeCommandChar.id === 'gaston' || activeCommandChar.id === 'jake' || activeCommandChar.id === 'marceline' || activeCommandChar.id === 'finn' || activeCommandChar.id === 'natsu' || activeCommandChar.id === 'juvia' || activeCommandChar.id === 'laxus' || activeCommandChar.id === 'bumblebee' || activeCommandChar.id === 'corvina' || activeCommandChar.id === 'entoma' || activeCommandChar.id === 'garnet' || activeCommandChar.id === 'darwin' || activeCommandChar.id === 'brago' || activeCommandChar.id === 'iris' || activeCommandChar.id === 'sdentato' || activeCommandChar.id === 'ladybug' || activeCommandChar.id === 'bowser' || activeCommandChar.id === 'rainbowdash' || activeCommandChar.id === 'elsa' || activeCommandChar.id === 'sheldon' || activeCommandChar.id === 'charizard' || activeCommandChar.id === 'maxcaulfield' || activeCommandChar.id === 'chloeprice' || activeCommandChar.id === 'dolli' || activeCommandChar.id === 'zatchbell' || activeCommandChar.id === 'yoshi' || activeCommandChar.id === 'poisonivy' || activeCommandChar.id === 'carlos' || activeCommandChar.id === 'leon')) && (() => {
                                                     let hyperTypeText = "";
                                                     const hyperTypesMap = {
                                                         'gardevoir': 'Psico-Erba',
@@ -11437,7 +11643,9 @@
                                                         'maxcaulfield': 'Insetto-Aria',
                                                         'chloeprice': 'Suono-Luce',
                                                         'dolli': 'Spettro-Acqua',
-                                                        'poisonivy': 'Veleno-Fuoco'
+                                                        'poisonivy': 'Veleno-Fuoco',
+                                                        'carlos': 'Fuoco-Lotta',
+                                                        'leon': 'Fuoco-Normale'
                                                     };
                                                     if (hyperTypesMap[activeCommandChar.id]) {
                                                         hyperTypeText = ` [${hyperTypesMap[activeCommandChar.id].toUpperCase()}]`;
@@ -11962,7 +12170,7 @@
                                 } else {
                                     // --- LOGICA RECLUTAMENTO NEMICO E CHANCE MERCANTE ---
                                     let recruitedId = null;
-                                    if (Math.random() < 0.20 && gameState.teams.p2) {
+                                    if (Math.random() < 0.22 && gameState.teams.p2) {
                                         const possibleRecruits = gameState.teams.p2.filter(c => !c.isSummonOnly && !roguelikeState.roster.includes(c.id));
                                         if (possibleRecruits.length > 0) {
                                             recruitedId = possibleRecruits[Math.floor(Math.random() * possibleRecruits.length)].id;
