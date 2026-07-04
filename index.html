@@ -554,7 +554,7 @@
           // NUOVE MOSSE ZERGLING
           'Sciame Feroce': { name: 'Sciame Feroce', type: 'Insetto', power: 25, multiHit: { min: 3, max: 5 }, desc: 'Attacca con l\'istinto dello sciame, infliggendo da 3 a 5 colpi rapidi e letali.' },
           'Adrenalina Mutante': { name: 'Adrenalina Mutante', type: 'Oscuro', power: 0, target: 'self', statBuff: { spd: 2.0, atk: 1.3 }, desc: 'Il suo metabolismo subisce una brusca accelerazione: raddoppia la Velocità e aumenta l\'Attacco del 30%.' },
-          'Artigli Laceranti': { name: 'Artigli Laceranti', type: 'Normale', power: 65, statusEffect: { type: 'Avvelenato', chance: 0.3 }, desc: 'Un attacco con artigli letali. Ha il 30% di probabilità di avvelenare gravemente.' },
+          'Artigli Laceranti': { name: 'Artigli Laceranti', type: 'Oscuro', power: 65, statusEffect: { type: 'Avvelenato', chance: 0.3 }, desc: 'Un attacco con artigli letali. Ha il 30% di probabilità di avvelenare gravemente.' },
           'Imboscata': { name: 'Imboscata', type: 'Insetto', power: 60, priority: 1, desc: 'Un assalto fulmineo dai punti ciechi. Colpisce sempre per primo (Priorità +1).' },
 
           // NUOVE MOSSE CELL
@@ -608,7 +608,7 @@
 
           // NUOVE MOSSE CHAT NOIR
           'Bastone Estendibile': { name: 'Bastone Estendibile', type: 'Lotta', power: 50, multiHit: { min: 1, max: 2 }, desc: 'Colpisce il nemico da lontano con il suo bastone estendibile. Può colpire 1 o 2 volte.' },
-          'Cataclisma': { name: 'Cataclisma', type: 'Oscuro', power: 150, ignoreDefBuffs: true, maxUses: 4, desc: 'Il potere della distruzione assoluta! Ignora le difese nemiche infliggendo danni mostruosi. (4 utilizzi)' },
+          'Cataclisma': { name: 'Cataclisma', type: 'Buio', power: 150, ignoreDefBuffs: true, maxUses: 4, desc: 'Il potere della distruzione assoluta! Ignora le difese nemiche infliggendo danni mostruosi. (4 utilizzi)' },
           'Balzo Felino': { name: 'Balzo Felino', type: 'Aria', power: 0, target: 'self', isProtect: true, priority: 5, maxUses: 4, desc: 'Un agilissimo salto acrobatico che gli permette di schivare i danni per un turno. (4 utilizzi)' },
           'Fascino Sfacciato': { name: 'Fascino Sfacciato', type: 'Normale', power: 0, targetStatDebuff: { def: 0.7 }, statusEffect: { type: 'Infatuato', chance: 0.5 }, desc: 'Fa l\'occhiolino e dice una battuta: riduce la Difesa avversaria e ha il 50% di infatuare il nemico.' },
 
@@ -3600,7 +3600,10 @@
                       let coinsToReward = 0;
                       let won = false;
 
-                      if (gameState.gameMode === 'torneo') {
+                      if (gameState.isRoguelikeBattle) {
+                          won = (gameState.winner === gameState.players[myKey]);
+                          coinsToReward = won ? (Math.floor(Math.random() * 6) + 10) : 5; // 10-15 monete globali per piano
+                      } else if (gameState.gameMode === 'torneo') {
                           const tr = gameState.tournamentResults;
                           if (tr.final && tr.final.winner === myKey) { coinsToReward = 200; won = true; }
                           else if (tr.final && tr.final.loser === myKey) { coinsToReward = 100; }
@@ -3649,7 +3652,7 @@
                       }
                       
                       const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
-                      if (gameState.gameMode !== 'survival') {
+                      if (gameState.gameMode !== 'survival' && !gameState.isRoguelikeBattle) {
                           coinsToReward += teamSizeBonus;
                       }
 
