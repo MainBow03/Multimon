@@ -12211,6 +12211,15 @@
                                     let recruitChance = 0.20 + currentBonus;
                                     const chanceMerchant = Math.random() < 0.20; // 20% di apparizione
                                     
+                                    // ESTRAZIONE DEL RECLUTAMENTO
+                                    if (Math.random() < recruitChance) {
+                                        const validEnemies = gameState.teams.p2.filter(c => !c.isSummonOnly && !roguelikeState.roster.includes(c.id));
+                                        if (validEnemies.length > 0) {
+                                            const recruitedEnemy = validEnemies[Math.floor(Math.random() * validEnemies.length)];
+                                            recruitedId = recruitedEnemy.id;
+                                        }
+                                    }
+                                    
                                     // Prossimo piano
                                     setRoguelikeState(p => {
                                         const nextRoster = [...p.roster];
