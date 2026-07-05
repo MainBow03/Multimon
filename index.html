@@ -163,10 +163,6 @@
             'pozione_rigenerante': { id: 'pozione_rigenerante', name: 'Pozione Rigenerante', desc: 'Cura il 15% dei PS alla fine di ogni turno per 4 turni.', price: 150, type: 'regen', turns: 4, value: 0.15, icon: '🧴' }
         };
 
-        const RELICS_DB = {
-            'zanna_vampiro': { id: 'zanna_vampiro', name: 'Zanna del Vampiro', desc: 'I tuoi attacchi curano chi attacca del 10% del danno inflitto.', price: 150, icon: '🧛' }
-        };
-
         const MOVES_DB = {
           'Azione': { name: 'Azione', type: 'Normale', power: 40, desc: 'Un attacco fisico rapido e diretto.' },
           'Pugno': { name: 'Pugno Duro', type: 'Lotta', power: 60, desc: 'Sferra un pugno devastante al bersaglio.' },
@@ -2815,7 +2811,6 @@
           field: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, 
           actions: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} }, 
           inventory: { p1: {}, p2: {}, p3: {}, p4: {}, p5: {}, p6: {}, p7: {}, p8: {} },
-          relics: { p1: [], p2: [], p3: [], p4: [], p5: [], p6: [], p7: [], p8: [] }, // <--- AGGIUNTO PER RELIQUIE
           hyperUsed: { p1: false, p2: false, p3: false, p4: false, p5: false, p6: false, p7: false, p8: false }, // <--- AGGIUNTO PER FORMA IPER
           events: [], 
           winner: null,
@@ -3228,7 +3223,7 @@
               if (saved) {
                   try { return JSON.parse(saved); } catch(e){}
               }
-              return { isStarted: false, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: {}, isMerchantNext: false, recruitBonus: 0.02, relics: [] };
+              return { isStarted: false, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: {}, isMerchantNext: false, recruitBonus: 0.02, relics: [], encounteredEnemies: [] };
           });
 
           // Autosave Roguelike
@@ -7953,7 +7948,7 @@
                                     const available = CHARACTERS.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
                                     const shuffled = [...available].sort(() => 0.5 - Math.random());
                                     setRoguelikeDraftChoices(shuffled.slice(0, 6)); // Scegli 3 tra 6 casuali
-                                    setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: { pozione: 1 }, isMerchantNext: false, recruitBonus: 0.02, relics: [] });
+                                    setRoguelikeState({ isStarted: true, floor: 1, roster: [], rosterStats: {}, maxFloor: 50, coins: 0, inventory: { pozione: 1 }, isMerchantNext: false, recruitBonus: 0.02, relics: [], encounteredEnemies: [] });
                                     setAppMode('roguelike_draft');
                                 }
                             }} className="relative flex-1 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all shadow-lg hover:-translate-y-0.5 text-xs sm:text-sm">
@@ -8043,23 +8038,22 @@
                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-black pointer-events-none opacity-60"></div>
                  <button onClick={() => setAppMode('menu')} className="absolute top-6 left-6 flex items-center gap-2 text-slate-300 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20 z-20">
                      <ArrowLeft size={20} /> Torna al Menu
-                        if (juggHitsAbsorbed > 0 && totalDmg === 0) {
-                            let absTxt = actualHits > 1 ? `Lo Scudo ha assorbito tutti i ${actualHits} colpi!` : `Lo Scudo ha assorbito l'attacco!`;
-                            events.push({ type: 'text', text: `${attacker.name} usa ${move.name} su ${t.char.name}... ma ${absTxt} (${t.char.juggHitsRemaining} cariche scudo rimaste)` });
-                        } else if (totalDmg > 0) {
-                            let shieldTxt = juggHitsAbsorbed > 0 ? ` (Lo scudo ha assorbito ${juggHitsAbsorbed} colpi).` : '';
-                            applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText}${hitText}${magText}${groppaText} Infligge ${totalDmg} danni.${shieldTxt}`);
-                            
-                            // --- PASSIVA RELIQUIA: ZANNA DEL VAMPIRO ---
-                            if (gameState.relics && gameState.relics[player] && gameState.relics[player].includes('zanna_vampiro') && attacker.hp > 0) {
-                                const relicHeal = Math.max(1, Math.floor(totalDmg * 0.10));
-                                attacker.hp = Math.min(attacker.maxHp, attacker.hp + relicHeal);
-                                events.push({ type: 'damage', text: `🧛 ${attacker.name} assorbe ${relicHeal} PS grazie alla Zanna del Vampiro!`, targetPlayer: player, targetIdx: charTeamIdx, newHp: attacker.hp });
-                            }
-                            // -------------------------------------------
-                        } else {
-                            applyDamage(t.char, totalDmg, t.player, t.idx, `${attacker.name} usa ${move.name} su ${t.char.name}!${effectivenessText} Infligge ${totalDmg} danni.`);
-                        }
+                </button>
+                <h1 className="text-5xl font-black mb-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 text-center z-10 drop-shadow-md">Scegli la tua Avventura</h1>
+                
+                <div className="flex flex-col md:flex-row gap-8 max-w-5xl w-full z-10">
+                    {CAMPAIGNS.map(camp => {
+                        const saved = localStorage.getItem(`multiverse_rpg_campaign_save_${camp.id}`);
+                        const isInProgress = !!saved;
+                        return (
+                            <div key={camp.id} className={`flex-1 rounded-3xl p-8 border border-slate-700/50 relative overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform shadow-2xl bg-gradient-to-br ${camp.bg}`}
+                                onClick={() => {
+                                    const state = loadCampaign(camp.id);
+                                    if (state.isStarted) {
+                                        setAppMode('campaign_map');
+                                    } else {
+                                        setAppMode('campaign_intro');
+                                    }
                                 }}
                             >
                                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
@@ -9364,19 +9358,6 @@
                     setRoguelikeState(p => ({ ...p, coins: p.coins - price, inventory: { ...(p.inventory || {}), [itemId]: ((p.inventory || {})[itemId] || 0) + 1 } }));
                 } else setSystemAlert("Monete insufficienti!");
             };
-            const handleBuyRelic = (relicId, price) => {
-                if (roguelikeState.coins >= price) {
-                    if ((roguelikeState.relics || []).length >= 3) {
-                        setSystemAlert("Hai già raggiunto il limite massimo di 3 Reliquie!");
-                        return;
-                    }
-                    if ((roguelikeState.relics || []).includes(relicId)) {
-                        setSystemAlert("Possiedi già questa Reliquia!");
-                        return;
-                    }
-                    setRoguelikeState(p => ({ ...p, coins: p.coins - price, relics: [...(p.relics || []), relicId] }));
-                } else setSystemAlert("Monete insufficienti!");
-            };
 
             return (
                 <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center p-6 relative overflow-hidden">
@@ -9419,31 +9400,29 @@
                             </div>
                         </div>
 
-                        {/* Artefatti / Reliquie */}
-                        <div className="bg-slate-900/80 p-6 rounded-3xl border border-fuchsia-500/50 shadow-[0_0_20px_rgba(217,70,239,0.15)] md:col-span-2">
-                            <h3 className="text-xl font-bold mb-4 text-fuchsia-400">Reliquie Antiche (Max 3)</h3>
-                            <p className="text-xs text-slate-400 mb-4">Effetti passivi permanenti per tutta la spedizione.</p>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {Object.values(RELICS_DB).map(relic => {
-                                    const isOwned = (roguelikeState.relics || []).includes(relic.id);
+                        {/* Oggetti Zaino */}
+                        <div className="bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 shadow-xl">
+                            <h3 className="text-xl font-bold mb-4 text-amber-400">Scorte per la Lotta</h3>
+                            <p className="text-xs text-slate-400 mb-4">Questi oggetti verranno inseriti nel tuo zaino e potrai usarli in battaglia!</p>
+                            <div className="grid grid-cols-1 gap-3">
+                                {['pozione', 'cura_totale', 'resurrezione'].map(itemId => {
+                                    const item = ITEMS_DB[itemId];
+                                    const price = itemId === 'pozione' ? 15 : (itemId === 'cura_totale' ? 30 : 50);
                                     return (
-                                        <div key={relic.id} className={`bg-slate-800 p-4 rounded-xl border ${isOwned ? 'border-fuchsia-500 opacity-50' : 'border-fuchsia-900/50 hover:border-fuchsia-500'} flex flex-col justify-between shadow-sm transition-all`}>
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <span className="text-3xl">{relic.icon}</span>
-                                                <div className="font-bold text-sm text-fuchsia-200 leading-tight">{relic.name}</div>
+                                        <div key={itemId} className="bg-slate-800 p-3 rounded-xl border border-amber-900/50 flex justify-between items-center shadow-sm">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-3xl">{item.icon}</span>
+                                                <div>
+                                                    <div className="font-bold text-sm text-amber-200">{item.name}</div>
+                                                    <div className="text-[10px] text-slate-400">Nello zaino: {(roguelikeState.inventory || {})[itemId] || 0}</div>
+                                                </div>
                                             </div>
-                                            <div className="text-[10px] text-slate-400 mb-4 h-8">{relic.desc}</div>
-                                            {isOwned ? (
-                                                <button disabled className="bg-slate-700 text-slate-400 px-4 py-2 rounded-lg text-xs font-bold w-full">Già Posseduta</button>
-                                            ) : (
-                                                <button onClick={() => handleBuyRelic(relic.id, relic.price)} className="bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 px-4 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 text-white shadow-md transition-all w-full">Compra - {relic.price} <Coins size={10}/></button>
-                                            )}
+                                            <button onClick={() => handleBuyItem(itemId, price)} className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 text-white shadow-md transition-all">Compra - {price} <Coins size={10}/></button>
                                         </div>
                                     );
                                 })}
                             </div>
                         </div>
-
                     </div>
 
                     <button onClick={() => setRoguelikeState(p => ({ ...p, isMerchantNext: false }))} className="mt-10 bg-blue-600 hover:bg-blue-500 px-10 py-4 rounded-full font-black text-xl transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:-translate-y-1 z-10 flex items-center gap-2">
@@ -9466,7 +9445,14 @@
             if (roguelikeState.floor >= 35) enemyCount = 3;
             if (isBossFloor) enemyCount = 1; // 1 Solo nemico se è il Boss del piano
 
-            const availableEnemies = CHARACTERS.filter(c => !c.isSummonOnly && (isFinalBossFloor ? c.price === 350 || c.isSecretUnlock || c.id === 'cell' || c.id === 'trigon' || c.id === 'gaster' : !c.isSecretUnlock));
+            let availableEnemies = CHARACTERS.filter(c => !c.isSummonOnly && (isFinalBossFloor ? c.price === 350 || c.isSecretUnlock || c.id === 'cell' || c.id === 'trigon' || c.id === 'gaster' : !c.isSecretUnlock));
+            
+            // --- EVITA NEMICI GIÀ INCONTRATI ---
+            const unencountered = availableEnemies.filter(c => !(roguelikeState.encounteredEnemies || []).includes(c.id));
+            if (unencountered.length >= enemyCount) {
+                availableEnemies = unencountered;
+            }
+            
             const shuffledEnemies = [...availableEnemies].sort(() => 0.5 - Math.random());
             
             const enemyTeam = shuffledEnemies.slice(0, enemyCount).map(base => {
@@ -9502,7 +9488,6 @@
                 p2: enemyTeam.slice(0, state.settings.fieldSize).map((_, i) => i) 
             };
             state.inventory.p1 = JSON.parse(JSON.stringify(roguelikeState.inventory || {})); // Inietta l'inventario locale
-            state.relics.p1 = JSON.parse(JSON.stringify(roguelikeState.relics || [])); // Inietta le reliquie locali
             state.field.p1.forEach(idx => { if(state.teams.p1[idx]) state.teams.p1[idx].revealed = true; });
             state.field.p2.forEach(idx => { if(state.teams.p2[idx]) state.teams.p2[idx].revealed = true; });
             state.status = 'pre_battle';
@@ -9539,16 +9524,6 @@
                         <span className="font-bold text-fuchsia-400 text-sm">Reclutamento: {Math.round((0.20 + (roguelikeState.recruitBonus !== undefined ? roguelikeState.recruitBonus : (roguelikeState.floor * 0.02))) * 100)}%</span>
                     </div>
                 </div>
-
-                {(roguelikeState.relics && roguelikeState.relics.length > 0) && (
-                    <div className="flex justify-center items-center gap-3 mb-6 bg-slate-900/50 px-6 py-2 rounded-xl border border-fuchsia-500/20 backdrop-blur-sm z-10">
-                        <span className="text-xs font-bold text-fuchsia-400 uppercase tracking-widest">Reliquie:</span>
-                        {roguelikeState.relics.map(rId => {
-                            const relic = RELICS_DB[rId];
-                            return relic ? <span key={rId} className="text-2xl drop-shadow-md cursor-help" title={`${relic.name}: ${relic.desc}`}>{relic.icon}</span> : null;
-                        })}
-                    </div>
-                )}
                 
                 <div className="w-full max-w-2xl bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 mb-8 flex gap-4 overflow-x-auto custom-scrollbar">
                     {roguelikeState.roster.map(id => {
@@ -12226,14 +12201,6 @@
                                     let recruitedId = null;
                                     let currentBonus = roguelikeState.recruitBonus !== undefined ? roguelikeState.recruitBonus : (roguelikeState.floor * 0.02);
                                     let recruitChance = 0.20 + currentBonus;
-
-                                    if (Math.random() < recruitChance && gameState.teams.p2) {
-                                        const possibleRecruits = gameState.teams.p2.filter(c => !c.isSummonOnly && !roguelikeState.roster.includes(c.id));
-                                        if (possibleRecruits.length > 0) {
-                                            recruitedId = possibleRecruits[Math.floor(Math.random() * possibleRecruits.length)].id;
-                                        }
-                                    }
-                                    
                                     const chanceMerchant = Math.random() < 0.20; // 20% di apparizione
                                     
                                     // Prossimo piano
@@ -12241,6 +12208,14 @@
                                         const nextRoster = [...p.roster];
                                         const nextStats = { ...newStats };
                                         let nextBonus = p.recruitBonus !== undefined ? p.recruitBonus : (p.floor * 0.02);
+                                        let nextEnemies = p.encounteredEnemies ? [...p.encounteredEnemies] : [];
+
+                                        // Memorizza i nemici sconfitti per non farli riapparire
+                                        if (gameState.teams && gameState.teams.p2) {
+                                            gameState.teams.p2.forEach(c => {
+                                                if (!nextEnemies.includes(c.id)) nextEnemies.push(c.id);
+                                            });
+                                        }
                                         
                                         if (recruitedId) {
                                             nextRoster.push(recruitedId);
@@ -12251,7 +12226,7 @@
                                             nextBonus += 0.02; // Aumenta di 2% ogni piano superato senza reclutamenti
                                         }
                                         
-                                        return { ...p, rosterStats: nextStats, roster: nextRoster, floor: p.floor + 1, coins: (p.coins || 0) + earnedCoins, inventory: leftoverInventory, isMerchantNext: chanceMerchant, recruitBonus: nextBonus };
+                                        return { ...p, rosterStats: nextStats, roster: nextRoster, floor: p.floor + 1, coins: (p.coins || 0) + earnedCoins, inventory: leftoverInventory, isMerchantNext: chanceMerchant, recruitBonus: nextBonus, encounteredEnemies: nextEnemies };
                                     });
                                     setAppMode('roguelike_map');
                                     
