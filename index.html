@@ -377,8 +377,8 @@
           'Aura spettrale': { name: 'Aura spettrale', type: 'Spettro', power: 60, desc: 'Un attacco con aura spettrale mortale che infligge 60 danni.' },
 
           // NUOVE MOSSE JACK FROST
-          'Vento Invernale': { name: 'Vento Invernale', type: 'Ghiaccio', power: 60, selfStatBuff: { spd: 1.5 }, desc: 'Cavalca il vento gelato, infliggendo danni e aumentando la sua Velocità del 50%.' },
-          'Scherzetto di Neve': { name: 'Scherzetto di Neve', type: 'Ghiaccio', power: 0, targetCount: 2, statusEffect: { type: 'Congelato', chance: 0.4 }, desc: 'Lancia palle di neve magiche su 2 nemici. 40% di probabilità di congelarli.' },
+          'Vento Invernale': { name: 'Vento Invernale', type: 'Ghiaccio', power: 70, selfStatBuff: { spd: 1.5 }, desc: 'Cavalca il vento gelato, infliggendo danni e aumentando la sua Velocità del 50%.' },
+          'Scherzetto di Neve': { name: 'Scherzetto di Neve', type: 'Ghiaccio', power: 40, targetCount: 2, statusEffect: { type: 'Congelato', chance: 0.4 }, desc: 'Lancia palle di neve magiche su 2 nemici infliggendo danni. 40% di probabilità di congelarli.' },
           'Bastone Magico': { name: 'Bastone Magico', type: 'Magico', power: 70, statusEffect: { type: 'Confuso', chance: 0.2 }, desc: 'Colpisce con il bastone magico. 20% di probabilità di confondere il bersaglio.' },
           'Aura Glaciale': { name: 'Aura Glaciale', type: 'Ghiaccio', power: 0, targetMode: 'team', targetStatBuff: { spd: 1.5 }, desc: 'Ricopre l\'arena di ghiaccio liscio, aumentando la Velocità di tutto il team del 50%.' },
 
@@ -5524,6 +5524,162 @@
                 events.push({ type: 'status_update', targetPlayer: player, targetIdx: idx, statuses: JSON.parse(JSON.stringify(workingTeams[player][idx].statuses)) });
             };
 
+            // --- 1. PRE-PASS: ELABORAZIONE FORMA IPER (Avviene istantaneamente PRIMA di calcolare l'iniziativa) ---
+            activeMatchPlayers.forEach(player => {
+                Object.keys(currentActions[player] || {}).forEach(charTeamIdxStr => {
+                    const action = currentActions[player][charTeamIdxStr];
+                    if (action.hyperize && !workingHyperUsed[player]) {
+                        const charTeamIdx = parseInt(charTeamIdxStr);
+                        const char = workingTeams[player]?.[charTeamIdx];
+                        if (char && char.hp > 0 && !char.isHyper) {
+                            char.isHyper = true;
+                            
+                            // Aumenta Base Stats (Così i buff/debuff scalano su questo nuovo valore)
+                            char.baseAtk = Math.floor(char.baseAtk * 1.5);
+                            char.baseDef = Math.floor(char.baseDef * 1.5);
+                            char.baseSpd = Math.floor(char.baseSpd * 1.5);
+                            
+                            // Aumenta Stats Correnti
+                            char.atk = Math.floor(char.atk * 1.5);
+                            char.def = Math.floor(char.def * 1.5);
+                            char.spd = Math.floor(char.spd * 1.5);
+                            
+                            if (char.id === 'gardevoir') {
+                                char.types = ['Psico', 'Erba'];
+                                char.moves.push({ ...MOVES_DB['Liane Oscillanti'], remainingUses: MOVES_DB['Liane Oscillanti'].maxUses !== undefined ? MOVES_DB['Liane Oscillanti'].maxUses : null });
+                            }
+                            
+                            if (char.id === 'astral') {
+                                char.types = ['Oscuro']; // Astral diventa puramente Oscuro
+                                char.moves.push({ ...MOVES_DB['Assorbimento Tenebroso'], remainingUses: MOVES_DB['Assorbimento Tenebroso'].maxUses !== undefined ? MOVES_DB['Assorbimento Tenebroso'].maxUses : null });
+                            }
+
+                            if (char.id === 'polterpup') {
+                                char.moves.push({ ...MOVES_DB['Riporta'], remainingUses: MOVES_DB['Riporta'].maxUses !== undefined ? MOVES_DB['Riporta'].maxUses : null });
+                            }
+
+                            if (char.id === 'spongebob') {
+                                char.types = ['Acqua', 'Lotta'];
+                            }
+
+                            if (char.id === 'ariana') {
+                                char.types = ['Suono', 'Oscuro'];
+                                char.moves.push({ ...MOVES_DB['Dangerous Woman'], remainingUses: MOVES_DB['Dangerous Woman'].maxUses !== undefined ? MOVES_DB['Dangerous Woman'].maxUses : null });
+                            }
+
+                            if (char.id === 'jake') {
+                                char.types = ['Magico', 'Buio'];
+                                char.moves.push({ ...MOVES_DB['Morsa del Demone'], remainingUses: MOVES_DB['Morsa del Demone'].maxUses !== undefined ? MOVES_DB['Morsa del Demone'].maxUses : null });
+                            }
+
+                            if (char.id === 'finn') {
+                                char.types = ['Elettro', 'Fuoco'];
+                                char.moves.push({ ...MOVES_DB['Lama Vulcanica'], remainingUses: MOVES_DB['Lama Vulcanica'].maxUses !== undefined ? MOVES_DB['Lama Vulcanica'].maxUses : null });
+                                char.moves.push({ ...MOVES_DB['Fulmine dell\'Eroe'], remainingUses: MOVES_DB['Fulmine dell\'Eroe'].maxUses !== undefined ? MOVES_DB['Fulmine dell\'Eroe'].maxUses : null });
+                            }
+
+                            if (char.id === 'juvia') {
+                                char.types = ['Acqua', 'Buio'];
+                                char.moves.push({ ...MOVES_DB['Abisso Disperato'], remainingUses: MOVES_DB['Abisso Disperato'].maxUses !== undefined ? MOVES_DB['Abisso Disperato'].maxUses : null });
+                            }
+
+                            if (char.id === 'corvina') {
+                                char.types = ['Magico']; // Diventa pura magia (Corvina Bianca)
+                                char.moves.push({ ...MOVES_DB['Luce di Azarath'], remainingUses: MOVES_DB['Luce di Azarath'].maxUses !== undefined ? MOVES_DB['Luce di Azarath'].maxUses : null });
+                            }
+
+                            if (char.id === 'entoma') {
+                                char.types = ['Insetto', 'Buio'];
+                                char.moves.push({ ...MOVES_DB['Fame Insaziabile'], remainingUses: MOVES_DB['Fame Insaziabile'].maxUses !== undefined ? MOVES_DB['Fame Insaziabile'].maxUses : null });
+                            }
+
+                            if (char.id === 'darwin') {
+                                char.types = ['Acqua', 'Oscuro'];
+                                char.moves.push({ ...MOVES_DB['Idropompa'], remainingUses: MOVES_DB['Idropompa'].maxUses !== undefined ? MOVES_DB['Idropompa'].maxUses : null });
+                                char.moves.push({ ...MOVES_DB['Dittatura del Sorriso'], remainingUses: MOVES_DB['Dittatura del Sorriso'].maxUses !== undefined ? MOVES_DB['Dittatura del Sorriso'].maxUses : null });
+                            }
+
+                            if (char.id === 'brago') {
+                                char.types = ['Oscuro', 'Psico'];
+                                char.moves.push({ ...MOVES_DB['Caos Totale'], remainingUses: MOVES_DB['Caos Totale'].maxUses !== undefined ? MOVES_DB['Caos Totale'].maxUses : null });
+                            }
+
+                            if (char.id === 'sdentato') {
+                                char.types = ['Drago', 'Elettro'];
+                                char.moves.push({ ...MOVES_DB['Fulmine'], remainingUses: MOVES_DB['Fulmine'].maxUses !== undefined ? MOVES_DB['Fulmine'].maxUses : null });
+                            }
+
+                            if (char.id === 'rainbowdash') {
+                                char.moves.push({ ...MOVES_DB['Morso del Pony'], remainingUses: MOVES_DB['Morso del Pony'].maxUses !== undefined ? MOVES_DB['Morso del Pony'].maxUses : null });
+                            }
+
+                            if (char.id === 'elsa') {
+                                char.moves.push({ ...MOVES_DB['Gelo Definitivo'], remainingUses: MOVES_DB['Gelo Definitivo'].maxUses !== undefined ? MOVES_DB['Gelo Definitivo'].maxUses : null });
+                            }
+
+                            if (char.id === 'sheldon') {
+                                char.types = ['Drago', 'Roccia'];
+                                char.moves.push({ ...MOVES_DB['Meteora Devastante'], remainingUses: MOVES_DB['Meteora Devastante'].maxUses !== undefined ? MOVES_DB['Meteora Devastante'].maxUses : null });
+                            }
+
+                            if (char.id === 'charizard') {
+                                char.types = ['Roccia', 'Aria'];
+                                char.moves.push({ ...MOVES_DB['Valanga'], remainingUses: MOVES_DB['Valanga'].maxUses !== undefined ? MOVES_DB['Valanga'].maxUses : null });
+                            }
+
+                            if (char.id === 'maxcaulfield') {
+                                char.types = ['Insetto', 'Aria'];
+                                char.moves.push({ ...MOVES_DB['Tempesta di Farfalle'], remainingUses: MOVES_DB['Tempesta di Farfalle'].maxUses !== undefined ? MOVES_DB['Tempesta di Farfalle'].maxUses : null });
+                            }
+
+                            if (char.id === 'chloeprice') {
+                                char.types = ['Suono', 'Luce'];
+                                char.moves.push({ ...MOVES_DB['Caos Assoluto'], remainingUses: MOVES_DB['Caos Assoluto'].maxUses !== undefined ? MOVES_DB['Caos Assoluto'].maxUses : null });
+                            }
+
+                            if (char.id === 'dolli') {
+                                char.types = ['Spettro', 'Acqua'];
+                                char.moves.push({ ...MOVES_DB['Incubo di Pezza'], remainingUses: MOVES_DB['Incubo di Pezza'].maxUses !== undefined ? MOVES_DB['Incubo di Pezza'].maxUses : null });
+                            }
+
+                            if (char.id === 'zatchbell') {
+                                char.passive = { name: 'Kiyomaro: Zatch non sei solo', type: 'global_damage_boost', multiplier: 1.15, desc: 'Kiyomaro lo aiuta a combattere leggendo il libro rosso: tutte le sue mosse ricevono un potenziamento del 15% ai danni!' };
+                            }
+
+                            if (char.id === 'poisonivy') {
+                                char.types = ['Veleno', 'Fuoco'];
+                                char.moves.push({ ...MOVES_DB['Polline scottante'], remainingUses: MOVES_DB['Polline scottante'].maxUses !== undefined ? MOVES_DB['Polline scottante'].maxUses : null });
+                            }
+
+                            if (char.id === 'carlos') {
+                                char.types = ['Fuoco', 'Lotta'];
+                                char.moves.push({ ...MOVES_DB['Pugno infuocato del survivor'], remainingUses: MOVES_DB['Pugno infuocato del survivor'].maxUses !== undefined ? MOVES_DB['Pugno infuocato del survivor'].maxUses : null });
+                            }
+
+                            if (char.id === 'leon') {
+                                char.types = ['Fuoco', 'Normale'];
+                            }
+
+                            if (char.id === 'sage') {
+                                char.moves.push({ ...MOVES_DB['questo è il mio vero potenziale'], remainingUses: MOVES_DB['questo è il mio vero potenziale'].maxUses !== undefined ? MOVES_DB['questo è il mio vero potenziale'].maxUses : null });
+                            }
+
+                            workingHyperUsed[player] = true;
+                            
+                            // Genera evento speciale per innescare l'animazione di trasformazione!
+                            events.push({ 
+                                type: 'hyper_transform', 
+                                text: `✨ INCREDIBILE! ${char.name} sprigiona un'aura cosmica e assume la sua FORMA IPER! ✨`,
+                                player: player,
+                                charTeamIdx: charTeamIdx
+                            });
+                        }
+                    }
+                });
+            });
+            // ---------------------------------------------------------------
+
+            // --- 2. COSTRUZIONE CODA DEI TURNI E INIZIATIVA ---
             let turnQueue = [];
             activeMatchPlayers.forEach(player => {
               workingTeams[player].forEach(char => { if (!char.statuses) char.statuses = []; });
@@ -5551,157 +5707,6 @@
             turnQueue.sort((a, b) => b.priority - a.priority || b.effSpd - a.effSpd);
 
             let isFirstAttackOfTurn = true;
-
-            // --- ELABORAZIONE FORMA IPER (Avviene prima degli attacchi) ---
-            for (let order of turnQueue) {
-                if (order.action.hyperize && !workingHyperUsed[order.player]) {
-                    const char = workingTeams[order.player]?.[order.charTeamIdx];
-                    if (char && char.hp > 0 && !char.isHyper) {
-                        char.isHyper = true;
-                        
-                        // Aumenta Base Stats (Così i buff/debuff scalano su questo nuovo valore)
-                        char.baseAtk = Math.floor(char.baseAtk * 1.5);
-                        char.baseDef = Math.floor(char.baseDef * 1.5);
-                        char.baseSpd = Math.floor(char.baseSpd * 1.5);
-                        
-                        // Aumenta Stats Correnti
-                        char.atk = Math.floor(char.atk * 1.5);
-                        char.def = Math.floor(char.def * 1.5);
-                        char.spd = Math.floor(char.spd * 1.5);
-                        
-                        if (char.id === 'gardevoir') {
-                            char.types = ['Psico', 'Erba'];
-                            char.moves.push({ ...MOVES_DB['Liane Oscillanti'], remainingUses: MOVES_DB['Liane Oscillanti'].maxUses !== undefined ? MOVES_DB['Liane Oscillanti'].maxUses : null });
-                        }
-                        
-                        if (char.id === 'astral') {
-                            char.types = ['Oscuro']; // Astral diventa puramente Oscuro
-                            char.moves.push({ ...MOVES_DB['Assorbimento Tenebroso'], remainingUses: MOVES_DB['Assorbimento Tenebroso'].maxUses !== undefined ? MOVES_DB['Assorbimento Tenebroso'].maxUses : null });
-                        }
-
-                        if (char.id === 'polterpup') {
-                            char.moves.push({ ...MOVES_DB['Riporta'], remainingUses: MOVES_DB['Riporta'].maxUses !== undefined ? MOVES_DB['Riporta'].maxUses : null });
-                        }
-
-                        if (char.id === 'spongebob') {
-                            char.types = ['Acqua', 'Lotta'];
-                        }
-
-                        if (char.id === 'ariana') {
-                            char.types = ['Suono', 'Oscuro'];
-                            char.moves.push({ ...MOVES_DB['Dangerous Woman'], remainingUses: MOVES_DB['Dangerous Woman'].maxUses !== undefined ? MOVES_DB['Dangerous Woman'].maxUses : null });
-                        }
-
-                        if (char.id === 'jake') {
-                            char.types = ['Magico', 'Buio'];
-                            char.moves.push({ ...MOVES_DB['Morsa del Demone'], remainingUses: MOVES_DB['Morsa del Demone'].maxUses !== undefined ? MOVES_DB['Morsa del Demone'].maxUses : null });
-                        }
-
-                        if (char.id === 'finn') {
-                            char.types = ['Elettro', 'Fuoco'];
-                            char.moves.push({ ...MOVES_DB['Lama Vulcanica'], remainingUses: MOVES_DB['Lama Vulcanica'].maxUses !== undefined ? MOVES_DB['Lama Vulcanica'].maxUses : null });
-                            char.moves.push({ ...MOVES_DB['Fulmine dell\'Eroe'], remainingUses: MOVES_DB['Fulmine dell\'Eroe'].maxUses !== undefined ? MOVES_DB['Fulmine dell\'Eroe'].maxUses : null });
-                        }
-
-                        if (char.id === 'juvia') {
-                            char.types = ['Acqua', 'Buio'];
-                            char.moves.push({ ...MOVES_DB['Abisso Disperato'], remainingUses: MOVES_DB['Abisso Disperato'].maxUses !== undefined ? MOVES_DB['Abisso Disperato'].maxUses : null });
-                        }
-
-                        if (char.id === 'corvina') {
-                            char.types = ['Magico']; // Diventa pura magia (Corvina Bianca)
-                            char.moves.push({ ...MOVES_DB['Luce di Azarath'], remainingUses: MOVES_DB['Luce di Azarath'].maxUses !== undefined ? MOVES_DB['Luce di Azarath'].maxUses : null });
-                        }
-
-                        if (char.id === 'entoma') {
-                            char.types = ['Insetto', 'Buio'];
-                            char.moves.push({ ...MOVES_DB['Fame Insaziabile'], remainingUses: MOVES_DB['Fame Insaziabile'].maxUses !== undefined ? MOVES_DB['Fame Insaziabile'].maxUses : null });
-                        }
-
-                        if (char.id === 'darwin') {
-                            char.types = ['Acqua', 'Oscuro'];
-                            char.moves.push({ ...MOVES_DB['Idropompa'], remainingUses: MOVES_DB['Idropompa'].maxUses !== undefined ? MOVES_DB['Idropompa'].maxUses : null });
-                            char.moves.push({ ...MOVES_DB['Dittatura del Sorriso'], remainingUses: MOVES_DB['Dittatura del Sorriso'].maxUses !== undefined ? MOVES_DB['Dittatura del Sorriso'].maxUses : null });
-                        }
-
-                        if (char.id === 'brago') {
-                            char.types = ['Oscuro', 'Psico'];
-                            char.moves.push({ ...MOVES_DB['Caos Totale'], remainingUses: MOVES_DB['Caos Totale'].maxUses !== undefined ? MOVES_DB['Caos Totale'].maxUses : null });
-                        }
-
-                        if (char.id === 'sdentato') {
-                            char.types = ['Drago', 'Elettro'];
-                            char.moves.push({ ...MOVES_DB['Fulmine'], remainingUses: MOVES_DB['Fulmine'].maxUses !== undefined ? MOVES_DB['Fulmine'].maxUses : null });
-                        }
-
-                        if (char.id === 'rainbowdash') {
-                            char.moves.push({ ...MOVES_DB['Morso del Pony'], remainingUses: MOVES_DB['Morso del Pony'].maxUses !== undefined ? MOVES_DB['Morso del Pony'].maxUses : null });
-                        }
-
-                        if (char.id === 'elsa') {
-                            char.moves.push({ ...MOVES_DB['Gelo Definitivo'], remainingUses: MOVES_DB['Gelo Definitivo'].maxUses !== undefined ? MOVES_DB['Gelo Definitivo'].maxUses : null });
-                        }
-
-                        if (char.id === 'sheldon') {
-                            char.types = ['Drago', 'Roccia'];
-                            char.moves.push({ ...MOVES_DB['Meteora Devastante'], remainingUses: MOVES_DB['Meteora Devastante'].maxUses !== undefined ? MOVES_DB['Meteora Devastante'].maxUses : null });
-                        }
-
-                        if (char.id === 'charizard') {
-                            char.types = ['Roccia', 'Aria'];
-                            char.moves.push({ ...MOVES_DB['Valanga'], remainingUses: MOVES_DB['Valanga'].maxUses !== undefined ? MOVES_DB['Valanga'].maxUses : null });
-                        }
-
-                        if (char.id === 'maxcaulfield') {
-                            char.types = ['Insetto', 'Aria'];
-                            char.moves.push({ ...MOVES_DB['Tempesta di Farfalle'], remainingUses: MOVES_DB['Tempesta di Farfalle'].maxUses !== undefined ? MOVES_DB['Tempesta di Farfalle'].maxUses : null });
-                        }
-
-                        if (char.id === 'chloeprice') {
-                            char.types = ['Suono', 'Luce'];
-                            char.moves.push({ ...MOVES_DB['Caos Assoluto'], remainingUses: MOVES_DB['Caos Assoluto'].maxUses !== undefined ? MOVES_DB['Caos Assoluto'].maxUses : null });
-                        }
-
-                        if (char.id === 'dolli') {
-                            char.types = ['Spettro', 'Acqua'];
-                            char.moves.push({ ...MOVES_DB['Incubo di Pezza'], remainingUses: MOVES_DB['Incubo di Pezza'].maxUses !== undefined ? MOVES_DB['Incubo di Pezza'].maxUses : null });
-                        }
-
-                        if (char.id === 'zatchbell') {
-                            char.passive = { name: 'Kiyomaro: Zatch non sei solo', type: 'global_damage_boost', multiplier: 1.15, desc: 'Kiyomaro lo aiuta a combattere leggendo il libro rosso: tutte le sue mosse ricevono un potenziamento del 15% ai danni!' };
-                        }
-
-                        if (char.id === 'poisonivy') {
-                            char.types = ['Veleno', 'Fuoco'];
-                            char.moves.push({ ...MOVES_DB['Polline scottante'], remainingUses: MOVES_DB['Polline scottante'].maxUses !== undefined ? MOVES_DB['Polline scottante'].maxUses : null });
-                        }
-
-                        if (char.id === 'carlos') {
-                            char.types = ['Fuoco', 'Lotta'];
-                            char.moves.push({ ...MOVES_DB['Pugno infuocato del survivor'], remainingUses: MOVES_DB['Pugno infuocato del survivor'].maxUses !== undefined ? MOVES_DB['Pugno infuocato del survivor'].maxUses : null });
-                        }
-
-                        if (char.id === 'leon') {
-                            char.types = ['Fuoco', 'Normale'];
-                        }
-
-                        if (char.id === 'sage') {
-                            char.moves.push({ ...MOVES_DB['questo è il mio vero potenziale'], remainingUses: MOVES_DB['questo è il mio vero potenziale'].maxUses !== undefined ? MOVES_DB['questo è il mio vero potenziale'].maxUses : null });
-                        }
-
-                        workingHyperUsed[order.player] = true;
-                        
-                        // Genera evento speciale per innescare l'animazione di trasformazione!
-                        events.push({ 
-                            type: 'hyper_transform', 
-                            text: `✨ INCREDIBILE! ${char.name} sprigiona un'aura cosmica e assume la sua FORMA IPER! ✨`,
-                            player: order.player,
-                            charTeamIdx: order.charTeamIdx
-                        });
-                    }
-                }
-            }
-            // ---------------------------------------------------------------
 
             for (let order of turnQueue) {
               const { player, charTeamIdx, action, move } = order;
@@ -9456,7 +9461,10 @@
             const shuffledEnemies = [...availableEnemies].sort(() => 0.5 - Math.random());
             
             const enemyTeam = shuffledEnemies.slice(0, enemyCount).map(base => {
-                const scale = 1 + (roguelikeState.floor * 0.03); // +3% stats ogni piano
+                // Nuovo sistema a scaglioni: 0% per 1-10, 5% per 11-20, 10% per 21-30, ecc.
+                const tier = Math.floor((roguelikeState.floor - 1) / 10);
+                const scale = 1 + (tier * 0.05); 
+                
                 let e = { ...JSON.parse(JSON.stringify(base)), hp: Math.floor(base.maxHp * scale), maxHp: Math.floor(base.maxHp * scale), atk: Math.floor(base.atk * scale), def: Math.floor(base.def * scale), baseAtk: Math.floor(base.atk * scale), baseDef: Math.floor(base.def * scale), statuses: [], consecutiveProtect: 0, moves: base.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
                 
                 if (isFinalBossFloor) {
