@@ -9529,7 +9529,7 @@
                     </div>
                     <div className="flex items-center gap-2 bg-slate-900/80 px-4 py-1.5 rounded-xl border border-fuchsia-500/30">
                         <Users className="text-fuchsia-400" size={16} />
-                        <span className="font-bold text-fuchsia-400 text-sm">Reclutamento: {Math.round((0.20 + (roguelikeState.recruitBonus !== undefined ? roguelikeState.recruitBonus : (roguelikeState.floor * 0.02))) * 100)}%</span>
+                        <span className="font-bold text-fuchsia-400 text-sm">Reclutamento: {Math.round((0.30 + (roguelikeState.recruitBonus !== undefined ? roguelikeState.recruitBonus : (roguelikeState.floor * 0.02))) * 100)}%</span>
                     </div>
                 </div>
                 
@@ -12208,7 +12208,7 @@
                                     // --- LOGICA RECLUTAMENTO NEMICO E CHANCE MERCANTE ---
                                     let recruitedId = null;
                                     let currentBonus = roguelikeState.recruitBonus !== undefined ? roguelikeState.recruitBonus : (roguelikeState.floor * 0.02);
-                                    let recruitChance = 0.20 + currentBonus;
+                                    let recruitChance = 0.30 + currentBonus;
                                     const chanceMerchant = Math.random() < 0.20; // 20% di apparizione
                                     
                                     // ESTRAZIONE DEL RECLUTAMENTO
@@ -12238,7 +12238,7 @@
                                             nextRoster.push(recruitedId);
                                             const baseChar = CHARACTERS.find(c => c.id === recruitedId);
                                             if (baseChar) nextStats[recruitedId] = baseChar.maxHp; 
-                                            nextBonus = 0; // Reset a 20% (bonus = 0)
+                                            nextBonus = 0; // Reset a 30% (bonus = 0)
                                         } else {
                                             nextBonus += 0.02; // Aumenta di 2% ogni piano superato senza reclutamenti
                                         }
