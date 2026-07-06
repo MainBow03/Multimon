@@ -3733,8 +3733,8 @@
                           sessionId: sessionId,
                           name: playerName,
                           avatar: playerAvatarUrl,
-                          status: (appMode === 'online_room' && roomId) ? 'In Partita' : 'Nel Menu',
-                          roomId: appMode === 'online_room' ? roomId : null,
+                          status: ((appMode === 'online_room' || appMode === 'roguelike_coop_lobby') && roomId) ? 'In Partita' : 'Nel Menu',
+                          roomId: (appMode === 'online_room' || appMode === 'roguelike_coop_lobby') ? roomId : null,
                           timestamp: Date.now(),
                           wins: stats.wins || 0,
                           matches: stats.matches || 0
@@ -3981,7 +3981,8 @@
           }, [gameState.teams, gameState.field, isPlayingEvents, gameState.status]);
 
           useEffect(() => {
-            if (appMode === 'online_room' && roomId && user) {
+            // FIX: Ora "ascolta" i dati in tempo reale anche quando sei nella lobby della Co-op!
+            if ((appMode === 'online_room' || appMode === 'roguelike_coop_lobby') && roomId && user) {
               const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
               const unsubscribe = onSnapshot(roomRef, (snapshot) => {
                 if (snapshot.exists()) {
@@ -4064,63 +4065,6 @@
             }
           }, [gameState.teams, gameState.field, isPlayingEvents]);
 
-          useEffect(() => {
-              if (gameState.status === 'pre_battle') {
-                  setIntroCharIdx(0);
-                  // Aumentato l'intervallo per dare il giusto ritmo di suspense alla comparsa dei personaggi
-                  const interval = setInterval(() => {
-                      setIntroCharIdx(prev => prev + 1);
-                  }, 400);
-
-                  let timeout;
-                  if (appMode === 'local_room' || playerRole === 'p1') {
-                      // Aumentato il tempo totale della schermata per permettere la visione delle squadre (6 secondi)
-                      timeout = setTimeout(() => {
-                          if (gameState.events && gameState.events.length > 0) {
-                              updateState({ status: 'executing', postExecStatus: 'battling', turnExpiresAt: Date.now() + 92000 });
-                          } else {
-                              updateState({ status: 'battling', turnExpiresAt: Date.now() + 92000 });
-                          }
-                          if (appMode === 'local_room') {
-                              setPlayerRole('p1');
-                              setCommandingIdx(0);
-                          }
-                      }, 6000); 
-                  }
-
-                  return () => {
-                      clearInterval(interval);
-                      if (timeout) clearTimeout(timeout);
-                  };
-              }
-          }, [gameState.status, appMode, playerRole, gameState.events]);
-
-          // --- FIX CRITICO: Sblocco turno iniziale e ricollegamenti per i client Online ---
-          useEffect(() => {
-              if (gameState.status === 'battling' && !isPlayingEvents && appMode === 'online_room' && !gameState.isBot[playerRole]) {
-                  const myField = gameState.field[playerRole] || [];
-                  const myActions = gameState.actions[playerRole] || {};
-                  
-                  // Se non abbiamo un bersaglio attivo (-1) e abbiamo personaggi in campo senza un'azione assegnata
-                  if (commandingIdx === -1 && myField.length > 0 && Object.keys(myActions).length < myField.length) {
-                      // Cerca il primo personaggio in campo che non ha ancora agito e che non è andato KO
-                      let nextIdx = -1;
-                      for (let i = 0; i < myField.length; i++) {
-                          const cIdx = myField[i];
-                          if (!myActions[cIdx] && gameState.teams[playerRole][cIdx]?.hp > 0) {
-                              nextIdx = i;
-                              break;
-                          }
-                      }
-                      
-                      if (nextIdx !== -1) {
-                          setCommandingIdx(nextIdx);
-                          setActionMenuMode('moves');
-                      }
-                  }
-              }
-          }, [gameState.status, isPlayingEvents, appMode, playerRole, gameState.field, gameState.actions, commandingIdx, gameState.isBot, gameState.teams]);
-
           const updateState = async (newState) => {
             if (appMode === 'local_room') {
               setGameState(prev => {
@@ -4141,7 +4085,7 @@
                 return nextState;
               });
               return Promise.resolve();
-            } else if (appMode === 'online_room' && roomId) {
+            } else if ((appMode === 'online_room' || appMode === 'roguelike_coop_lobby') && roomId) {
               const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
               await updateDoc(roomRef, newState);
             }
