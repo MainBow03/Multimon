@@ -2832,8 +2832,7 @@
           roundRobinMatches: [],
           currentMatchIdx: 0,
           playerScores: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 },
-          turnExpiresAt: null, // <--- AGGIUNTO PER IL TIMER GLOBALE
-          roguelike: { floor: 1, maxFloor: 50, coins: 0, recruitBonus: 0.02, encounteredEnemies: [], isMerchantNext: false }
+          turnExpiresAt: null // <--- AGGIUNTO PER IL TIMER GLOBALE
         });
 
         const getSavedSession = () => {
@@ -3733,8 +3732,8 @@
                           sessionId: sessionId,
                           name: playerName,
                           avatar: playerAvatarUrl,
-                          status: ((appMode === 'online_room' || appMode === 'roguelike_coop_lobby') && roomId) ? 'In Partita' : 'Nel Menu',
-                          roomId: (appMode === 'online_room' || appMode === 'roguelike_coop_lobby') ? roomId : null,
+                          status: (appMode === 'online_room' && roomId) ? 'In Partita' : 'Nel Menu',
+                          roomId: appMode === 'online_room' ? roomId : null,
                           timestamp: Date.now(),
                           wins: stats.wins || 0,
                           matches: stats.matches || 0
@@ -3981,8 +3980,7 @@
           }, [gameState.teams, gameState.field, isPlayingEvents, gameState.status]);
 
           useEffect(() => {
-            // FIX: Ora "ascolta" i dati in tempo reale anche quando sei nella lobby della Co-op!
-            if ((appMode === 'online_room' || appMode === 'roguelike_coop_lobby') && roomId && user) {
+            if (appMode === 'online_room' && roomId && user) {
               const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
               const unsubscribe = onSnapshot(roomRef, (snapshot) => {
                 if (snapshot.exists()) {
@@ -4065,6 +4063,63 @@
             }
           }, [gameState.teams, gameState.field, isPlayingEvents]);
 
+          useEffect(() => {
+              if (gameState.status === 'pre_battle') {
+                  setIntroCharIdx(0);
+                  // Aumentato l'intervallo per dare il giusto ritmo di suspense alla comparsa dei personaggi
+                  const interval = setInterval(() => {
+                      setIntroCharIdx(prev => prev + 1);
+                  }, 400);
+
+                  let timeout;
+                  if (appMode === 'local_room' || playerRole === 'p1') {
+                      // Aumentato il tempo totale della schermata per permettere la visione delle squadre (6 secondi)
+                      timeout = setTimeout(() => {
+                          if (gameState.events && gameState.events.length > 0) {
+                              updateState({ status: 'executing', postExecStatus: 'battling', turnExpiresAt: Date.now() + 92000 });
+                          } else {
+                              updateState({ status: 'battling', turnExpiresAt: Date.now() + 92000 });
+                          }
+                          if (appMode === 'local_room') {
+                              setPlayerRole('p1');
+                              setCommandingIdx(0);
+                          }
+                      }, 6000); 
+                  }
+
+                  return () => {
+                      clearInterval(interval);
+                      if (timeout) clearTimeout(timeout);
+                  };
+              }
+          }, [gameState.status, appMode, playerRole, gameState.events]);
+
+          // --- FIX CRITICO: Sblocco turno iniziale e ricollegamenti per i client Online ---
+          useEffect(() => {
+              if (gameState.status === 'battling' && !isPlayingEvents && appMode === 'online_room' && !gameState.isBot[playerRole]) {
+                  const myField = gameState.field[playerRole] || [];
+                  const myActions = gameState.actions[playerRole] || {};
+                  
+                  // Se non abbiamo un bersaglio attivo (-1) e abbiamo personaggi in campo senza un'azione assegnata
+                  if (commandingIdx === -1 && myField.length > 0 && Object.keys(myActions).length < myField.length) {
+                      // Cerca il primo personaggio in campo che non ha ancora agito e che non è andato KO
+                      let nextIdx = -1;
+                      for (let i = 0; i < myField.length; i++) {
+                          const cIdx = myField[i];
+                          if (!myActions[cIdx] && gameState.teams[playerRole][cIdx]?.hp > 0) {
+                              nextIdx = i;
+                              break;
+                          }
+                      }
+                      
+                      if (nextIdx !== -1) {
+                          setCommandingIdx(nextIdx);
+                          setActionMenuMode('moves');
+                      }
+                  }
+              }
+          }, [gameState.status, isPlayingEvents, appMode, playerRole, gameState.field, gameState.actions, commandingIdx, gameState.isBot, gameState.teams]);
+
           const updateState = async (newState) => {
             if (appMode === 'local_room') {
               setGameState(prev => {
@@ -4085,7 +4140,7 @@
                 return nextState;
               });
               return Promise.resolve();
-            } else if ((appMode === 'online_room' || appMode === 'roguelike_coop_lobby') && roomId) {
+            } else if (appMode === 'online_room' && roomId) {
               const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
               await updateDoc(roomRef, newState);
             }
@@ -4105,9 +4160,6 @@
               }
               if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                   return ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, gameState.settings.maxPlayers).filter(p => gameState.players[p]);
-              }
-              if (gameState.gameMode === 'coop') {
-                  return ['p1', 'p2', 'p3', 'p4'].filter(p => gameState.players[p]);
               }
               if (gameState.gameMode === 'torneo') {
                   let active = [];
@@ -4151,7 +4203,6 @@
               
               if (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'battleroyale') return joined >= 2;
               if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') return joined === req;
-              if (gameState.gameMode === 'coop') return true; // Viene gestito dal pulsante di avvio in lobby
               return joined === req;
           };
 
@@ -4181,15 +4232,16 @@
             state.playerAvatars.p1 = playerAvatarUrl;
             state.inventory.p1 = { pozione: 2, resurrezione: 1 };
             state.isRoguelikeCoop = true;
-            state.gameMode = 'coop'; 
+            state.gameMode = 'juggernaut'; // Il Juggernaut sarà il boss controllato dal Bot!
             state.settings = {
                 ...state.settings,
                 teamSize: 1,
                 maxPlayers: 4,
                 fieldSize: 1,
-                draftBattle: false
+                juggernautPlayer: 'p4',
+                draftBattle: true
             };
-            state.players.p4 = "Forze Oscure";
+            state.players.p4 = "Guardiano del Piano";
             state.playerAvatars.p4 = 'https://api.dicebear.com/7.x/bottts/svg?seed=Skull&backgroundColor=020617';
             state.isBot.p4 = true;
             state.inventory.p4 = {};
@@ -4817,8 +4869,6 @@
                 } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                     const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                     enemyTeams = cpuPlayer === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                } else if (gameState.gameMode === 'coop') {
-                    enemyTeams = cpuPlayer === 'p4' ? ['p1', 'p2', 'p3'].filter(p => gameState.players[p]) : ['p4'];
                 } else if (gameState.gameMode === 'torneo') {
                     enemyTeams = getTournamentMatchOpponents(cpuPlayer);
                 } else if (gameState.gameMode === 'torneo_punti') {
@@ -4918,8 +4968,6 @@
                                     if (cpuPlayer !== juggPlayer) {
                                         myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                     }
-                                } else if (gameState.gameMode === 'coop') {
-                                    if (cpuPlayer !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                                 }
                                 // Le mosse revive nel Torneo agiscono solo su se stessi (il proprio alleato)
                                 
@@ -4950,8 +4998,6 @@
                                     if (cpuPlayer !== juggPlayer) {
                                         myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                     }
-                                } else if (gameState.gameMode === 'coop') {
-                                    if (cpuPlayer !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                                 }
                                 
                                 myTeamPlayers.forEach(allyPlayer => {
@@ -5173,8 +5219,6 @@
             } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-            } else if (gameState.gameMode === 'coop') {
-                enemyTeams = playerRole === 'p4' ? activeMatchPlayers.filter(p => p !== 'p4') : ['p4'];
             } else if (gameState.gameMode === 'torneo') {
                 enemyTeams = getTournamentMatchOpponents(playerRole);
             } else if (gameState.gameMode === 'torneo_punti') {
@@ -5737,8 +5781,6 @@
                               if (player !== juggPlayer) {
                                   myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                               }
-                          } else if (gameState.gameMode === 'coop') {
-                              if (player !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                           }
 
                           let deadAllyPlayer = null;
@@ -6047,8 +6089,6 @@
                     } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                         const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                         enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                    } else if (gameState.gameMode === 'coop') {
-                        enemyTeams = player === 'p4' ? activeMatchPlayers.filter(p => p !== 'p4') : ['p4'];
                     } else if (gameState.gameMode === 'torneo') {
                         enemyTeams = getTournamentMatchOpponents(player);
                     } else if (gameState.gameMode === 'torneo_punti') {
@@ -6084,8 +6124,6 @@
                         if (player !== juggPlayer) {
                             myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                         }
-                    } else if (gameState.gameMode === 'coop') {
-                        if (player !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                     }
 
                     myTeamPlayers.forEach(ep => {
@@ -6278,8 +6316,6 @@
                     } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                          const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                          isEnemyTarget = (player === juggPlayer) !== (t.player === juggPlayer);
-                    } else if (gameState.gameMode === 'coop') {
-                         isEnemyTarget = (player === 'p4') !== (t.player === 'p4');
                     } else if (gameState.gameMode === 'torneo') {
                          isEnemyTarget = getTournamentMatchOpponents(player).includes(t.player);
                     }
@@ -6718,8 +6754,6 @@
                             } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                 enemyTeams = player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                            } else if (gameState.gameMode === 'coop') {
-                                enemyTeams = player === 'p4' ? activeMatchPlayers.filter(p => p !== 'p4') : ['p4'];
                             } else if (gameState.gameMode === 'torneo') {
                                 enemyTeams = getTournamentMatchOpponents(player);
                             } else if (gameState.gameMode === 'torneo_punti') {
@@ -6993,8 +7027,6 @@
                             if (target.player !== juggPlayer) {
                                 myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                             }
-                        } else if (gameState.gameMode === 'coop') {
-                            if (target.player !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                         }
 
                         let lowestAlly = null;
@@ -7031,8 +7063,6 @@
                             if (target.player !== juggPlayer) {
                                 myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                             }
-                        } else if (gameState.gameMode === 'coop') {
-                            if (target.player !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                         }
                         let buffed = false;
                         myTeamPlayers.forEach(pAlly => {
@@ -7064,8 +7094,6 @@
                         } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                             const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                             enemyPlayers = target.player === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                        } else if (gameState.gameMode === 'coop') {
-                            enemyPlayers = target.player === 'p4' ? activeMatchPlayers.filter(p => p !== 'p4') : ['p4'];
                         } else {
                             const pKeys = Object.keys(workingField).filter(k => workingField[k].length > 0);
                             enemyPlayers = pKeys.filter(k => k !== target.player);
@@ -7312,23 +7340,63 @@
             if (!humansAlive) { 
                 nextStatus = 'gameover'; 
                 winner = gameState.players[juggPlayer]; 
-            } else if (!hordeAlive) {
-                // L'orda è stata sconfitta: si avanza al prossimo round!
-                nextStatus = 'intermission';
-                currentSurvivalRound += 1;
+            }
+            else if (!hordeAlive) {
+                // Il nemico è morto! Creiamo un nuovo nemico invece di finire il gioco
+                currentSurvivalRound++;
+                
+                const baseRoster = gameState.settings.fusionMode ? FUSION_CHARACTERS : CHARACTERS;
+                const draftable = baseRoster.filter(c => !c.isSummonOnly && !c.isSecretUnlock);
+                const nextEnemyBase = draftable[Math.floor(Math.random() * draftable.length)];
+                
+                // Scala la potenza del nemico in base al round (+5% stats ogni round)
+                const scale = 1 + (currentSurvivalRound * 0.05);
+
+                let nextEnemy = {
+                    ...JSON.parse(JSON.stringify(nextEnemyBase)),
+                    hp: Math.floor(nextEnemyBase.maxHp * scale),
+                    maxHp: Math.floor(nextEnemyBase.maxHp * scale),
+                    atk: Math.floor(nextEnemyBase.atk * scale),
+                    baseAtk: Math.floor(nextEnemyBase.atk * scale),
+                    def: Math.floor(nextEnemyBase.def * scale),
+                    baseDef: Math.floor(nextEnemyBase.def * scale),
+                    statuses: [],
+                    consecutiveProtect: 0,
+                    revealed: true,
+                    moves: nextEnemyBase.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null }))
+                };
+
+                // Rigenera il team della CPU con il nuovo nemico
+                workingTeams[juggPlayer] = [nextEnemy];
+                workingField[juggPlayer] = [0]; 
+                
+                // Cura i personaggi dei giocatori in campo del 20% come premio (e rianima chi è morto in Co-op!)
+                humansPlayers.forEach(p => {
+                    if (workingTeams[p]) {
+                        workingTeams[p].forEach((char, idx) => {
+                            if (char && !char.isSummonOnly) {
+                                if (char.hp <= 0) {
+                                    char.hp = Math.max(1, Math.floor(char.maxHp * 0.2));
+                                    char.statuses = [];
+                                    if (workingField[p] && !workingField[p].includes(idx)) {
+                                        workingField[p].push(idx);
+                                    }
+                                } else {
+                                    const heal = Math.floor(char.maxHp * 0.2);
+                                    char.hp = Math.min(char.maxHp, char.hp + heal);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                events.push({ type: 'text', text: `🌟 Round ${currentSurvivalRound - 1} superato! La squadra recupera il 20% dei PS! I caduti si rialzano!` });
+                events.push({ type: 'text', text: `⚠️ Un nuovo sfidante appare: ${nextEnemy.name} (Livello ${currentSurvivalRound})!` });
+
+                nextStatus = 'battling'; // Continua la lotta!
             }
         }
-        else if (gameState.gameMode === 'coop') {
-            const botAlive = workingTeams['p4'] && workingTeams['p4'].some(c=>c.hp>0 && !c.isSummonOnly);
-            const humansAlive = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]).some(p => workingTeams[p] && workingTeams[p].some(c=>c.hp>0 && !c.isSummonOnly));
-            
-            if (!botAlive && !humansAlive) { nextStatus = 'gameover'; winner = 'Pareggio'; }
-            else if (!botAlive) { 
-                nextStatus = 'gameover'; 
-                winner = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]).map(p => gameState.players[p]).join(' & '); 
-            }
-            else if (!humansAlive) { nextStatus = 'gameover'; winner = gameState.players['p4']; }
-        }
+        // -----------------------------------------------
         else if (gameState.gameMode === 'juggernaut') {
             const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
             const juggAlive = workingTeams[juggPlayer] && workingTeams[juggPlayer].some(c=>c.hp>0 && !c.isSummonOnly);
@@ -9430,12 +9498,10 @@
             state.gameMode = 'classica';
             state.isRoguelikeBattle = true; 
             
-            const randomOst = SOUNDTRACKS[Math.floor(Math.random() * SOUNDTRACKS.length)].id; // <-- OST Casuale per il piano
-
             // --- FIX BUG ROGUELIKE: Schiera solo i personaggi VIVI in campo all'inizio! ---
             let aliveIndices = [];
             myTeam.forEach((c, i) => { if (c.hp > 0) aliveIndices.push(i); });
-            state.settings = { teamSize: myTeam.length, fieldSize: Math.min(4, Math.max(aliveIndices.length, enemyTeam.length)), soundtrack: randomOst };
+            state.settings = { teamSize: myTeam.length, fieldSize: Math.min(4, Math.max(aliveIndices.length, enemyTeam.length)) };
             
             state.players = { p1: playerName || "Spedizione", p2: isFinalBossFloor ? "Guardiano Finale" : (isBossFloor ? "Boss del Piano" : "Abitanti del Piano") };
             state.playerAvatars = { p1: myTeam[0].img, p2: enemyTeam[0].img };
@@ -9535,7 +9601,10 @@
                 }
             });
 
-            updates['draft.p4'] = [];
+            // Assegna il primo mostro nemico a p4
+            const enemyBase = draftable[Math.floor(Math.random() * draftable.length)];
+            let enemy = { ...JSON.parse(JSON.stringify(enemyBase)), statuses: [], consecutiveProtect: 0, baseAtk: enemyBase.atk, baseDef: enemyBase.def, baseSpd: enemyBase.spd, moves: enemyBase.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
+            updates['draft.p4'] = [enemy];
 
             updateState(updates);
         };
@@ -10520,7 +10589,7 @@
         );
     }
 
-        if (gameState.status === 'drafting') {
+    if (gameState.status === 'drafting') {
         if (playerRole === 'spectator') {
             return (
                 <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6 relative overflow-hidden">
@@ -10537,7 +10606,7 @@
 
         const activeReqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const activePlayersList = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].filter(p => gameState.players[p]);
-        const draftLimitToCheck = (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival' || gameState.gameMode === 'coop') ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
+        const draftLimitToCheck = (gameState.gameMode === 'torneo_punti' || gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') ? activePlayersList : ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'].slice(0, activeReqPlayers);
         
         const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
         const myDraft = gameState.draft[playerRole] || [];
@@ -10549,7 +10618,6 @@
         draftLimitToCheck.forEach(p => {
                 let limit = gameState.settings.teamSize;
                 if ((gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') && p === juggPlayer) limit = 1;
-                if (gameState.gameMode === 'coop' && p === 'p4') limit = 0; // Il Bot non sceglie
 
                 if (gameState.draft[p] && gameState.draft[p].length === limit) readyCount++;
                 else allReady = false;
@@ -10610,34 +10678,24 @@
                                  const humans = draftLimitToCheck.filter(p => !gameState.isBot[p]);
                                  const nextIdx = humans.indexOf(playerRole) + 1;
                                  const nextHuman = humans[nextIdx];
-                                 if (nextHuman) {
-                                     return (
-                                         <button onClick={() => setPlayerRole(nextHuman)} className="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-xl font-bold text-xl transition-all shadow-lg hover:-translate-y-1 flex items-center gap-3">
-                                             Tocca a {gameState.players[nextHuman]} <ChevronRight />
-                                         </button>
-                                     );
-                                 }
-                                 return null;
+                                 
+                                 return nextHuman ? (
+                                     <button onClick={() => setPlayerRole(nextHuman)} className="bg-gradient-to-r from-blue-600 to-indigo-600 px-10 py-5 rounded-2xl font-black text-2xl shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:-translate-y-1 transition-all">
+                                            Passa il turno al Giocatore {nextHuman.replace('p', '')}
+                                     </button>
+                                 ) : null;
                          })()}
-
-                         {allReady && (appMode === 'online_room' || appMode === 'local_room') && playerRole !== 'p1' && (
-                                 <p className="text-emerald-400 animate-pulse flex items-center gap-3 text-xl bg-slate-900/50 px-8 py-4 rounded-xl"><Loader2 className="animate-spin"/> Tutti pronti! In attesa dell'Host...</p>
+                         
+                         {appMode === 'online_room' && !allReady && (
+                                 <p className="text-slate-400 animate-pulse flex items-center gap-3 text-xl bg-slate-900/50 px-8 py-4 rounded-xl"><Loader2 className="animate-spin text-cyan-400"/> In attesa degli altri...</p>
                          )}
 
                          {allReady && (appMode === 'local_room' || playerRole === 'p1') && (
-                                 <button onClick={() => {
-                                     if (gameState.isRoguelikeCoop) {
-                                         const newTeams = { p1: [], p2: [], p3: [], p4: [] };
-                                         ['p1', 'p2', 'p3'].forEach(p => {
-                                             if (gameState.draft[p]) newTeams[p] = JSON.parse(JSON.stringify(gameState.draft[p]));
-                                         });
-                                         updateState({ status: 'roguelike_map', teams: newTeams });
-                                     } else {
-                                         startBattle();
-                                     }
-                                 }} className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 px-10 py-5 rounded-2xl font-black text-2xl shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:-translate-y-1 transition-all flex items-center gap-3">
-                                     <Swords /> {gameState.isRoguelikeCoop ? 'Inizia Spedizione' : 'Inizia Lotta!'}
-                                 </button>
+                                 <button onClick={startBattle} className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 px-10 py-5 rounded-2xl font-black text-2xl shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:-translate-y-1 transition-all flex items-center gap-3"><Swords /> Inizia Lotta!</button>
+                         )}
+
+                         {allReady && appMode === 'online_room' && playerRole !== 'p1' && (
+                                 <p className="text-emerald-400 animate-pulse flex items-center gap-3 text-xl bg-slate-900/50 px-8 py-4 rounded-xl"><Loader2 className="animate-spin"/> Tutti pronti! In attesa dell'Host...</p>
                          )}
                     </div>
                 ) : (
@@ -10892,8 +10950,6 @@
             enemyPlayers = [activeMatchPlayers.find(p => p !== playerRole)];
         } else if (gameState.gameMode === 'battleroyale') {
             enemyPlayers = activeMatchPlayers.filter(p => p !== playerRole);
-        } else if (gameState.gameMode === 'coop') {
-            enemyPlayers = playerRole === 'p4' ? activeMatchPlayers.filter(p => p !== 'p4') : ['p4'];
         } else {
             enemyPlayers = [playerRole === 'p1' ? 'p2' : 'p1'];
         }
@@ -10994,9 +11050,6 @@
                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                 topPlayers = [juggPlayer]; 
                 bottomPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
-        } else if (gameState.gameMode === 'coop') {
-                topPlayers = ['p4'];
-                bottomPlayers = activeMatchPlayers.filter(p => p !== 'p4');
         } else if (gameState.gameMode === 'torneo') {
             const phase = gameState.tournamentPhase || 'semis';
             const res = gameState.tournamentResults || {};
@@ -11733,8 +11786,6 @@
                                                                             } else if (gameState.gameMode === 'juggernaut' || gameState.gameMode === 'survival') {
                                                                                 const juggPlayer = gameState.settings.juggernautPlayer || (gameState.gameMode === 'survival' ? 'p2' : 'p1');
                                                                                 enemyTeams = playerRole === juggPlayer ? activeMatchPlayers.filter(p => p !== juggPlayer) : [juggPlayer];
-                                                                            } else if (gameState.gameMode === 'coop') {
-                                                                                enemyTeams = playerRole === 'p4' ? activeMatchPlayers.filter(p => p !== 'p4') : ['p4'];
                                                                             } else if (gameState.gameMode === 'torneo') {
                                                                                 enemyTeams = getTournamentMatchOpponents(playerRole);
                                                                             } else if (gameState.gameMode === 'torneo_punti') {
@@ -11819,8 +11870,6 @@
                                                                     const activeMatchPlayers = getActivePlayers();
                                                                     myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                                                 }
-                                                            } else if (gameState.gameMode === 'coop') {
-                                                                if (playerRole !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                                                             } else if (gameState.gameMode === 'torneo') {
                                                                 myTeamPlayers = [playerRole]; // Nel torneo 1v1 ressi te stesso
                                                             }
@@ -11892,8 +11941,6 @@
                                                     const activeMatchPlayers = getActivePlayers();
                                                     myTeamPlayers = activeMatchPlayers.filter(p => p !== juggPlayer);
                                                 }
-                                            } else if (gameState.gameMode === 'coop') {
-                                                if (playerRole !== 'p4') myTeamPlayers = ['p1', 'p2', 'p3'].filter(p => gameState.players[p]);
                                             } else if (gameState.gameMode === 'torneo') {
                                                 myTeamPlayers = [playerRole];
                                             }
@@ -11951,128 +11998,6 @@
     }
 
     if (gameState.status === 'gameover') {
-        if (gameState.gameMode === 'coop') {
-            const isWin = gameState.winner !== gameState.players.p4 && gameState.winner !== 'Pareggio';
-            const earnedCoins = Math.floor(Math.random() * 21) + 10;
-            const isHost = playerRole === 'p1';
-
-            return (
-                <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-                    <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isWin ? 'from-fuchsia-900/40' : 'from-rose-900/40'} via-slate-950 to-black pointer-events-none`}></div>
-                    <div className="relative z-10 bg-slate-900/80 p-12 rounded-3xl border border-slate-700/50 shadow-2xl backdrop-blur-xl max-w-2xl">
-                        <h1 className={`text-6xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r ${isWin ? 'from-fuchsia-400 to-purple-500' : 'from-rose-500 to-red-600'}`}>
-                            {isWin ? (gameState.roguelike.floor === gameState.roguelike.maxFloor ? 'SPEDIZIONE COMPLETATA!' : 'VITTORIA!') : 'SPEDIZIONE FALLITA'}
-                        </h1>
-                        
-                        <p className="text-xl text-slate-300 mb-6 font-medium">
-                            {isWin 
-                                ? (gameState.roguelike.floor === gameState.roguelike.maxFloor ? 'L\'Alleanza ha superato l\'ultimo piano. Siete leggende del Multiverso!' : 'I nemici sono stati sconfitti! Vi preparate al prossimo piano.') 
-                                : 'Il team è caduto. Dovrete ricominciare la scalata da zero.'}
-                        </p>
-                        
-                        {isWin && gameState.roguelike.floor !== gameState.roguelike.maxFloor && (
-                             <div className="flex items-center justify-center gap-2 mb-8 text-2xl font-black text-yellow-400 bg-yellow-500/10 py-3 rounded-full border border-yellow-500/30">
-                                 <Coins size={28} /> +{earnedCoins} Monete Ognuno!
-                             </div>
-                        )}
-                        
-                        {isHost ? (
-                            <button onClick={() => {
-                                if (isWin) {
-                                    if (gameState.roguelike.floor === gameState.roguelike.maxFloor) {
-                                        leaveRoom();
-                                    } else {
-                                        const chanceMerchant = Math.random() < 0.20;
-                                        let nextEnemies = [...(gameState.roguelike.encounteredEnemies || [])];
-                                        if (gameState.teams.p4) {
-                                            gameState.teams.p4.forEach(c => {
-                                                if (!nextEnemies.includes(c.id)) nextEnemies.push(c.id);
-                                            });
-                                        }
-
-                                        // --- LOGICA RECLUTAMENTO CO-OP ---
-                                        let recruitedChar = null;
-                                        let currentBonus = gameState.roguelike.recruitBonus !== undefined ? gameState.roguelike.recruitBonus : (gameState.roguelike.floor * 0.02);
-                                        let recruitChance = 0.30 + currentBonus;
-                                        let nextBonus = currentBonus;
-                                        let newTeams = JSON.parse(JSON.stringify(gameState.teams));
-                                        let targetPlayer = null;
-
-                                        if (Math.random() < recruitChance) {
-                                            const validEnemies = newTeams.p4.filter(c => !c.isSummonOnly);
-                                            let allRostersIds = [];
-                                            ['p1', 'p2', 'p3'].forEach(p => {
-                                                if(newTeams[p]) allRostersIds.push(...newTeams[p].map(c => c.id));
-                                            });
-                                            const recruitable = validEnemies.filter(c => !allRostersIds.includes(c.id));
-                                            
-                                            if (recruitable.length > 0) {
-                                                const rEnemy = recruitable[Math.floor(Math.random() * recruitable.length)];
-                                                
-                                                // Trova il giocatore con meno membri IN VITA (Se pari merito, sceglie a caso tra loro)
-                                                let minAlive = 999;
-                                                let candidates = [];
-                                                ['p1', 'p2', 'p3'].forEach(p => {
-                                                    if (gameState.players[p] && newTeams[p]) {
-                                                        const aliveCount = newTeams[p].filter(c => c.hp > 0 && !c.isSummonOnly).length;
-                                                        if (aliveCount < minAlive) {
-                                                            minAlive = aliveCount;
-                                                            candidates = [p];
-                                                        } else if (aliveCount === minAlive) {
-                                                            candidates.push(p);
-                                                        }
-                                                    }
-                                                });
-                                                targetPlayer = candidates[Math.floor(Math.random() * candidates.length)];
-                                                
-                                                const baseChar = CHARACTERS.find(c => c.id === rEnemy.id);
-                                                recruitedChar = { 
-                                                    ...JSON.parse(JSON.stringify(baseChar)), 
-                                                    hp: baseChar.maxHp, 
-                                                    statuses: [], 
-                                                    consecutiveProtect: 0,
-                                                    baseAtk: baseChar.atk, 
-                                                    baseDef: baseChar.def, 
-                                                    baseSpd: baseChar.spd 
-                                                };
-                                                recruitedChar.moves.forEach(m => { if (m.maxUses !== undefined) m.remainingUses = m.maxUses; });
-                                                
-                                                newTeams[targetPlayer].push(recruitedChar);
-                                                nextBonus = 0;
-                                            } else {
-                                                nextBonus += 0.05;
-                                            }
-                                        } else {
-                                            nextBonus += 0.05;
-                                        }
-
-                                        if (recruitedChar) {
-                                            setSystemAlert(`Reclutamento riuscito! ${recruitedChar.name} si unisce alla squadra di ${gameState.players[targetPlayer]}!`);
-                                        }
-
-                                        updateState({ 
-                                            status: 'roguelike_map',
-                                            'roguelike.floor': gameState.roguelike.floor + 1,
-                                            'roguelike.isMerchantNext': chanceMerchant,
-                                            'roguelike.encounteredEnemies': nextEnemies,
-                                            'roguelike.recruitBonus': nextBonus,
-                                            teams: newTeams
-                                        });
-                                    }
-                                } else {
-                                    leaveRoom();
-                                }
-                            }} className={`px-10 py-5 rounded-full font-black text-2xl transition-all shadow-lg hover:-translate-y-1 ${isWin ? 'bg-gradient-to-r from-fuchsia-500 to-purple-600' : 'bg-gradient-to-r from-rose-600 to-red-600'}`}>
-                                {isWin ? (gameState.roguelike.floor === gameState.roguelike.maxFloor ? 'Sciogli Alleanza' : 'Prosegui la Scalata') : 'Accetta la Sconfitta'}
-                            </button>
-                        ) : (
-                            <div className="text-xl text-fuchsia-400 font-bold animate-pulse mt-4">In attesa dell'Host...</div>
-                        )}
-                    </div>
-                </div>
-            );
-        }
-
         if (gameState.isCampaignBattle) {
             const isWin = gameState.winner === gameState.players.p1;
             
@@ -12324,34 +12249,30 @@
                                                 if (!nextEnemies.includes(c.id)) nextEnemies.push(c.id);
                                             });
                                         }
-
+                                        
                                         if (recruitedId) {
                                             nextRoster.push(recruitedId);
-                                            nextStats[recruitedId] = CHARACTERS.find(c => c.id === recruitedId).maxHp;
-                                            nextBonus = 0; // resetta bonus se recluta
-                                            setSystemAlert(`Hai reclutato ${CHARACTERS.find(c => c.id === recruitedId).name}!`);
+                                            const baseChar = CHARACTERS.find(c => c.id === recruitedId);
+                                            if (baseChar) nextStats[recruitedId] = baseChar.maxHp; 
+                                            nextBonus = 0; // Reset a 30% (bonus = 0)
                                         } else {
-                                            nextBonus += 0.05; // aumenta possibilità se non recluta
+                                            nextBonus += 0.02; // Aumenta di 2% ogni piano superato senza reclutamenti
                                         }
-
-                                        return {
-                                            ...p,
-                                            floor: p.floor + 1,
-                                            roster: nextRoster,
-                                            rosterStats: nextStats,
-                                            inventory: leftoverInventory,
-                                            isMerchantNext: chanceMerchant,
-                                            recruitBonus: nextBonus,
-                                            encounteredEnemies: nextEnemies
-                                        };
+                                        
+                                        return { ...p, rosterStats: nextStats, roster: nextRoster, floor: p.floor + 1, coins: (p.coins || 0) + earnedCoins, inventory: leftoverInventory, isMerchantNext: chanceMerchant, recruitBonus: nextBonus, encounteredEnemies: nextEnemies };
                                     });
                                     setAppMode('roguelike_map');
+                                    
+                                    if (recruitedId) {
+                                        const charName = CHARACTERS.find(c => c.id === recruitedId).name;
+                                        setTimeout(() => setSystemAlert(`🎉 Reclutamento Inaspettato! Colpito dalla tua incredibile forza, ${charName} ha deciso di unirsi al tuo team per il resto della Spedizione con i PS al massimo!`), 300);
+                                    }
                                 }
                             } else {
+                                // Sconfitta = Reset
                                 setRoguelikeState({ isStarted: false, roster: [] });
                                 setAppMode('menu');
                             }
-                            leaveRoom();
                         }} className={`px-10 py-5 rounded-full font-black text-2xl transition-all shadow-lg hover:-translate-y-1 ${isWin ? 'bg-gradient-to-r from-fuchsia-500 to-purple-600' : 'bg-gradient-to-r from-rose-600 to-red-600'}`}>
                             {isWin ? (roguelikeState.floor === roguelikeState.maxFloor ? 'Torna al Menu' : 'Prosegui la Scalata') : 'Accetta la Sconfitta'}
                         </button>
@@ -12359,9 +12280,78 @@
                 </div>
             );
         }
+        // ---------------------------------------------
 
-        // --- RENDERER TABELLONE E CLASSIFICA TORNEO (Per Game Over) ---
-        const renderGameOverTournamentUI = () => {
+        let rewardText = "";
+        let rankText = "";
+        
+        if (playerName.trim()) {
+            let coins = 0;
+            const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
+            
+            if (myKey) {
+                if (gameState.gameMode === 'torneo') {
+                    const tr = gameState.tournamentResults;
+                    if (tr.final && tr.final.winner === myKey) { coins = 200; rankText = "1° Posto nel Torneo!"; }
+                    else if (tr.final && tr.final.loser === myKey) { coins = 100; rankText = "2° Posto nel Torneo!"; }
+                    else if (tr.bronze && tr.bronze.winner === myKey) { coins = 70; rankText = "3° Posto nel Torneo!"; }
+                    else if (tr.bronze && tr.bronze.loser === myKey) { coins = 50; rankText = "4° Posto nel Torneo!"; }
+                    else { coins = 50; }
+                } else if (gameState.gameMode === 'survival') {
+                    // --- PREMI SPECIFICI SOPRAVVIVENZA ---
+                    const roundsSurvived = (gameState.survivalRound || 1) - 1;
+                    rankText = `Sei sopravvissuto a ${roundsSurvived} Round!`;
+                    let calculatedCoins = 0;
+                    for (let i = 1; i <= roundsSurvived; i++) {
+                        calculatedCoins += Math.min(10, i + 2);
+                    }
+                    coins = calculatedCoins;
+                    if (roundsSurvived > 0) rewardText = `+${coins} Monete ricevute!`;
+                } else if (gameState.gameMode === 'juggernaut') {
+                    // --- PREMI SPECIFICI JUGGERNAUT (Allineati col salvataggio) ---
+                    const juggPlayer = gameState.settings.juggernautPlayer || 'p1';
+                    const amIJuggernaut = myKey === juggPlayer;
+                    const juggWon = gameState.winner === gameState.players[juggPlayer];
+
+                    if (gameState.winner === 'Pareggio') {
+                        coins = 50;
+                    } else if (juggWon) {
+                        if (amIJuggernaut) coins = 150;
+                        else coins = 50; 
+                    } else {
+                        if (amIJuggernaut) coins = 50; 
+                        else coins = 110; 
+                    }
+                } else {
+                    let won = false;
+                    if (gameState.gameMode === 'multipla') {
+                         if (gameState.winner && gameState.winner.includes(playerName)) won = true;
+                    } else if (gameState.winner === playerName) {
+                         won = true;
+                    }
+                    coins = won ? 100 : 50;
+                    if (gameState.winner === 'Pareggio') coins = 50;
+                }
+
+                // CALCOLO BONUS TEAM SIZE
+                const teamSizeBonus = Math.max(0, (gameState.settings.teamSize - 4) * 5);
+                if (coins > 0) {
+                    if (gameState.gameMode !== 'survival') {
+                        coins += teamSizeBonus;
+                        if (teamSizeBonus > 0) {
+                            rewardText = `+${coins} Monete ricevute! (+${teamSizeBonus} Bonus Squadra)`;
+                        } else {
+                            rewardText = `+${coins} Monete ricevute!`;
+                        }
+                    } else {
+                        rewardText = `+${coins} Monete ricevute!`;
+                    }
+                }
+            }
+        }
+
+        // --- NUOVO: RENDERER TABELLONE E CLASSIFICA TORNEO ---
+        const renderTournamentUI = () => {
             if (gameState.gameMode === 'torneo') {
                 const b = gameState.tournamentBracket || ['p1', 'p2', 'p3', 'p4'];
                 const res = gameState.tournamentResults || {};
@@ -12369,12 +12359,15 @@
                 const MatchBox = ({ p1, p2, winner, title, isFinal }) => (
                     <div className={`bg-slate-900/90 border ${isFinal ? 'border-yellow-500 shadow-[0_0_20px_rgba(250,204,21,0.3)]' : 'border-slate-600 shadow-lg'} rounded-xl p-3 w-48 md:w-56 flex flex-col gap-2 relative z-10 backdrop-blur-sm`}>
                         <div className={`text-[10px] ${isFinal ? 'text-yellow-400' : 'text-cyan-400'} font-black uppercase tracking-widest text-center`}>{title}</div>
+                        
                         <div className={`flex items-center gap-3 p-1.5 rounded-lg transition-all ${winner === p1 ? 'bg-emerald-900/60 border border-emerald-500/50' : (winner ? 'opacity-40 grayscale border border-transparent' : 'bg-slate-800 border border-slate-700')}`}>
                             <img src={p1 !== '???' ? (gameState.playerAvatars[p1] || getDefaultAvatar(gameState.players[p1])) : getDefaultAvatar('?')} className="w-8 h-8 rounded-full object-cover bg-slate-950" />
                             <span className="text-xs font-bold truncate text-white">{p1 !== '???' ? gameState.players[p1] : '???'}</span>
                             {winner === p1 && <ChevronRight size={16} className="text-emerald-400 ml-auto" />}
                         </div>
+                        
                         <div className="text-center text-[10px] text-slate-500 font-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-700 z-20">VS</div>
+                        
                         <div className={`flex items-center gap-3 p-1.5 rounded-lg transition-all ${winner === p2 ? 'bg-emerald-900/60 border border-emerald-500/50' : (winner ? 'opacity-40 grayscale border border-transparent' : 'bg-slate-800 border border-slate-700')}`}>
                             <img src={p2 !== '???' ? (gameState.playerAvatars[p2] || getDefaultAvatar(gameState.players[p2])) : getDefaultAvatar('?')} className="w-8 h-8 rounded-full object-cover bg-slate-950" />
                             <span className="text-xs font-bold truncate text-white">{p2 !== '???' ? gameState.players[p2] : '???'}</span>
@@ -12389,21 +12382,37 @@
                 const bw = res.bronze?.winner;
 
                 return (
-                    <div className="flex flex-col items-center w-full max-w-5xl mx-auto my-6 overflow-x-auto pb-4 custom-scrollbar">
+                    <div className="flex flex-col items-center w-full max-w-5xl mx-auto my-8 overflow-x-auto pb-4 custom-scrollbar">
                         <div className="flex items-center justify-center gap-8 md:gap-16 relative min-w-[600px] md:min-w-[800px]">
+                            {/* Semifinali */}
                             <div className="flex flex-col gap-12 md:gap-16">
                                 <MatchBox p1={s1p1} p2={s1p2} winner={s1w} title="Semifinale 1" />
                                 <MatchBox p1={s2p1} p2={s2p2} winner={s2w} title="Semifinale 2" />
                             </div>
+
+                            {/* Linee di connessione disegnate con i bordi (visibili solo su schermi medi/grandi) */}
                             <div className="hidden md:block absolute left-[14rem] top-0 bottom-0 w-8 border-y-2 border-r-2 border-slate-600/50 my-[5.5rem] rounded-r-xl z-0"></div>
                             <div className="hidden md:block absolute left-[16rem] top-1/2 w-8 border-t-2 border-slate-600/50 z-0"></div>
+
+                            {/* Finale */}
                             <div className="flex flex-col justify-center">
                                 <MatchBox p1={s1w || '???'} p2={s2w || '???'} winner={fw} title="Finalissima" isFinal={true} />
                             </div>
+
+                            {/* Campione Assoluto */}
                             <div className="hidden md:flex flex-col items-center gap-3 ml-4">
                                 <Trophy size={64} className={`transition-all duration-700 ${fw ? 'text-yellow-400 animate-bounce drop-shadow-[0_0_20px_rgba(250,204,21,0.8)]' : 'text-slate-800'}`} />
+                                {fw ? (
+                                    <div className="bg-gradient-to-r from-yellow-600 to-orange-600 border-2 border-yellow-400 text-white font-black px-6 py-2 rounded-xl shadow-[0_0_30px_rgba(250,204,21,0.5)] animate-fade-in text-lg uppercase tracking-wider">
+                                        {gameState.players[fw]}
+                                    </div>
+                                ) : (
+                                    <div className="text-slate-600 font-bold uppercase tracking-widest text-xs">In attesa...</div>
+                                )}
                             </div>
                         </div>
+
+                        {/* Finale 3° Posto */}
                         {(res.semi1 && res.semi2) && (
                             <div className="mt-8 pt-8 border-t border-slate-800 w-full flex flex-col items-center animate-fade-in">
                                 <MatchBox p1={res.semi1.loser} p2={res.semi2.loser} winner={bw} title="Finale 3° Posto (Bronzo)" />
@@ -12417,8 +12426,8 @@
                     .sort((a, b) => b[1] - a[1]);
                 
                 return (
-                    <div className="bg-slate-900/90 border border-cyan-500/50 rounded-3xl p-6 md:p-8 shadow-[0_0_40px_rgba(6,182,212,0.2)] w-full max-w-lg mx-auto my-6 backdrop-blur-md">
-                        <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-6 uppercase tracking-widest text-center">Classifica Finale</h3>
+                    <div className="bg-slate-900/90 border border-cyan-500/50 rounded-3xl p-6 md:p-8 shadow-[0_0_40px_rgba(6,182,212,0.2)] w-full max-w-lg mx-auto my-8 backdrop-blur-md">
+                        <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-6 uppercase tracking-widest text-center">Classifica Attuale</h3>
                         <div className="space-y-3">
                             {sortedScores.map(([p, score], idx) => {
                                 const isFirst = idx === 0 && score > 0;
@@ -12434,273 +12443,31 @@
                                 );
                             })}
                         </div>
+                        <div className="mt-4 text-center text-xs text-slate-500 font-bold uppercase tracking-widest">
+                            Incontro {Math.min(gameState.currentMatchIdx + 1, gameState.roundRobinMatches.length)} di {gameState.roundRobinMatches.length}
+                        </div>
                     </div>
                 );
             }
             return null;
         };
 
-        // --- SCHERMATA GAMEOVER DEFAULT ---
         return (
-            <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/20 via-slate-900 to-black pointer-events-none"></div>
+            <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 text-center overflow-hidden relative">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-900 to-black pointer-events-none"></div>
                 <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
-                    {(gameState.gameMode !== 'torneo' && gameState.gameMode !== 'torneo_punti') && (
-                        <Trophy size={80} className="text-yellow-500 mb-6 mx-auto animate-bounce drop-shadow-[0_0_20px_rgba(234,179,8,0.6)]"/>
-                    )}
+                    <h1 className="text-6xl md:text-7xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 drop-shadow-lg tracking-tighter">FINE PARTITA</h1>
+                    <h2 className="text-3xl md:text-4xl mb-4 font-bold text-white drop-shadow-md">{gameState.winner === 'Pareggio' ? 'Pareggio Totale!' : `VITTORIA PER ${(gameState.winner || '').toUpperCase()}!`}</h2>
                     
-                    <h2 className="text-5xl md:text-6xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 drop-shadow-md">
-                        {gameState.winner === 'Pareggio' ? 'PAREGGIO!' : (gameState.gameMode === 'torneo_punti' ? 'IL TORNEO È CONCLUSO!' : 'VITTORIA!')}
-                    </h2>
+                    {/* INIEZIONE TABELLONE NEL GAMEOVER */}
+                    {renderTournamentUI()}
+
+                    {rankText && <h3 className="text-2xl font-bold text-emerald-400 mb-4 drop-shadow-sm">{rankText}</h3>}
+                    {rewardText && <p className="text-xl font-black text-yellow-400 mb-10 flex items-center justify-center gap-2 bg-yellow-500/10 px-6 py-3 rounded-full border border-yellow-500/30 backdrop-blur-sm"><Coins size={28}/> {rewardText}</p>}
                     
-                    {gameState.winner !== 'Pareggio' && (
-                        <p className="text-2xl text-slate-300 mb-8 font-medium">
-                            Vincitore: <span className="font-black text-white">{gameState.winner}</span>
-                        </p>
-                    )}
-                    
-                    {/* INIEZIONE TABELLONE */}
-                    {renderGameOverTournamentUI()}
-
-                    <button onClick={leaveRoom} className="mt-8 bg-slate-800 hover:bg-slate-700 border border-slate-600 px-8 py-3 rounded-xl font-bold transition-all shadow-md">Torna al Menu</button>
-                </div>
-            </div>
-        );
-    } // Chiude if (gameState.status === 'gameover')
-
-    if (gameState.status === 'roguelike_map') {
-        const isHost = playerRole === 'p1';
-        const isBossFloor = gameState.roguelike.floor % 10 === 0;
-        const isFinalBossFloor = gameState.roguelike.floor === gameState.roguelike.maxFloor;
-        const isRestFloor = gameState.roguelike.floor % 5 === 0 && !isBossFloor && !isFinalBossFloor;
-
-        // --- SCHERMATA MERCANTE VAGABONDO ---
-        if (gameState.roguelike.isMerchantNext) {
-            const handleBuyRevive = (pId, cIdx) => {
-                if (getPlayerData().coins >= 50) {
-                    updateLocalStats({ spendCoins: 50 });
-                    const maxHp = gameState.teams[pId][cIdx].maxHp;
-                    updateState({ [`teams.${pId}.${cIdx}.hp`]: Math.floor(maxHp * 0.5) });
-                } else setSystemAlert("Monete insufficienti nel tuo profilo!");
-            };
-            const handleBuyHeal = (pId, cIdx) => {
-                if (getPlayerData().coins >= 15) {
-                    updateLocalStats({ spendCoins: 15 });
-                    const maxHp = gameState.teams[pId][cIdx].maxHp;
-                    const newHp = Math.min(maxHp, gameState.teams[pId][cIdx].hp + Math.floor(maxHp * 0.5));
-                    updateState({ [`teams.${pId}.${cIdx}.hp`]: newHp });
-                } else setSystemAlert("Monete insufficienti nel tuo profilo!");
-            };
-            const handleBuyItem = (itemId, price) => {
-                if (getPlayerData().coins >= price) {
-                    updateLocalStats({ spendCoins: price, buyItem: itemId });
-                    const currentQty = (gameState.inventory[playerRole] && gameState.inventory[playerRole][itemId]) || 0;
-                    updateState({ [`inventory.${playerRole}.${itemId}`]: currentQty + 1 });
-                } else setSystemAlert("Monete insufficienti nel tuo profilo!");
-            };
-
-            return (
-                <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center p-6 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-900/40 via-slate-950 to-black pointer-events-none opacity-60"></div>
-                    
-                    <h2 className="text-4xl font-black mb-2 mt-8 text-yellow-400 z-10 flex items-center gap-3">🛒 Mercante Vagabondo</h2>
-                    <div className="flex items-center gap-2 mb-8 bg-black/60 px-6 py-2 rounded-xl border border-yellow-500/50 z-10 shadow-lg">
-                        <Coins className="text-yellow-400" size={24} />
-                        <span className="font-bold text-yellow-400 text-xl">{getPlayerData().coins} Tue Monete (Globali)</span>
-                    </div>
-
-                    <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
-                        {/* Cure e Rianimazioni */}
-                        <div className="bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 shadow-xl">
-                            <h3 className="text-xl font-bold mb-4 text-emerald-400">Reparto Medico di Squadra</h3>
-                            <div className="space-y-3 overflow-y-auto max-h-[400px] custom-scrollbar pr-2">
-                                {['p1', 'p2', 'p3'].filter(p => gameState.players[p]).flatMap(pId => {
-                                    return gameState.teams[pId].filter(c => !c.isSummonOnly).map((char, cIdx) => {
-                                        const hp = char.hp;
-                                        const isDead = hp <= 0;
-                                        const isFull = hp >= char.maxHp;
-                                        return (
-                                            <div key={`${pId}-${cIdx}`} className={`bg-slate-800 p-3 rounded-xl border ${isDead ? 'border-rose-900' : 'border-slate-600'} flex items-center gap-3 shadow-sm`}>
-                                                <img src={char.img} className={`w-10 h-10 rounded-full object-cover border border-slate-500 ${isDead ? 'grayscale' : ''}`} />
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="font-bold text-sm truncate">{gameState.players[pId]}</div>
-                                                    {renderHealthBar(hp, char.maxHp)}
-                                                </div>
-                                                {isHost ? (
-                                                    isDead ? (
-                                                        <button onClick={() => handleBuyRevive(pId, cIdx)} className="bg-rose-600 hover:bg-rose-500 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 transition-colors"><Heart size={12}/> Rianima - 50 <Coins size={10}/></button>
-                                                    ) : (
-                                                        <button disabled={isFull} onClick={() => handleBuyHeal(pId, cIdx)} className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 transition-colors ${isFull ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-500'}`}><Heart size={12}/> Cura 50% - 15 <Coins size={10}/></button>
-                                                    )
-                                                ) : (
-                                                    <span className="text-[10px] text-slate-500">Solo l'Host può curare</span>
-                                                )}
-                                            </div>
-                                        );
-                                    });
-                                })}
-                            </div>
-                        </div>
-
-                        {/* Oggetti Zaino */}
-                        <div className="bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 shadow-xl">
-                            <h3 className="text-xl font-bold mb-4 text-amber-400">Scorte per il tuo Zaino</h3>
-                            <p className="text-xs text-slate-400 mb-4">Questi oggetti verranno inseriti nel tuo zaino per questa run!</p>
-                            <div className="grid grid-cols-1 gap-3">
-                                {['pozione', 'cura_totale', 'resurrezione'].map(itemId => {
-                                    const item = ITEMS_DB[itemId];
-                                    const price = itemId === 'pozione' ? 15 : (itemId === 'cura_totale' ? 30 : 50);
-                                    return (
-                                        <div key={itemId} className="bg-slate-800 p-3 rounded-xl border border-amber-900/50 flex justify-between items-center shadow-sm">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-3xl">{item.icon}</span>
-                                                <div>
-                                                    <div className="font-bold text-sm text-amber-200">{item.name}</div>
-                                                    <div className="text-[10px] text-slate-400">Ne hai: {(gameState.inventory[playerRole] || {})[itemId] || 0}</div>
-                                                </div>
-                                            </div>
-                                            <button onClick={() => handleBuyItem(itemId, price)} className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 text-white shadow-md transition-all">Compra - {price} <Coins size={10}/></button>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
-
-                    {isHost ? (
-                        <button onClick={() => updateState({ 'roguelike.isMerchantNext': false })} className="mt-10 bg-blue-600 hover:bg-blue-500 px-10 py-4 rounded-full font-black text-xl transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:-translate-y-1 z-10 flex items-center gap-2">
-                            Continua la Spedizione <ChevronRight />
-                        </button>
-                    ) : (
-                        <div className="mt-10 text-fuchsia-400 font-bold animate-pulse text-lg z-10">L'Host sta gestendo gli acquisti della squadra...</div>
-                    )}
-                </div>
-            );
-        }
-
-        const handleRest = () => {
-            let newTeams = { ...gameState.teams };
-            ['p1', 'p2', 'p3'].forEach(p => {
-                if (newTeams[p]) {
-                    newTeams[p].forEach(c => {
-                        if (c && c.hp > 0 && !c.isSummonOnly) {
-                            c.hp = Math.min(c.maxHp, c.hp + Math.floor(c.maxHp * 0.4));
-                        }
-                    });
-                }
-            });
-            updateState({ teams: newTeams, 'roguelike.floor': gameState.roguelike.floor + 1 });
-        };
-
-        const startRoguelikeCoopCombat = () => {
-            let enemyCount = 1;
-            if (gameState.roguelike.floor >= 15) enemyCount = 2;
-            if (gameState.roguelike.floor >= 35) enemyCount = 3;
-            if (isBossFloor) enemyCount = 1;
-
-            let availableEnemies = CHARACTERS.filter(c => !c.isSummonOnly && (isFinalBossFloor ? c.price === 350 || c.isSecretUnlock || c.id === 'cell' || c.id === 'trigon' || c.id === 'gaster' : !c.isSecretUnlock));
-            const unencountered = availableEnemies.filter(c => !(gameState.roguelike.encounteredEnemies || []).includes(c.id));
-            if (unencountered.length >= enemyCount) availableEnemies = unencountered;
-            
-            const shuffledEnemies = [...availableEnemies].sort(() => 0.5 - Math.random());
-            
-            const enemyTeam = shuffledEnemies.slice(0, enemyCount).map(base => {
-                const tier = Math.floor((gameState.roguelike.floor - 1) / 10);
-                const scale = 1 + (tier * 0.05); 
-                let e = { ...JSON.parse(JSON.stringify(base)), hp: Math.floor(base.maxHp * scale), maxHp: Math.floor(base.maxHp * scale), atk: Math.floor(base.atk * scale), def: Math.floor(base.def * scale), baseAtk: Math.floor(base.atk * scale), baseDef: Math.floor(base.def * scale), statuses: [], consecutiveProtect: 0, moves: base.moves.filter(Boolean).map(m => ({ ...m, remainingUses: m.maxUses !== undefined ? m.maxUses : null })) };
-                
-                if (isFinalBossFloor) {
-                    e.atk = Math.floor(e.atk * 1.5); e.hp *= 2; e.maxHp *= 2; e.imageFilter = 'drop-shadow(0 0 20px rgba(220,38,38,1))';
-                    e.statuses.push({ type: 'Protetto', turns: 1 });
-                } else if (isBossFloor) {
-                    e.atk = Math.floor(e.atk * 1.2); e.hp = Math.floor(e.hp * 1.5); e.maxHp = Math.floor(e.maxHp * 1.5);
-                    e.imageFilter = 'drop-shadow(0 0 15px rgba(234,179,8,1))';
-                }
-                return e;
-            });
-
-            const newField = { p1: [], p2: [], p3: [], p4: [] };
-            ['p1', 'p2', 'p3'].forEach(p => {
-                if (gameState.players[p] && gameState.teams[p]) {
-                    const aliveIdx = gameState.teams[p].findIndex(c => c.hp > 0 && !c.isSummonOnly);
-                    if (aliveIdx !== -1) {
-                        newField[p] = [aliveIdx];
-                        gameState.teams[p][aliveIdx].revealed = true;
-                    }
-                }
-            });
-            
-            newField.p4 = enemyTeam.map((_, i) => i).slice(0, 3);
-            enemyTeam.forEach(e => e.revealed = true);
-
-            const randomOst = SOUNDTRACKS[Math.floor(Math.random() * SOUNDTRACKS.length)].id; // <-- OST Casuale per il piano
-
-            updateState({
-                status: 'pre_battle',
-                'teams.p4': enemyTeam,
-                field: newField,
-                actions: { p1: {}, p2: {}, p3: {}, p4: {} },
-                switchActions: { p1: [], p2: [], p3: [], p4: [] },
-                pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0 },
-                'settings.soundtrack': randomOst
-            });
-        };
-
-        return (
-            <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                <button onClick={leaveRoom} className="absolute top-6 left-6 flex items-center gap-2 text-rose-400 hover:text-white transition-colors bg-black/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-rose-500/50 z-20 font-bold">
-                     <LogOut size={16} /> Abbandona Run
-                </button>
-                
-                <h2 className="text-4xl font-black mb-2 text-fuchsia-400 z-10">Piano {gameState.roguelike.floor} / {gameState.roguelike.maxFloor}</h2>
-                <div className="flex flex-wrap justify-center items-center gap-4 mb-8 z-10">
-                    <div className="text-xs bg-slate-900/80 px-4 py-1.5 rounded-xl border border-slate-700/50 text-slate-300">
-                        La Spedizione di: <span className="font-bold text-white">{gameState.players.p1}</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-900/80 px-4 py-1.5 rounded-xl border border-fuchsia-500/30">
-                        <Users className="text-fuchsia-400" size={16} />
-                        <span className="font-bold text-fuchsia-400 text-sm">Reclutamento: {Math.round((0.30 + (gameState.roguelike.recruitBonus !== undefined ? gameState.roguelike.recruitBonus : (gameState.roguelike.floor * 0.02))) * 100)}%</span>
-                    </div>
-                </div>
-                
-                <div className="w-full max-w-4xl bg-slate-900/80 p-6 rounded-3xl border border-slate-700/50 mb-8 flex gap-4 overflow-x-auto custom-scrollbar z-10">
-                    {['p1', 'p2', 'p3'].filter(p => gameState.players[p]).flatMap(p => {
-                        return gameState.teams[p].filter(c => !c.isSummonOnly).map((char, cIdx) => {
-                            const hp = char.hp;
-                            return (
-                                <div key={`${p}-${cIdx}`} className={`flex-1 min-w-[150px] bg-slate-800 p-4 rounded-xl flex flex-col items-center border ${hp <= 0 ? 'border-rose-900 grayscale' : 'border-slate-600'}`}>
-                                    <div className="text-[10px] text-fuchsia-400 font-bold mb-2 uppercase tracking-widest">{gameState.players[p]}</div>
-                                    <img src={char.img} className="w-16 h-16 rounded-full object-cover mb-2 border-2 border-slate-500" />
-                                    <span className="font-bold text-sm truncate w-full text-center">{char.name}</span>
-                                    {renderHealthBar(hp, char.maxHp)}
-                                </div>
-                            );
-                        });
-                    })}
-                </div>
-
-                <div className="flex gap-6 z-10">
-                    {isRestFloor ? (
-                        <div className="bg-emerald-900/40 border border-emerald-500 p-8 rounded-3xl text-center max-w-sm">
-                            <h3 className="text-2xl font-black text-emerald-400 mb-2">Accampamento</h3>
-                            <p className="text-slate-300 mb-6">Un'area sicura. Cura il 40% dei PS a tutti i membri del team ancora in vita.</p>
-                            {isHost ? (
-                                <button onClick={handleRest} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-4 px-8 rounded-full w-full transition-all">Riposa e Prosegui</button>
-                            ) : (
-                                <div className="text-emerald-400 font-bold animate-pulse mt-4">In attesa dell'Host...</div>
-                            )}
-                        </div>
-                    ) : (
-                        <div className={`bg-rose-900/40 border border-rose-500 p-8 rounded-3xl text-center max-w-sm`}>
-                            <h3 className="text-2xl font-black text-rose-400 mb-2">{isFinalBossFloor ? 'Stanza del Super Boss' : (isBossFloor ? 'Stanza del Boss' : 'Stanza di Combattimento')}</h3>
-                            <p className="text-slate-300 mb-6">{isFinalBossFloor ? 'Il guardiano finale ti attende.' : (isBossFloor ? 'Un potente nemico blocca il passaggio verso i prossimi piani.' : 'Dei nemici bloccano la via. Preparati a lottare.')}</p>
-                            {isHost ? (
-                                <button onClick={startRoguelikeCoopCombat} className="bg-rose-600 hover:bg-rose-500 text-white font-black py-4 px-8 rounded-full w-full transition-all flex items-center justify-center gap-2"><Swords size={20}/> Entra in Battaglia</button>
-                            ) : (
-                                <div className="text-rose-400 font-bold animate-pulse mt-4">In attesa dell'Host...</div>
-                            )}
-                        </div>
-                    )}
+                    <button onClick={leaveRoom} className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 px-10 py-5 rounded-full font-black text-xl flex items-center gap-3 shadow-[0_10px_30px_rgba(59,130,246,0.4)] transition-all hover:-translate-y-1">
+                        <RotateCcw size={24} /> Torna al Menu Principale
+                    </button>
                 </div>
             </div>
         );
