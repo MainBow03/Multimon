@@ -1052,7 +1052,13 @@
           'Silver Ghost': { name: 'Silver Ghost', type: 'Normale', power: 70, critChance: 0.2, critPower: 110, desc: 'Spara con la sua iconica pistola. Ha il 20% di probabilità di infliggere un colpo critico.' },
           'Suplex': { name: 'Suplex', type: 'Lotta', power: 85, statusEffect: { type: 'Stordito', chance: 0.3 }, desc: 'Afferra il nemico e lo schianta a terra con violenza. 30% di probabilità di stordire il bersaglio.' },
           'Flashbang': { name: 'Flashbang', type: 'Luce', power: 0, targetCount: 4, targetStatDebuff: { accFlat: 0.1 }, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Acceca tutti i nemici, riducendone la precisione del 10% e con il 30% di probabilità di confonderli.' },
-          'Fucile a Pompa': { name: 'Fucile a Pompa', type: 'Normale', power: 100, targetCount: 2, desc: 'Spara una potente cartuccia a distanza ravvicinata che colpisce fino a 2 nemici.' }
+          'Fucile a Pompa': { name: 'Fucile a Pompa', type: 'Normale', power: 100, targetCount: 2, desc: 'Spara una potente cartuccia a distanza ravvicinata che colpisce fino a 2 nemici.' },
+
+          // NUOVE MOSSE MECHA JOHNNY TEST
+          'Raggio Bling-Bling': { name: 'Raggio Bling-Bling', type: 'Robot', power: 75, statusEffect: { type: 'Confuso', chance: 0.3 }, desc: 'Un raggio laser pacchiano e accecante. 30% di probabilità di confondere.' },
+          'Zaino a Razzi': { name: 'Zaino a Razzi', type: 'Aria', power: 0, target: 'self', statBuff: { spd: 1.5, atk: 1.3 }, desc: 'Attiva lo zaino a razzi! Aumenta la Velocità del 50% e l\'Attacco del 30%.' },
+          'Richiamo Dukey-Bot': { name: 'Richiamo Dukey-Bot', type: 'Normale', power: 60, targetCount: 2, desc: 'Lancia un segnale per far attaccare Dukey in versione cibernetica. Colpisce fino a 2 bersagli.' },
+          'Sovraccarico Nucleare': { name: 'Sovraccarico Nucleare', type: 'Elettro', power: 110, recoil: 0.2, desc: 'Un attacco energetico sconsiderato. Infligge ingenti danni ma subisce il 20% del danno come contraccolpo.' }
         };
 
         // --- FIX: ASSEGNAZIONE PP MASSIMI A MOSSE DI DIFESA, CURA E SUPPORTO ---
@@ -1293,13 +1299,14 @@
           { id: 'charizard', name: 'Charizard', types: ['Fuoco', 'Aria'], hp: 105, maxHp: 105, atk: 120, def: 80, spd: 110, img: 'https://i.pinimg.com/1200x/93/1f/28/931f2832788a658540727ba3521d0b84.jpg', moves: [MOVES_DB['Lanciafiamme'], MOVES_DB['Tifone'], MOVES_DB['Dragopulsar'], MOVES_DB['Terremoto']] },
           { id: 'sumo', name: 'Sumo', types: ['Normale', 'Lotta'], hp: 130, maxHp: 130, atk: 115, def: 90, spd: 50, img: 'https://i.pinimg.com/736x/aa/cd/61/aacd61f4c49350ef9759acb0531d250b.jpg', moves: [MOVES_DB['Sumo Slam'], MOVES_DB['Mangia-tutto'], MOVES_DB['Spinta Da Wrestler'], MOVES_DB['Sgranocchio']] },
           { id: 'elly', name: 'Elly', types: ['Normale'], hp: 90, maxHp: 90, atk: 105, def: 85, spd: 115, img: 'https://i.postimg.cc/G4NHmSrb/Whats-App-Image-2026-06-25-at-06-09-14.jpg', moves: [MOVES_DB['Alito fetido'], MOVES_DB['Signora pincher'], MOVES_DB['n...non le scale!'], MOVES_DB['🐕🐕🐕🐕']] },
-          { id: 'arievicente', name: 'Arie Vicente', types: ['Luce'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/a2/a5/bc/a2a5bcedfecd462bdb1ba949d235c665.jpg', passive: { name: 'Perfezione Assoluta', type: 'perfezione_assoluta', desc: 'Ogni volta che subisce un colpo poco efficace, ottiene +20% Attacco. Se infligge un critico, ottiene +20% Velocità. Se evita o devia un attacco avversario, +20% Difesa.' }, moves: [MOVES_DB['Taglio Divino'], MOVES_DB['Passo Celestiale'], MOVES_DB['Lama Bianca'], MOVES_DB['Riflesso Perfetto'], MOVES_DB['Danza delle Mille Lame']] }
+          { id: 'arievicente', name: 'Arie Vicente', types: ['Luce'], hp: 100, maxHp: 100, atk: 115, def: 85, spd: 120, img: 'https://i.pinimg.com/736x/a2/a5/bc/a2a5bcedfecd462bdb1ba949d235c665.jpg', passive: { name: 'Perfezione Assoluta', type: 'perfezione_assoluta', desc: 'Ogni volta che subisce un colpo poco efficace, ottiene +20% Attacco. Se infligge un critico, ottiene +20% Velocità. Se evita o devia un attacco avversario, +20% Difesa.' }, moves: [MOVES_DB['Taglio Divino'], MOVES_DB['Passo Celestiale'], MOVES_DB['Lama Bianca'], MOVES_DB['Riflesso Perfetto'], MOVES_DB['Danza delle Mille Lame']] },
+          { id: 'mechajohnny', name: 'Mecha Johnny Test', types: ['Robot', 'Normale'], hp: 95, maxHp: 95, atk: 115, def: 85, spd: 110, img: 'https://i.postimg.cc/ZWS8HRZ9/Gemini-Generated-Image-fi3il4fi3il4fi3i.png', moves: [MOVES_DB['Raggio Bling-Bling'], MOVES_DB['Zaino a Razzi'], MOVES_DB['Richiamo Dukey-Bot'], MOVES_DB['Sovraccarico Nucleare']] }
         ];
 
         const CHAR_PRICES = {
             'diamantebianco': 350, 'goku': 350, 'kratos': 350, 'godzilla': 350, 'cell': 350, 'nito': 350, 'ryuk': 350, 'rias': 350, 'utopia': 350, 'bort': 350,
             'laxus': 250, 'zabuza': 250, 'naruto': 250, 'sasuke': 250, 'pyra': 250, 'natsu': 250, 'aang': 250, 'yugo': 250, 'garnet': 250, 'nightwing': 250, 'soundwave': 250, 'brago': 250, 'sailormercury': 250, 'alphonse': 250, 'shinobu': 250, 'nicole': 250, 'yoshi': 250, 'ainz': 250, 'entoma': 250, 'neon': 250, 'doraemon': 250, 'dante': 250, 'arievicente': 250, 'meliodas': 250, 'ban': 250, 'sans': 250, 'roxy': 250, 'perla': 250,
-            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200, 'elly': 200, 'leon': 200,
+            'bowser': 200, 'sdentato': 200, 'corvina': 200, 'zatchbell': 200, 'lapis': 200, 'sage': 200, 'ariana': 200, 'groot': 200, 'dannyphantom': 200, 'reboo': 200, 'metalsonic': 200, 'astral': 200, 'yusei': 200, 'stellarubia': 200, 'shego': 200, 'hannibal': 200, 'po': 200, 'strega': 200, 'yukionna': 200, 'bulma': 200, 'maxcaulfield': 200, 'chloeprice': 200, 'miku': 200, 'penny': 200, 'ponygon': 200, 'shifu': 200, 'gardevoir': 200, 'ursula': 200, 'shrek': 200, 'kai': 200, 'terra': 200, 'weiss': 200, 'ilcavaliere': 200, 'sheldon': 200, 'megamind': 200, 'charizard': 200, 'sumo': 200, 'elly': 200, 'leon': 200, 'mechajohnny': 200,
             'zazan': 150, 'charmcaster': 150, 'patrick': 150, 'plankton': 150, 'wario': 150, 'zuko': 150, 'barry': 150, 'bloom': 150, 'juvia': 150, 'sanemi': 150, 'cuoredipietra': 150, 'poisonivy': 150, 'zergling': 150, 'gaston': 150, 'leslie': 150, 'dolli': 150, 'reghiaccio': 150, 'cosmo': 150, 'mantide': 150, 'renarouge': 150, 'rainbowdash': 150, 'spike': 150, 'jackfrost': 150, 'polterpup': 150, 'whisper': 150, 'juri': 150, 'iris': 150, 'bumblebee': 150, 'marceline': 150, 'jakedc': 150, 'peridot': 150, 'sugino': 150
         };
         CHARACTERS.forEach(c => {
@@ -3582,18 +3589,22 @@
                       statsUpdates.playtime = Math.floor((Date.now() - matchStartTimeRef.current) / 1000);
                   }
                   
+                  const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
+
                   if (gameState.isCampaignBattle) {
                       const isWin = gameState.winner === gameState.players.p1;
                       if (isWin) {
                           statsUpdates.addCoins = 20;
                           statsUpdates.win = true;
                       }
+                      if (myKey && gameState.inventory[myKey]) {
+                          statsUpdates.overwriteInventory = gameState.inventory[myKey]; // FIX: Salva gli oggetti usati in campagna
+                      }
                       if (Object.keys(statsUpdates).length > 0) updateLocalStats(statsUpdates);
                       return; 
                   }
                   
-                  const myKey = Object.keys(gameState.players).find(k => gameState.players[k] === playerName);
-                  if (myKey && gameState.inventory[myKey]) {
+                  if (myKey && gameState.inventory[myKey] && !gameState.isRoguelikeBattle) { // FIX: Ignora l'inventario del roguelike per non sovrascrivere quello globale
                       statsUpdates.overwriteInventory = gameState.inventory[myKey];
                   }
 
@@ -8623,6 +8634,7 @@
                 'sans': "che bella giornata fuori. gli uccellini cantano... i fiori sbocciano...",
                 'roxy': "Sono la migliore! Tutti mi adorano!",
                 'perla': "Mostrerò loro la vera eleganza in combattimento! Per Rose!",
+                'mechajohnny': "Bling-Bling Boy mi fa un baffo! Test robotico in corso!",
 
                 'default': "Contate su di me! Insieme porteremo a casa la vittoria!"
             };
@@ -8717,6 +8729,7 @@
                 'roxy': "Pff, perdenti. Andate a piangere altrove.",
                 'perla': "Come volete. Ma la vostra tecnica è a dir poco approssimativa.",
                 'leon': "Ricevuto. Mi posiziono nelle retrovie e tengo d'occhio il perimetro.",
+                'mechajohnny': "Uffa! Allora vado in laboratorio a fare esplodere qualcosa con Dukey.",
 
                 'default': "Oh, vabbè... farò il tifo dalla panchina. Spaccate tutto!"
             };
@@ -8964,6 +8977,7 @@
             state.players.p1 = playerName || "Resistenza";
             state.playerAvatars.p1 = p1Team.length > 0 ? p1Team[0].img : '';
             state.isBot.p1 = false;
+            state.inventory.p1 = getPlayerData().inventory; // FIX: Aggiunto caricamento cure in Campagna!
             
             state.players.p2 = mission.isAnomaly && mission.id === 'm12_5' ? "Team Infetto" : activeBosses.map(id => {
                  const b = CHARACTERS.find(c=>c.id===id);
@@ -10232,7 +10246,7 @@
         const reqPlayers = getRequiredPlayers(gameState.gameMode, gameState.settings);
         const canStartDraft = isAllPlayersJoined();
 
-        const newArrivals = ['leon', 'perla', 'roxy', 'sans', 'ban', 'meliodas', 'sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
+        const newArrivals = ['mechajohnny', 'leon', 'perla', 'roxy', 'sans', 'ban', 'meliodas', 'sasuke', 'naruto', 'diamantebianco', 'arievicente', 'sugino', 'elly', 'sumo', 'charizard', 'megamind', 'sheldon', 'dante', 'ilcavaliere']; // Massimo 20 nuovi inserimenti
 
         return (
             <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4 relative">
