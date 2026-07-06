@@ -9486,10 +9486,12 @@
             state.gameMode = 'classica';
             state.isRoguelikeBattle = true; 
             
+            const randomOst = SOUNDTRACKS[Math.floor(Math.random() * SOUNDTRACKS.length)].id; // <-- OST Casuale per il piano
+
             // --- FIX BUG ROGUELIKE: Schiera solo i personaggi VIVI in campo all'inizio! ---
             let aliveIndices = [];
             myTeam.forEach((c, i) => { if (c.hp > 0) aliveIndices.push(i); });
-            state.settings = { teamSize: myTeam.length, fieldSize: Math.min(4, Math.max(aliveIndices.length, enemyTeam.length)) };
+            state.settings = { teamSize: myTeam.length, fieldSize: Math.min(4, Math.max(aliveIndices.length, enemyTeam.length)), soundtrack: randomOst };
             
             state.players = { p1: playerName || "Spedizione", p2: isFinalBossFloor ? "Guardiano Finale" : (isBossFloor ? "Boss del Piano" : "Abitanti del Piano") };
             state.playerAvatars = { p1: myTeam[0].img, p2: enemyTeam[0].img };
@@ -12687,13 +12689,16 @@
             newField.p4 = enemyTeam.map((_, i) => i).slice(0, 3);
             enemyTeam.forEach(e => e.revealed = true);
 
+            const randomOst = SOUNDTRACKS[Math.floor(Math.random() * SOUNDTRACKS.length)].id; // <-- OST Casuale per il piano
+
             updateState({
                 status: 'pre_battle',
                 'teams.p4': enemyTeam,
                 field: newField,
                 actions: { p1: {}, p2: {}, p3: {}, p4: {} },
                 switchActions: { p1: [], p2: [], p3: [], p4: [] },
-                pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0 }
+                pendingSwitches: { p1: 0, p2: 0, p3: 0, p4: 0 },
+                'settings.soundtrack': randomOst
             });
         };
 
